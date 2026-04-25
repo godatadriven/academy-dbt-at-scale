@@ -1,4 +1,4 @@
-episode_id,show_id,title,published_at,duration_seconds,season,episode_number
+EPISODE_ID,SHOW_ID,TITLE,PUBLISHED_AT,DURATION_SECONDS,SEASON,EPISODE_NUMBER
 ep_001,show_001,Election Forecast 2024,2024-01-08 07:00:00,2587,3,1
 ep_002,show_002,Large Language Models Explained,2024-01-09 08:00:00,3120,2,1
 ep_003,show_003,Transfer Window Special,2024-01-10 06:30:00,2105,5,1
@@ -36,3 +36,19 @@ ep_034,show_008,AI Ethics and Regulation,2024-02-26 09:00:00,3300,1,3
 ep_035,show_001,Election Year: Mid-Point Check,2024-02-26 07:00:00,2761,3,5
 ep_036,show_011,Investing in Volatile Markets,2024-02-27 08:00:00,3181,1,2
 ep_037,show_005,Renewable Energy Progress Report,2024-02-29 07:30:00,2645,1,6
+ep_038,show_006,AI and Journalism: One Year On,2024-03-04 08:00:00,3842,2,1
+ep_039,show_006,The Algorithm Beat,2024-03-11 08:00:00,4101,2,2
+ep_040,show_006,Deepfakes in the Newsroom,2024-03-18 08:00:00,3956,2,3
+ep_041,show_008,Quantum Cryptography Explained,2024-03-05 09:00:00,3612,2,1
+ep_042,show_008,The Next Generation of Chips,2024-03-12 09:00:00,3490,2,2
+ep_043,show_008,Brain-Computer Interfaces,2024-03-19 09:00:00,4020,2,3
+ep_044,show_009,Spring Cinema Preview,2024-03-07 09:00:00,2534,2,1
+ep_045,show_009,Best Documentaries This Month,2024-03-14 09:00:00,2788,2,2
+ep_046,show_010,Immigration and the Economy,2024-03-06 07:00:00,3540,2,1
+ep_047,show_010,Healthcare Funding Crisis,2024-03-13 07:00:00,3120,2,2
+ep_048,show_010,The Cost of Living: Six Months On,2024-03-20 07:00:00,3900,2,3
+ep_049,show_011,Pension Reforms Explained,2024-03-08 08:00:00,2960,2,1
+ep_050,show_011,The Savings Gap,2024-03-15 08:00:00,3210,2,2
+ep_051,show_012,VAR: Two Years In,2024-03-09 07:00:00,2140,2,1
+ep_052,show_012,Tactics That Changed the Game,2024-03-16 07:00:00,2376,2,2
+ep_053,show_012,The Business of Football Transfers,2024-03-23 07:00:00,2509,2,3
