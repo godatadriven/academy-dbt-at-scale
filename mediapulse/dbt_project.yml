@@ -51,6 +51,12 @@ seeds:
       +column_types:
         published_at: varchar
         updated_at: varchar
+    raw_news__articles_updated:
+      +schema: news
+      +alias: articles_updated
+      +column_types:
+        published_at: varchar
+        updated_at: varchar
     raw_news__page_views:
       +schema: news
       +alias: views
