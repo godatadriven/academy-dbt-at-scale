@@ -5,14 +5,14 @@ mediapulse:
   target: dev
   outputs:
     dev:
-      type: snowflake             # or bigquery / databricks — ask your facilitator
+      type: snowflake             # or bigquery / databricks - ask your facilitator
       account: "your-account"
       user: "your-user"
       password: "your-password"
       role: "TRANSFORMER"
       database: "MEDIAPULSE_DEV"  # your personal dev database
       warehouse: "COMPUTE_WH"
-      schema: "dbt_yourname"      # personalise this — e.g. dbt_lucy
+      schema: "dbt_yourname"      # personalise this - e.g. dbt_lucy
       threads: 4
 
     prod:

@@ -2,7 +2,7 @@
 -- Intended to combine NewsNow articles and PodcastHub episodes into a single
 -- content catalogue enriched with category metadata.
 --
--- Status: work in progress — review the join logic before using downstream.
+-- Status: work in progress - review the join logic before using downstream.
 
 with articles as (
 

@@ -17,7 +17,7 @@ clean-targets:
   - "dbt_packages"
 
 # ---------------------------------------------------------------------------
-# Variable overrides — set raw_database to wherever your source data lives.
+# Variable overrides - set raw_database to wherever your source data lives.
 # In dbt Cloud you can set this as an environment-level variable.
 # ---------------------------------------------------------------------------
 vars:

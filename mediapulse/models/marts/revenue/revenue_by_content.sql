@@ -2,7 +2,7 @@
 -- Show how ad revenue from AdConnect maps to individual content items
 -- across the MediaPulse portfolio.
 --
--- Status: work in progress — check the aggregation grain matches what consumers expect.
+-- Status: work in progress - check the aggregation grain matches what consumers expect.
 
 with spend as (
 

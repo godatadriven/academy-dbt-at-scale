@@ -16,11 +16,11 @@ sources:
         description: >
           All articles ever published on NewsNow, including subsequent versions.
           A single article_id may appear more than once when an article is updated
-          or republished — each version gets its own row with a new updated_at timestamp.
+          or republished - each version gets its own row with a new updated_at timestamp.
         columns:
           - name: article_id
             description: >
-              Article identifier. Not a primary key — duplicates exist.
+              Article identifier. Not a primary key - duplicates exist.
               See updated_at to identify the most recent version of each article.
           - name: title
             description: Article headline.

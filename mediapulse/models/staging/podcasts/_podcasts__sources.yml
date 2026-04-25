@@ -60,7 +60,7 @@ sources:
 
       - name: listens
         description: >
-          Individual listen events — one row per user/episode listening session.
+          Individual listen events - one row per user/episode listening session.
         columns:
           - name: listen_id
             description: Primary key.
