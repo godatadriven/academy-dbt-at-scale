@@ -72,6 +72,11 @@ seeds:
       +alias: episodes
       +column_types:
         published_at: varchar
+    raw_podcasts__episodes_updated:
+      +schema: podcasts
+      +alias: episodes_updated
+      +column_types:
+        published_at: varchar
     raw_podcasts__listens:
       +schema: podcasts
       +alias: listens
