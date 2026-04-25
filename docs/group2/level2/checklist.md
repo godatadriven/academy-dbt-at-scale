@@ -6,11 +6,11 @@ Start on this checklist once you have completed [Checklist Level 1](../level1/ch
 
 In this level you will apply the following skills:
 
-- **Testing** — `relationships`, `accepted_values`, `not_null` gap-filling
-- **Documentation** — YAML for your mart
-- **Snapshots** — SCD Type 2 for slowly-changing article metadata
+- **Testing** - `relationships`, `accepted_values`, `not_null` gap-filling
+- **Documentation** - YAML for your mart
+- **Snapshots** - SCD Type 2 for slowly-changing article metadata
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt — the struggle is where the learning happens!
+Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
 
 ---
 
@@ -204,7 +204,7 @@ This builds the full lineage and runs all tests together.
 dbt build --select +content_performance
 ```
 
-Fix any remaining failures. A test failure is information — read the error, query the failing rows, understand why before changing anything.
+Fix any remaining failures. A test failure is information - read the error, query the failing rows, understand why before changing anything.
 
 ---
 
@@ -219,7 +219,9 @@ You can follow the same steps as above, using the "updated" data for episodes.
 ---
 
 !!! success "Done?"
-    You've added relationship integrity checks, filled test gaps, documented your mart, and implemented SCD Type 2 for article metadata. These are the building blocks of a production-grade test suite — nicely done.
+    You've added relationship integrity checks, filled test gaps, documented your mart, and implemented SCD Type 2 for article metadata. These are the building blocks of a production-grade test suite - nicely done.
 
-    Your work directly enables Group 3's revenue attribution — they need clean content data to allocate ad revenue correctly.
+    Your work directly enables Group 3's revenue attribution - they need clean content data to allocate ad revenue correctly.
+
+    Now head to [Level 3](../level3/checklist.md) to configure your tests with severity, `where` clauses, and statistical guardrails from `dbt_expectations`!
 

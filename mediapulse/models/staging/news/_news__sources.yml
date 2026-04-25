@@ -5,7 +5,7 @@ sources:
     # database: "{{ var('raw_database') }}"
     # Uncomment the line above and set raw_database in dbt_project.yml vars
     # if your raw data lives in a separate database (e.g. Snowflake multi-db).
-    # For the workshop seed setup, leave commented — seeds load into your target database.
+    # For the workshop seed setup, leave commented - seeds load into your target database.
     schema: news
     description: >
       Raw data from NewsNow, MediaPulse's digital news outlet.

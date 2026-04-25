@@ -261,3 +261,5 @@ This runs models and tests together in dependency order. Then open the DAG in db
 !!! success "Done?"
     You've added relationship integrity checks, normalized messy source data with macros, and written your first custom SQL assertions. These are the building blocks of a production-grade test suite - nicely done.
 
+    Now head to [Level 3](../level3/checklist.md) to configure your tests with severity, `where` clauses, and statistical guardrails from `dbt_expectations`!
+

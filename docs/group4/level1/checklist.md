@@ -2,17 +2,17 @@
 
 ## dbt Project Audit
 
-This is an audit-first track. Your job is to find what's broken or missing in the MediaPulse project — then fix it. The other groups built features; you build the safety net.
+This is an audit-first track. Your job is to find what's broken or missing in the MediaPulse project - then fix it. The other groups built features; you build the safety net.
 
 In this level you will:
 
-- **Install audit packages** — dbt-project-evaluator and dbt-codegen
+- **Install audit packages** - dbt-project-evaluator and dbt-codegen
 - **Run the evaluator** and surface violations
 - **Triage findings** by risk level
 - **Fix the highest-priority violations**
 - **Fill documentation gaps** with codegen
 
-Work through the steps in order. Document your decisions as you go — you'll present findings at 16:00 on Day 2.
+Work through the steps in order. Document your decisions as you go - you'll present findings at 16:00 on Day 2.
 
 ---
 
@@ -90,7 +90,7 @@ For each evaluator violation, decide:
 - **Should fix**: documentation gaps, naming convention violations
 - **Won't fix / acceptable**: architectural decisions made consciously (e.g., a mart that intentionally queries a source for performance)
 
-Record your triage decisions with a brief rationale — you'll present this.
+Record your triage decisions with a brief rationale - you'll present this.
 
 ??? tip "Hint: What usually matters most"
     In practice, the highest-risk findings are:
@@ -170,7 +170,7 @@ Paste the output into the appropriate YAML files, then fill in the descriptions.
 Pick the evaluator finding that surprised you most and dig into it:
 
 1. Which models are affected?
-2. What's the concrete risk — what could go wrong in production?
+2. What's the concrete risk - what could go wrong in production?
 3. Is the fix straightforward or does it require refactoring?
 
 Write a short paragraph (3–5 sentences) describing your finding. You'll use this in your presentation.

@@ -1,4 +1,4 @@
-# dbt@scale — Workshop Student Pack
+# dbt@scale - Workshop Student Pack
 
 This repo contains everything needed to run or adapt the **dbt@scale** workshop: the participant-facing guide site and the dbt project participants work on.
 
@@ -8,7 +8,7 @@ This repo contains everything needed to run or adapt the **dbt@scale** workshop:
 
 ## Overview
 
-A two-day hands-on dbt workshop built for one client. Participants work in four skill-levelled groups through a shared fictional data platform called **MediaPulse** — a media conglomerate with news, podcasts, streaming, and advertising domains.
+A two-day hands-on dbt workshop built for one client. Participants work in four skill-levelled groups through a shared fictional data platform called **MediaPulse** - a media conglomerate with news, podcasts, streaming, and advertising domains.
 
 The material is designed to be reusable and adapted for future clients.
 
@@ -22,7 +22,7 @@ The student workbook is hosted here:
 
 ```
 .
-├── docs/                        # MkDocs source — the participant-facing guide
+├── docs/                        # MkDocs source - the participant-facing guide
 │   ├── index.md                 # Welcome page
 │   ├── agenda.md
 │   ├── mediapulse/              # Shared project context (overview + ERD)
@@ -42,9 +42,9 @@ The student workbook is hosted here:
 │   ├── models/
 │   │   ├── staging/             # news, podcasts, ads staging models
 │   │   └── marts/               # content_performance, revenue_by_content
-│   ├── seeds/                   # Raw source data (CSV) — replaces a real ingestion pipeline
-│   ├── snapshots/               # (empty — participants write these)
-│   ├── tests/                   # (empty — participants write these)
+│   ├── seeds/                   # Raw source data (CSV) - replaces a real ingestion pipeline
+│   ├── snapshots/               # (empty - participants write these)
+│   ├── tests/                   # (empty - participants write these)
 │   ├── macros/                  # generate_schema_name override
 │   ├── dbt_project.yml
 │   └── packages.yml
@@ -93,7 +93,7 @@ Seeds simulate raw source data. Each CSV maps to a schema and table:
 | `raw_ads__impressions.csv` | `ads.impressions` |
 | `raw_ads__spend.csv` | `ads.spend` |
 
-The `_updated` variants (`articles_updated`, `episodes_updated`) are used in the Group 2 snapshot exercises — they simulate what the source table looks like after upstream changes, to demonstrate SCD Type 2 behaviour.
+The `_updated` variants (`articles_updated`, `episodes_updated`) are used in the Group 2 snapshot exercises - they simulate what the source table looks like after upstream changes, to demonstrate SCD Type 2 behaviour.
 
 ### Intentional bugs
 
@@ -101,10 +101,10 @@ Several models contain deliberate bugs for participants to find and fix:
 
 | Model | Bug |
 |-------|-----|
-| `stg_news__articles.sql` | No deduplication — `news.articles` has duplicate `article_id` rows |
+| `stg_news__articles.sql` | No deduplication - `news.articles` has duplicate `article_id` rows |
 | `stg_podcasts__episodes.sql` | References column `episode_name` which doesn't exist (should be `title`) |
-| `marts/content/content_performance.sql` | INNER JOINs articles to episodes on category — produces a cross-product fan-out |
-| `marts/revenue/revenue_by_content.sql` | Aggregates at `campaign_id` grain, not `content_id` — wrong for a "by content" mart |
+| `marts/content/content_performance.sql` | INNER JOINs articles to episodes on category - produces a cross-product fan-out |
+| `marts/revenue/revenue_by_content.sql` | Aggregates at `campaign_id` grain, not `content_id` - wrong for a "by content" mart |
 
 Raw data quality issues (for testing exercises):
 - `streaming.subscriptions`: mixed casing on `plan_type` and `status` columns
@@ -121,7 +121,7 @@ pip install -r requirements.txt
 mkdocs serve
 ```
 
-Open `http://localhost:8000`. The site is password-protected — the current password is set in `mkdocs.yml` under `plugins.encryptcontent.global_password`.
+Open `http://localhost:8000`. The site is password-protected - the current password is set in `mkdocs.yml` under `plugins.encryptcontent.global_password`.
 
 > **Before sharing with participants**, uncomment the `global_password` line in `mkdocs.yml` and set it to your chosen password. It is currently commented out, meaning the site is unprotected.
 
@@ -140,13 +140,13 @@ If you need to deploy to a new Netlify site, connect this repo and use:
 
 ## Adapting this for a new client
 
-1. **Update the branding** — replace `docs/images/mediapulse_logo_small.svg` with the client's logo and update `site_name` / `site_description` in `mkdocs.yml`.
-2. **Update the agenda** — edit `docs/agenda.md` with the new schedule, talk titles, and presenter names.
-3. **Update the welcome page** — edit `docs/index.md` to reflect the host organisation.
-4. **Set a new password** — uncomment and update `global_password` in `mkdocs.yml`.
-5. **Adjust skill levels** — the four-group structure and level1/level2 split can be compressed to fewer groups or expanded. Each group's checklist is a standalone markdown file.
-6. **Seed data** — the CSVs in `mediapulse/seeds/` can be replaced or extended for a different domain. Keep the `_updated` variants for snapshot exercises.
-7. **Connect to the client's dbt Cloud** — update the dbt Cloud project connection and target Snowflake credentials. Each participant needs their own dev target schema.
+1. **Update the branding** - replace `docs/images/mediapulse_logo_small.svg` with the client's logo and update `site_name` / `site_description` in `mkdocs.yml`.
+2. **Update the agenda** - edit `docs/agenda.md` with the new schedule, talk titles, and presenter names.
+3. **Update the welcome page** - edit `docs/index.md` to reflect the host organisation.
+4. **Set a new password** - uncomment and update `global_password` in `mkdocs.yml`.
+5. **Adjust skill levels** - the four-group structure and level1/level2 split can be compressed to fewer groups or expanded. Each group's checklist is a standalone markdown file.
+6. **Seed data** - the CSVs in `mediapulse/seeds/` can be replaced or extended for a different domain. Keep the `_updated` variants for snapshot exercises.
+7. **Connect to the client's dbt Cloud** - update the dbt Cloud project connection and target Snowflake credentials. Each participant needs their own dev target schema.
 
 ---
 

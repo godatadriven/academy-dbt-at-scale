@@ -6,12 +6,12 @@ Start on this checklist once you have completed [Checklist Level 1](../level1/ch
 
 In this level you will apply the following skills:
 
-- **Revenue mart** — fix the grain bug and allocate spend by impression share
-- **Snapshots** — SCD Type 2 for campaign budget changes
-- **Singular tests** — custom SQL assertions for revenue correctness
-- **Documentation** — YAML for staging and mart models
+- **Revenue mart** - fix the grain bug and allocate spend by impression share
+- **Snapshots** - SCD Type 2 for campaign budget changes
+- **Singular tests** - custom SQL assertions for revenue correctness
+- **Documentation** - YAML for staging and mart models
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt — the struggle is where the learning happens!
+Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
 
 ---
 
@@ -22,10 +22,10 @@ Work through the steps in order. Expand a hint only after you've had a genuine a
 Create `models/marts/revenue/revenue_by_content.sql`. This mart allocates ad spend to content items proportionally based on impression share.
 
 !!! warning "Check the existing stub first"
-    Open `models/marts/revenue/revenue_by_content.sql`. The stub aggregates spend at `campaign_id` grain — this loses the per-content breakdown. Understand the grain problem, then rewrite it.
+    Open `models/marts/revenue/revenue_by_content.sql`. The stub aggregates spend at `campaign_id` grain - this loses the per-content breakdown. Understand the grain problem, then rewrite it.
 
 ??? tip "Hint: What's wrong with the stub"
-    The stub groups by `campaign_id, campaign_name, campaign_type, advertiser_id` — there is no `content_id` in the `GROUP BY`. This means you get one row per campaign per day, not one row per content item per campaign per day. The mart is named "by content" but doesn't actually break down by content.
+    The stub groups by `campaign_id, campaign_name, campaign_type, advertiser_id` - there is no `content_id` in the `GROUP BY`. This means you get one row per campaign per day, not one row per content item per campaign per day. The mart is named "by content" but doesn't actually break down by content.
 
 ??? tip "Hint: Allocation logic"
     ```sql
@@ -97,7 +97,7 @@ Create `models/marts/revenue/revenue_by_content.sql`. This mart allocates ad spe
 
 - [ ] Step complete
 
-Create `snapshots/snap_ads__campaigns.sql`. Track budget changes using the `timestamp` strategy — campaigns can have their budgets modified after launch.
+Create `snapshots/snap_ads__campaigns.sql`. Track budget changes using the `timestamp` strategy - campaigns can have their budgets modified after launch.
 
 ??? tip "Hint"
     ```sql
@@ -144,7 +144,7 @@ Create `snapshots/snap_ads__campaigns.sql`. Track budget changes using the `time
 Create `tests/assert_revenue_lte_spend.sql`. For each `(campaign_id, impression_date)`, allocated revenue should never exceed gross spend.
 
 ??? tip "Hint: When does a dbt test pass?"
-    A test **passes** when the query returns **zero rows** — any rows returned are failures.
+    A test **passes** when the query returns **zero rows** - any rows returned are failures.
 
 ??? tip "Hint"
     ```sql
@@ -228,10 +228,10 @@ Include a `relationships` test on `fct_ad_impressions.campaign_id` → `stg_ads_
 dbt build --select +revenue_by_content
 ```
 
-This builds the full lineage — sources → staging → incremental fact → mart — and runs all tests. Fix any failures.
+This builds the full lineage - sources → staging → incremental fact → mart - and runs all tests. Fix any failures.
 
 ??? tip "Hint: If the revenue test fails"
-    A failure in `assert_revenue_lte_spend` usually means the impression share doesn't sum to exactly 1.0 for all campaigns on all days (floating point rounding or gaps between impressions and spend records). The `* 1.001` tolerance in the test handles minor float rounding — if it still fails, look at campaigns where impressions exist but no matching spend row exists for that date.
+    A failure in `assert_revenue_lte_spend` usually means the impression share doesn't sum to exactly 1.0 for all campaigns on all days (floating point rounding or gaps between impressions and spend records). The `* 1.001` tolerance in the test handles minor float rounding - if it still fails, look at campaigns where impressions exist but no matching spend row exists for that date.
 
 ---
 
@@ -254,7 +254,9 @@ Run `dbt build --full-refresh --select fct_ad_impressions` followed by a second 
 ---
 
 !!! success "Done?"
-    You've built the revenue spine of the MediaPulse data platform — a correct-grain mart, a campaign budget snapshot, and custom SQL assertions that verify revenue integrity.
+    You've built the revenue spine of the MediaPulse data platform - a correct-grain mart, a campaign budget snapshot, and custom SQL assertions that verify revenue integrity.
 
     Group 4 will use `dbt-expectations` to add statistical guardrails around these models. Share your mart YAML with them so they can build on it.
+
+    Now head to [Level 3](../level3/checklist.md) to configure your tests with severity, `where` clauses, and `dbt_expectations` guardrails on your revenue models!
 

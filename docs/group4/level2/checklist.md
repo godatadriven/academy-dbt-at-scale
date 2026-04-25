@@ -6,13 +6,13 @@ Start on this checklist once you have completed [Checklist Level 1](../level1/ch
 
 In this level you will apply the following skills:
 
-- **dbt-expectations** — statistical guardrails on critical models
-- **Model contracts** — schema enforcement at compile time
-- **Test severity** — `warn` vs `error` decisions
-- **CI/CD design** — slim CI, nightly refresh, production deploy
-- **Hard requirements** — what must pass before any production deploy
+- **dbt-expectations** - statistical guardrails on critical models
+- **Model contracts** - schema enforcement at compile time
+- **Test severity** - `warn` vs `error` decisions
+- **CI/CD design** - slim CI, nightly refresh, production deploy
+- **Hard requirements** - what must pass before any production deploy
 
-Work through the steps in order. Document decisions as you go — you'll present findings at 16:00 on Day 2.
+Work through the steps in order. Document decisions as you go - you'll present findings at 16:00 on Day 2.
 
 ---
 
@@ -91,7 +91,7 @@ Add `contract: {enforced: true}` to `content_performance` and `revenue_by_conten
             data_type: float
     ```
 
-    If the model produces a column with a different type or name, the run fails with a clear error — this catches schema drift before it reaches consumers.
+    If the model produces a column with a different type or name, the run fails with a clear error - this catches schema drift before it reaches consumers.
 
     !!! warning
         Contracts require that **all** columns in the model are listed in YAML. Missing columns cause a compile error. Use dbt-codegen (Level 1 Step 5) to get the full column list first.
@@ -140,9 +140,9 @@ Go through all model YAML files and consider which tests should be `warn` vs `er
 
 Design a dbt Cloud job structure for MediaPulse. You need at minimum three jobs:
 
-1. **Slim CI** — triggered on PR open/update; runs only changed models and their downstream
-2. **Nightly full-refresh** — runs at 02:00; full `--full-refresh` to catch schema drift
-3. **Production deploy** — triggered on merge to main; runs `+state:modified+` against production environment
+1. **Slim CI** - triggered on PR open/update; runs only changed models and their downstream
+2. **Nightly full-refresh** - runs at 02:00; full `--full-refresh` to catch schema drift
+3. **Production deploy** - triggered on merge to main; runs `+state:modified+` against production environment
 
 For each job, define:
 
@@ -178,7 +178,7 @@ For each job, define:
 
 As a group, write a short document (a markdown file in the repo under `docs/production_requirements.md`) that answers:
 
-**Hard requirements — must pass before any production deploy:**
+**Hard requirements - must pass before any production deploy:**
 
 - [ ] All `not_null` + `unique` tests on primary keys pass
 - [ ] All `relationships` tests pass
@@ -187,7 +187,7 @@ As a group, write a short document (a markdown file in the repo under `docs/prod
 - [ ] Singular revenue assertion tests pass
 - [ ] dbt-project-evaluator: zero `must_fix` violations remain
 
-**Nice-to-haves — target within next sprint:**
+**Nice-to-haves - target within next sprint:**
 
 - [ ] 100% of models have descriptions
 - [ ] All source columns have tests
@@ -208,7 +208,7 @@ As a group, write a short document (a markdown file in the repo under `docs/prod
 
 - [ ] Step complete
 
-dbt-project-evaluator is configurable — you can disable checks that don't apply to your project or add custom rules. Review the [evaluator documentation](https://dbt-labs.github.io/dbt-project-evaluator/) and:
+dbt-project-evaluator is configurable - you can disable checks that don't apply to your project or add custom rules. Review the [evaluator documentation](https://dbt-labs.github.io/dbt-project-evaluator/) and:
 
 1. Identify any default rules that don't make sense for MediaPulse
 2. Disable them in `dbt_project.yml` using the evaluator's `vars` config
@@ -232,15 +232,17 @@ dbt-project-evaluator is configurable — you can disable checks that don't appl
 
 At 16:00 Day 2 you have 10–15 minutes to present. Structure:
 
-1. **What we found** — top 5 evaluator violations by risk level
-2. **What we fixed** — concrete before/after
-3. **What we added** — dbt-expectations tests, contracts, severity review
-4. **CI/CD design** — diagram of your three jobs and what each catches
-5. **Hard requirements** — your final list with rationale
-6. **What we'd do next** — honest backlog
+1. **What we found** - top 5 evaluator violations by risk level
+2. **What we fixed** - concrete before/after
+3. **What we added** - dbt-expectations tests, contracts, severity review
+4. **CI/CD design** - diagram of your three jobs and what each catches
+5. **Hard requirements** - your final list with rationale
+6. **What we'd do next** - honest backlog
 
 ---
 
 !!! success "Done?"
-    You've audited, hardened, and documented the MediaPulse platform to production-ready standards. The other groups built features; you built the safety net. Neither is more important — the platform needs both.
+    You've audited, hardened, and documented the MediaPulse platform to production-ready standards. The other groups built features; you built the safety net. Neither is more important - the platform needs both.
+
+    Now head to [Level 3](../level3/checklist.md) to audit test configuration project-wide, and learn dbt unit testing to verify transformation logic in isolation!
 

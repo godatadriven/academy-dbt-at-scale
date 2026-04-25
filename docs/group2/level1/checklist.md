@@ -2,7 +2,7 @@
 
 ## dbt Fundamentals + Bug Fixing
 
-Start here. The first four steps are about reading critically and fixing what's broken — resist the urge to skip straight to building. Understanding *why* a bug exists is more valuable than the fix itself.
+Start here. The first four steps are about reading critically and fixing what's broken - resist the urge to skip straight to building. Understanding *why* a bug exists is more valuable than the fix itself.
 
 In this level you will:
 
@@ -10,7 +10,7 @@ In this level you will:
 - **Create a seed** for a reference lookup table
 - **Build a cross-domain mart** combining news and podcast content
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt — the struggle is where the learning happens!
+Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
 
 ---
 
@@ -31,7 +31,7 @@ order by 2 desc
 Does the staging model handle this? What happens downstream if it doesn't?
 
 ??? tip "Hint: What to look for"
-    The raw `articles` table contains duplicate `article_id` values — articles get republished with a new `updated_at` timestamp. The current staging model selects `*` without deduplication. This means any downstream model joining on `article_id` will fan out and produce inflated row counts.
+    The raw `articles` table contains duplicate `article_id` values - articles get republished with a new `updated_at` timestamp. The current staging model selects `*` without deduplication. This means any downstream model joining on `article_id` will fan out and produce inflated row counts.
 
     **The fix:** use a `ROW_NUMBER()` window function to keep only the most recent version of each article.
 
@@ -120,7 +120,7 @@ Query the staging model and order by the column `season_episode`. What issue do 
 ??? tip "Hint: What is happening?"
     The bug: season_episode is a string like '1-3', '2-3', '3-3' where the episode is the first value and the season the second. This is causing two issues:
     - When ordering the primary order is from the episode title. Meaning all episode 1s will be together from all seasons, then episode 2s etc.
-    — Even if fixed, since this is a string, '3-10' will come before '3-9' because '1' < '9' as characters. Any downstream model ordering by `season_episode` will silently return episodes in the wrong order.
+    - Even if fixed, since this is a string, '3-10' will come before '3-9' because '1' < '9' as characters. Any downstream model ordering by `season_episode` will silently return episodes in the wrong order.
 
     It won't error, the values look completely reasonable at a glance, and the second problem only becomes visible once you have `10+` episodes in a season. Does that feel like the right difficulty level?
 
@@ -211,18 +211,18 @@ Create `models/marts/content/content_performance.sql`. This mart should:
     inner join stg_podcasts__episodes e on a.category = e.category
     ```
 
-    This produces a cross-join of every article in a category with every episode in the same category — exactly the row explosion the dedup fix was meant to prevent elsewhere. Articles and episodes are separate content items; they should be stacked, not joined.
+    This produces a cross-join of every article in a category with every episode in the same category - exactly the row explosion the dedup fix was meant to prevent elsewhere. Articles and episodes are separate content items; they should be stacked, not joined.
 
 ??? tip "Hint: The better approach"
     **What you're building:** A single unified content table that combines articles and podcast episodes, then enriches it with normalised category labels.
 
-    **CTEs 1 & 2 — `articles` and `episodes`**  
+    **CTEs 1 & 2 - `articles` and `episodes`**  
     Pull from each staging model and rename columns into a shared schema that works for both content types. For columns that only apply to one content type, explicitly fill the other with a placeholder. Add a hardcoded column to identify which platform each row came from.
 
-    **CTE 3 — `combined`**  
+    **CTE 3 - `combined`**  
     Stack both CTEs into one dataset, keeping all rows from both.
 
-    **CTE 4 — `with_category`**  
+    **CTE 4 - `with_category`**  
     Join to the `category_mapping` model on two conditions. Keep all content rows regardless of whether a mapping exists. Use `coalesce` to return the mapped category where available, falling back to the raw value if not.
 
 ---
@@ -237,7 +237,7 @@ This builds the entire upstream lineage of your mart plus the mart itself, then 
 dbt build --select +content_performance
 ```
 
-Fix any failures before moving on. A test failure is information — read the error message, query the failing rows, understand why.
+Fix any failures before moving on. A test failure is information - read the error message, query the failing rows, understand why.
 
 ---
 

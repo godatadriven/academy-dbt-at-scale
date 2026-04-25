@@ -9,10 +9,10 @@ In this level you will:
 - **Explore and define sources** for the ads domain
 - **Build three staging models**
 - **Create a seed** for commission rate lookups
-- **Build an incremental fact table** — the high-volume spine of the revenue model
+- **Build an incremental fact table** - the high-volume spine of the revenue model
 - **Understand incremental trade-offs**
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt — the struggle is where the learning happens!
+Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
 
 ---
 
@@ -35,9 +35,9 @@ Answer:
 - What unit is `budget_cents` in? What about `spend_cents`?
 
 ??? tip "Hint: Grain analysis"
-    - `campaigns`: one row per campaign (SCD-friendly — budget can change)
-    - `impressions`: one row per `(campaign_id, content_id, impression_date)` — daily aggregate
-    - `spend`: one row per `(campaign_id, spend_date)` — can have multiple rows per campaign as days accumulate; rows can also be *updated* retroactively
+    - `campaigns`: one row per campaign (SCD-friendly - budget can change)
+    - `impressions`: one row per `(campaign_id, content_id, impression_date)` - daily aggregate
+    - `spend`: one row per `(campaign_id, spend_date)` - can have multiple rows per campaign as days accumulate; rows can also be *updated* retroactively
 
     All monetary values are in cents. You'll need a macro or inline calculation to convert.
 
@@ -140,7 +140,7 @@ Create `models/staging/ads/stg_ads__campaigns.sql`. Rename columns, convert budg
 
 - [ ] Step complete
 
-Create `models/staging/ads/stg_ads__spend.sql`. This is a transactional table — do not deduplicate; each row is a distinct daily spend record.
+Create `models/staging/ads/stg_ads__spend.sql`. This is a transactional table - do not deduplicate; each row is a distinct daily spend record.
 
 ??? tip "Hint"
     ```sql
@@ -168,7 +168,7 @@ Create `models/staging/ads/stg_ads__spend.sql`. This is a transactional table �
 
 - [ ] Step complete
 
-Create `models/staging/ads/stg_ads__impressions.sql`. Keep the daily grain — one row per `(campaign_id, content_id, impression_date)`.
+Create `models/staging/ads/stg_ads__impressions.sql`. Keep the daily grain - one row per `(campaign_id, content_id, impression_date)`.
 
 ??? tip "Hint"
     ```sql
@@ -201,7 +201,7 @@ Create `models/staging/ads/stg_ads__impressions.sql`. Keep the daily grain — o
 
 - [ ] Step complete
 
-Create `models/marts/revenue/fct_ad_impressions.sql`. This is the high-volume fact table — it must be incremental to be practical.
+Create `models/marts/revenue/fct_ad_impressions.sql`. This is the high-volume fact table - it must be incremental to be practical.
 
 Requirements:
 
@@ -270,7 +270,7 @@ dbt run --select fct_ad_impressions  -- second run: should process fewer rows
 Discuss with your group:
 
 1. Why use `merge` over `append` here?
-2. What happens if a spend row is retroactively corrected — does your incremental filter catch it?
+2. What happens if a spend row is retroactively corrected - does your incremental filter catch it?
 3. When would you use `--full-refresh`?
 
 ??? tip "Hint: Key considerations"
@@ -278,7 +278,7 @@ Discuss with your group:
     - **`merge`**: upserts on `unique_key`. Handles late-arriving or corrected data. Slightly slower.
     - **`insert_overwrite`**: deletes and rewrites a partition. Good for very large tables with clear partition boundaries (e.g., by month).
 
-    The `spend` table updates retroactively — a `merge` strategy on `spend_id` handles this. The impressions table is append-only in practice, but using `merge` is safer.
+    The `spend` table updates retroactively - a `merge` strategy on `spend_id` handles this. The impressions table is append-only in practice, but using `merge` is safer.
 
     Use `--full-refresh` when: schema changes, logic changes that affect historical data, or you suspect data drift.
 
@@ -297,7 +297,7 @@ Fix any source test failures. Then open the lineage graph and confirm all three 
 ---
 
 !!! success "Done?"
-    You've defined sources, built three staging models, loaded a commission seed, and built an incremental fact table. The hardest part — understanding *why* incremental works the way it does — is done.
+    You've defined sources, built three staging models, loaded a commission seed, and built an incremental fact table. The hardest part - understanding *why* incremental works the way it does - is done.
 
     Now head to [Level 2](../level2/checklist.md) to build the revenue mart, add snapshots, and write custom SQL assertions!
 
