@@ -41,29 +41,41 @@ seeds:
     # They land in the same schemas the source definitions point at,
     # so the project works without an external ingestion layer.
     raw_news__authors:
-      +schema: raw_news
+      +schema: news
+      +alias: authors
     raw_news__articles:
-      +schema: raw_news
+      +schema: news
+      +alias: articles
     raw_news__page_views:
-      +schema: raw_news
+      +schema: news
+      +alias: views
     raw_podcasts__shows:
-      +schema: raw_podcasts
+      +schema: podcasts
+      +alias: shows
     raw_podcasts__episodes:
-      +schema: raw_podcasts
+      +schema: podcasts
+      +alias: episodes
     raw_podcasts__listens:
-      +schema: raw_podcasts
+      +schema: podcasts
+      +alias: listens
     raw_streaming__content_catalog:
-      +schema: raw_streaming
+      +schema: streaming
+      +alias: content_catalog
     raw_streaming__subscriptions:
-      +schema: raw_streaming
+      +schema: streaming
+      +alias: subscriptions
     raw_streaming__watch_events:
-      +schema: raw_streaming
+      +schema: streaming
+      +alias: watch_events
     raw_ads__campaigns:
-      +schema: raw_ads
+      +schema: ads
+      +alias: campaigns
     raw_ads__impressions:
-      +schema: raw_ads
+      +schema: ads
+      +alias: impressions
     raw_ads__spend:
-      +schema: raw_ads
+      +schema: ads
+      +alias: spend
 
 snapshots:
   mediapulse:

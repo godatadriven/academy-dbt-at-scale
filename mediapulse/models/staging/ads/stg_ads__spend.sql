@@ -1,0 +1,1 @@
+select * from mediapulse.ads.spend
