@@ -1,10 +1,12 @@
-site_name: "dbt@scale — Workshop Guide"
-site_description: "2-day dbt workshop for MediaPulse — powered by Xebia & dbt Labs"
+site_name: "dbt@scale - Workshop Guide"
+site_description: "2-day dbt workshop for MediaPulse - powered by Xebia & dbt Labs"
 docs_dir: docs
 site_dir: site
 
 theme:
   name: material
+  logo: images/mediapulse_logo_small.svg
+  favicon: images/mediapulse_logo_small.svg
   palette:
     - scheme: default
       primary: deep-orange
@@ -45,6 +47,8 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
+  - pymdownx.tasklist:
+      clickable_checkbox: true
   - pymdownx.tabbed:
       alternate_style: true
   - attr_list
@@ -58,11 +62,11 @@ plugins:
   - search
   - encryptcontent:
       # Change this password before sharing with participants
-      global_password: "dbtscale2025"
+      global_password: "dbtscale2026"
       title_prefix: ""
       summary: "This content is password-protected."
       placeholder: "Enter workshop password"
-      decryption_failure_message: "Incorrect password — check with your Xebia facilitator."
+      decryption_failure_message: "Incorrect password - check with your Xebia facilitator."
       encryption_info_message: "Contact your facilitator for the workshop password."
       remember_keys: true
       session_storage: false
@@ -70,19 +74,24 @@ plugins:
 nav:
   - Home: index.md
   - Agenda: agenda.md
-  - MediaPulse Project: mediapulse/overview.md
-  - "Group 1 — Beginner":
+  - MediaPulse Project:
+      - Overview: mediapulse/overview.md
+      - Data ERD: mediapulse/data-erd.md
+  - "Group 1 - Intermediate":
       - Overview: group1/overview.md
       - Checklist: group1/checklist.md
-  - "Group 2 — Intermediate I":
+  - "Group 2 - Advanced I":
       - Overview: group2/overview.md
       - Checklist: group2/checklist.md
-  - "Group 3 — Intermediate II":
+  - "Group 3 - Advanced II":
       - Overview: group3/overview.md
       - Checklist: group3/checklist.md
-  - "Group 4 — Power Users":
+  - "Group 4 - Power Users":
       - Overview: group4/overview.md
       - Checklist: group4/checklist.md
+
+extra_javascript:
+  - javascripts/checklist.js
 
 extra:
   generator: false
