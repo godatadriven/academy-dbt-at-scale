@@ -1,5 +1,9 @@
 # Group 1 - Intermediate: StreamVault
 
+This page will give you context for your use case.
+
+Head to the [Checklist 1](level1/checklist.md) when you're ready to start.
+
 ## Testing, Sources, Jinja & Macros
 
 ## Your slice of MediaPulse
@@ -16,6 +20,7 @@ By the end of the hackathon you will be able to:
 - Configure **source freshness** checks
 - Write **generic tests** (`not_null`, `unique`, `accepted_values`, `relationships`)
 - Build clean **staging models** that rename, cast, and normalise raw columns
+- Utilize existing useful dbt packages to elevate your way of working with dbt
 - Write and use **Jinja macros** to eliminate repetition
 - Run `dbt test` and interpret failures
 
@@ -79,5 +84,3 @@ See the [MediaPulse overview](../mediapulse/overview.md) for full column details
 |---------|--------|
 | Day 1 AM (10:00–12:00) | Steps 1–6: sources, freshness, first staging model |
 | Day 1 PM (13:30–16:30) | Steps 7–13: remaining models, macros, full test suite |
-
-Head to the [Checklist](checklist.md) when you're ready to start.

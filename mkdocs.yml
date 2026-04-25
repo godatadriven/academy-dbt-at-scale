@@ -62,7 +62,7 @@ plugins:
   - search
   - encryptcontent:
       # Change this password before sharing with participants
-      global_password: "dbtscale2026"
+      # global_password: "dbtscale2026"
       title_prefix: ""
       summary: "This content is password-protected."
       placeholder: "Enter workshop password"
@@ -79,16 +79,24 @@ nav:
       - Data ERD: mediapulse/data-erd.md
   - "Group 1 - Intermediate":
       - Overview: group1/overview.md
-      - Checklist: group1/checklist.md
+      - Checklists:
+        - Level 1: group1/level1/checklist.md
+        - Level 2: group1/level2/checklist.md
   - "Group 2 - Advanced I":
       - Overview: group2/overview.md
-      - Checklist: group2/checklist.md
+      - Checklists:
+        - Level 1: group2/level1/checklist.md
+        - Level 2: group2/level2/checklist.md
   - "Group 3 - Advanced II":
       - Overview: group3/overview.md
-      - Checklist: group3/checklist.md
+      - Checklists:
+        - Level 1: group3/level1/checklist.md
+        - Level 2: group3/level2/checklist.md
   - "Group 4 - Power Users":
       - Overview: group4/overview.md
-      - Checklist: group4/checklist.md
+      - Checklists:
+        - Level 1: group4/level1/checklist.md
+        - Level 2: group4/level2/checklist.md
 
 extra_javascript:
   - javascripts/checklist.js
