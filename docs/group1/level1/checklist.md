@@ -270,7 +270,7 @@ You will use this to document all three staging models with (at a minimum) the f
 
     ```sql
         {{ codegen.generate_model_yaml(
-            model_names=["stg_streaming__watch_events", "stg_streaming__subscriptions", "stg_streaming__content_catalog"]
+            model_names=["model_name"]
         ) }}
     ```
 

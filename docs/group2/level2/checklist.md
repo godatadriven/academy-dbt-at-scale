@@ -44,21 +44,39 @@ dbt test --select stg_news__articles stg_news__authors stg_podcasts__episodes
 
 ??? tip "Hint: Relationships test example"
     ```yaml
-    - name: author_id
-      description: Foreign key to stg_news__authors.
+    - name: model_name
+      description: Foreign key to # other model name here
       data_tests:
         - not_null
         - relationships:
-            to: ref('stg_news__authors')
-            field: author_id
+            to: ref('model_name') # or source('source_name', 'table_name')
+            field: column_name
     ```
 
 ??? tip "Hint: accepted_values example"
+    Use the list structure in yaml - you have two options.
+
+    Option 1:
+
     ```yaml
-    - name: status
+    - name: column_name
       data_tests:
         - accepted_values:
-            values: ['draft', 'published', 'archived']
+            arguments:
+                values: ['val1', 'val2', 'val3', ...]
+    ```
+
+    Option 2:
+
+    ```yaml
+    - name: column_name
+      data_tests:
+        - accepted_values:
+            arguments:
+                - val1
+                - val2
+                - val3
+                ...
     ```
 
     Run first to observe the failure, then decide: update the accepted list, or normalise the values in the staging model?
@@ -78,30 +96,32 @@ Include at minimum:
 - A `not_null` test on `published_at`
 - An `accepted_values` test on `platform`
 
-??? tip "Hint"
-    ```yaml
-    version: 2
+??? tip "Hint: Use the codegen package to generate the model yaml"
 
-    models:
-      - name: content_performance
-        description: >
-          One row per piece of content (article or podcast episode) published by MediaPulse,
-          enriched with normalised category information.
-        columns:
-          - name: content_id
-            description: Unique identifier — article_id for news, episode_id for podcasts.
-            data_tests:
-              - not_null
-          - name: platform
-            description: Which MediaPulse platform produced this content.
-            data_tests:
-              - not_null
-              - accepted_values:
-                  values: ['news', 'podcasts']
-          - name: published_at
-            data_tests:
-              - not_null
+    [dbt-codegen](https://hub.getdbt.com/dbt-labs/codegen/latest/) generates model YAML so you don't have to write it by hand.
+
+    **1. Add the package to `packages.yml`** by adding the following two lines under `dbt_utils`:
+
+    ```yaml
+        - package: dbt-labs/codegen
+            version: 0.13.1
     ```
+
+    **2. Install it:** It should automatically install, however to manually do this you can run the following in the command line.
+
+    ```bash
+        dbt deps
+    ```
+
+    **3. Open a new (or existing) untitled file in dbt Cloud and paste the following, then click `</>` **Compile**:**
+
+    ```sql
+        {{ codegen.generate_model_yaml(
+            model_names=["model_name"]
+        ) }}
+    ```
+
+    Copy the compiled output into your `_streaming__models.yml` and fill in descriptions and any additional tests.
 
 ---
 
@@ -111,30 +131,26 @@ Include at minimum:
 
 Create `snapshots/snap_news__articles.sql`. This should track changes to article `title`, `category`, and `status` over time using the `timestamp` strategy.
 
+You can run this snapshot on the source data using the `source()` macro.
+
 ??? tip "Hint: Snapshot block"
-    ```sql
-    {% snapshot snap_news__articles %}
 
-    {{
-        config(
-            target_schema='snapshots',
-            unique_key='article_id',
-            strategy='timestamp',
-            updated_at='updated_at',
-        )
-    }}
+    Add the following yaml
 
-    select
-        article_id,
-        title,
-        author_id,
-        category,
-        status,
-        published_at,
-        updated_at
-    from {{ source('news', 'articles') }}
+    ```yaml
 
-    {% endsnapshot %}
+    snapshots:
+      - name: <string> # the name of your snapshot
+        +relation: source('my_source', 'my_table') | ref('my_model')
+        +database: <string>
+        +schema: <string>
+        +alias: <string>
+        +unique_key: <column_name_or_expression>
+        +strategy: timestamp | check # choose the most appropriate
+        +updated_at: <column_name> # only when timestamp strategy is selected
+        +check_cols: [<column_name>] | all # only when timestamp strategy is selected
+        +dbt_valid_to_current: <string> # default is NULL
+        +hard_deletes: 'ignore' | 'invalidate' | 'new_record' # default is ignore
     ```
 
     Run it:
@@ -151,13 +167,13 @@ Create `snapshots/snap_news__articles.sql`. This should track changes to article
 
 - [ ] Step complete
 
-To see the snapshot in action, update a row in the source (your facilitator can do this, or run an `UPDATE` if you have write access):
-
-```sql
-update news.articles
-set status = 'archived', updated_at = current_timestamp
-where article_id = (select article_id from news.articles limit 1);
+To see the snapshot in action, update the underlying source table name to point to the updated table:
+```yaml
+- name: articles
+  identifier: articles_updated # add this into the source yaml file
 ```
+
+!!! warning "Note: In practice the underlying source table would change, and you would not change any reference in dbt!!"
 
 Then run `dbt snapshot` again and query the snapshot table:
 
@@ -165,7 +181,6 @@ Then run `dbt snapshot` again and query the snapshot table:
 select * from snapshots.snap_news__articles
 where dbt_valid_to is not null
 order by dbt_updated_at desc
-limit 5;
 ```
 
 You should see the old row with a `dbt_valid_to` value and a new current row with `dbt_valid_to is null`.
@@ -179,7 +194,7 @@ You should see the old row with a `dbt_valid_to` value and a new current row wit
 
 ---
 
-## Step 6 - Run `dbt build --select +content_performance`
+## Step 6 - Run dbt build
 
 - [ ] Step complete
 
@@ -197,7 +212,9 @@ Fix any remaining failures. A test failure is information — read the error, qu
 
 - [ ] Step complete
 
-Create a snapshot for `podcasts.episodes` tracking changes to `title` and `duration_seconds`. Why might you want to track duration changes? (Episodes sometimes get re-edited and re-uploaded.)
+Create a snapshot for `podcasts.episodes` tracking changes to `title` and `duration_seconds`. Why might you want to track duration changes?
+
+You can follow the same steps as above, using the "updated" data for episodes.
 
 ---
 
