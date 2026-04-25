@@ -43,7 +43,29 @@ Does the staging model handle this? What happens downstream if it doesn't?
 
 Apply the deduplication fix. Keep only the most recent row per `article_id` (highest `updated_at`).
 
-??? tip "Hint: ROW_NUMBER() dedup pattern"
+??? tip "Hint 1: Useful SQL snippets"
+
+    Here are some useful code snippets you can adapt for your needs:
+
+    ```sql
+    select *,
+        row_number() over (
+            partition by /*column_name*/
+            order by /*column_name*/ desc
+        ) as row_num
+    from /*table_name*/
+    ```
+
+    ```sql
+    where row_num = 1
+    ```
+
+    After the fix, re-run the row count check against the staged model and confirm `article_id` is now unique.
+
+??? tip "Hint 2: ROW_NUMBER() dedup pattern"
+
+    Here are some useful code snippets you can adapt for your needs:
+
     ```sql
     with source as (
         select * from {{ source('news', 'articles') }}
@@ -60,14 +82,7 @@ Apply the deduplication fix. Keep only the most recent row per `article_id` (hig
 
     renamed as (
         select
-            article_id,
-            title           as article_title,
-            author_id,
-            category,
-            cast(published_at as timestamp)  as published_at,
-            cast(updated_at as timestamp)    as updated_at,
-            status,
-            word_count
+            -- column cleaning
         from deduped
         where row_num = 1
     )
@@ -83,24 +98,31 @@ Apply the deduplication fix. Keep only the most recent row per `article_id` (hig
 
 - [ ] Step complete
 
-Open `models/staging/podcasts/stg_podcasts__episodes.sql` and try to run it:
+Open `models/staging/podcasts/stg_podcasts__episodes.sql` and try to run it.
 
-```bash
-dbt run --select stg_podcasts__episodes
-```
-
-Read the error message. Then inspect the raw table:
+Read the error message and then inspect the raw table:
 
 ```sql
-select * from podcasts.episodes limit 5;
+select * from podcasts.episodes
 ```
 
-What column name does the raw table actually use?
+What is the issue?
 
 ??? tip "Hint: The bug"
-    The staging model references `episode_name` in its `SELECT` clause, but the raw table column is named `title`. This causes a compilation error.
+    The staging model references the wrong column name in its `SELECT` clause - can you spot which one? 
 
-    **The fix:** replace `episode_name` with `title` (and alias it appropriately, e.g. `title as episode_title`).
+    **The fix:** replace the name of the column in the staging file to fix it.
+
+Say you want to list all episodes ordered chronologically. 
+
+Query the staging model and order by the column `season_episode`. What issue do you see? Go back to the staging model to correct this.
+
+??? tip "Hint: What is happening?"
+    The bug: season_episode is a string like '1-3', '2-3', '3-3' where the episode is the first value and the season the second. This is causing two issues:
+    - When ordering the primary order is from the episode title. Meaning all episode 1s will be together from all seasons, then episode 2s etc.
+    — Even if fixed, since this is a string, '3-10' will come before '3-9' because '1' < '9' as characters. Any downstream model ordering by `season_episode` will silently return episodes in the wrong order.
+
+    It won't error, the values look completely reasonable at a glance, and the second problem only becomes visible once you have `10+` episodes in a season. Does that feel like the right difficulty level?
 
 ---
 
@@ -108,32 +130,20 @@ What column name does the raw table actually use?
 
 - [ ] Step complete
 
-Apply the column name fix and re-run:
+Apply the fixes:
+- Correct the name of the column
+- Split out the season_episode to be two columns. Make sure to select the right number!
+    - season
+    - episode
 
 ```bash
 dbt run --select stg_podcasts__episodes
 dbt test --select stg_podcasts__episodes
 ```
 
-??? tip "Hint: Full fixed model"
+??? tip "Hint: Syntax needed"
     ```sql
-    with source as (
-        select * from {{ source('podcasts', 'episodes') }}
-    ),
-
-    renamed as (
-        select
-            episode_id,
-            show_id,
-            title                              as episode_title,
-            cast(published_at as timestamp)    as published_at,
-            duration_seconds,
-            season,
-            episode_number
-        from source
-    )
-
-    select * from renamed
+    split_part(column_name, '-', 1)::int as new_column_name,
     ```
 
 ---
@@ -164,13 +174,10 @@ Place this file at `seeds/category_mapping.csv`.
     ```yaml
     seeds:
       mediapulse:
-        +schema: seeds
+        +schema: schema_name # choose where the seeds should land in the warehouse
         category_mapping:
           +column_types:
-            category: varchar(100)
-            platform: varchar(50)
-            normalised_category: varchar(100)
-            category_group: varchar(100)
+            column_name: # add a data type, eg varchar(50)
     ```
 
     Then load it:
@@ -193,7 +200,7 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 4. Join the result to `category_mapping` (your seed) to get `normalised_category` and `category_group`
 
 !!! warning "Check the existing stub first"
-    Open `models/marts/content/content_performance.sql`. The existing stub attempts a `JOIN` between articles and episodes — this is wrong. Understand why, then rewrite it.
+    Open `models/marts/content/content_performance.sql`. The existing stub uses a `JOIN` between articles and episodes - why is this the incorrect approach?
 
 ??? tip "Hint: Why the stub is wrong"
     The stub does:
@@ -206,51 +213,17 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 
     This produces a cross-join of every article in a category with every episode in the same category — exactly the row explosion the dedup fix was meant to prevent elsewhere. Articles and episodes are separate content items; they should be stacked, not joined.
 
-??? tip "Hint: UNION ALL approach"
-    ```sql
-    with articles as (
-        select
-            article_id      as content_id,
-            article_title   as content_title,
-            published_at,
-            category,
-            'news'          as platform,
-            word_count      as content_length_units,
-            null            as duration_seconds
-        from {{ ref('stg_news__articles') }}
-    ),
+??? tip "Hint: The better approach"
+    **What you're building:** A single unified content table that combines articles and podcast episodes, then enriches it with normalised category labels.
 
-    episodes as (
-        select
-            episode_id      as content_id,
-            episode_title   as content_title,
-            published_at,
-            null            as category,
-            'podcasts'      as platform,
-            null            as content_length_units,
-            duration_seconds
-        from {{ ref('stg_podcasts__episodes') }}
-    ),
+    **CTEs 1 & 2 — `articles` and `episodes`**  
+    Pull from each staging model and rename columns into a shared schema that works for both content types. For columns that only apply to one content type, explicitly fill the other with a placeholder. Add a hardcoded column to identify which platform each row came from.
 
-    combined as (
-        select * from articles
-        union all
-        select * from episodes
-    ),
+    **CTE 3 — `combined`**  
+    Stack both CTEs into one dataset, keeping all rows from both.
 
-    with_category as (
-        select
-            c.*,
-            coalesce(cm.normalised_category, lower(c.category)) as normalised_category,
-            cm.category_group
-        from combined c
-        left join {{ ref('category_mapping') }} cm
-            on c.category = cm.category
-            and c.platform = cm.platform
-    )
-
-    select * from with_category
-    ```
+    **CTE 4 — `with_category`**  
+    Join to the `category_mapping` model on two conditions. Keep all content rows regardless of whether a mapping exists. Use `coalesce` to return the mapped category where available, falling back to the raw value if not.
 
 ---
 
