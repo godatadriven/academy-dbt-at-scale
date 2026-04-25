@@ -1,5 +1,5 @@
 -- MediaPulse revenue by content mart.
--- Intended to show how ad revenue from AdConnect maps to individual content items
+-- Show how ad revenue from AdConnect maps to individual content items
 -- across the MediaPulse portfolio.
 --
 -- Status: work in progress — check the aggregation grain matches what consumers expect.
@@ -23,8 +23,8 @@ campaign_revenue as (
         c.campaign_name,
         c.campaign_type,
         c.advertiser_id,
-        sum(s.spend_dollars)          as total_spend_dollars,
-        sum(s.net_spend_dollars)      as total_net_spend_dollars,
+        sum(s.spend_cents)          as total_spend_dollars,
+        sum(s.spend_cents - platform_fee_cents)      as total_net_spend_dollars,
         min(s.spend_date)             as first_spend_date,
         max(s.spend_date)             as last_spend_date
 

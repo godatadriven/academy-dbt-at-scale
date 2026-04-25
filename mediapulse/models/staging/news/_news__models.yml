@@ -32,7 +32,8 @@ models:
         description: Current article lifecycle status.
         tests:
           - accepted_values:
-              values: ['draft', 'published', 'archived']
+              arguments:
+                values: ['draft', 'published', 'archived']
       - name: word_count
         description: Number of words in the article body.
 

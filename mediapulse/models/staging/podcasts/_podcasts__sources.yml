@@ -4,7 +4,7 @@ sources:
   - name: podcasts
     # database: "{{ var('raw_database') }}"
     # Uncomment if your raw data lives in a separate database.
-    schema: raw_podcasts
+    schema: podcasts
     description: >
       Raw data from PodcastHub, MediaPulse's podcast network.
 
@@ -44,8 +44,9 @@ sources:
             tests:
               - not_null
               - relationships:
-                  to: source('podcasts', 'shows')
-                  field: show_id
+                  arguments: 
+                    to: source('podcasts', 'shows')
+                    field: show_id
           - name: title
             description: Episode title.
           - name: published_at
