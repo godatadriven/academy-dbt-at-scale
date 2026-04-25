@@ -9,11 +9,12 @@ renamed as (
     select 
         episode_id,
         show_id,
-        title                         as episode_title,
-        cast(published_at as timestamp)      as published_at,
+        episode_name as episode_title,
+        cast(published_at as timestamp) as published_at,
         duration_seconds,
-        season,
-        episode_number
+        cast(episode_number as varchar)
+            || '-' ||
+        cast(season as varchar) as season_episode
 
     from source
 
