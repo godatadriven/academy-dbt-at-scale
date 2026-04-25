@@ -160,3 +160,4 @@ If you need to deploy to a new Netlify site, connect this repo and use:
 | dbt project | dbt Core (via dbt Cloud) |
 | Warehouse | Snowflake |
 | Packages used | `dbt_utils`, `codegen`, `dbt_project_evaluator`, `dbt_expectations` |
+

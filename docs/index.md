@@ -42,3 +42,4 @@ You'll work in one of four groups, each with a dedicated slice of the MediaPulse
 - The bugs are intentional - finding them is part of the exercise.
 - There is no single right answer for design decisions. Be ready to defend your choices.
 - Ask facilitators for a nudge, not for the answer.
+

@@ -243,3 +243,4 @@ At 16:00 Day 2 you have 10–15 minutes to present. Structure:
 
 !!! success "Done?"
     You've audited, hardened, and documented the MediaPulse platform to production-ready standards. The other groups built features; you built the safety net. Neither is more important — the platform needs both.
+

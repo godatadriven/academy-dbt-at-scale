@@ -84,3 +84,4 @@ See the [MediaPulse overview](../mediapulse/overview.md) for full column details
 |---------|--------|
 | Day 1 AM (10:00–12:00) | Steps 1–6: sources, freshness, first staging model |
 | Day 1 PM (13:30–16:30) | Steps 7–13: remaining models, macros, full test suite |
+

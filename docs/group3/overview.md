@@ -97,3 +97,4 @@ See the [MediaPulse overview](../mediapulse/overview.md) for full column details
 | Day 1 PM (13:30–16:30) | Steps 7–14: incremental fact, mart, snapshot, singular tests |
 
 Head to the [Checklist](level1/checklist.md) when you're ready to start.
+

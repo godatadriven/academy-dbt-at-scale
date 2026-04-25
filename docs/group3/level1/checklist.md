@@ -300,3 +300,4 @@ Fix any source test failures. Then open the lineage graph and confirm all three 
     You've defined sources, built three staging models, loaded a commission seed, and built an incremental fact table. The hardest part — understanding *why* incremental works the way it does — is done.
 
     Now head to [Level 2](../level2/checklist.md) to build the revenue mart, add snapshots, and write custom SQL assertions!
+

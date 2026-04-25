@@ -257,3 +257,4 @@ Run `dbt build --full-refresh --select fct_ad_impressions` followed by a second 
     You've built the revenue spine of the MediaPulse data platform — a correct-grain mart, a campaign budget snapshot, and custom SQL assertions that verify revenue integrity.
 
     Group 4 will use `dbt-expectations` to add statistical guardrails around these models. Share your mart YAML with them so they can build on it.
+

@@ -245,3 +245,4 @@ Fix any failures before moving on. A test failure is information — read the er
     You've fixed two real production bugs and built a cross-domain content mart that unifies news and podcast data. Nice work.
 
     Now head to [Level 2](../level2/checklist.md) to add snapshots, improve test coverage, and document your models!
+

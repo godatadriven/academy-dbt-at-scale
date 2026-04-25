@@ -181,3 +181,4 @@ Write a short paragraph (3–5 sentences) describing your finding. You'll use th
     You've installed the audit toolchain, surfaced violations, triaged them by risk, and fixed the highest-priority issues. The project is materially safer than when you started.
 
     Now head to [Level 2](../level2/checklist.md) to add statistical guardrails, model contracts, design the CI/CD pipeline, and prepare your presentation!
+

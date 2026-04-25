@@ -81,3 +81,4 @@ See the [MediaPulse overview](../mediapulse/overview.md) for the raw column deta
 ## Begin 
 
 Head to the [Checklist](level1/checklist.md) when you're ready to start.
+

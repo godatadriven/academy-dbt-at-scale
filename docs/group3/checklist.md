@@ -483,3 +483,4 @@ having count(*) > 1
 
 !!! success "Done?"
     You've built the revenue spine of the MediaPulse data platform. Group 4 will use dbt-expectations to add statistical guardrails around these models - share your mart YAML with them so they can build on it.
+

@@ -129,3 +129,4 @@ dbt build         # see what breaks (expected at start!)
 ```
 
 Your facilitator will provide connection credentials and the dbt Cloud project URL before the first breakout session.
+

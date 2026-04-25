@@ -37,3 +37,4 @@ Your group will correspond to the invite you received for this event. If you are
 
 !!! info "Discover what you're group is going!"
     Use the top navigation tabs to jump directly to your group's **Overview** and **Checklist** pages.
+

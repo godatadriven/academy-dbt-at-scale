@@ -260,3 +260,4 @@ This runs models and tests together in dependency order. Then open the DAG in db
 
 !!! success "Done?"
     You've added relationship integrity checks, normalized messy source data with macros, and written your first custom SQL assertions. These are the building blocks of a production-grade test suite - nicely done.
+
