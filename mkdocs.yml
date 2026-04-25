@@ -1,4 +1,4 @@
-site_name: "dbt@scale - Workshop Guide"
+site_name: "dbt@scale Workshop"
 site_description: "2-day dbt workshop for MediaPulse - powered by Xebia & dbt Labs"
 docs_dir: docs
 site_dir: site
@@ -82,25 +82,25 @@ nav:
       - Checklists:
         - Level 1: group1/level1/checklist.md
         - Level 2: group1/level2/checklist.md
-        - Level 3: group1/level3/checklist.md
+        - Level 3 - Bonus: group1/level3/checklist.md
   - "Group 2 - Advanced I":
       - Overview: group2/overview.md
       - Checklists:
         - Level 1: group2/level1/checklist.md
         - Level 2: group2/level2/checklist.md
-        - Level 3: group2/level3/checklist.md
+        - Level 3 - Bonus: group2/level3/checklist.md
   - "Group 3 - Advanced II":
       - Overview: group3/overview.md
       - Checklists:
         - Level 1: group3/level1/checklist.md
         - Level 2: group3/level2/checklist.md
-        - Level 3: group3/level3/checklist.md
+        - Level 3 - Bonus: group3/level3/checklist.md
   - "Group 4 - Power Users":
       - Overview: group4/overview.md
       - Checklists:
         - Level 1: group4/level1/checklist.md
         - Level 2: group4/level2/checklist.md
-        - Level 3: group4/level3/checklist.md
+        - Level 3 - Bonus: group4/level3/checklist.md
 
 extra_javascript:
   - javascripts/checklist.js
