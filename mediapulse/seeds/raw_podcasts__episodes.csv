@@ -1,54 +1,54 @@
-EPISODE_ID,SHOW_ID,TITLE,PUBLISHED_AT,DURATION_SECONDS,SEASON,EPISODE_NUMBER
-ep_001,show_001,Election Forecast 2024,2024-01-08 07:00:00,2587,3,1
-ep_002,show_002,Large Language Models Explained,2024-01-09 08:00:00,3120,2,1
-ep_003,show_003,Transfer Window Special,2024-01-10 06:30:00,2105,5,1
-ep_004,show_001,Rate Decisions and You,2024-01-15 07:00:00,2224,3,2
-ep_005,show_004,Streaming Wars Update,2024-01-16 09:00:00,1983,2,2
-ep_006,show_002,Prompt Engineering Deep Dive,2024-01-17 08:00:00,3600,2,2
-ep_007,show_005,COP30 Preview,2024-01-18 07:30:00,2700,1,3
-ep_008,show_003,Championship Analysis,2024-01-19 06:30:00,1862,5,2
-ep_009,show_001,Trade Policy Unpacked,2024-01-22 07:00:00,2466,3,3
-ep_010,show_006,AI in the Newsroom,2024-01-23 08:00:00,4207,1,1
-ep_011,show_004,Award Season Predictions,2024-01-24 09:00:00,2341,2,3
-ep_012,show_007,Pre-Match Build-Up,2024-01-25 06:30:00,1620,3,1
-ep_013,show_002,Open Source AI: What It Means,2024-01-26 08:00:00,3361,2,3
-ep_014,show_005,The Carbon Budget Explained,2024-01-29 07:30:00,2881,1,4
-ep_015,show_003,Six Nations Preview,2024-01-30 06:30:00,2042,5,3
-ep_016,show_008,Quantum Computing Breakthroughs,2024-01-30 09:00:00,3786,1,1
-ep_017,show_004,Box Office Breakdown,2024-01-31 09:00:00,2160,2,4
-ep_018,show_001,Budget Season Explained,2024-02-05 07:00:00,2520,3,4
-ep_019,show_006,Machine Learning in Media,2024-02-06 08:00:00,4563,1,2
-ep_020,show_007,Six Nations Match Preview,2024-02-07 06:30:00,1800,3,2
-ep_021,show_009,Best Films of January,2024-02-08 09:00:00,2702,1,1
-ep_022,show_010,The Housing Crisis Debate,2024-02-08 07:00:00,3240,1,1
-ep_023,show_002,Cybersecurity in 2024,2024-02-09 08:00:00,3001,2,4
-ep_024,show_008,Wearables and Health Data,2024-02-12 09:00:00,2940,1,2
-ep_025,show_005,Arctic Ice Loss Special,2024-02-12 07:30:00,3124,1,5
-ep_026,show_003,Champions League Preview,2024-02-13 06:30:00,2288,5,4
-ep_027,show_004,Streaming Originals Deep Dive,2024-02-14 09:00:00,2523,2,5
-ep_028,show_010,Trade Policy Roundtable,2024-02-15 07:00:00,3660,1,2
-ep_029,show_011,How Interest Rates Work,2024-02-15 08:00:00,2820,1,1
-ep_030,show_006,Robotics in the Workplace,2024-02-19 08:00:00,4024,1,3
-ep_031,show_007,Champions League Match Analysis,2024-02-21 06:30:00,2103,3,3
-ep_032,show_009,Award Season Wrap-Up,2024-02-22 09:00:00,2460,1,2
-ep_033,show_012,The Offside Rule: A History,2024-02-22 07:00:00,1981,1,1
-ep_034,show_008,AI Ethics and Regulation,2024-02-26 09:00:00,3300,1,3
-ep_035,show_001,Election Year: Mid-Point Check,2024-02-26 07:00:00,2761,3,5
-ep_036,show_011,Investing in Volatile Markets,2024-02-27 08:00:00,3181,1,2
-ep_037,show_005,Renewable Energy Progress Report,2024-02-29 07:30:00,2645,1,6
-ep_038,show_006,AI and Journalism: One Year On,2024-03-04 08:00:00,3842,2,1
-ep_039,show_006,The Algorithm Beat,2024-03-11 08:00:00,4101,2,2
-ep_040,show_006,Deepfakes in the Newsroom,2024-03-18 08:00:00,3956,2,3
-ep_041,show_008,Quantum Cryptography Explained,2024-03-05 09:00:00,3612,2,1
-ep_042,show_008,The Next Generation of Chips,2024-03-12 09:00:00,3490,2,2
-ep_043,show_008,Brain-Computer Interfaces,2024-03-19 09:00:00,4020,2,3
-ep_044,show_009,Spring Cinema Preview,2024-03-07 09:00:00,2534,2,1
-ep_045,show_009,Best Documentaries This Month,2024-03-14 09:00:00,2788,2,2
-ep_046,show_010,Immigration and the Economy,2024-03-06 07:00:00,3540,2,1
-ep_047,show_010,Healthcare Funding Crisis,2024-03-13 07:00:00,3120,2,2
-ep_048,show_010,The Cost of Living: Six Months On,2024-03-20 07:00:00,3900,2,3
-ep_049,show_011,Pension Reforms Explained,2024-03-08 08:00:00,2960,2,1
-ep_050,show_011,The Savings Gap,2024-03-15 08:00:00,3210,2,2
-ep_051,show_012,VAR: Two Years In,2024-03-09 07:00:00,2140,2,1
-ep_052,show_012,Tactics That Changed the Game,2024-03-16 07:00:00,2376,2,2
-ep_053,show_012,The Business of Football Transfers,2024-03-23 07:00:00,2509,2,3
+EPISODE_ID,SHOW_ID,PUBLISHED_AT,DURATION_SECONDS,SEASON_EPISODE
+ep_001,show_001,Election Forecast 2024,2587,1-3
+ep_002,show_002,Large Language Models Explained,3120,1-2
+ep_003,show_003,Transfer Window Special,2105,1-5
+ep_004,show_001,Rate Decisions and You,2224,2-3
+ep_005,show_004,Streaming Wars Update,1983,2-2
+ep_006,show_002,Prompt Engineering Deep Dive,3600,2-2
+ep_007,show_005,COP30 Preview,2700,3-1
+ep_008,show_003,Championship Analysis,1862,2-5
+ep_009,show_001,Trade Policy Unpacked,2466,3-3
+ep_010,show_006,AI in the Newsroom,4207,1-1
+ep_011,show_004,Award Season Predictions,2341,3-2
+ep_012,show_007,Pre-Match Build-Up,1620,1-3
+ep_013,show_002,Open Source AI: What It Means,3361,3-2
+ep_014,show_005,The Carbon Budget Explained,2881,4-1
+ep_015,show_003,Six Nations Preview,2042,3-5
+ep_016,show_008,Quantum Computing Breakthroughs,3786,1-1
+ep_017,show_004,Box Office Breakdown,2160,4-2
+ep_018,show_001,Budget Season Explained,2520,4-3
+ep_019,show_006,Machine Learning in Media,4563,2-1
+ep_020,show_007,Six Nations Match Preview,1800,2-3
+ep_021,show_009,Best Films of January,2702,1-1
+ep_022,show_010,The Housing Crisis Debate,3240,1-1
+ep_023,show_002,Cybersecurity in 2024,3001,4-2
+ep_024,show_008,Wearables and Health Data,2940,2-1
+ep_025,show_005,Arctic Ice Loss Special,3124,5-1
+ep_026,show_003,Champions League Preview,2288,4-5
+ep_027,show_004,Streaming Originals Deep Dive,2523,5-2
+ep_028,show_010,Trade Policy Roundtable,3660,2-1
+ep_029,show_011,How Interest Rates Work,2820,1-1
+ep_030,show_006,Robotics in the Workplace,4024,3-1
+ep_031,show_007,Champions League Match Analysis,2103,3-3
+ep_032,show_009,Award Season Wrap-Up,2460,2-1
+ep_033,show_012,The Offside Rule: A History,1981,1-1
+ep_034,show_008,AI Ethics and Regulation,3300,3-1
+ep_035,show_001,Election Year: Mid-Point Check,2761,5-3
+ep_036,show_011,Investing in Volatile Markets,3181,2-1
+ep_037,show_005,Renewable Energy Progress Report,2645,6-1
+ep_038,show_006,AI and Journalism: One Year On,3842,1-2
+ep_039,show_006,The Algorithm Beat,4101,2-2
+ep_040,show_006,Deepfakes in the Newsroom,3956,3-2
+ep_041,show_008,Quantum Cryptography Explained,3612,1-2
+ep_042,show_008,The Next Generation of Chips,3490,2-2
+ep_043,show_008,Brain-Computer Interfaces,4020,3-2
+ep_044,show_009,Spring Cinema Preview,2534,1-2
+ep_045,show_009,Best Documentaries This Month,2788,2-2
+ep_046,show_010,Immigration and the Economy,3540,1-2
+ep_047,show_010,Healthcare Funding Crisis,3120,2-2
+ep_048,show_010,The Cost of Living: Six Months On,3900,3-2
+ep_049,show_011,Pension Reforms Explained,2960,1-2
+ep_050,show_011,The Savings Gap,3210,2-2
+ep_051,show_012,VAR: Two Years In,2140,1-2
+ep_052,show_012,Tactics That Changed the Game,2376,2-2
+ep_053,show_012,The Business of Football Transfers,2509,3-2
