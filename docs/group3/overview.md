@@ -4,9 +4,6 @@
 
 You own the **revenue** story - how much money MediaPulse makes through AdConnect, and how that revenue maps back to the content it runs against. The ad platform generates huge volumes of impression data, making it a perfect candidate for incremental loading. You'll also track how advertiser budgets shift over time and write custom tests to validate your revenue numbers.
 
-!!! warning "Group size note"
-    This group has 11–13 participants and may be split into two sub-groups based on a pre-assessment. Your facilitator will confirm before the first breakout.
-
 ---
 
 ## Learning objectives
