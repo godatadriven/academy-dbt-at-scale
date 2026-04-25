@@ -1,10 +1,10 @@
-# Group 4 — Power Users: Production Hardening
+# Group 4 - Power Users: Production Hardening
 
 ## Your mission
 
 You're the platform team. The other groups are building features; you're making sure the whole MediaPulse project is ready to run in production. That means auditing quality, enforcing standards, hardening tests, and designing a CI/CD pipeline that catches problems before they reach the warehouse.
 
-This is a **2-day open hackathon**. There is no prescribed order beyond the checklist steps — prioritise based on what you find.
+This is a **2-day open hackathon**. There is no prescribed order beyond the checklist steps - prioritise based on what you find.
 
 ---
 
@@ -40,7 +40,7 @@ dbt deps
 dbt build --select package:dbt_project_evaluator
 ```
 
-Results land in models prefixed `fct_` and `rpt_` — query them to see violations.
+Results land in models prefixed `fct_` and `rpt_` - query them to see violations.
 
 ### dbt-codegen
 
@@ -48,7 +48,7 @@ Generates boilerplate YAML so you don't have to write it by hand.
 
 ```bash
 # Generate a source definition
-dbt run-operation generate_source --args '{"schema_name": "raw_streaming"}'
+dbt run-operation generate_source --args '{"schema_name": "streaming"}'
 
 # Generate model YAML (columns + descriptions stub)
 dbt run-operation generate_model_yaml --args '{"model_names": ["stg_streaming__watch_events"]}'
@@ -104,7 +104,7 @@ The goal is to catch problems as early as possible:
 | **Nightly full-refresh** | Cron 02:00 | `+` (all) | Full rebuild, catch schema drift |
 | **PR validation** | PR merge | `tag:critical` | Run critical-path models + tests before merge |
 
-The slim CI job requires a **deferred environment** — it compares your changed models against the production manifest (`manifest.json`) so it knows what "state:modified" means.
+The slim CI job requires a **deferred environment** - it compares your changed models against the production manifest (`manifest.json`) so it knows what "state:modified" means.
 
 ---
 

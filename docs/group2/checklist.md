@@ -1,16 +1,18 @@
-# Group 2 — Checklist
+# Group 2 - Checklist
 
-Work through the steps in order. The first five steps are about reading critically and fixing what's broken — resist the urge to skip straight to building new things.
+Work through the steps in order. The first five steps are about reading critically and fixing what's broken - resist the urge to skip straight to building new things.
 
 ---
 
-## Step 1 — Audit `stg_news__articles.sql`
+## Step 1 - Audit `stg_news__articles.sql`
+
+- [ ] Step complete
 
 Open `models/staging/news/stg_news__articles.sql` and read it carefully. Then query the raw source:
 
 ```sql
 select article_id, count(*) as cnt
-from raw_news.articles
+from news.articles
 group by 1
 having count(*) > 1
 order by 2 desc
@@ -20,13 +22,15 @@ limit 20;
 Does the staging model handle this? What happens downstream if it doesn't?
 
 ??? tip "Hint: What to look for"
-    The raw `articles` table contains duplicate `article_id` values — articles get republished with a new `updated_at` timestamp. The current staging model selects `*` without deduplication. This means any downstream model joining on `article_id` will fan out and produce inflated row counts.
+    The raw `articles` table contains duplicate `article_id` values - articles get republished with a new `updated_at` timestamp. The current staging model selects `*` without deduplication. This means any downstream model joining on `article_id` will fan out and produce inflated row counts.
 
     **The fix:** use a `ROW_NUMBER()` window function to keep only the most recent version of each article.
 
 ---
 
-## Step 2 — Fix `stg_news__articles.sql`
+## Step 2 - Fix `stg_news__articles.sql`
+
+- [ ] Step complete
 
 Apply the deduplication fix. Keep only the most recent row per `article_id` (highest `updated_at`).
 
@@ -66,7 +70,9 @@ Apply the deduplication fix. Keep only the most recent row per `article_id` (hig
 
 ---
 
-## Step 3 — Audit `stg_podcasts__episodes.sql`
+## Step 3 - Audit `stg_podcasts__episodes.sql`
+
+- [ ] Step complete
 
 Open `models/staging/podcasts/stg_podcasts__episodes.sql` and try to run it:
 
@@ -77,7 +83,7 @@ dbt run --select stg_podcasts__episodes
 Read the error message. Then inspect the raw table:
 
 ```sql
-select * from raw_podcasts.episodes limit 5;
+select * from podcasts.episodes limit 5;
 ```
 
 What column name does the raw table actually use?
@@ -89,7 +95,9 @@ What column name does the raw table actually use?
 
 ---
 
-## Step 4 — Fix `stg_podcasts__episodes.sql`
+## Step 4 - Fix `stg_podcasts__episodes.sql`
+
+- [ ] Step complete
 
 Apply the column name fix and re-run:
 
@@ -121,7 +129,9 @@ dbt test --select stg_podcasts__episodes
 
 ---
 
-## Step 5 — Review existing tests across news & podcasts
+## Step 5 - Review existing tests across news & podcasts
+
+- [ ] Step complete
 
 Look at `_news__models.yml` and `_podcasts__models.yml`. Are the tests comprehensive? What's missing?
 
@@ -135,12 +145,14 @@ Make a note of at least two gaps you'd like to fill. You'll come back to add the
 
 ---
 
-## Step 6 — Create `seeds/category_mapping.csv`
+## Step 6 - Create `seeds/category_mapping.csv`
+
+- [ ] Step complete
 
 Articles and podcast episodes both have a `category` column, but the values don't match (news uses `politics`, podcasts use `Politics`). Create a seed that maps raw category values to a normalised label and a display-friendly group.
 
 ```csv
-raw_category,platform,normalised_category,category_group
+category,platform,normalised_category,category_group
 politics,news,politics,news_and_current_affairs
 Politics,podcasts,politics,news_and_current_affairs
 technology,news,technology,tech_and_science
@@ -162,7 +174,7 @@ Place this file at `seeds/category_mapping.csv`.
         +schema: seeds
         category_mapping:
           +column_types:
-            raw_category: varchar(100)
+            category: varchar(100)
             platform: varchar(50)
             normalised_category: varchar(100)
             category_group: varchar(100)
@@ -176,7 +188,9 @@ Place this file at `seeds/category_mapping.csv`.
 
 ---
 
-## Step 7 — Build `content_performance.sql`
+## Step 7 - Build `content_performance.sql`
+
+- [ ] Step complete
 
 Create `models/marts/content/content_performance.sql`. This mart should:
 
@@ -186,7 +200,7 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 4. Join the result to `category_mapping` (your seed) to get `normalised_category` and `category_group`
 
 !!! warning "Check the existing stub first"
-    Open `models/marts/content/content_performance.sql`. The existing stub attempts a `JOIN` between articles and episodes — this is wrong. Understand why, then rewrite it.
+    Open `models/marts/content/content_performance.sql`. The existing stub attempts a `JOIN` between articles and episodes - this is wrong. Understand why, then rewrite it.
 
 ??? tip "Hint: Why the stub is wrong"
     The stub does:
@@ -197,7 +211,7 @@ Create `models/marts/content/content_performance.sql`. This mart should:
     inner join stg_podcasts__episodes e on a.category = e.category
     ```
 
-    This produces a cross-join of every article in a category with every episode in the same category — exactly the row explosion the dedup fix was meant to prevent elsewhere. Articles and episodes are separate content items; they should be stacked, not joined.
+    This produces a cross-join of every article in a category with every episode in the same category - exactly the row explosion the dedup fix was meant to prevent elsewhere. Articles and episodes are separate content items; they should be stacked, not joined.
 
 ??? tip "Hint: UNION ALL approach"
     ```sql
@@ -206,7 +220,7 @@ Create `models/marts/content/content_performance.sql`. This mart should:
             article_id      as content_id,
             article_title   as content_title,
             published_at,
-            category        as raw_category,
+            category        as category,
             'news'          as platform,
             word_count      as content_length_units,  -- words for articles
             null            as duration_seconds
@@ -218,8 +232,8 @@ Create `models/marts/content/content_performance.sql`. This mart should:
             episode_id      as content_id,
             episode_title   as content_title,
             published_at,
-            -- note: podcasts category comes from shows join — simplified here
-            null            as raw_category,
+            -- note: podcasts category comes from shows join - simplified here
+            null            as category,
             'podcasts'      as platform,
             null            as content_length_units,
             duration_seconds
@@ -235,11 +249,11 @@ Create `models/marts/content/content_performance.sql`. This mart should:
     with_category as (
         select
             c.*,
-            coalesce(cm.normalised_category, lower(c.raw_category)) as normalised_category,
+            coalesce(cm.normalised_category, lower(c.category)) as normalised_category,
             cm.category_group
         from combined c
         left join {{ ref('category_mapping') }} cm
-            on c.raw_category = cm.raw_category
+            on c.category = cm.category
             and c.platform    = cm.platform
     )
 
@@ -248,7 +262,9 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 
 ---
 
-## Step 8 — Create a snapshot for article metadata
+## Step 8 - Create a snapshot for article metadata
+
+- [ ] Step complete
 
 Create `snapshots/snap_news__articles.sql`. This should track changes to article `title`, `category`, and `status` over time using the `timestamp` strategy.
 
@@ -288,14 +304,16 @@ Create `snapshots/snap_news__articles.sql`. This should track changes to article
 
 ---
 
-## Step 9 — Run the snapshot a second time (simulate a change)
+## Step 9 - Run the snapshot a second time (simulate a change)
+
+- [ ] Step complete
 
 To see the snapshot in action, update a row in the source (your facilitator can do this, or you can run a `UPDATE` statement if you have write access to the raw schema):
 
 ```sql
-update raw_news.articles
+update news.articles
 set status = 'archived', updated_at = current_timestamp
-where article_id = (select article_id from raw_news.articles limit 1);
+where article_id = (select article_id from news.articles limit 1);
 ```
 
 Then run `dbt snapshot` again and query the snapshot table:
@@ -318,7 +336,9 @@ You should see the old row with a `dbt_valid_to` value and a new current row wit
 
 ---
 
-## Step 10 — Add a YAML file for the mart
+## Step 10 - Add a YAML file for the mart
+
+- [ ] Step complete
 
 Create `models/marts/content/_content__models.yml`. Document `content_performance` with descriptions and tests.
 
@@ -340,7 +360,7 @@ Include at minimum:
           enriched with normalised category information.
         columns:
           - name: content_id
-            description: Unique identifier — article_id for news, episode_id for podcasts.
+            description: Unique identifier - article_id for news, episode_id for podcasts.
             tests:
               - not_null
           - name: platform
@@ -356,7 +376,9 @@ Include at minimum:
 
 ---
 
-## Step 11 — Fill the test gaps you noted in Step 5
+## Step 11 - Fill the test gaps you noted in Step 5
+
+- [ ] Step complete
 
 Go back to `_news__models.yml` and `_podcasts__models.yml` and add the missing tests you identified earlier.
 
@@ -373,7 +395,9 @@ Go back to `_news__models.yml` and `_podcasts__models.yml` and add the missing t
 
 ---
 
-## Step 12 — Run `dbt build --select +content_performance`
+## Step 12 - Run `dbt build --select +content_performance`
+
+- [ ] Step complete
 
 This builds the entire upstream lineage of your mart plus the mart itself, then runs all tests.
 
@@ -385,9 +409,11 @@ Fix any failures before moving on.
 
 ---
 
-## Step 13 — BONUS: Investigate the snapshot for episodes
+## Step 13 - BONUS: Investigate the snapshot for episodes
 
-Create a snapshot for `raw_podcasts.episodes` tracking changes to `title` and `duration_seconds`. Why might you want to track duration changes? (Episodes sometimes get re-edited and re-uploaded.)
+- [ ] Step complete
+
+Create a snapshot for `podcasts.episodes` tracking changes to `title` and `duration_seconds`. Why might you want to track duration changes? (Episodes sometimes get re-edited and re-uploaded.)
 
 !!! success "Done?"
-    You've fixed real bugs, built a cross-domain content mart, implemented SCD Type 2 for article metadata, and hardened the test suite. Your work directly enables Group 3's revenue attribution — they need clean content data to allocate ad revenue correctly.
+    You've fixed real bugs, built a cross-domain content mart, implemented SCD Type 2 for article metadata, and hardened the test suite. Your work directly enables Group 3's revenue attribution - they need clean content data to allocate ad revenue correctly.

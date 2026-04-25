@@ -1,8 +1,8 @@
-# Group 2 — Intermediate I: Seeds, Snapshots & Test Review
+# Group 2 - Advanced I: Seeds, Snapshots & Test Review
 
 ## Your slice of MediaPulse
 
-You own the **content performance** story — how MediaPulse's editorial products (NewsNow articles and PodcastHub episodes) are performing together. The staging layer for both domains exists, but it has bugs. Your mart needs to join both, enriched with a category mapping seed, and you need to track how article metadata changes over time using a snapshot.
+You own the **content performance** story - how MediaPulse's editorial products (NewsNow articles and PodcastHub episodes) are performing together. The staging layer for both domains exists, but it has bugs. Your mart needs to join both, enriched with a category mapping seed, and you need to track how article metadata changes over time using a snapshot.
 
 !!! warning "Group size note"
     This group has 11–13 participants and may be split into two sub-groups based on a pre-assessment. Your facilitator will confirm before the first breakout.
@@ -14,7 +14,7 @@ You own the **content performance** story — how MediaPulse's editorial product
 By the end of the hackathon you will be able to:
 
 - Read existing dbt models critically and **identify bugs**
-- Create and load **seeds** — static reference data managed in version control
+- Create and load **seeds** - static reference data managed in version control
 - Build a **mart** that joins across staging domains
 - Create a **snapshot** to track slowly-changing dimensions (SCD Type 2)
 - Write thorough **relationship tests** and document columns in YAML
@@ -34,7 +34,7 @@ dbt seed --select category_mapping  # loads one
 
 ### Snapshots
 
-Snapshots implement SCD Type 2 — they track how a row changes over time by appending new versions rather than overwriting.
+Snapshots implement SCD Type 2 - they track how a row changes over time by appending new versions rather than overwriting.
 
 ```sql
 {% snapshot snap_articles %}
@@ -56,7 +56,7 @@ Every time you run `dbt snapshot`, dbt compares the current source to the last s
 
 Before building, always audit what's already there:
 
-1. Read the model SQL — does it do what the filename implies?
+1. Read the model SQL - does it do what the filename implies?
 2. Check column names against the raw source
 3. Look for missing deduplication on high-volume sources
 4. Run the model; do the row counts look right?
@@ -67,10 +67,10 @@ Before building, always audit what's already there:
 
 | Asset | Location | Status |
 |-------|----------|--------|
-| `raw_news.articles` | Source | Has duplicates |
-| `raw_news.authors` | Source | Clean |
-| `raw_podcasts.episodes` | Source | Column name quirk |
-| `raw_podcasts.shows` | Source | Clean |
+| `news.articles` | Source | Has duplicates |
+| `news.authors` | Source | Clean |
+| `podcasts.episodes` | Source | Column name quirk |
+| `podcasts.shows` | Source | Clean |
 | `stg_news__articles.sql` | `models/staging/news/` | ⚠️ has a bug |
 | `stg_news__authors.sql` | `models/staging/news/` | ✅ complete |
 | `stg_podcasts__episodes.sql` | `models/staging/podcasts/` | ⚠️ has a bug |

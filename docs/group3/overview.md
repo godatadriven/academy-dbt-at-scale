@@ -1,8 +1,8 @@
-# Group 3 — Intermediate II: Incremental Models, Singular Tests & Revenue Analytics
+# Group 3 - Advanced II: Incremental Models, Singular Tests & Revenue Analytics
 
 ## Your slice of MediaPulse
 
-You own the **revenue** story — how much money MediaPulse makes through AdConnect, and how that revenue maps back to the content it runs against. The ad platform generates huge volumes of impression data, making it a perfect candidate for incremental loading. You'll also track how advertiser budgets shift over time and write custom tests to validate your revenue numbers.
+You own the **revenue** story - how much money MediaPulse makes through AdConnect, and how that revenue maps back to the content it runs against. The ad platform generates huge volumes of impression data, making it a perfect candidate for incremental loading. You'll also track how advertiser budgets shift over time and write custom tests to validate your revenue numbers.
 
 !!! warning "Group size note"
     This group has 11–13 participants and may be split into two sub-groups based on a pre-assessment. Your facilitator will confirm before the first breakout.
@@ -52,7 +52,7 @@ from {{ source('ads', 'impressions') }}
 {% endif %}
 ```
 
-On the **first run** the `{% if is_incremental() %}` block is skipped — the full history loads. On every **subsequent run** only new records are processed.
+On the **first run** the `{% if is_incremental() %}` block is skipped - the full history loads. On every **subsequent run** only new records are processed.
 
 ### Singular tests
 
@@ -65,7 +65,7 @@ from {{ ref('stg_ads__spend') }}
 where spend_cents < 0
 ```
 
-Use singular tests when generic tests can't express the rule — e.g. cross-model consistency checks or complex aggregation assertions.
+Use singular tests when generic tests can't express the rule - e.g. cross-model consistency checks or complex aggregation assertions.
 
 ### Revenue allocation
 
@@ -79,11 +79,11 @@ content_revenue = campaign_spend × (content_impressions / total_campaign_impres
 
 ## Relevant tables
 
-All in `raw_ads` — none wired into dbt yet:
+All in `ads` - none wired into dbt yet:
 
-- `raw_ads.campaigns`
-- `raw_ads.impressions`
-- `raw_ads.spend`
+- `ads.campaigns`
+- `ads.impressions`
+- `ads.spend`
 
 See the [MediaPulse overview](../mediapulse/overview.md) for full column details.
 

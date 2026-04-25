@@ -1,17 +1,19 @@
-# Group 3 — Checklist
+# Group 3 - Checklist
 
-Work through the steps in order. This track requires the most technical depth — if you're stuck on an incremental concept, re-read the [Overview](overview.md) before expanding a hint.
+Work through the steps in order. This track requires the most technical depth - if you're stuck on an incremental concept, re-read the [Overview](overview.md) before expanding a hint.
 
 ---
 
-## Step 1 — Explore the raw ads tables
+## Step 1 - Explore the raw ads tables
 
-Query the three `raw_ads` tables and understand the grain of each:
+- [ ] Step complete
+
+Query the three `ads` tables and understand the grain of each:
 
 ```sql
-select * from raw_ads.campaigns limit 10;
-select * from raw_ads.impressions limit 10;
-select * from raw_ads.spend limit 10;
+select * from ads.campaigns limit 10;
+select * from ads.impressions limit 10;
+select * from ads.spend limit 10;
 ```
 
 Answer:
@@ -21,15 +23,17 @@ Answer:
 - What unit is `budget_cents` in? What about `spend_cents`?
 
 ??? tip "Hint: Grain analysis"
-    - `campaigns`: one row per campaign (SCD-friendly — budget can change)
-    - `impressions`: one row per `(campaign_id, content_id, impression_date)` — daily aggregate
-    - `spend`: one row per `(campaign_id, spend_date)` — can have multiple rows per campaign as days accumulate; rows can also be *updated* retroactively
+    - `campaigns`: one row per campaign (SCD-friendly - budget can change)
+    - `impressions`: one row per `(campaign_id, content_id, impression_date)` - daily aggregate
+    - `spend`: one row per `(campaign_id, spend_date)` - can have multiple rows per campaign as days accumulate; rows can also be *updated* retroactively
 
     All monetary values are in cents. You'll need a macro or inline calculation to convert.
 
 ---
 
-## Step 2 — Define sources in YAML
+## Step 2 - Define sources in YAML
+
+- [ ] Step complete
 
 Create `models/staging/ads/_ads__sources.yml`. Define a source named `ads` with all three tables, including `not_null` and `unique` tests on primary keys.
 
@@ -39,7 +43,7 @@ Create `models/staging/ads/_ads__sources.yml`. Define a source named `ads` with 
 
     sources:
       - name: ads
-        schema: raw_ads
+        schema: ads
         tables:
           - name: campaigns
             columns:
@@ -57,7 +61,9 @@ Create `models/staging/ads/_ads__sources.yml`. Define a source named `ads` with 
 
 ---
 
-## Step 3 — Create `seeds/commission_lookup.csv`
+## Step 3 - Create `seeds/commission_lookup.csv`
+
+- [ ] Step complete
 
 MediaPulse takes a platform commission from ad revenue that varies by campaign type. Create this seed:
 
@@ -83,7 +89,9 @@ dbt seed --select commission_lookup
 
 ---
 
-## Step 4 — Build `stg_ads__campaigns.sql`
+## Step 4 - Build `stg_ads__campaigns.sql`
+
+- [ ] Step complete
 
 Create `models/staging/ads/stg_ads__campaigns.sql`. Rename columns, convert budget to dollars, and lowercase `campaign_type`.
 
@@ -116,9 +124,11 @@ Create `models/staging/ads/stg_ads__campaigns.sql`. Rename columns, convert budg
 
 ---
 
-## Step 5 — Build `stg_ads__spend.sql`
+## Step 5 - Build `stg_ads__spend.sql`
 
-Create `models/staging/ads/stg_ads__spend.sql`. This is a transactional table — do not deduplicate; each row is a distinct daily spend record.
+- [ ] Step complete
+
+Create `models/staging/ads/stg_ads__spend.sql`. This is a transactional table - do not deduplicate; each row is a distinct daily spend record.
 
 ??? tip "Hint"
     ```sql
@@ -142,9 +152,11 @@ Create `models/staging/ads/stg_ads__spend.sql`. This is a transactional table �
 
 ---
 
-## Step 6 — Build `stg_ads__impressions.sql`
+## Step 6 - Build `stg_ads__impressions.sql`
 
-Create `models/staging/ads/stg_ads__impressions.sql`. Keep the daily grain — one row per `(campaign_id, content_id, impression_date)`.
+- [ ] Step complete
+
+Create `models/staging/ads/stg_ads__impressions.sql`. Keep the daily grain - one row per `(campaign_id, content_id, impression_date)`.
 
 ??? tip "Hint"
     ```sql
@@ -173,9 +185,11 @@ Create `models/staging/ads/stg_ads__impressions.sql`. Keep the daily grain — o
 
 ---
 
-## Step 7 — Build `fct_ad_impressions.sql` as an incremental model
+## Step 7 - Build `fct_ad_impressions.sql` as an incremental model
 
-Create `models/marts/revenue/fct_ad_impressions.sql`. This is the high-volume fact table — it must be incremental to be practical.
+- [ ] Step complete
+
+Create `models/marts/revenue/fct_ad_impressions.sql`. This is the high-volume fact table - it must be incremental to be practical.
 
 Requirements:
 
@@ -232,17 +246,19 @@ Run it twice and compare row counts to confirm incremental behaviour:
 
 ```bash
 dbt run --select fct_ad_impressions
-dbt run --select fct_ad_impressions  # second run — should process fewer rows
+dbt run --select fct_ad_impressions  # second run - should process fewer rows
 ```
 
 ---
 
-## Step 8 — Understand incremental trade-offs
+## Step 8 - Understand incremental trade-offs
+
+- [ ] Step complete
 
 Discuss with your group:
 
 1. Why use `merge` over `append` here?
-2. What happens if a spend row is retroactively corrected — does your incremental filter catch it?
+2. What happens if a spend row is retroactively corrected - does your incremental filter catch it?
 3. When would you use `--full-refresh`?
 
 ??? tip "Hint: Key considerations"
@@ -250,18 +266,20 @@ Discuss with your group:
     - **`merge`**: upserts on `unique_key`. Handles late-arriving or corrected data. Slightly slower.
     - **`insert_overwrite`**: deletes and rewrites a partition. Good for very large tables with clear partition boundaries (e.g., by month).
 
-    The `spend` table updates retroactively — a `merge` strategy on `spend_id` handles this. The impressions table is append-only in practice, but using `merge` is safer.
+    The `spend` table updates retroactively - a `merge` strategy on `spend_id` handles this. The impressions table is append-only in practice, but using `merge` is safer.
 
     Use `--full-refresh` when: schema changes, logic changes that affect historical data, or you suspect data drift.
 
 ---
 
-## Step 9 — Build `revenue_by_content.sql`
+## Step 9 - Build `revenue_by_content.sql`
+
+- [ ] Step complete
 
 Create `models/marts/revenue/revenue_by_content.sql`. This mart allocates ad spend to content items proportionally based on impression share.
 
 !!! warning "Check the existing stub first"
-    Open `models/marts/revenue/revenue_by_content.sql`. The stub aggregates spend at `campaign_id` grain — this loses the per-content breakdown. Understand the grain problem, then rewrite it.
+    Open `models/marts/revenue/revenue_by_content.sql`. The stub aggregates spend at `campaign_id` grain - this loses the per-content breakdown. Understand the grain problem, then rewrite it.
 
 ??? tip "Hint: Allocation logic"
     ```sql
@@ -329,9 +347,11 @@ Create `models/marts/revenue/revenue_by_content.sql`. This mart allocates ad spe
 
 ---
 
-## Step 10 — Create a snapshot for advertiser campaign budgets
+## Step 10 - Create a snapshot for advertiser campaign budgets
 
-Create `snapshots/snap_ads__campaigns.sql`. Track budget changes using the `timestamp` strategy — campaigns can have their budgets modified after launch.
+- [ ] Step complete
+
+Create `snapshots/snap_ads__campaigns.sql`. Track budget changes using the `timestamp` strategy - campaigns can have their budgets modified after launch.
 
 ??? tip "Hint"
     ```sql
@@ -359,7 +379,7 @@ Create `snapshots/snap_ads__campaigns.sql`. Track budget changes using the `time
     {% endsnapshot %}
     ```
 
-    If `raw_ads.campaigns` has no `updated_at` column, switch to the `check` strategy:
+    If `ads.campaigns` has no `updated_at` column, switch to the `check` strategy:
 
     ```sql
     config(
@@ -371,7 +391,9 @@ Create `snapshots/snap_ads__campaigns.sql`. Track budget changes using the `time
 
 ---
 
-## Step 11 — Write singular test: revenue does not exceed spend
+## Step 11 - Write singular test: revenue does not exceed spend
+
+- [ ] Step complete
 
 Create `tests/assert_revenue_lte_spend.sql`. For each `(campaign_id, impression_date)`, allocated revenue should never exceed gross spend.
 
@@ -390,7 +412,9 @@ Create `tests/assert_revenue_lte_spend.sql`. For each `(campaign_id, impression_
 
 ---
 
-## Step 12 — Write singular test: no negative spend
+## Step 12 - Write singular test: no negative spend
+
+- [ ] Step complete
 
 Create `tests/assert_no_negative_spend.sql`. Negative values in `stg_ads__spend` indicate a data pipeline issue upstream.
 
@@ -404,7 +428,9 @@ Create `tests/assert_no_negative_spend.sql`. Negative values in `stg_ads__spend`
 
 ---
 
-## Step 13 — Add YAML for staging models and the mart
+## Step 13 - Add YAML for staging models and the mart
+
+- [ ] Step complete
 
 Create `models/staging/ads/_ads__models.yml` and `models/marts/revenue/_revenue__models.yml`. Document columns and add tests.
 
@@ -422,13 +448,15 @@ Include a `relationships` test on `fct_ad_impressions.campaign_id` → `stg_ads_
 
 ---
 
-## Step 14 — Run `dbt build --select +revenue_by_content`
+## Step 14 - Run `dbt build --select +revenue_by_content`
+
+- [ ] Step complete
 
 ```bash
 dbt build --select +revenue_by_content
 ```
 
-This builds the full lineage — sources → staging → incremental fact → mart — and runs all tests. Fix any failures.
+This builds the full lineage - sources → staging → incremental fact → mart - and runs all tests. Fix any failures.
 
 ??? tip "Hint: If the revenue test fails"
     A failure in `assert_revenue_lte_spend` usually means the impression share doesn't sum to exactly 1.0 for all campaigns on all days (floating point rounding or gaps between impressions and spend records). Add a `nullif` guard and a small tolerance:
@@ -439,7 +467,9 @@ This builds the full lineage — sources → staging → incremental fact → ma
 
 ---
 
-## Step 15 — BONUS: Test the incremental model more rigorously
+## Step 15 - BONUS: Test the incremental model more rigorously
+
+- [ ] Step complete
 
 Write a singular test that verifies no `impression_id` appears more than once in `fct_ad_impressions`:
 
@@ -452,4 +482,4 @@ having count(*) > 1
 ```
 
 !!! success "Done?"
-    You've built the revenue spine of the MediaPulse data platform. Group 4 will use dbt-expectations to add statistical guardrails around these models — share your mart YAML with them so they can build on it.
+    You've built the revenue spine of the MediaPulse data platform. Group 4 will use dbt-expectations to add statistical guardrails around these models - share your mart YAML with them so they can build on it.

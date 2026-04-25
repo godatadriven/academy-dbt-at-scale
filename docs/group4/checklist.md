@@ -1,10 +1,12 @@
-# Group 4 — Checklist
+# Group 4 - Checklist
 
-This is a two-day open hackathon. The checklist provides a sequence but you should re-prioritise based on what the audit reveals. Document decisions as you go — you'll present findings at 16:00 on Day 2.
+This is a two-day open hackathon. The checklist provides a sequence but you should re-prioritise based on what the audit reveals. Document decisions as you go - you'll present findings at 16:00 on Day 2.
 
 ---
 
-## Step 1 — Add packages and run `dbt deps`
+## Step 1 - Add packages and run `dbt deps`
+
+- [ ] Step complete
 
 Add the three packages to `packages.yml`:
 
@@ -27,7 +29,9 @@ dbt deps
 
 ---
 
-## Step 2 — Run dbt-project-evaluator
+## Step 2 - Run dbt-project-evaluator
+
+- [ ] Step complete
 
 ```bash
 dbt build --select package:dbt_project_evaluator
@@ -64,7 +68,9 @@ select * from dbt_project_evaluator.fct_direct_join_to_source;
 
 ---
 
-## Step 3 — Triage and prioritise findings
+## Step 3 - Triage and prioritise findings
+
+- [ ] Step complete
 
 For each evaluator violation, decide:
 
@@ -72,7 +78,7 @@ For each evaluator violation, decide:
 - **Should fix**: documentation gaps, naming convention violations
 - **Won't fix / acceptable**: architectural decisions made consciously (e.g., a mart that intentionally queries a source for performance)
 
-Record your triage decisions with a brief rationale — you'll present this.
+Record your triage decisions with a brief rationale - you'll present this.
 
 ??? tip "Hint: What usually matters most"
     In practice, the highest-risk findings are:
@@ -85,7 +91,9 @@ Record your triage decisions with a brief rationale — you'll present this.
 
 ---
 
-## Step 4 — Fix the highest-priority violations
+## Step 4 - Fix the highest-priority violations
+
+- [ ] Step complete
 
 Work through your **Must fix** list. Typical fixes:
 
@@ -100,14 +108,16 @@ dbt build --select package:dbt_project_evaluator
 
 ---
 
-## Step 5 — Use dbt-codegen to fill documentation gaps
+## Step 5 - Use dbt-codegen to fill documentation gaps
+
+- [ ] Step complete
 
 For any models that lack YAML documentation, use codegen to generate a starter:
 
 ```bash
 # Generate source YAML (useful if Group 1 or 3 left sources undocumented)
 dbt run-operation generate_source \
-  --args '{"schema_name": "raw_streaming", "database_name": "your_db"}'
+  --args '{"schema_name": "streaming", "database_name": "your_db"}'
 
 # Generate model YAML for a single model
 dbt run-operation generate_model_yaml \
@@ -141,7 +151,9 @@ Paste the output into the appropriate YAML files, then fill in the descriptions.
 
 ---
 
-## Step 6 — Apply dbt-expectations to critical models
+## Step 6 - Apply dbt-expectations to critical models
+
+- [ ] Step complete
 
 Add statistical tests to the most important mart models. Focus on:
 
@@ -188,7 +200,9 @@ Add statistical tests to the most important mart models. Focus on:
 
 ---
 
-## Step 7 — Define model contracts on critical marts
+## Step 7 - Define model contracts on critical marts
+
+- [ ] Step complete
 
 Add `contract: {enforced: true}` to `content_performance` and `revenue_by_content`. This means dbt will verify the model's output schema matches the YAML definition at compile time.
 
@@ -212,14 +226,16 @@ Add `contract: {enforced: true}` to `content_performance` and `revenue_by_conten
             data_type: float
     ```
 
-    If the model produces a column with a different type or name, the run fails with a clear error — this catches schema drift before it reaches consumers.
+    If the model produces a column with a different type or name, the run fails with a clear error - this catches schema drift before it reaches consumers.
 
     !!! warning
         Contracts require that **all** columns in the model are listed in YAML. Missing columns cause a compile error. Use dbt-codegen (Step 5) to get the full column list first.
 
 ---
 
-## Step 8 — Review test severity across the project
+## Step 8 - Review test severity across the project
+
+- [ ] Step complete
 
 Go through all model YAML files and consider which tests should be `warn` vs `error`:
 
@@ -253,13 +269,15 @@ Go through all model YAML files and consider which tests should be `warn` vs `er
 
 ---
 
-## Step 9 — Design the CI/CD pipeline
+## Step 9 - Design the CI/CD pipeline
+
+- [ ] Step complete
 
 Design a dbt Cloud job structure for MediaPulse. You need at minimum three jobs:
 
-1. **Slim CI** — triggered on PR open/update; runs only changed models and their downstream
-2. **Nightly full-refresh** — runs at 02:00; full `--full-refresh` to catch schema drift
-3. **Production deploy** — triggered on merge to main; runs `+state:modified+` against production environment
+1. **Slim CI** - triggered on PR open/update; runs only changed models and their downstream
+2. **Nightly full-refresh** - runs at 02:00; full `--full-refresh` to catch schema drift
+3. **Production deploy** - triggered on merge to main; runs `+state:modified+` against production environment
 
 For each job, define:
 
@@ -289,11 +307,13 @@ For each job, define:
 
 ---
 
-## Step 10 — Define hard requirements vs nice-to-haves
+## Step 10 - Define hard requirements vs nice-to-haves
+
+- [ ] Step complete
 
 As a group, write a short document (can be a markdown file in the repo under `docs/production_requirements.md`) that answers:
 
-**Hard requirements — must pass before any production deploy:**
+**Hard requirements - must pass before any production deploy:**
 
 - [ ] All `not_null` + `unique` tests on primary keys pass
 - [ ] All `relationships` tests pass
@@ -302,7 +322,7 @@ As a group, write a short document (can be a markdown file in the repo under `do
 - [ ] Singular revenue assertion tests pass
 - [ ] dbt-project-evaluator: zero `must_fix` violations remain
 
-**Nice-to-haves — target within next sprint:**
+**Nice-to-haves - target within next sprint:**
 
 - [ ] 100% of models have descriptions
 - [ ] All source columns have tests
@@ -319,9 +339,11 @@ As a group, write a short document (can be a markdown file in the repo under `do
 
 ---
 
-## Step 11 — BONUS: Evaluate `dbt-project-evaluator` coverage gaps
+## Step 11 - BONUS: Evaluate `dbt-project-evaluator` coverage gaps
 
-dbt-project-evaluator is configurable — you can disable checks that don't apply to your project or add custom rules. Review the [evaluator documentation](https://dbt-labs.github.io/dbt-project-evaluator/) and:
+- [ ] Step complete
+
+dbt-project-evaluator is configurable - you can disable checks that don't apply to your project or add custom rules. Review the [evaluator documentation](https://dbt-labs.github.io/dbt-project-evaluator/) and:
 
 1. Identify any default rules that don't make sense for MediaPulse
 2. Disable them in `dbt_project.yml` using the evaluator's `vars` config
@@ -339,16 +361,18 @@ dbt-project-evaluator is configurable — you can disable checks that don't appl
 
 ---
 
-## Step 12 — Prepare your presentation
+## Step 12 - Prepare your presentation
+
+- [ ] Step complete
 
 At 16:00 Day 2 you have 10–15 minutes to present. Structure:
 
-1. **What we found** — top 5 evaluator violations by risk level
-2. **What we fixed** — concrete before/after
-3. **What we added** — dbt-expectations tests, contracts, severity review
-4. **CI/CD design** — diagram of your three jobs and what each catches
-5. **Hard requirements** — your final list with rationale
-6. **What we'd do next** — honest backlog
+1. **What we found** - top 5 evaluator violations by risk level
+2. **What we fixed** - concrete before/after
+3. **What we added** - dbt-expectations tests, contracts, severity review
+4. **CI/CD design** - diagram of your three jobs and what each catches
+5. **Hard requirements** - your final list with rationale
+6. **What we'd do next** - honest backlog
 
 !!! success "Done?"
-    You've audited, hardened, and documented the MediaPulse platform to production-ready standards. The other groups built features; you built the safety net. Neither is more important — the platform needs both.
+    You've audited, hardened, and documented the MediaPulse platform to production-ready standards. The other groups built features; you built the safety net. Neither is more important - the platform needs both.

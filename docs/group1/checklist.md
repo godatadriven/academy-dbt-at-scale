@@ -1,10 +1,12 @@
-# Group 1 — Checklist
+# Group 1 - Checklist
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt — the struggle is where the learning happens.
+Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens.
 
 ---
 
-## Step 1 — Explore the raw streaming tables
+## Step 1 - Explore the raw streaming tables
+
+- [ ] Step complete
 
 Before writing any dbt code, understand what you're working with. Query the raw tables and note:
 
@@ -13,23 +15,31 @@ Before writing any dbt code, understand what you're working with. Query the raw 
 - Are there any obvious quality issues (nulls, unexpected values, duplicate IDs)?
 
 ```sql
-select * from raw_streaming.watch_events limit 20;
-select * from raw_streaming.subscriptions limit 20;
-select * from raw_streaming.content_catalog limit 20;
+select * from streaming.watch_events
+```
+
+```sql
+select * from streaming.subscriptions
+```
+
+```sql
+select * from streaming.content_catalog
 ```
 
 ??? tip "Hint: What to look for"
     Pay attention to:
 
-    - `monthly_fee_cents` in `subscriptions` — is this in the right unit for reporting?
-    - `status` in `subscriptions` — what values exist? Are they consistent?
-    - `device_type` in `watch_events` — any inconsistent casing?
+    - `monthly_fee_cents` in `subscriptions` - is this in the right unit for reporting?
+    - `status` in `subscriptions` - what values exist? Are they consistent?
+    - `device_type` in `watch_events` - any inconsistent casing?
 
     You'll use these observations to write accepted_values tests and decide where to apply your macros.
 
 ---
 
-## Step 2 — Define sources in YAML
+## Step 2 - Define sources in YAML
+
+- [ ] Step complete
 
 Create the file `models/staging/streaming/_streaming__sources.yml`. Define a source named `streaming` with all three tables.
 
@@ -40,7 +50,7 @@ Create the file `models/staging/streaming/_streaming__sources.yml`. Define a sou
     sources:
       - name: streaming
         database: "{{ env_var('DBT_DATABASE') }}"
-        schema: raw_streaming
+        schema: streaming
         tables:
           - name: watch_events
           - name: subscriptions
@@ -51,7 +61,9 @@ Create the file `models/staging/streaming/_streaming__sources.yml`. Define a sou
 
 ---
 
-## Step 3 — Add source freshness config
+## Step 3 - Add source freshness config
+
+- [ ] Step complete
 
 Add a `loaded_at_field` and `freshness` block to at least one table (start with `watch_events`).
 
@@ -75,7 +87,9 @@ Add a `loaded_at_field` and `freshness` block to at least one table (start with 
 
 ---
 
-## Step 4 — Add generic tests to sources
+## Step 4 - Add generic tests to sources
+
+- [ ] Step complete
 
 Add `not_null` and `unique` tests to the primary key of each table. Also add at least one `accepted_values` test.
 
@@ -106,9 +120,11 @@ Add `not_null` and `unique` tests to the primary key of each table. Also add at 
 
 ---
 
-## Step 5 — Build `stg_streaming__content_catalog.sql`
+## Step 5 - Build `stg_streaming__content_catalog.sql`
 
-Create `models/staging/streaming/stg_streaming__content_catalog.sql`. This is the simplest of the three models — no surrogate key needed, just renaming and casting.
+- [ ] Step complete
+
+Create `models/staging/streaming/stg_streaming__content_catalog.sql`. This is the simplest of the three models - no surrogate key needed, just renaming and casting.
 
 Goals:
 
@@ -140,13 +156,15 @@ Goals:
 
 ---
 
-## Step 6 — Build `stg_streaming__subscriptions.sql`
+## Step 6 - Build `stg_streaming__subscriptions.sql`
+
+- [ ] Step complete
 
 Create `models/staging/streaming/stg_streaming__subscriptions.sql`.
 
 Goals:
 
-- Convert `monthly_fee_cents` to dollars (you'll write a macro for this in Step 8 — use a manual divide for now)
+- Convert `monthly_fee_cents` to dollars (you'll write a macro for this in Step 8 - use a manual divide for now)
 - Normalise `status` to lowercase
 - Cast date columns to `timestamp`
 
@@ -159,11 +177,13 @@ Goals:
 
 ---
 
-## Step 7 — Build `stg_streaming__watch_events.sql`
+## Step 7 - Build `stg_streaming__watch_events.sql`
+
+- [ ] Step complete
 
 Create `models/staging/streaming/stg_streaming__watch_events.sql`.
 
-This is the highest-volume table — fact-style, one row per viewing event. You need a surrogate key because `event_id` from the source may not be globally unique across data loads.
+This is the highest-volume table - fact-style, one row per viewing event. You need a surrogate key because `event_id` from the source may not be globally unique across data loads.
 
 ??? tip "Hint: Surrogate key with dbt_utils"
     If `dbt_utils` is in `packages.yml`:
@@ -183,7 +203,9 @@ This is the highest-volume table — fact-style, one row per viewing event. You 
 
 ---
 
-## Step 8 — Write a `clean_string` macro
+## Step 8 - Write a `clean_string` macro
+
+- [ ] Step complete
 
 Create `macros/clean_string.sql`. The macro should accept a column name and return an expression that trims whitespace, converts to lowercase, and coalesces nulls to an empty string.
 
@@ -202,7 +224,9 @@ Create `macros/clean_string.sql`. The macro should accept a column name and retu
 
 ---
 
-## Step 9 — Write a `cents_to_dollars` macro
+## Step 9 - Write a `cents_to_dollars` macro
+
+- [ ] Step complete
 
 Create `macros/cents_to_dollars.sql`. The macro accepts a column name and returns the division expression.
 
@@ -228,7 +252,9 @@ Create `macros/cents_to_dollars.sql`. The macro accepts a column name and return
 
 ---
 
-## Step 10 — Apply `clean_string` in `stg_streaming__watch_events.sql`
+## Step 10 - Apply `clean_string` in `stg_streaming__watch_events.sql`
+
+- [ ] Step complete
 
 Update your watch events staging model to use `clean_string` on `device_type`.
 
@@ -237,11 +263,13 @@ Update your watch events staging model to use `clean_string` on `device_type`.
     {{ clean_string('device_type') }} as device_type,
     ```
 
-    Then test that your `accepted_values` test on `device_type` still passes — the normalisation should reduce the value set to a predictable list.
+    Then test that your `accepted_values` test on `device_type` still passes - the normalisation should reduce the value set to a predictable list.
 
 ---
 
-## Step 11 — Create a staging models YAML
+## Step 11 - Create a staging models YAML
+
+- [ ] Step complete
 
 Create `models/staging/streaming/_streaming__models.yml`. Document all three staging models with at minimum:
 
@@ -257,10 +285,10 @@ Create `models/staging/streaming/_streaming__models.yml`. Document all three sta
       - name: stg_streaming__content_catalog
         description: >
           One row per piece of content in the StreamVault catalogue.
-          Cleaned and renamed from raw_streaming.content_catalog.
+          Cleaned and renamed from streaming.content_catalog.
         columns:
           - name: content_id
-            description: Primary key — unique identifier for a content item.
+            description: Primary key - unique identifier for a content item.
             tests:
               - not_null
               - unique
@@ -276,13 +304,15 @@ Create `models/staging/streaming/_streaming__models.yml`. Document all three sta
 
 ---
 
-## Step 12 — Run the full test suite
+## Step 12 - Run the full test suite
+
+- [ ] Step complete
 
 ```bash
 dbt test --select staging.streaming
 ```
 
-Fix any failures. A test failure is information — read the error message, query the failing rows, understand why.
+Fix any failures. A test failure is information - read the error message, query the failing rows, understand why.
 
 ??? tip "Hint: Investigating a test failure"
     To see failing rows for a `not_null` test on `content_id`:
@@ -305,7 +335,9 @@ Fix any failures. A test failure is information — read the error message, quer
 
 ---
 
-## Step 13 — BONUS: `dbt build` and check lineage
+## Step 13 - BONUS: `dbt build` and check lineage
+
+- [ ] Step complete
 
 Run:
 
@@ -313,7 +345,7 @@ Run:
 dbt build --select staging.streaming
 ```
 
-This runs models + tests in dependency order in a single command. Then open the dbt docs or the DAG viewer in dbt Cloud to confirm your three models appear correctly sourced from `raw_streaming`.
+This runs models + tests in dependency order in a single command. Then open the dbt docs or the DAG viewer in dbt Cloud to confirm your three models appear correctly sourced from `streaming`.
 
 ??? tip "Hint: Generating docs locally"
     ```bash
@@ -321,9 +353,9 @@ This runs models + tests in dependency order in a single command. Then open the 
     dbt docs serve
     ```
 
-    Open `http://localhost:8080` and navigate to the DAG. You should see `raw_streaming` → `stg_streaming__*` with green source nodes.
+    Open `http://localhost:8080` and navigate to the DAG. You should see `streaming` → `stg_streaming__*` with green source nodes.
 
 ---
 
 !!! success "Done?"
-    If all tests pass and the DAG looks right, you've successfully wired a new data domain into the MediaPulse project. Share your findings with the other groups — Group 3 will build on the ads domain using the same patterns you've just practised.
+    If all tests pass and the DAG looks right, you've successfully wired a new data domain into the MediaPulse project. Share your findings with the other groups - Group 3 will build on the ads domain using the same patterns you've just practised.

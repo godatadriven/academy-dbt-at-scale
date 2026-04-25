@@ -1,8 +1,10 @@
-# Group 1 — Beginner: Testing, Sources, Jinja & Macros
+# Group 1 - Intermediate: StreamVault
+
+## Testing, Sources, Jinja & Macros
 
 ## Your slice of MediaPulse
 
-You own the **StreamVault** data — MediaPulse's subscription streaming platform. The raw data exists in the database but nobody has wired it into the dbt project yet. By the end of today you'll have a fully tested, documented staging layer for streaming data, complete with reusable macros.
+You own the **StreamVault** data - MediaPulse's subscription streaming platform. The raw data exists in the database but nobody has wired it into the dbt project yet. By the end of today you'll have a fully tested, documented staging layer for streaming data, complete with reusable macros.
 
 ---
 
@@ -61,11 +63,11 @@ select
 
 ## Relevant tables
 
-You'll work exclusively with `raw_streaming`:
+You'll work exclusively with `streaming`:
 
-- `raw_streaming.watch_events`
-- `raw_streaming.subscriptions`
-- `raw_streaming.content_catalog`
+- `streaming.watch_events`
+- `streaming.subscriptions`
+- `streaming.content_catalog`
 
 See the [MediaPulse overview](../mediapulse/overview.md) for full column details.
 
