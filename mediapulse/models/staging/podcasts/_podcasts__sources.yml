@@ -1,0 +1,78 @@
+version: 2
+
+sources:
+  - name: podcasts
+    # database: "{{ var('raw_database') }}"
+    # Uncomment if your raw data lives in a separate database.
+    schema: raw_podcasts
+    description: >
+      Raw data from PodcastHub, MediaPulse's podcast network.
+
+    tables:
+      - name: shows
+        description: >
+          One row per podcast show on PodcastHub.
+        columns:
+          - name: show_id
+            description: Primary key.
+            tests:
+              - not_null
+              - unique
+          - name: show_name
+            description: Display name of the show.
+            tests:
+              - not_null
+          - name: host_name
+            description: Name of the primary show host.
+          - name: category
+            description: Show genre/category. Values include Politics, Technology, Sports, Entertainment.
+          - name: launched_at
+            description: Date the show launched on PodcastHub.
+
+      - name: episodes
+        description: >
+          One row per episode published under a show.
+          Note: the raw column for the episode name is 'title', not 'episode_name'.
+        columns:
+          - name: episode_id
+            description: Primary key.
+            tests:
+              - not_null
+              - unique
+          - name: show_id
+            description: Foreign key to shows.
+            tests:
+              - not_null
+              - relationships:
+                  to: source('podcasts', 'shows')
+                  field: show_id
+          - name: title
+            description: Episode title.
+          - name: published_at
+            description: Timestamp when the episode was published.
+          - name: duration_seconds
+            description: Runtime of the episode in seconds.
+          - name: season
+            description: Season number (nullable for non-seasonal shows).
+          - name: episode_number
+            description: Episode number within the season or overall feed.
+
+      - name: listens
+        description: >
+          Individual listen events — one row per user/episode listening session.
+        columns:
+          - name: listen_id
+            description: Primary key.
+            tests:
+              - not_null
+              - unique
+          - name: episode_id
+            description: Foreign key to episodes.
+          - name: user_id
+            description: The listener (nullable for anonymous sessions).
+          - name: listened_at
+            description: Timestamp when the listen session started.
+          - name: listen_duration_seconds
+            description: How long the user actually listened.
+          - name: platform
+            description: "Platform used. Expected: ios, android, web, alexa, other."

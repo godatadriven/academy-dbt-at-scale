@@ -1,0 +1,16 @@
+event_id,user_id,content_id,watched_at,watch_duration_seconds,device_type
+evt_0001,usr_101,cnt_001,2024-01-15 20:00:00,2700,Smart TV
+evt_0002,usr_204,cnt_004,2024-01-15 21:30:00,1680,mobile
+evt_0003,usr_412,cnt_002,2024-01-20 15:00:00,7200,smart tv
+evt_0004,usr_101,cnt_005,2024-01-18 19:30:00,3120,Tablet
+evt_0005,usr_307,cnt_003,2024-01-16 14:00:00,5640,web
+evt_0006,usr_509,cnt_001,2024-01-17 20:45:00,2700,Mobile
+evt_0007,usr_612,cnt_009,2024-01-19 22:00:00,1320,mobile
+evt_0008,usr_818,cnt_010,2024-01-20 18:30:00,1800,smart tv
+evt_0009,usr_715,cnt_006,2024-01-21 13:00:00,10800,Smart TV
+evt_0010,usr_101,cnt_013,2024-01-22 16:00:00,4680,tablet
+evt_0011,usr_204,cnt_015,2024-01-23 23:00:00,2100,web
+evt_0012,usr_412,cnt_005,2024-01-24 20:00:00,3120,Smart TV
+evt_0013,usr_101,cnt_001,2024-01-25 20:00:00,2700,Smart TV
+evt_0014,usr_818,cnt_011,2024-01-21 21:00:00,3300,WEB
+evt_0015,usr_307,cnt_007,2024-01-24 15:30:00,5280,web

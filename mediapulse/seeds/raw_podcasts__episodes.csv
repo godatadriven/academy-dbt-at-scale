@@ -1,0 +1,13 @@
+episode_id,show_id,title,published_at,duration_seconds,season,episode_number
+ep_001,show_001,Election Forecast 2024,2024-01-08 07:00:00,2580,3,1
+ep_002,show_002,Large Language Models Explained,2024-01-09 08:00:00,3120,2,1
+ep_003,show_003,Transfer Window Special,2024-01-10 06:30:00,2100,5,1
+ep_004,show_001,Rate Decisions and You,2024-01-15 07:00:00,2220,3,2
+ep_005,show_004,Streaming Wars Update,2024-01-16 09:00:00,1980,2,2
+ep_006,show_002,Prompt Engineering Deep Dive,2024-01-17 08:00:00,3600,2,2
+ep_007,show_005,COP30 Preview,2024-01-18 07:30:00,2700,1,3
+ep_008,show_003,Championship Analysis,2024-01-19 06:30:00,1860,5,2
+ep_009,show_001,Trade Policy Unpacked,2024-01-22 07:00:00,2460,3,3
+ep_010,show_006,AI in the Newsroom,2024-01-23 08:00:00,4200,1,1
+ep_011,show_004,Award Season Predictions,2024-01-24 09:00:00,2340,2,3
+ep_012,show_007,Pre-Match Build-Up,2024-01-25 06:30:00,1620,3,1

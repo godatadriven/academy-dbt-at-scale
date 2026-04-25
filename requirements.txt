@@ -1,0 +1,4 @@
+mkdocs>=1.5.3
+mkdocs-material>=9.5.0
+mkdocs-encryptcontent-plugin>=3.0.0
+pymdown-extensions>=10.0

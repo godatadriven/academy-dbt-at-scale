@@ -1,0 +1,88 @@
+site_name: "dbt@scale — Workshop Guide"
+site_description: "2-day dbt workshop for MediaPulse — powered by Xebia & dbt Labs"
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: deep-orange
+      accent: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep-orange
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+    - search.highlight
+    - search.suggest
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - encryptcontent:
+      # Change this password before sharing with participants
+      global_password: "dbtscale2025"
+      title_prefix: ""
+      summary: "This content is password-protected."
+      placeholder: "Enter workshop password"
+      decryption_failure_message: "Incorrect password — check with your Xebia facilitator."
+      encryption_info_message: "Contact your facilitator for the workshop password."
+      remember_keys: true
+      session_storage: false
+
+nav:
+  - Home: index.md
+  - Agenda: agenda.md
+  - MediaPulse Project: mediapulse/overview.md
+  - "Group 1 — Beginner":
+      - Overview: group1/overview.md
+      - Checklist: group1/checklist.md
+  - "Group 2 — Intermediate I":
+      - Overview: group2/overview.md
+      - Checklist: group2/checklist.md
+  - "Group 3 — Intermediate II":
+      - Overview: group3/overview.md
+      - Checklist: group3/checklist.md
+  - "Group 4 — Power Users":
+      - Overview: group4/overview.md
+      - Checklist: group4/checklist.md
+
+extra:
+  generator: false

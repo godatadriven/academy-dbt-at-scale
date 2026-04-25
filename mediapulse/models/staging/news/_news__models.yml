@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: stg_news__articles
+    description: >
+      Staged articles from NewsNow, cleaned and renamed from raw_news.articles.
+      Review the source definition for important notes about article_id uniqueness.
+    columns:
+      - name: article_id
+        description: >
+          Article identifier from the source system.
+          Note: check raw_news.articles for uniqueness behaviour before adding a unique test here.
+        tests:
+          - not_null
+      - name: article_title
+        description: Article headline.
+        tests:
+          - not_null
+      - name: author_id
+        description: Foreign key to stg_news__authors.
+        tests:
+          - not_null
+      - name: category
+        description: Editorial category.
+      - name: published_at
+        description: Timestamp when the article first went live.
+        tests:
+          - not_null
+      - name: updated_at
+        description: Timestamp of the most recent edit or republication.
+      - name: status
+        description: Current article lifecycle status.
+        tests:
+          - accepted_values:
+              values: ['draft', 'published', 'archived']
+      - name: word_count
+        description: Number of words in the article body.
+
+  - name: stg_news__authors
+    description: >
+      Staged author records from NewsNow. One row per author.
+    columns:
+      - name: author_id
+        description: Primary key.
+        tests:
+          - not_null
+          - unique
+      - name: author_name
+        description: Author's full name.
+        tests:
+          - not_null
+      - name: email
+        description: Work email address.
+      - name: joined_at
+        description: Date the author joined the NewsNow team.

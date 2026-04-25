@@ -1,0 +1,11 @@
+subscription_id,user_id,plan_type,status,started_at,ended_at,monthly_fee_cents
+sub_001,usr_101,premium,active,2022-06-01,,1499
+sub_002,usr_204,standard,active,2023-02-15,,999
+sub_003,usr_307,basic,cancelled,2021-09-01,2023-12-31,599
+sub_004,usr_412,premium,active,2020-11-10,,1499
+sub_005,usr_509,standard,paused,2023-05-01,,999
+sub_006,usr_612,basic,active,2024-01-02,,599
+sub_007,usr_715,premium,trialing,2024-01-20,,0
+sub_008,usr_818,standard,active,2022-08-14,,999
+sub_009,usr_901,Premium,active,2023-07-07,,1499
+sub_010,usr_102,basic,Cancelled,2023-01-01,2023-06-30,599

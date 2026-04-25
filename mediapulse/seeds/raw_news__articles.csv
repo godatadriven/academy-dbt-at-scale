@@ -1,0 +1,16 @@
+article_id,title,author_id,category,published_at,updated_at,status,word_count
+art_001,Global Markets Rally After Rate Decision,auth_001,politics,2024-01-15 09:00:00,2024-01-15 09:00:00,published,820
+art_002,New Study Links Screen Time to Sleep Disruption,auth_003,technology,2024-01-16 10:30:00,2024-01-16 10:30:00,published,1150
+art_003,City Council Approves Green Energy Initiative,auth_002,politics,2024-01-17 08:15:00,2024-01-17 08:15:00,published,640
+art_004,StreamVault Hits 10 Million Subscribers,auth_005,entertainment,2024-01-18 11:00:00,2024-01-18 11:00:00,published,520
+art_001,Global Markets Rally After Rate Decision,auth_001,politics,2024-01-15 09:00:00,2024-01-20 14:30:00,published,875
+art_005,Championship Final Preview — Who Will Win?,auth_006,sport,2024-01-19 07:00:00,2024-01-19 07:00:00,published,430
+art_006,Interview: The Future of Podcast Advertising,auth_004,entertainment,2024-01-20 09:45:00,2024-01-20 09:45:00,published,970
+art_007,Climate Summit Ends With Landmark Agreement,auth_001,politics,2024-01-21 12:00:00,2024-01-21 12:00:00,published,1300
+art_003,City Council Approves Green Energy Initiative,auth_002,politics,2024-01-17 08:15:00,2024-01-22 16:00:00,archived,640
+art_008,AI Tools Reshape Newsroom Workflows,auth_008,technology,2024-01-22 10:00:00,2024-01-22 10:00:00,published,890
+art_009,Weekend Box Office: Animated Feature Tops Charts,auth_007,entertainment,2024-01-22 13:30:00,2024-01-22 13:30:00,published,380
+art_010,Local Sports Roundup,auth_006,sport,2024-01-23 08:00:00,2024-01-23 08:00:00,draft,210
+art_002,New Study Links Screen Time to Sleep Disruption,auth_003,technology,2024-01-16 10:30:00,2024-01-24 11:15:00,published,1220
+art_011,Quarterly Earnings Season Kicks Off,auth_001,politics,2024-01-25 09:00:00,2024-01-25 09:00:00,published,760
+art_012,The Rise of Audio Fiction Podcasts,auth_004,entertainment,2024-01-25 14:00:00,2024-01-25 14:00:00,published,1040

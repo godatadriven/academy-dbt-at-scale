@@ -1,0 +1,70 @@
+name: "mediapulse"
+version: "1.0.0"
+config-version: 2
+
+profile: "mediapulse"
+
+model-paths:    ["models"]
+analysis-paths: ["analyses"]
+test-paths:     ["tests"]
+seed-paths:     ["seeds"]
+macro-paths:    ["macros"]
+snapshot-paths: ["snapshots"]
+docs-paths:     ["docs"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# ---------------------------------------------------------------------------
+# Variable overrides — set raw_database to wherever your source data lives.
+# In dbt Cloud you can set this as an environment-level variable.
+# ---------------------------------------------------------------------------
+vars:
+  raw_database: "RAW"   # change to match your warehouse setup
+
+# ---------------------------------------------------------------------------
+# Model materialisation defaults
+# ---------------------------------------------------------------------------
+models:
+  mediapulse:
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts
+
+seeds:
+  mediapulse:
+    # Raw source seeds simulate the upstream data pipelines.
+    # They land in the same schemas the source definitions point at,
+    # so the project works without an external ingestion layer.
+    raw_news__authors:
+      +schema: raw_news
+    raw_news__articles:
+      +schema: raw_news
+    raw_news__page_views:
+      +schema: raw_news
+    raw_podcasts__shows:
+      +schema: raw_podcasts
+    raw_podcasts__episodes:
+      +schema: raw_podcasts
+    raw_podcasts__listens:
+      +schema: raw_podcasts
+    raw_streaming__content_catalog:
+      +schema: raw_streaming
+    raw_streaming__subscriptions:
+      +schema: raw_streaming
+    raw_streaming__watch_events:
+      +schema: raw_streaming
+    raw_ads__campaigns:
+      +schema: raw_ads
+    raw_ads__impressions:
+      +schema: raw_ads
+    raw_ads__spend:
+      +schema: raw_ads
+
+snapshots:
+  mediapulse:
+    +target_schema: snapshots
