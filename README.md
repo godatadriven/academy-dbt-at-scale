@@ -12,7 +12,7 @@ A two-day hands-on dbt workshop built for one client. Participants work in four 
 
 The material is designed to be reusable and adapted for future clients.
 
-The student workbook is hosted here: https://godatadriven.github.io/dbt-at-scale/
+The student workbook is hosted here: [godatadriven.github.io/dbt-at-scale/](https://godatadriven.github.io/academy-dbt-at-scale/)
 
 ---
 
