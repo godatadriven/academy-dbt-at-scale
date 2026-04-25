@@ -14,9 +14,13 @@ env/
 .DS_Store
 .AppleDouble
 .LSOverride
+encryptcontent.cache
 
 # Editors
 .idea/
 .vscode/
 *.swp
 *.swo
+
+# Environment
+.venv
