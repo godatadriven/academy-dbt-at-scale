@@ -35,6 +35,6 @@ Welcome to dbt@scale! A 2-day Hackathon event organized by Xebia and hosted by D
 
 Your group will correspond to the invite you received for this event. If you are unsure of your group you can see the groups listed here: [What group am I in?](https://docs.google.com/spreadsheets/d/15n12iQNUGiYKxePDcK04DcUu7FdJJLCIYNiOQSYni3A/edit?usp=sharing)
 
-!!! info "Discover what you're group is going!"
+!!! info "Discover what you're group is doing!"
     Use the top navigation tabs to jump directly to your group's **Overview** and **Checklist** pages.
 

@@ -96,37 +96,17 @@ mediapulse/
 
 ---
 
-## Known issues (intentionally baked in)
-
-!!! warning "Spoiler territory"
-    These are documented here for facilitators and for groups whose work depends on a fixed upstream model. Students should discover these bugs themselves from their checklist - don't read ahead if you don't want to spoil the investigation.
-
-??? bug "Bug 1 - `stg_news__articles.sql`: missing deduplication"
-    The `news.articles` table contains duplicate `article_id` values because articles can be republished with an updated `updated_at` timestamp. The staging model selects all rows without deduplication, causing downstream fans when joined.
-
-    **Fix:** add a `ROW_NUMBER()` window function partitioned by `article_id`, ordered by `updated_at DESC`, and filter to `row_num = 1`.
-
-??? bug "Bug 2 - `stg_podcasts__episodes.sql`: wrong column name"
-    The model references `episode_name` in its `SELECT`, but the raw table column is named `title`. This causes a compile/run error.
-
-    **Fix:** replace `episode_name` with `title`.
-
-??? bug "Bug 3 - `content_performance.sql` stub: incorrect join type"
-    The stub mart uses an `INNER JOIN` between `stg_news__articles` and `stg_podcasts__episodes`, which produces no rows because the join key (`category`) is not a foreign-key relationship between these two tables. They should be `UNION ALL`-ed after normalising columns, then joined to the category seed.
-
-??? bug "Bug 4 - `revenue_by_content.sql` stub: wrong aggregation grain"
-    The stub aggregates spend at `campaign_id` grain, losing the per-content breakdown. Revenue should be allocated per `content_id` via the impressions table before joining to campaign spend.
-
----
-
 ## Getting started
 
+To get started, access the project on dbt Cloud:
+- Accept the invite received from your trainer/host to access the Training Account on dbt Cloud. 
+- Then login to dbt Cloud and access the project: `MediaPulse - dbt@scale`
+- Go to the studio on this project and fill in the username and password credentials.
+- Run the below command to make sure your project runs as expected.
+
 ```bash
-# From the mediapulse/ dbt project root
-dbt deps          # install packages
-dbt debug         # confirm connection
-dbt build         # see what breaks (expected at start!)
+dbt build         # see what breaks (expected at the start!)
 ```
 
-Your facilitator will provide connection credentials and the dbt Cloud project URL before the first breakout session.
+Your facilitator will provide the username + password needed to connect to the Snowflake warehouse and data.
 
