@@ -313,4 +313,4 @@ Fix any failures. A test failure is information - read the error message, query 
 !!! success "Done?"
     You've added sources, source freshness checks, primary key built-in tests, creating staging models and used some common dbt packages to make your workflow more efficient.
 
-    Now head to [Level 2](level2/checklist.md) to continue applying new skills!
+    Now head to [Level 2](../level2/checklist.md) to continue applying new skills!

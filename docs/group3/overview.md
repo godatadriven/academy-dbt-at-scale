@@ -96,4 +96,4 @@ See the [MediaPulse overview](../mediapulse/overview.md) for full column details
 | Day 1 AM (10:00–12:00) | Steps 1–6: sources, seed, staging models |
 | Day 1 PM (13:30–16:30) | Steps 7–14: incremental fact, mart, snapshot, singular tests |
 
-Head to the [Checklist](checklist.md) when you're ready to start.
+Head to the [Checklist](level1/checklist.md) when you're ready to start.
