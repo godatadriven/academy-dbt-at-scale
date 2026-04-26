@@ -25,35 +25,35 @@ There are four schemas which hold key data for the company:
 
 - `streaming`
 
-    | Table | Key columns | Notes |
-    |-------|-------------|-------|
-    | `watch_events` | `event_id`, `user_id`, `content_id`, `watched_at`, `watch_duration_seconds`, `device_type` | One row per viewing event; high volume |
-    | `subscriptions` | `subscription_id`, `user_id`, `plan_type`, `status`, `started_at`, `ended_at`, `monthly_fee_cents` | Fees stored in cents |
-    | `content_catalog` | `content_id`, `title`, `genre`, `content_type`, `release_date`, `runtime_minutes` | Master catalogue |
+    | Table | Key columns |
+    |-------|-------------|
+    | `watch_events` | `event_id`, `user_id`, `content_id`, `watched_at`, `watch_duration_seconds`, `device_type` |
+    | `subscriptions` | `subscription_id`, `user_id`, `plan_type`, `status`, `started_at`, `ended_at`, `monthly_fee_cents` |
+    | `content_catalog` | `content_id`, `title`, `genre`, `content_type`, `release_date`, `runtime_minutes` |
 
 - `news`
 
-    | Table | Key columns | Notes |
-    |-------|-------------|-------|
-    | `articles` | `article_id`, `title`, `author_id`, `category`, `published_at`, `updated_at`, `status`, `word_count` | Articles can be republished - duplicates exist |
-    | `authors` | `author_id`, `name`, `email`, `joined_at` | Clean; no known issues |
-    | `page_views` | `view_id`, `article_id`, `user_id`, `viewed_at`, `referrer_source` | - |
+    | Table | Key columns |
+    |-------|-------------|
+    | `articles` | `article_id`, `title`, `author_id`, `category`, `published_at`, `updated_at`, `status`, `word_count` |
+    | `authors` | `author_id`, `name`, `email`, `joined_at` |
+    | `page_views` | `view_id`, `article_id`, `user_id`, `viewed_at`, `referrer_source` |
 
 - `podcasts`
 
-    | Table | Key columns | Notes |
-    |-------|-------------|-------|
-    | `shows` | `show_id`, `show_name`, `host_name`, `category`, `launched_at` | - |
-    | `episodes` | `episode_id`, `show_id`, `title`, `published_at`, `duration_seconds`, `season`, `episode_number` | Column naming inconsistency vs. existing staging model |
-    | `listens` | `listen_id`, `episode_id`, `user_id`, `listened_at`, `listen_duration_seconds`, `platform` | - |
+    | Table | Key columns |
+    |-------|-------------|
+    | `shows` | `show_id`, `show_name`, `host_name`, `category`, `launched_at` |
+    | `episodes` | `episode_id`, `show_id`, `title`, `published_at`, `duration_seconds`, `season`, `episode_number` |
+    | `listens` | `listen_id`, `episode_id`, `user_id`, `listened_at`, `listen_duration_seconds`, `platform` |
 
 - `ads`
 
-    | Table | Key columns | Notes |
-    |-------|-------------|-------|
-    | `campaigns` | `campaign_id`, `advertiser_id`, `campaign_name`, `campaign_type`, `start_date`, `end_date`, `budget_cents` | Budget stored in cents |
-    | `impressions` | `impression_id`, `campaign_id`, `content_id`, `impression_date`, `impressions_count`, `clicks` | One row per campaign/content/day |
-    | `spend` | `spend_id`, `campaign_id`, `spend_date`, `spend_cents`, `platform_fee_cents` | Daily spend record; can update retroactively |
+    | Table | Key columns |
+    |-------|-------------|
+    | `campaigns` | `campaign_id`, `advertiser_id`, `campaign_name`, `campaign_type`, `start_date`, `end_date`, `budget_cents` |
+    | `impressions` | `impression_id`, `campaign_id`, `content_id`, `impression_date`, `impressions_count`, `clicks` |
+    | `spend` | `spend_id`, `campaign_id`, `spend_date`, `spend_cents`, `platform_fee_cents` |
 
 ---
 
