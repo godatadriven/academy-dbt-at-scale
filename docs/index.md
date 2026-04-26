@@ -1,6 +1,6 @@
 # Welcome to dbt@scale
 
-A two-day hands-on workshop where you tackle a real-world dbt project under the hood of **MediaPulse** - a fictional media conglomerate built to break in exactly the ways real data warehouses do.
+A two-day hands-on workshop where you tackle a real-world dbt project under the hood of **MediaPulse**.
 
 ---
 
