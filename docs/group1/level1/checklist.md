@@ -4,13 +4,11 @@
 
 Start here to practice and apply the dbt fundamental skills:
 
-- **Sources**
-- **Testing** primary keys
+- **Sources** and source freshness
+- **Testing** primary keys with built-in tests
 - **Staging models**
 - **Documentation**
-- **Making use of packages**:
-    - `dbt_utils`
-    - `codegen`
+- **Making use of packages**: `codegen` 
 
 Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
 
@@ -76,7 +74,37 @@ Create the file `models/staging/streaming/_streaming__sources.yml`. Define a sou
 
 ---
 
-## Step 3 - Add source freshness config
+## Step 3 - Add generic tests to sources
+
+- [ ] Step complete
+
+Add the following tests to the primary keys of each table:
+- `not_null`
+- `unique` 
+
+You will need to add a new key called `columns:` to configure the name of the primary key column. Then you'll need to add the key `data_tests:`.
+
+??? tip "Hint: Tests on source columns"
+    ```yaml
+    tables:
+      - name: table_name
+        identifier: table_name
+        columns:
+          - name: column_name
+            tests:
+              - not_null
+              - unique
+    ```
+
+    Run source tests:
+
+    ```bash
+    dbt test --select source:streaming
+    ```
+
+---
+
+## Step 4 - Add source freshness config
 
 - [ ] Step complete
 
@@ -109,36 +137,6 @@ Use autocomplete (tab) as this will auto populate what you need to add to config
     ```
 
     dbt compares `max(watched_at)` against the current timestamp and raises a warning or error if data is older than the threshold.
-
----
-
-## Step 4 - Add generic tests to sources
-
-- [ ] Step complete
-
-Add the following tests to the primary keys of each table:
-- `not_null`
-- `unique` 
-
-You will need to add a new key called `columns:` to configure the name of the primary key column. Then you'll need to add the key `data_tests:`.
-
-??? tip "Hint: Tests on source columns"
-    ```yaml
-    tables:
-      - name: table_name
-        identifier: table_name
-        columns:
-          - name: column_name
-            tests:
-              - not_null
-              - unique
-    ```
-
-    Run source tests:
-
-    ```bash
-    dbt test --select source:streaming
-    ```
 
 ---
 
@@ -283,23 +281,12 @@ dbt test --select staging.streaming
 Fix any failures. A test failure is information - read the error message, query the failing rows, understand why.
 
 ??? tip "Hint: Investigating a test failure"
-    To see failing rows for a `not_null` test on `content_id`:
-
-    ```sql
-    select *
-    from {{ ref('stg_streaming__content_catalog') }}
-    where content_id is null
-    ```
-
-    For an `accepted_values` failure, see which unexpected values exist:
-
-    ```sql
-    select distinct genre
-    from {{ ref('stg_streaming__content_catalog') }}
-    order by 1
-    ```
-
-    Decide: fix the source assertion (update the accepted list) or fix the data transformation.
+    To see failing rows for any test:
+    - navigate to the failing test and toggle `Debug logs`
+    - find the code being executed to run the test (see below for an example)
+    - copy and paste the code into an untitled file
+    - run the code (preview) to see which rows are causing the tests to fail
+    - decide on the best course of action to fix the failing tests
 
 ---
 
