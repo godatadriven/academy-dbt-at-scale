@@ -278,7 +278,7 @@ To run all tests run:
 - `dbt test --select source:streaming+`
 
 To run *only* on the sources:
-- `dbt test --select source:streaming+`
+- `dbt test --select source:streaming`
 
 To run *only* on the staging models:
 - `dbt test --select staging.streaming`
