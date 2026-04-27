@@ -24,8 +24,7 @@ with
             content_id,
             watched_at,
             watch_duration_seconds,
-            lower(trim(device_type)) as device_type
-
+            {{ clean_string("device_type") }} as device_type
         from source
 
     )

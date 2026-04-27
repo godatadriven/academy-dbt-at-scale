@@ -52,3 +52,9 @@ models:
                   - tablet
                   - web
                   - mobile
+      - name: content_id
+        data_tests:
+          - relationships:
+              arguments: 
+                to: ref('stg_streaming__content_catalog')
+                field: content_id
