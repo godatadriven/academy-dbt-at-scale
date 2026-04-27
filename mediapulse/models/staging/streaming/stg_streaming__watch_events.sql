@@ -18,7 +18,7 @@ with
                 dbt_utils.generate_surrogate_key(
                     ["event_id", "user_id", "watched_at"]
                 )
-            }} as dbt_hash_key,
+            }} as watch_event_sk,
             event_id,
             user_id,
             content_id,

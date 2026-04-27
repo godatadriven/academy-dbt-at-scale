@@ -12,7 +12,7 @@ renamed as (
         content_id,
         title,
         {{ clean_string('genre') }} as genre,
-        {{ clean_string('content_type') }} as content_type,
+        {{ clean_string('ctnt_type') }} as content_type,
         release_date,
         runtime_minutes
 

@@ -8,8 +8,13 @@ models:
         data_tests:
           - unique
           - not_null
+
   - name: stg_streaming__subscriptions
     description: ""
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments:
+            min_value: 5
     columns:
       - name: subscription_id
         data_tests:
@@ -18,7 +23,7 @@ models:
       - name: subscription_status
         data_tests:
           - accepted_values:
-              arguments: 
+              arguments:
                 values:
                   - paused
                   - cancelled
@@ -27,34 +32,74 @@ models:
       - name: plan_type
         data_tests:
           - accepted_values:
-              arguments: 
+              arguments:
                 values:
                   - premium
                   - standard
                   - basic
+      - name: monthly_fee_dollars
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                row_condition: "subscription_status = 'trialing'"
+
   - name: stg_streaming__watch_events
     description: ""
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments: 
+            min_value: 10
     columns:
       - name: sf_hash_key
+        description: Created with Snowflake's MD5() function
         data_tests:
           - unique
           - not_null
-      - name: dbt_hash_key
+      - name: watch_event_sk
+        description: Created with dbt_utils.generate_surrogate_key
         data_tests:
           - unique
           - not_null
       - name: device_type
         data_tests:
           - accepted_values:
-              arguments: 
-                values: 
+              arguments:
+                values:
                   - smart tv
                   - tablet
                   - web
                   - mobile
+                  - console
+              config:
+                store_failures: true
+          - dbt_expectations.expect_column_distinct_values_to_contain_set:
+              arguments: 
+                value_set: 
+                  - smart tv
+                  - tablet
+                  - web
+                  - mobile
+                  # - console # commented out - with this in the test will fail
+              config:
+                store_failures: true
       - name: content_id
         data_tests:
           - relationships:
-              arguments: 
+              arguments:
                 to: ref('stg_streaming__content_catalog')
                 field: content_id
+      - name: event_id
+        description: Example of using a where statement - not recommended in this case!
+        data_tests:
+          - unique:
+              arguments:
+                config:
+                  where: "coalesce(lower(trim(device_type)), '') <> 'mobile'"
+                  store_failures: true
+      - name: watch_duration_seconds
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 24*60*60
