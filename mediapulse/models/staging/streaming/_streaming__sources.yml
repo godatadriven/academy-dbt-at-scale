@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: streaming
+    schema: streaming
+    tables:
+      - name: content_catalog
+        identifier: content_ctlg
+        columns:
+          - name: content_id
+            data_tests:
+              - unique 
+              - not_null
+      - name: subscriptions
+        identifier: subscriptions_lifecycle_rec
+        columns:
+          - name: subscription_id
+            data_tests:
+              - unique 
+              - not_null
+      - name: watch_events
+        identifier: usr_watch_events_log
+        columns:
+          - name: event_id
+            data_tests:
+              - unique 
+              - not_null

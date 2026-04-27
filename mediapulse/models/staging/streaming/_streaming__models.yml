@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: stg_streaming__content_catalog
+    description: ""
+    columns:
+      - name: content_id
+        data_tests:
+          - unique
+          - not_null
+  - name: stg_streaming__subscriptions
+    description: ""
+    columns:
+      - name: subscription_id
+        data_tests:
+          - unique
+          - not_null
+  - name: stg_streaming__watch_events
+    description: ""
+    columns:
+      - name: sf_hash_key
+        data_tests:
+          - unique
+          - not_null
+      - name: dbt_hash_key
+        data_tests:
+          - unique
+          - not_null
