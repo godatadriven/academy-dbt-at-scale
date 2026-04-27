@@ -7,7 +7,7 @@ with
         select
             subscription_id,
             user_id,
-            plan_type,
+            lower(trim(plan_type)) as plan_type,
             lower(trim(status)) as subscription_status,
             cast(start_date || ' ' || start_time as timestamp) as started_at,
             cast(end_date || ' ' || end_time as timestamp) as ended_at,

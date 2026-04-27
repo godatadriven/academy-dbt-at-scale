@@ -24,7 +24,7 @@ with
             content_id,
             watched_at,
             watch_duration_seconds,
-            device_type
+            lower(trim(device_type)) as device_type
 
         from source
 

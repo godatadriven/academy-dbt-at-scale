@@ -15,6 +15,23 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: subscription_status
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values:
+                  - paused
+                  - cancelled
+                  - active
+                  - trialing
+      - name: plan_type
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values:
+                  - premium
+                  - standard
+                  - basic
   - name: stg_streaming__watch_events
     description: ""
     columns:
@@ -26,3 +43,12 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: device_type
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: 
+                  - smart tv
+                  - tablet
+                  - web
+                  - mobile
