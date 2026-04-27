@@ -187,14 +187,24 @@ Create `models/staging/streaming/stg_streaming__subscriptions.sql`.
 **Goals**: Make the following changes to clean the data
 
 - Convert all cents columns to dollars 
-- Normalise the `status` column and rename to `subscription_status`
+- Normalize the `status` column and rename to `subscription_status`
 - Create two new `timestamp` columns from the existing date and time columns
     - `started_at`: from `start_date` and `start_time`
     - `ended_at`: from `end_date` and `end_time`
 
-??? tip "Hint: Handling cents"
+??? tip "Hint: Handling centsc conversion"
     ```sql
     column_in_cents / 100.0 as column_in_dollars
+    ```
+
+??? tip "Hint: Handling status column normalization"
+    ```sql
+    lower(trim(...)) as new_column
+    ```
+
+??? tip "Hint: Handling date columns"
+    ```sql
+    cast(column_date || ' ' || column_time as timestamp) as new_column_name,
     ```
 
 ---
@@ -214,14 +224,13 @@ This is the highest-volume table - fact-style, one row per viewing event. The va
 ??? tip "Hint: Using Snowflake's MD5 function"
     Snowflake's `MD5` function will create a hash key from a given value. To get one value you first need to concatencate the columns and then use the `MD5` function on that result - see below for an example.
     ```sql
-    SELECT MD5(
+    MD5(
         CONCAT(
             COALESCE(column_1, ''), '|',
             COALESCE(column_2, ''), '|',
             COALESCE(column_3, '')
-        )
-    ) AS hash_key
-    FROM your_table
+        ) 
+    ) AS hash_key,
     ```
 
 ??? tip "Hint: Surrogate key with dbt_utils"
