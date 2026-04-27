@@ -217,10 +217,6 @@ Create `models/staging/streaming/stg_streaming__watch_events.sql`.
 
 This is the highest-volume table - fact-style, one row per viewing event. The values in `event_id` are reused when the source data collects the event stream data. This means that this column is not unique.
 
-**Goals**: Create a surrogate key 
-    - Use Snowflake's `MD5` function to create a surrogate key
-    - Update your code to use the `generate_surrogate_key` function from the `dbt_utils` package
-
 ??? tip "Hint: Using Snowflake's MD5 function"
     Snowflake's `MD5` function will create a hash key from a given value. To get one value you first need to concatencate the columns and then use the `MD5` function on that result - see below for an example.
     ```sql
@@ -231,16 +227,6 @@ This is the highest-volume table - fact-style, one row per viewing event. The va
             COALESCE(column_3, '')
         ) 
     ) AS hash_key,
-    ```
-
-??? tip "Hint: Surrogate key with dbt_utils"
-    Check that `dbt_utils` is mentioned in `packages.yml`.
-    Now you can use the functions from this package. Here's the syntax for using the `generate_surrogate_key` function:
-
-    ```sql
-    {{
-        dbt_utils.generate_surrogate_key(['column_1', 'column_2', 'column_3'])
-    }}   as name_of_column
     ```
 
 ---

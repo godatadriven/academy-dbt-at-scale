@@ -7,6 +7,7 @@ Start on this checklist once you have completed [Checklist Level 1](../level1/ch
 In this level you will apply the following skills:
 
 - **Further testing** - `accepted_values` and `relationships`
+- **External package** - Use the surrogate key macro from dbt_utils
 - **Jinja & Macros** - `clean_string` and `cents_to_dollars`
 - **Singular tests** - custom SQL assertions
 
@@ -109,7 +110,25 @@ Add a `relationships` test to `stg_streaming__watch_events` to assert that every
 
 ---
 
-## Step 3 - Write a `clean_string` macro
+## Step 3 - Use the `dbt_utils.generate_surrogate_key()` macro
+
+Replace your code that uses the `MD5` function in `stg_streaming__watch_events` so that it uses the macro from the `dbt_utils` package.
+    - Check that dbt_utils is in the `packages.yml` file
+    - Look up the [generate_surrogate_key](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/#generate_surrogate_key%20(source):~:text=generate_series(upper_bound%3D1000)%20%7D%7D-,generate_surrogate_key%20(source),-This%20macro%20implements) documentation to see how it works
+    - Update your code to use the `generate_surrogate_key` function from the `dbt_utils` package
+
+??? tip "Hint: Surrogate key with dbt_utils"
+    Here's the syntax for using the `generate_surrogate_key` function:
+
+    ```sql
+    {{
+        dbt_utils.generate_surrogate_key(['column_1', 'column_2', 'column_3'])
+    }}   as name_of_column
+    ```
+
+---
+
+## Step 4 - Write a `clean_string` macro
 
 - [ ] Step complete
 
