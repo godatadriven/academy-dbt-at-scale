@@ -135,23 +135,25 @@ You can run this snapshot on the source data using the `source()` macro.
 
 ??? tip "Hint: Snapshot block"
 
-    Add the following yaml
+    Create a `.sql` file inside the `snapshots/` directory using this structure:
 
-    ```yaml
+    ```sql
+    {% snapshot snap_name %}
 
-    snapshots:
-      - name: <string> # the name of your snapshot
-        +relation: source('my_source', 'my_table') | ref('my_model')
-        +database: <string>
-        +schema: <string>
-        +alias: <string>
-        +unique_key: <column_name_or_expression>
-        +strategy: timestamp | check # choose the most appropriate
-        +updated_at: <column_name> # only when timestamp strategy is selected
-        +check_cols: [<column_name>] | all # only when timestamp strategy is selected
-        +dbt_valid_to_current: <string> # default is NULL
-        +hard_deletes: 'ignore' | 'invalidate' | 'new_record' # default is ignore
+    {{
+        config(
+            unique_key='<primary_key_column>',
+            strategy='timestamp',       -- or 'check'
+            updated_at='<updated_at_column>',  -- only for timestamp strategy
+        )
+    }}
+
+    select * from {{ source('source_name', 'table_name') }}
+
+    {% endsnapshot %}
     ```
+
+    The `target_schema` is already set to `snapshots` in `dbt_project.yml` — you don't need to repeat it.
 
     Run it:
 

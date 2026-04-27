@@ -219,6 +219,8 @@ Create `models/marts/content/content_performance.sql`. This mart should:
     **CTEs 1 & 2 - `articles` and `episodes`**  
     Pull from each staging model and rename columns into a shared schema that works for both content types. For columns that only apply to one content type, explicitly fill the other with a placeholder. Add a hardcoded column to identify which platform each row came from.
 
+    > **Note:** Episodes don't have a `category` column — it lives on `stg_podcasts__shows`. Join `stg_podcasts__shows` into the `episodes` CTE on `show_id` to bring it in.
+
     **CTE 3 - `combined`**  
     Stack both CTEs into one dataset, keeping all rows from both.
 

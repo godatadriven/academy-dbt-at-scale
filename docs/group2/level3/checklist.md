@@ -21,7 +21,7 @@ Work through the steps in order. Expand a hint only after you've had a genuine a
 Add the package to `packages.yml`:
 
 ```yaml
-- package: calogica/dbt_expectations
+- package: metaplane/dbt_expectations
   version: # check the current version on the dbt hub
 ```
 
@@ -131,7 +131,7 @@ Add statistical guardrails to the articles model:
                 min_value: <n>
                 max_value: <n>
             - dbt_expectations.expect_column_values_to_not_be_null:
-                mostly: <0-1>   # minimum fraction of non-null rows required
+                row_condition: "status = 'published'"  # scope the test to rows where null is not acceptable
     ```
 
 ---
@@ -170,7 +170,7 @@ Add mart-level guardrails:
 
 - The mart should have at least 30 rows
 - `platform` should only ever be `'news'` or `'podcasts'` - use `expect_column_distinct_values_to_equal_set` (this is stricter than `accepted_values`: it also fails if a *new* platform appears that isn't in the set)
-- `published_at` should never be null - use `expect_column_values_to_not_be_null` with `mostly: 1.0`
+- `published_at` should never be null - use `expect_column_values_to_not_be_null`
 
 ??? tip "Hint: Strict distinct value check"
     ```yaml
