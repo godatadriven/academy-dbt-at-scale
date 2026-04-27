@@ -41,9 +41,9 @@ select * from streaming.content_catalog
 
     - `monthly_fee_cents` in `subscriptions` - is this in the right unit for reporting?
     - `status` in `subscriptions` - what values exist? Are they consistent?
-    - `device_type` in `watch_events` - any inconsistent casing?
+    - `genre` or `content_type` in `content_catalog` - any inconsistent casing?
 
-    You'll use these observations to write accepted_values tests and decide where to apply your macros.
+    You'll use these observations to write tests and decide what transformations are needed at the staging layer.
 
 ---
 
