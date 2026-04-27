@@ -7,6 +7,7 @@ Start on this checklist once you have completed [Checklist Level 1](../level1/ch
 In this level you will apply the following skills:
 
 - **Further testing** - `accepted_values` and `relationships`
+- **External package** - Use the surrogate key macro from dbt_utils
 - **Jinja & Macros** - `clean_string` and `cents_to_dollars`
 - **Singular tests** - custom SQL assertions
 
@@ -109,7 +110,25 @@ Add a `relationships` test to `stg_streaming__watch_events` to assert that every
 
 ---
 
-## Step 3 - Write a `clean_string` macro
+## Step 3 - Use the `dbt_utils.generate_surrogate_key()` macro
+
+Replace your code that uses the `MD5` function in `stg_streaming__watch_events` so that it uses the macro from the `dbt_utils` package.
+    - Check that dbt_utils is in the `packages.yml` file
+    - Look up the [generate_surrogate_key](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/#generate_surrogate_key%20(source):~:text=generate_series(upper_bound%3D1000)%20%7D%7D-,generate_surrogate_key%20(source),-This%20macro%20implements) documentation to see how it works
+    - Update your code to use the `generate_surrogate_key` function from the `dbt_utils` package
+
+??? tip "Hint: Surrogate key with dbt_utils"
+    Here's the syntax for using the `generate_surrogate_key` function. Notice the need for the double curly braces! `{{ }}`
+
+    ```sql
+    {{
+        dbt_utils.generate_surrogate_key(['column_1', 'column_2', 'column_3'])
+    }}   as name_of_column
+    ```
+
+---
+
+## Step 4 - Write a `clean_string` macro
 
 - [ ] Step complete
 
@@ -130,7 +149,7 @@ Create `macros/clean_string.sql`. The macro should accept a column name and retu
 
 ---
 
-## Step 4 - Apply `clean_string` in your staging models
+## Step 5 - Apply `clean_string` in your staging models
 
 - [ ] Step complete
 
@@ -159,7 +178,7 @@ Does the `accepted_values` tests you wrote in Step 1 still pass?
 
 ---
 
-## Step 5 - Write a `cents_to_dollars` macro and apply it
+## Step 6 - Write a `cents_to_dollars` macro and apply it
 
 - [ ] Step complete
 
@@ -184,7 +203,7 @@ Then update `stg_streaming__subscriptions.sql` to use it for `monthly_fee_cents`
 
 ---
 
-## Step 6 - Write a singular test
+## Step 7 - Write a singular test
 
 - [ ] Step complete
 
@@ -224,7 +243,7 @@ Create `tests/assert_watch_duration_lte_runtime.sql`.
 
 ---
 
-## Step 7 - Run the full test suite
+## Step 8 - Run the full test suite
 
 - [ ] Step complete
 
@@ -237,7 +256,7 @@ Fix any remaining failures. A test failure is information - read the error, quer
 
 ---
 
-## Step 8 - BONUS: `dbt build` and check lineage
+## Step 9 - BONUS: `dbt build` and check lineage
 
 - [ ] Step complete
 
