@@ -41,9 +41,11 @@ Open `_ads__models.yml` and `_revenue__models.yml` and apply the following confi
 
 1. Set `severity: warn` on the `accepted_values` test for `campaign_type` - new campaign types may be introduced and shouldn't hard-fail CI.
 2. Add a `where` filter to the `not_null` test on `spend_dollars` in `stg_ads__spend` so it only evaluates rows where `spend_dollars > 0` (zero-spend rows are valid for paused campaigns).
-3. Set `severity: error` on the `relationships` test linking `fct_ad_impressions.campaign_id` → `stg_ads__campaigns` - a broken FK here means revenue is being allocated to campaigns that don't exist, which is a hard data error.
+3. Configure the `relationships` test linking `fct_ad_impressions.campaign_id` → `stg_ads__campaigns`. **You decide:** what severity is appropriate here, and why? Think about what a broken foreign key means for the revenue numbers downstream consumers will see, and what should happen in CI when it breaks. Be ready to defend your choice in the group discussion at the end of this level.
 
 ??? tip "Hint: Test config syntax"
+    A `config:` block nested under a test changes its behaviour:
+
     ```yaml
     - name: campaign_type
       data_tests:
@@ -64,7 +66,7 @@ Open `_ads__models.yml` and `_revenue__models.yml` and apply the following confi
             to: ref('stg_ads__campaigns')
             field: campaign_id
             config:
-              severity: error
+              severity: # your call
     ```
 
 ---
@@ -73,19 +75,13 @@ Open `_ads__models.yml` and `_revenue__models.yml` and apply the following confi
 
 - [ ] Step complete
 
-Revenue tests that fail are always worth investigating row-by-row. Enable `store_failures` on your `assert_revenue_lte_spend` singular test by adding a config block at the top of the file:
+Revenue tests that fail are always worth investigating row-by-row. Enable `store_failures` on your `assert_revenue_lte_spend` singular test, and cap the size of the resulting failures table with `limit`.
 
-```sql
-{{ config(store_failures=true, limit=200) }}
+Read the dbt docs on the config and figure out exactly where it goes for a singular test (it's a slightly different shape than for a generic test in YAML):
 
--- Fails (returns rows) if allocated revenue exceeds gross spend for any campaign/day
-select
-    campaign_id,
-    impression_date,
-    ...
-```
+- 📖 [`store_failures`](https://docs.getdbt.com/reference/resource-configs/store_failures?version=1.12)
 
-Run it:
+Once configured, run it:
 
 ```bash
 dbt test --select assert_revenue_lte_spend
@@ -93,14 +89,8 @@ dbt test --select assert_revenue_lte_spend
 
 Then query the failures table. Even if the test passes, confirm the failures table exists and is empty - that's proof the test ran correctly.
 
-??? tip "Hint: store_failures in singular tests"
-    For singular tests (`.sql` files in `tests/`), add the config macro at the top of the file:
-
-    ```sql
-    {{ config(store_failures=true, limit=200) }}
-    ```
-
-    For generic tests in YAML, use the `config:` block nested under the test definition.
+!!! note "Heads-up: dbt_expectations is needed from Step 4 onwards"
+    The next steps lean on `dbt_expectations`. If you skipped Step 1, find the package on the [dbt package hub](https://hub.getdbt.com/) and add it to your `packages.yml`, then run `dbt deps` to install it.
 
 ---
 
@@ -178,7 +168,30 @@ Set `mediapulse_revenue_dollars >= 0` as `severity: error` - negative revenue is
 
 ---
 
-## Step 6 - Run the full test suite and review severity split
+## Step 6 - Stretch your test suite: what else would you cover?
+
+- [ ] Step complete
+
+You've now applied generic tests, singular tests, severity/`where` config, `store_failures`, and a handful of `dbt_expectations` checks. Step back and ask: **what else would you test on these models if this were a real production pipeline?**
+
+Brainstorm with your group, then pick one or two extra tests to actually add. Some directions to consider:
+
+- **Within `dbt_utils`** (already installed): tests like `expression_is_true`, `equal_rowcount`, `recency`, or `mutually_exclusive_ranges` cover things that pure `not_null` / `unique` won't.
+- **Anomaly / freshness** - is the latest `impression_date` recent enough? Is yesterday's row count within 20% of the 7-day average?
+- **Cross-model invariants** - does the sum of `allocated_spend_dollars` reconcile to total `spend_dollars` per day? (You partly tested this in Level 2 Step 3 - tighten the tolerance, or add the inverse check.)
+- **Distribution shape** - `expect_column_quantile_values_to_be_between`, `expect_column_stdev_to_be_between` from `dbt_expectations`.
+
+Other packages worth looking at on the [dbt package hub](https://hub.getdbt.com/):
+
+- 📦 **[`elementary`](https://hub.getdbt.com/elementary-data/elementary/latest/)** - anomaly detection on volume, freshness, and column-level statistics out of the box.
+- 📦 **[`dbt_project_evaluator`](https://hub.getdbt.com/dbt-labs/dbt_project_evaluator/latest/)** - tests the *project itself* (model naming, missing tests, missing documentation) rather than the data.
+- 📦 **[`dbt_meta_testing`](https://hub.getdbt.com/tnightengale/dbt_meta_testing/latest/)** - assert that every model has a minimum set of tests/docs.
+
+Pick one or two ideas, add them to your YAML or `tests/` folder, and run them. Note what was easy vs awkward to express - test gaps usually live in that awkwardness.
+
+---
+
+## Step 7 - Run the full test suite and review severity split
 
 - [ ] Step complete
 

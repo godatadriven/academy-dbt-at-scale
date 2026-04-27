@@ -70,6 +70,8 @@ Create `models/marts/revenue/revenue_by_content.sql`. This mart allocates ad spe
             is_.impression_date,
             is_.campaign_id,
             c.campaign_type,
+            s.spend_dollars,
+            s.net_spend_dollars,
             is_.impression_share * s.spend_dollars     as allocated_spend_dollars,
             is_.impression_share * s.net_spend_dollars as allocated_net_spend_dollars
         from impression_share is_
@@ -195,7 +197,18 @@ Create `tests/assert_no_negative_spend.sql`. Negative values in `stg_ads__spend`
 
 Create `models/staging/ads/_ads__models.yml` and `models/marts/revenue/_revenue__models.yml`. Document columns and add tests.
 
-Include a `relationships` test on `fct_ad_impressions.campaign_id` → `stg_ads__campaigns.campaign_id`.
+Include at minimum:
+
+- A `relationships` test on `fct_ad_impressions.campaign_id` → `stg_ads__campaigns.campaign_id`.
+- An `accepted_values` test on `campaign_type` in `stg_ads__campaigns`. Level 3 Step 2 will reconfigure this test - so make sure it exists.
+
+!!! info "Figuring out the accepted values"
+    You need to decide what values to put in the test. Two reasonable approaches:
+
+    - Query `stg_ads__campaigns` and pull the distinct `campaign_type` values.
+    - Look at `seeds/commission_lookup.csv` - the seed already enumerates the campaign types the platform supports.
+
+    The two should agree. If they don't, that's itself a finding worth noting.
 
 ??? tip "Hint: Relationships test"
     ```yaml
@@ -208,7 +221,10 @@ Include a `relationships` test on `fct_ad_impressions.campaign_id` → `stg_ads_
     ```
 
 ??? tip "Hint: Use codegen to scaffold the YAML"
-    Open an untitled file in dbt Cloud and compile:
+
+    [dbt-codegen](https://hub.getdbt.com/dbt-labs/codegen/latest/) generates model YAML so you don't have to write it by hand. If you installed it back in Level 1 Step 6, you're already set; otherwise add it to `packages.yml` and run `dbt deps`.
+
+    **Option A - compile in an untitled file:** open an untitled file in dbt Cloud, paste the following, and click `</>` **Compile**:
 
     ```sql
     {{ codegen.generate_model_yaml(
@@ -216,7 +232,13 @@ Include a `relationships` test on `fct_ad_impressions.campaign_id` → `stg_ads_
     ) }}
     ```
 
-    Paste the output into your YAML files, then fill in descriptions and add any additional tests.
+    **Option B - use `dbt run-operation`:** prefer this if you'd rather stay on the command line. It prints the same YAML to stdout:
+
+    ```bash
+    dbt run-operation generate_model_yaml --args '{"model_names": ["stg_ads__campaigns", "stg_ads__spend", "stg_ads__impressions", "fct_ad_impressions", "revenue_by_content"]}'
+    ```
+
+    Either way: paste the output into your YAML files, then fill in descriptions and add any additional tests (including the `accepted_values` and `relationships` ones above).
 
 ---
 

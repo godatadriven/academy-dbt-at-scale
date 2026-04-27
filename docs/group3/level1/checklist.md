@@ -105,9 +105,17 @@ dbt seed --select commission_lookup
 
 - [ ] Step complete
 
-Create `models/staging/ads/stg_ads__campaigns.sql`. Rename columns, convert budget to dollars, and lowercase `campaign_type`.
+Create `models/staging/ads/stg_ads__campaigns.sql`. Apply the staging conventions you've seen elsewhere in the project: clean up the raw columns so the model is comfortable to consume downstream.
 
-??? tip "Hint: Starter template"
+A couple of fields will need some transformation before they're usable - take a look at the raw data and decide what needs adjusting (think about units, casing, and any obviously-not-ready-for-analysis values).
+
+??? tip "Hint: Things to look at"
+    - Monetary values in the raw data aren't in the unit you'd want to report on. The `dbt_utils` package (already in `packages.yml`) ships a macro that handles this exact conversion - search the [dbt_utils docs](https://github.com/dbt-labs/dbt-utils) for the right one.
+    - String columns coming from upstream systems are rarely consistent in case/whitespace - normalise the obvious offenders.
+    - Date-like columns may arrive as strings; cast where appropriate.
+
+    Skeleton to get you started:
+
     ```sql
     with source as (
         select * from {{ source('ads', 'campaigns') }}
@@ -116,22 +124,12 @@ Create `models/staging/ads/stg_ads__campaigns.sql`. Rename columns, convert budg
     renamed as (
         select
             campaign_id,
-            advertiser_id,
-            campaign_name,
-            lower(trim(campaign_type))          as campaign_type,
-            cast(start_date as date)            as start_date,
-            cast(end_date as date)              as end_date,
-            budget_cents / 100.0               as budget_dollars
+            -- ... pass through / rename / clean other columns
+            -- {{ dbt_utils.<macro_name>('budget_cents') }} as budget_dollars
         from source
     )
 
     select * from renamed
-    ```
-
-    If Group 1's `cents_to_dollars` macro is available in the project, use it:
-
-    ```sql
-    {{ cents_to_dollars('budget_cents') }} as budget_dollars
     ```
 
 ---
@@ -142,25 +140,12 @@ Create `models/staging/ads/stg_ads__campaigns.sql`. Rename columns, convert budg
 
 Create `models/staging/ads/stg_ads__spend.sql`. This is a transactional table - do not deduplicate; each row is a distinct daily spend record.
 
+While you're shaping this model, think about what *metrics* a downstream mart would actually need from spend data. Gross spend is the obvious one - but is there a more useful "what MediaPulse actually keeps" figure that can be derived from the columns you already have? Add it as a derived column (a downstream test in Level 2 will reference it).
+
 ??? tip "Hint"
-    ```sql
-    with source as (
-        select * from {{ source('ads', 'spend') }}
-    ),
-
-    renamed as (
-        select
-            spend_id,
-            campaign_id,
-            cast(spend_date as date)                        as spend_date,
-            spend_cents / 100.0                             as spend_dollars,
-            platform_fee_cents / 100.0                      as platform_fee_dollars,
-            (spend_cents - platform_fee_cents) / 100.0      as net_spend_dollars
-        from source
-    )
-
-    select * from renamed
-    ```
+    - Apply the same cents → dollars conversion you used in Step 4.
+    - Look at the raw columns: there's a fee component sitting alongside gross spend. A simple subtraction gives you the "net" view.
+    - **Name the derived column `net_spend_dollars`** - Level 2 and Level 3 reference it by that exact name.
 
 ---
 
@@ -170,30 +155,43 @@ Create `models/staging/ads/stg_ads__spend.sql`. This is a transactional table - 
 
 Create `models/staging/ads/stg_ads__impressions.sql`. Keep the daily grain - one row per `(campaign_id, content_id, impression_date)`.
 
-??? tip "Hint"
-    ```sql
-    with source as (
-        select * from {{ source('ads', 'impressions') }}
-    ),
+Think about what derived metrics a marketing analyst would expect from an impressions model. Raw counts are fine, but **click-through rate** is the headline metric anyone touching ad performance will look for. Add it as a column - and watch out for the obvious divide-by-zero edge case.
 
-    renamed as (
-        select
-            impression_id,
-            campaign_id,
-            content_id,
-            cast(impression_date as date)   as impression_date,
-            impressions_count,
-            clicks,
-            case
-                when impressions_count > 0
-                then round(clicks / impressions_count::decimal, 4)
-                else 0
-            end                             as click_through_rate
-        from source
-    )
+!!! tip "Use the **Generate model** button"
+    Rather than typing the boilerplate by hand, in dbt Cloud you can right-click the source table in the file tree and choose **Generate model** - it scaffolds a staging model with all source columns selected. Then layer your transformations (rename, cast, derived metrics) on top. Same idea Group 2 used.
 
-    select * from renamed
+??? tip "Hint: Use codegen to scaffold the staging SQL"
+
+    [dbt-codegen](https://hub.getdbt.com/dbt-labs/codegen/latest/) can generate the boilerplate `select` for a staging model so you don't have to type every column by hand. You'll use this package again in Level 2 for YAML generation.
+
+    **1. Add the package to `packages.yml`** by adding the following two lines under `dbt_utils`:
+
+    ```yaml
+    - package: dbt-labs/codegen
+      version: 0.13.1
     ```
+
+    **2. Install it:** It should automatically install, however to manually do this you can run the following in the command line.
+
+    ```bash
+    dbt deps
+    ```
+
+    **3. Open a new (or existing) untitled file in dbt Cloud and paste the following, then click `</>` **Compile**:**
+
+    ```sql
+    {{ codegen.generate_base_model(
+        source_name='ads',
+        table_name='impressions'
+    ) }}
+    ```
+
+    Copy the compiled output into `stg_ads__impressions.sql` and layer your transformations (cast `impression_date`, derive `click_through_rate`) on top.
+
+??? tip "Hint: Things to think about"
+    - One row per `(campaign_id, content_id, impression_date)` - don't aggregate further.
+    - For CTR: it's `clicks / impressions_count` *but* what should the value be when `impressions_count = 0`? `nullif` or a `case` statement both work.
+    - Round CTR to a sensible number of decimal places so downstream consumers don't see noise.
 
 ---
 
@@ -203,20 +201,25 @@ Create `models/staging/ads/stg_ads__impressions.sql`. Keep the daily grain - one
 
 Create `models/marts/revenue/fct_ad_impressions.sql`. This is the high-volume fact table - it must be incremental to be practical.
 
-Requirements:
+The model should be `materialized='incremental'` (full rebuilds on a high-volume fact table are not viable in production). Beyond that, you'll need to figure out the rest:
 
-- `materialized='incremental'`
-- `unique_key='impression_id'`
-- `incremental_strategy='merge'`
-- The `is_incremental()` filter should only pick up rows where `impression_date >= max(impression_date)` in the current table
+- Tell dbt how to identify each row so an incremental run knows what to upsert (which config key?).
+- Pick a strategy - rows in upstream `spend` can be retroactively corrected, so *appending* would create duplicates. What strategy upserts instead?
+- On subsequent runs, only process rows newer than what's already been built - look up which dbt config / built-in macros let you reference "the existing version of this model" inside the SQL.
 
-??? tip "Hint: Full incremental model"
+Browse the dbt docs on [incremental models](https://docs.getdbt.com/docs/build/incremental-models) and [`is_incremental()`](https://docs.getdbt.com/docs/build/incremental-models#understanding-the-is_incremental-macro) - you'll need to figure out the correct config keys yourself.
+
+??? tip "Hint: Skeleton to fill in"
+    A staging-to-fact incremental model has three pieces: a `config()` block, a `with ... select` body that joins what you need from staging, and an `{% if is_incremental() %}` filter that limits the rows processed on incremental runs.
+
+    Use `{{ this }}` inside the incremental branch - it resolves to the existing version of the model you're building, so you can subselect `max(impression_date)` (or whatever your high-watermark column is) from it.
+
     ```sql
     {{
         config(
             materialized='incremental',
-            unique_key='impression_id',
-            incremental_strategy='merge'
+            unique_key='...',
+            incremental_strategy='...'
         )
     }}
 
@@ -224,33 +227,16 @@ Requirements:
         select * from {{ ref('stg_ads__impressions') }}
     ),
 
-    campaigns as (
-        select
-            campaign_id,
-            campaign_type,
-            advertiser_id
-        from {{ ref('stg_ads__campaigns') }}
-    ),
+    -- join campaigns to attach campaign_type / advertiser_id
 
-    joined as (
-        select
-            i.impression_id,
-            i.campaign_id,
-            i.content_id,
-            i.impression_date,
-            i.impressions_count,
-            i.clicks,
-            i.click_through_rate,
-            c.campaign_type,
-            c.advertiser_id
-        from impressions i
-        left join campaigns c using (campaign_id)
+    final as (
+        -- shape the row you want in the fact table
     )
 
-    select * from joined
+    select * from final
 
     {% if is_incremental() %}
-        where impression_date >= (select max(impression_date) from {{ this }})
+        -- only process rows newer than what's already in {{ this }}
     {% endif %}
     ```
 
