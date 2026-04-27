@@ -190,7 +190,7 @@ Create `models/staging/streaming/stg_streaming__subscriptions.sql`.
     - `started_at`: from `start_date` and `start_time`
     - `ended_at`: from `end_date` and `end_time`
 
-??? tip "Hint: Handling centsc conversion"
+??? tip "Hint: Handling cents conversion"
     ```sql
     column_in_cents / 100.0 as column_in_dollars
     ```
