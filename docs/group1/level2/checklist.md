@@ -118,7 +118,7 @@ Replace your code that uses the `MD5` function in `stg_streaming__watch_events` 
     - Update your code to use the `generate_surrogate_key` function from the `dbt_utils` package
 
 ??? tip "Hint: Surrogate key with dbt_utils"
-    Here's the syntax for using the `generate_surrogate_key` function:
+    Here's the syntax for using the `generate_surrogate_key` function. Notice the need for the double curly braces! `{{ }}`
 
     ```sql
     {{
@@ -149,7 +149,7 @@ Create `macros/clean_string.sql`. The macro should accept a column name and retu
 
 ---
 
-## Step 4 - Apply `clean_string` in your staging models
+## Step 5 - Apply `clean_string` in your staging models
 
 - [ ] Step complete
 
@@ -178,7 +178,7 @@ Does the `accepted_values` tests you wrote in Step 1 still pass?
 
 ---
 
-## Step 5 - Write a `cents_to_dollars` macro and apply it
+## Step 6 - Write a `cents_to_dollars` macro and apply it
 
 - [ ] Step complete
 
@@ -203,7 +203,7 @@ Then update `stg_streaming__subscriptions.sql` to use it for `monthly_fee_cents`
 
 ---
 
-## Step 6 - Write a singular test
+## Step 7 - Write a singular test
 
 - [ ] Step complete
 
@@ -243,7 +243,7 @@ Create `tests/assert_watch_duration_lte_runtime.sql`.
 
 ---
 
-## Step 7 - Run the full test suite
+## Step 8 - Run the full test suite
 
 - [ ] Step complete
 
@@ -256,7 +256,7 @@ Fix any remaining failures. A test failure is information - read the error, quer
 
 ---
 
-## Step 8 - BONUS: `dbt build` and check lineage
+## Step 9 - BONUS: `dbt build` and check lineage
 
 - [ ] Step complete
 
