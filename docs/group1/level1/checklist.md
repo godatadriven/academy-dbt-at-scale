@@ -189,8 +189,8 @@ Create `models/staging/streaming/stg_streaming__subscriptions.sql`.
 - Convert all cents columns to dollars 
 - Normalise the `status` column and rename to `subscription_status`
 - Create two new `timestamp` columns from the existing date and time columns
-    - `started_at`
-    - `ended_at`
+    - `started_at`: from `start_date` and `start_time`
+    - `ended_at`: from `end_date` and `end_time`
 
 ??? tip "Hint: Handling cents"
     ```sql
