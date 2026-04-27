@@ -4,13 +4,11 @@
 
 Start here to practice and apply the dbt fundamental skills:
 
-- **Sources**
-- **Testing** primary keys
+- **Sources** and source freshness
+- **Testing** primary keys with built-in tests
 - **Staging models**
 - **Documentation**
-- **Making use of packages**:
-    - `dbt_utils`
-    - `codegen`
+- **Making use of packages**: `codegen` 
 
 Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
 
@@ -76,7 +74,37 @@ Create the file `models/staging/streaming/_streaming__sources.yml`. Define a sou
 
 ---
 
-## Step 3 - Add source freshness config
+## Step 3 - Add generic tests to sources
+
+- [ ] Step complete
+
+Add the following tests to the primary keys of each table:
+- `not_null`
+- `unique` 
+
+You will need to add a new key called `columns:` to configure the name of the primary key column. Then you'll need to add the key `data_tests:`.
+
+??? tip "Hint: Tests on source columns"
+    ```yaml
+    tables:
+      - name: table_name
+        identifier: table_name
+        columns:
+          - name: column_name
+            tests:
+              - not_null
+              - unique
+    ```
+
+    Run source tests:
+
+    ```bash
+    dbt test --select source:streaming
+    ```
+
+---
+
+## Step 4 - Add source freshness config
 
 - [ ] Step complete
 
@@ -109,36 +137,6 @@ Use autocomplete (tab) as this will auto populate what you need to add to config
     ```
 
     dbt compares `max(watched_at)` against the current timestamp and raises a warning or error if data is older than the threshold.
-
----
-
-## Step 4 - Add generic tests to sources
-
-- [ ] Step complete
-
-Add the following tests to the primary keys of each table:
-- `not_null`
-- `unique` 
-
-You will need to add a new key called `columns:` to configure the name of the primary key column. Then you'll need to add the key `data_tests:`.
-
-??? tip "Hint: Tests on source columns"
-    ```yaml
-    tables:
-      - name: table_name
-        identifier: table_name
-        columns:
-          - name: column_name
-            tests:
-              - not_null
-              - unique
-    ```
-
-    Run source tests:
-
-    ```bash
-    dbt test --select source:streaming
-    ```
 
 ---
 
@@ -187,17 +185,25 @@ Create `models/staging/streaming/stg_streaming__subscriptions.sql`.
 **Goals**: Make the following changes to clean the data
 
 - Convert all cents columns to dollars 
-- Normalise the `status` column and rename to `subscription_status`
+- Normalize the `status` column and rename to `subscription_status`
 - Create two new `timestamp` columns from the existing date and time columns
-    - `started_at`
-    - `ended_at`
+    - `started_at`: from `start_date` and `start_time`
+    - `ended_at`: from `end_date` and `end_time`
 
-??? tip "Hint: Handling cents"
+??? tip "Hint: Handling cents conversion"
     ```sql
-    monthly_fee_cents / 100.0 as monthly_fee_dollars
+    column_in_cents / 100.0 as column_in_dollars
     ```
 
-    You'll replace this inline calculation with your `cents_to_dollars` macro in Step 9 after you've written it.
+??? tip "Hint: Handling status column normalization"
+    ```sql
+    lower(trim(...)) as new_column
+    ```
+
+??? tip "Hint: Handling date columns"
+    ```sql
+    cast(column_date || ' ' || column_time as timestamp) as new_column_name,
+    ```
 
 ---
 
@@ -209,31 +215,16 @@ Create `models/staging/streaming/stg_streaming__watch_events.sql`.
 
 This is the highest-volume table - fact-style, one row per viewing event. The values in `event_id` are reused when the source data collects the event stream data. This means that this column is not unique.
 
-**Goals**: Create a surrogate key 
-    - Use Snowflake's `MD5` function to create a surrogate key
-    - Update your code to use the `generate_surrogate_key` function from the `dbt_utils` package
-
 ??? tip "Hint: Using Snowflake's MD5 function"
     Snowflake's `MD5` function will create a hash key from a given value. To get one value you first need to concatencate the columns and then use the `MD5` function on that result - see below for an example.
     ```sql
-    SELECT MD5(
+    MD5(
         CONCAT(
             COALESCE(column_1, ''), '|',
             COALESCE(column_2, ''), '|',
             COALESCE(column_3, '')
-        )
-    ) AS hash_key
-    FROM your_table
-    ```
-
-??? tip "Hint: Surrogate key with dbt_utils"
-    Check that `dbt_utils` is mentioned in `packages.yml`.
-    Now you can use the functions from this package. Here's the syntax for using the `generate_surrogate_key` function:
-
-    ```sql
-    {{
-        dbt_utils.generate_surrogate_key(['column_1', 'column_2', 'column_3'])
-    }}   as name_of_column
+        ) 
+    ) AS hash_key,
     ```
 
 ---
@@ -283,34 +274,40 @@ You will use this to document all three staging models with (at a minimum) the f
 
 - [ ] Step complete
 
-```bash
-dbt test --select staging.streaming
-```
+To run all tests run:
+- `dbt test --select source:streaming+`
+
+To run *only* on the sources:
+- `dbt test --select source:streaming`
+
+To run *only* on the staging models:
+- `dbt test --select staging.streaming`
 
 Fix any failures. A test failure is information - read the error message, query the failing rows, understand why.
 
 ??? tip "Hint: Investigating a test failure"
-    To see failing rows for a `not_null` test on `content_id`:
+    To see failing rows for any test:
+    - navigate to the failing test and toggle `Debug logs`
+    - find the code being executed to run the test (see below for an example)
+    - copy and paste the code into an untitled file
+    - run the code (preview) to see which rows are causing the tests to fail
+    - decide on the best course of action to fix the failing tests
 
+    Example SQL code:
     ```sql
-    select *
-    from {{ ref('stg_streaming__content_catalog') }}
-    where content_id is null
+    select
+        content_id as unique_field,
+        count(*) as n_records
+
+    from MEDIAPULSE.streaming.content_ctlg
+    where content_id is not null
+    group by content_id
+    having count(*) > 1
     ```
-
-    For an `accepted_values` failure, see which unexpected values exist:
-
-    ```sql
-    select distinct genre
-    from {{ ref('stg_streaming__content_catalog') }}
-    order by 1
-    ```
-
-    Decide: fix the source assertion (update the accepted list) or fix the data transformation.
 
 ---
 
 !!! success "Done?"
-    You've added sources, source freshness checks, primary key built-in tests, creating staging models and used some common dbt packages to make your workflow more efficient.
+    You've added sources, source freshness checks, primary key built-in tests, creating staging models and used a common dbt package (`codegen`) to make your workflow more efficient.
 
     Now head to [Level 2](../level2/checklist.md) to continue applying new skills!

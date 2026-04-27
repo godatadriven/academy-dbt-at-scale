@@ -98,6 +98,7 @@ seeds:
       +alias: usr_watch_events_log
       +column_types:
         watched_at: varchar
+        batched_at: timestamp
     raw_ads__campaigns:
       +schema: ads
       +alias: campaigns
