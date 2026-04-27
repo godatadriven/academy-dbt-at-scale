@@ -293,6 +293,18 @@ Fix any failures. A test failure is information - read the error message, query 
     - run the code (preview) to see which rows are causing the tests to fail
     - decide on the best course of action to fix the failing tests
 
+    Example SQL code:
+    ```sql
+    select
+        content_id as unique_field,
+        count(*) as n_records
+
+    from MEDIAPULSE.streaming.content_ctlg
+    where content_id is not null
+    group by content_id
+    having count(*) > 1
+    ```
+
 ---
 
 !!! success "Done?"
