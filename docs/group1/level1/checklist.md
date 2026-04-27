@@ -194,10 +194,8 @@ Create `models/staging/streaming/stg_streaming__subscriptions.sql`.
 
 ??? tip "Hint: Handling cents"
     ```sql
-    monthly_fee_cents / 100.0 as monthly_fee_dollars
+    column_in_cents / 100.0 as column_in_dollars
     ```
-
-    You'll replace this inline calculation with your `cents_to_dollars` macro in Step 9 after you've written it.
 
 ---
 
