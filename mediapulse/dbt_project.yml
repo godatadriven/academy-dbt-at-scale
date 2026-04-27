@@ -91,8 +91,10 @@ seeds:
       +schema: streaming
       +alias: subscriptions_lifecycle_rec
       +column_types:
-        started_at: varchar
-        ended_at: varchar
+        start_date: varchar
+        start_time: varchar
+        end_date: varchar
+        end_time: varchar
     raw_streaming__watch_events:
       +schema: streaming
       +alias: usr_watch_events_log
