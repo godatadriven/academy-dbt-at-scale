@@ -274,9 +274,14 @@ You will use this to document all three staging models with (at a minimum) the f
 
 - [ ] Step complete
 
-```bash
-dbt test --select staging.streaming
-```
+To run all tests run:
+- `dbt test --select source:streaming+`
+
+To run *only* on the sources:
+- `dbt test --select source:streaming+`
+
+To run *only* on the staging models:
+- `dbt test --select staging.streaming`
 
 Fix any failures. A test failure is information - read the error message, query the failing rows, understand why.
 
