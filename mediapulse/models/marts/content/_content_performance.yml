@@ -4,12 +4,16 @@ models:
   - name: content_performance
     description: ""
     columns:
-      - name: content_id
+      - name: content_id_sk
         data_type: varchar
         description: ""
         data_tests:
           - unique
           - not_null
+
+      - name: content_id
+        data_type: varchar
+        description: ""
 
       - name: content_title
         data_type: varchar
@@ -36,3 +40,10 @@ models:
       - name: content_length_units
         data_type: number
         description: ""
+        data_tests:
+          - elementary.column_anomalies:
+              arguments: 
+                column_anomalies:
+                  - average
+                where_expression: "platform='podcasts'"
+                anomaly_sensitivity: 2

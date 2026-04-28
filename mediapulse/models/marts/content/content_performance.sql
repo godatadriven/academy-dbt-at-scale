@@ -36,6 +36,7 @@ combined as (
 
 with_category as (
     select
+        {{ dbt_utils.generate_surrogate_key(['content_id', 'platform']) }} as content_id_sk,
         c.*,
         cm.category_group
     from combined c
@@ -43,4 +44,4 @@ with_category as (
         using (category)
 )
 
-select * from combined
+select * from with_category

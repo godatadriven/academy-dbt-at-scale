@@ -22,6 +22,8 @@ clean-targets:
 # ---------------------------------------------------------------------------
 vars:
   raw_database: "RAW"   # change to match your warehouse setup
+  elementary:
+    elementary_schema: dbt_lushep_elementary
 
 # ---------------------------------------------------------------------------
 # Model materialisation defaults
