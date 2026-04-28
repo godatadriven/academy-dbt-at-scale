@@ -1,82 +1,81 @@
 seeds:
-  mediapulse:
     # Raw source seeds simulate the upstream data pipelines.
     # They land in the same schemas the source definitions point at,
     # so the project works without an external ingestion layer.
-    raw_news__authors:
-      +schema: news
-      +alias: authors
-      +column_types:
-        joined_at: varchar
-    raw_news__articles:
-      +schema: news
-      +alias: articles
-      +column_types:
-        published_at: varchar
-        updated_at: varchar
-    raw_news__articles_updated:
-      +schema: news
-      +alias: articles_updated
-      +column_types:
-        published_at: varchar
-        updated_at: varchar
-    raw_news__page_views:
-      +schema: news
-      +alias: views
-      +column_types:
-        viewed_at: varchar
-    raw_podcasts__shows:
-      +schema: podcasts
-      +alias: shows
-      +column_types:
-        launched_at: varchar
-    raw_podcasts__episodes:
-      +schema: podcasts
-      +alias: episodes
-      +column_types:
-        published_at: varchar
-    raw_podcasts__episodes_updated:
-      +schema: podcasts
-      +alias: episodes_updated
-      +column_types:
-        published_at: varchar
-    raw_podcasts__listens:
-      +schema: podcasts
-      +alias: listens
-      +column_types:
-        listened_at: varchar
-    raw_streaming__content_catalog:
-      +schema: streaming
-      +alias: content_ctlg
-      +column_types:
-        release_date: varchar
-    raw_streaming__subscriptions:
-      +schema: streaming
-      +alias: subscriptions_lifecycle_rec
-      +column_types:
-        start_date: varchar
-        start_time: varchar
-        end_date: varchar
-        end_time: varchar
-    raw_streaming__watch_events:
-      +schema: streaming
-      +alias: usr_watch_events_log
-      +column_types:
-        watched_at: varchar
-        batched_at: timestamp
-    raw_ads__campaigns:
-      +schema: ads
-      +alias: campaigns
-      +column_types:
-        start_date: varchar
-        end_date: varchar
-    raw_ads__impressions:
-      +schema: ads
-      +alias: impressions
-      +column_types:
-        impression_date: varchar
-    raw_ads__spend:
-      +schema: ads
-      +alias: spend
-      +column_types:
-        spend_date: varchar
+  raw_news__authors:
+    +schema: news
+    +alias: authors
+    +column_types:
+      joined_at: varchar
+  raw_news__articles:
+    +schema: news
+    +alias: articles
+    +column_types:
+      published_at: varchar
+      updated_at: varchar
+  raw_news__articles_updated:
+    +schema: news
+    +alias: articles_updated
+    +column_types:
+      published_at: varchar
+      updated_at: varchar
+  raw_news__page_views:
+    +schema: news
+    +alias: views
+    +column_types:
+      viewed_at: varchar
+  raw_podcasts__shows:
+    +schema: podcasts
+    +alias: shows
+    +column_types:
+      launched_at: varchar
+  raw_podcasts__episodes:
+    +schema: podcasts
+    +alias: episodes
+    +column_types:
+      published_at: varchar
+  raw_podcasts__episodes_updated:
+    +schema: podcasts
+    +alias: episodes_updated
+    +column_types:
+      published_at: varchar
+  raw_podcasts__listens:
+    +schema: podcasts
+    +alias: listens
+    +column_types:
+      listened_at: varchar
+  raw_streaming__content_catalog:
+    +schema: streaming
+    +alias: content_ctlg
+    +column_types:
+      release_date: varchar
+  raw_streaming__subscriptions:
+    +schema: streaming
+    +alias: subscriptions_lifecycle_rec
+    +column_types:
+      start_date: varchar
+      start_time: varchar
+      end_date: varchar
+      end_time: varchar
+  raw_streaming__watch_events:
+    +schema: streaming
+    +alias: usr_watch_events_log
+    +column_types:
+      watched_at: varchar
+      batched_at: timestamp
+  raw_ads__campaigns:
+    +schema: ads
+    +alias: campaigns
+    +column_types:
+      start_date: varchar
+      end_date: varchar
+  raw_ads__impressions:
+    +schema: ads
+    +alias: impressions
+    +column_types:
+      impression_date: varchar
+  raw_ads__spend:
+    +schema: ads
+    +alias: spend
+    +column_types:
+      spend_date: varchar
