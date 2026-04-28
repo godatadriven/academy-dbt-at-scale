@@ -129,9 +129,9 @@ Add a `relationships` test to `stg_streaming__watch_events` to assert that every
 
 Replace your code that uses the `MD5` function in `stg_streaming__watch_events` so that it uses the macro from the `dbt_utils` package.
 
-    - Check that dbt_utils is in the `packages.yml` file
-    - Look up the [generate_surrogate_key](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/#generate_surrogate_key%20(source):~:text=generate_series(upper_bound%3D1000)%20%7D%7D-,generate_surrogate_key%20(source),-This%20macro%20implements) documentation to see how it works
-    - Update your code to use the `generate_surrogate_key` function from the `dbt_utils` package
+- Check that dbt_utils is in the `packages.yml` file
+- Look up the [generate_surrogate_key](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/#generate_surrogate_key%20(source):~:text=generate_series(upper_bound%3D1000)%20%7D%7D-,generate_surrogate_key%20(source),-This%20macro%20implements) documentation to see how it works
+- Update your code to use the `generate_surrogate_key` function from the `dbt_utils` package
 
 ??? tip "Hint: Surrogate key with dbt_utils"
     Here's the syntax for using the `generate_surrogate_key` function. Notice the need for the `{{ double curly braces }}`! 
