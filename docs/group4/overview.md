@@ -63,13 +63,13 @@ A port of Great Expectations into dbt. Adds dozens of statistical tests beyond t
 ```yaml
 models:
   - name: fct_ad_impressions
-    tests:
+    data_tests:
       - dbt_expectations.expect_table_row_count_to_be_between:
           min_value: 1000
           max_value: 50000000
     columns:
       - name: impressions_count
-        tests:
+        data_tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 10000000

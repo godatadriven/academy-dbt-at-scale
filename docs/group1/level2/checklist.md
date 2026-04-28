@@ -287,7 +287,7 @@ Fix any remaining failures. A test failure is information - read the error, quer
 dbt build --select +staging.streaming
 ```
 
-This runs models and tests together in dependency order. Then open the DAG in dbt Cloud and confirm all three staging models appear with green source nodes from `raw_streaming`.
+This runs models and tests together in dependency order. Then open the DAG in dbt Cloud and confirm all three staging models appear with green source nodes from `streaming`.
 
 ??? tip "Hint: Generating docs"
     ```bash

@@ -126,7 +126,7 @@ There is already a `not_null` test, you can add the `unique` test below this.
         identifier: table_name
         columns:
           - name: column_name
-            tests:
+            data_tests:
               - not_null
               - unique
     ```
