@@ -96,7 +96,7 @@ You will need to add a new key called `columns:` to configure the name of the pr
               - unique
     ```
 
-    Run source tests:
+    Run source data_tests:
 
     ```bash
     dbt test --select source:streaming
