@@ -434,7 +434,5 @@ This builds the full lineage - sources → staging → incremental fact → mart
 !!! success "Done?"
     You've built the revenue spine of the MediaPulse data platform - a correct-grain mart, a campaign budget snapshot, and custom SQL assertions that verify revenue integrity.
 
-    Group 4 will use `dbt-expectations` to add statistical guardrails around these models. Share your mart YAML with them so they can build on it.
-
     Now head to [Level 3](../level3/checklist.md) to configure your tests with severity, `where` clauses, and `dbt_expectations` guardrails on your revenue models!
 

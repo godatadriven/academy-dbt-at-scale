@@ -242,7 +242,7 @@ The fact table should be at the **impression grain** (one row per `(campaign_id,
 Run it once and confirm the row count matches `stg_ads__impressions`:
 
 ```bash
-dbt run --select fct_ad_impressions
+dbt run --select +fct_ad_impressions
 ```
 
 ---
