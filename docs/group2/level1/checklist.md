@@ -14,11 +14,43 @@ Work through the steps in order. Expand a hint only after you've had a genuine a
 
 ---
 
-## Step 1 - Audit `stg_news__articles.sql`
+## Step 1 - Add tests to `stg_news__articles.sql`
+
 
 - [ ] Step complete
 
-Open `models/staging/news/stg_news__articles.sql` and read it carefully. Then query the raw source to see if there are any data inconsistencies that should be treated in the staging model.
+In the `_news__models.yml` ...
+
+- what is the primary key of the `stg_news__articles` model?
+- run `dbt test --select stg_news__articles` - what tests are already being executed?
+- which built-in test is missing for a primary key? Add it and rerun the test command.
+
+??? tip "Hint: Tests on source columns"
+    ```yaml
+    tables:
+      - name: table_name
+        identifier: table_name
+        columns:
+          - name: column_name
+            tests:
+              - not_null
+              - unique
+    ```
+
+    Run source tests:
+
+    ```bash
+    dbt test --select staging.news
+    ```
+
+Once you have rerun the command, you should see some errors - find the code that is being executed to run this test in the `command history -> Debug logs`. Can you see why it has errored?
+---
+
+## Step 2 - Audit `stg_news__articles.sql`
+
+- [ ] Step complete
+
+Open `models/staging/news/stg_news__articles.sql` and read it carefully. Query the raw source to see if there are any data inconsistencies that should be treated in the staging model.
 
 Look particularly at the article_id - is this unique? Use a window function to check.
 
@@ -53,7 +85,7 @@ Does the staging model handle this? What happens downstream if it doesn't?
 
 ---
 
-## Step 2 - Fix `stg_news__articles.sql`
+## Step 3 - Fix `stg_news__articles.sql`
 
 - [ ] Step complete
 
@@ -110,93 +142,9 @@ Apply the deduplication fix. Keep only the most recent row per `article_id` (hig
 
 ---
 
-## Step 3 - Add a unique test to `stg_news__articles.sql`
+## Step 4 - Use a package
 
-
-- [ ] Step complete
-
-In the `_news__models.yml` and a `unique` test to the primary key the table.
-
-There is already a `not_null` test, you can add the `unique` test below this.
-
-??? tip "Hint: Tests on source columns"
-    ```yaml
-    tables:
-      - name: table_name
-        identifier: table_name
-        columns:
-          - name: column_name
-            tests:
-              - not_null
-              - unique
-    ```
-
-    Run source tests:
-
-    ```bash
-    dbt test --select staging.news
-    ```
-
----
-
-## Step 4 - Audit `stg_podcasts__episodes.sql`
-
-- [ ] Step complete
-
-Open `models/staging/podcasts/stg_podcasts__episodes.sql` and try to run it.
-
-Read the error message and then inspect the raw table:
-
-```sql
-select * from podcasts.episodes
-```
-
-What is the issue?
-
-??? tip "Hint: The bug"
-    The staging model references the wrong column name in its `SELECT` clause - can you spot which one? 
-
-    **The fix:** replace the name of the column in the staging file to fix it.
-
-    Rerun the model to make sure it exists in the warehouse:
-
-    ```bash
-    dbt run -s +stg_podcasts__episodes
-    ```
-
-Say you want to list all episodes ordered chronologically. 
-
-Query the staging model in a separate tab and order by the column `season_episode`. What issue do you see? Go back to the staging model to correct this.
-
-??? tip "Hint: What is happening?"
-    The bug: season_episode is a string like '1-3', '2-3', '3-3' where the episode is the first value and the season the second. This is causing two issues:
-    - When ordering the primary order is from the episode title. Meaning all episode 1s will be together from all seasons, then episode 2s etc.
-    - Even if fixed, since this is a string, '3-10' will come before '3-9' because '1' < '9' as characters. Any downstream model ordering by `season_episode` will silently return episodes in the wrong order.
-
-    It won't error, the values look completely reasonable at a glance, and the second problem only becomes visible once you have `10+` episodes in a season.
-
----
-
-## Step 4 - Fix `stg_podcasts__episodes.sql`
-
-- [ ] Step complete
-
-Apply the fixes:
-
-- Correct the name of the column `episode_name`
-- Split out the season_episode to be two columns. Make sure to select the right number!
-    - season
-    - episode
-
-```bash
-dbt run --select stg_podcasts__episodes
-dbt test --select stg_podcasts__episodes
-```
-
-??? tip "Hint: Syntax needed"
-    ```sql
-    split_part(column_name, '-', 1)::int as new_column_name,
-    ```
+...
 
 ---
 
