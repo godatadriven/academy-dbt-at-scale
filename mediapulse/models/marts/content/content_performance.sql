@@ -45,3 +45,4 @@ with_category as (
 )
 
 select * from with_category
+order by 1
