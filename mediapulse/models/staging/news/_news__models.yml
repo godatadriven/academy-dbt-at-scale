@@ -12,6 +12,7 @@ models:
           Note: check raw_news.articles for uniqueness behaviour before adding a unique test here.
         tests:
           - not_null
+          - unique
       - name: article_title
         description: Article headline.
         tests:
