@@ -12,7 +12,7 @@ Welcome to dbt@scale! A 2-day Hackathon event organized by Xebia and hosted by D
 | 09:30 | **Talk 1** - "The Future of dbt @ DPG" | Host company |
 | 10:00 | dbt breakouts session 1 | All groups |
 | 12:00 | Lunch | All |
-| 13:00 | **Talk 2** - "Modelling energy usage data with dbt" | Xebia - Valerie & Ruben |
+| 13:00 | **Talk 2** - "Modelling energy usage data with dbt" | Xebia - Valerie |
 | 13:30 | dbt breakouts session 2 | All groups |
 | 16:30 | Day 1 close & recap | Facilitators |
 
