@@ -12,9 +12,9 @@ renamed as (
         title as episode_title,
         cast(published_at as timestamp) as published_at,
         duration_seconds,
-        -- split the episode and season number
         SPLIT_PART(season_episode, '-', 2) AS season,
-        SPLIT_PART(season_episode, '-', 1) AS episode
+        SPLIT_PART(season_episode, '-', 1) AS episode,
+        category
 
     from source
 

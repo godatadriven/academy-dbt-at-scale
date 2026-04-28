@@ -38,3 +38,11 @@ models:
 snapshots:
   mediapulse:
     +target_schema: snapshots
+
+seeds:
+  mediapulse:
+    +schema: seeds # choose where the seeds should land in the warehouse
+    category_mapping:
+      +column_types:
+        category: varchar
+        category_group: varchar
