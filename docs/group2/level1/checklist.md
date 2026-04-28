@@ -43,7 +43,7 @@ Does the staging model handle this? What happens downstream if it doesn't?
     
 ??? question "Why are there duplicates?"
     The raw `articles` table contains duplicate `article_id` values - articles get republished with a new `updated_at` timestamp. 
-    Better yet... you can add a unique test to ttest unqieu.
+    Better yet... you can add a unique test to test uniqueness.
     
     
 ??? bug "Fix needed!"
@@ -173,7 +173,7 @@ Query the staging model in a separate tab and order by the column `season_episod
     - When ordering the primary order is from the episode title. Meaning all episode 1s will be together from all seasons, then episode 2s etc.
     - Even if fixed, since this is a string, '3-10' will come before '3-9' because '1' < '9' as characters. Any downstream model ordering by `season_episode` will silently return episodes in the wrong order.
 
-    It won't error, the values look completely reasonable at a glance, and the second problem only becomes visible once you have `10+` episodes in a season. Does that feel like the right difficulty level?
+    It won't error, the values look completely reasonable at a glance, and the second problem only becomes visible once you have `10+` episodes in a season.
 
 ---
 
@@ -182,6 +182,7 @@ Query the staging model in a separate tab and order by the column `season_episod
 - [ ] Step complete
 
 Apply the fixes:
+
 - Correct the name of the column `episode_name`
 - Split out the season_episode to be two columns. Make sure to select the right number!
     - season
