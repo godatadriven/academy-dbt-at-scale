@@ -21,8 +21,8 @@ Work through the steps in order. Expand a hint only after you've had a genuine a
 Add the package to `packages.yml`:
 
 ```yaml
-- package: calogica/dbt_expectations
-  version: [">=0.10.0", "<1.0.0"]
+- package: metaplane/dbt_expectations
+  version: # check the current version on the dbt hub
 ```
 
 Then install:
