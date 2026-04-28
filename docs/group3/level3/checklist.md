@@ -50,7 +50,8 @@ Open `_ads__models.yml` and `_revenue__models.yml` and apply the following confi
     - name: campaign_type
       data_tests:
         - accepted_values:
-            values: ['display', 'video', 'sponsored_content', 'podcast_ad', 'newsletter']
+            arguments:
+              values: ['display', 'video', 'sponsored_content', 'podcast_ad', 'newsletter']
             config:
               severity: warn
 
@@ -63,8 +64,9 @@ Open `_ads__models.yml` and `_revenue__models.yml` and apply the following confi
     - name: campaign_id
       data_tests:
         - relationships:
-            to: ref('stg_ads__campaigns')
-            field: campaign_id
+            arguments:
+              to: ref('stg_ads__campaigns')
+              field: campaign_id
             config:
               severity: # your call
     ```
@@ -111,19 +113,22 @@ This is the highest-volume, most critical fact table. Add the following guardrai
       - name: fct_ad_impressions
         data_tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
-              min_value: 20
+              arguments:
+                min_value: 20
         columns:
           - name: click_through_rate
             data_tests:
               - dbt_expectations.expect_column_values_to_be_between:
-                  min_value: 0.0
-                  max_value: 1.0
+                  arguments:
+                    min_value: 0.0
+                    max_value: 1.0
                   config:
                     severity: error
           - name: impressions_count
             data_tests:
               - dbt_expectations.expect_column_values_to_be_between:
-                  min_value: 1
+                  arguments:
+                    min_value: 1
                   config:
                     severity: warn
     ```
@@ -149,19 +154,22 @@ Set `mediapulse_revenue_dollars >= 0` as `severity: error` - negative revenue is
       - name: revenue_by_content
         data_tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
-              min_value: 10
+              arguments:
+                min_value: 10
         columns:
           - name: mediapulse_revenue_dollars
             data_tests:
               - dbt_expectations.expect_column_values_to_be_between:
-                  min_value: 0
+                  arguments:
+                    min_value: 0
                   config:
                     severity: error
           - name: impression_share
             data_tests:
               - dbt_expectations.expect_column_values_to_be_between:
-                  min_value: 0.0
-                  max_value: 1.0
+                  arguments:
+                    min_value: 0.0
+                    max_value: 1.0
                   config:
                     severity: warn
     ```

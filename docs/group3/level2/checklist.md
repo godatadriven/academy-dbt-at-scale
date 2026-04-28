@@ -216,8 +216,9 @@ Include at minimum:
       data_tests:
         - not_null
         - relationships:
-            to: ref('stg_ads__campaigns')
-            field: campaign_id
+            arguments:
+              to: ref('stg_ads__campaigns')
+              field: campaign_id
     ```
 
 ??? tip "Hint: Use codegen to scaffold the YAML"
