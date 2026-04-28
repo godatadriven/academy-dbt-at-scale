@@ -278,8 +278,8 @@ Discuss with your group:
 
 Create `models/marts/revenue/revenue_by_content.sql`. This mart allocates ad spend to content items proportionally based on impression share.
 
-!!! warning "Check the existing stub first"
-    Open `models/marts/revenue/revenue_by_content.sql`. The stub aggregates spend at `campaign_id` grain - this loses the per-content breakdown. Understand the grain problem, then rewrite it.
+!!! warning "Check the existing model first"
+    Open `models/marts/revenue/revenue_by_content.sql`. The model aggregates spend at `campaign_id` grain - this loses the per-content breakdown. Understand the grain problem, then rewrite it.
 
 ??? tip "Hint: Allocation logic"
     ```sql

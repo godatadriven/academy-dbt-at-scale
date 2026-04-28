@@ -42,14 +42,14 @@ You'll build the mart up step by step. Refer back to this table whenever you nee
 
 - [ ] Step complete
 
-Open `models/marts/revenue/revenue_by_content.sql`. There's an existing stub - you'll work *from* it, not throw it away. The stub already has `spend` and `campaigns` CTEs you'll keep using in later steps; what's broken is the final aggregation, which groups at `campaign_id` and loses the per-content breakdown the mart name promises.
+Open `models/marts/revenue/revenue_by_content.sql`. There's an existing model - you'll work *from* it, not throw it away. The model already has `spend` and `campaigns` CTEs you'll keep using in later steps; what's broken is the final aggregation, which groups at `campaign_id` and loses the per-content breakdown the mart name promises.
 
 For this step, focus on **just one thing: getting the grain right**. Add an `impressions` CTE that pulls from `fct_ad_impressions`, then replace the broken `campaign_revenue` CTE with a `final` CTE at the impression grain (`campaign_id, content_id, impression_date`).
 
 Leave the `spend` and `campaigns` CTEs in place; you'll use them for enrichment in Step 2.
 
 ??? tip "Hint: Why the existing aggregation is wrong"
-    The stub groups by `campaign_id, campaign_name, campaign_type, advertiser_id` - there's no `content_id` in the `GROUP BY`. You get one row per campaign, not one row per content item per campaign per day. The mart is named "by content" but doesn't actually break down by content.
+    The model groups by `campaign_id, campaign_name, campaign_type, advertiser_id` - there's no `content_id` in the `GROUP BY`. You get one row per campaign, not one row per content item per campaign per day. The mart is named "by content" but doesn't actually break down by content.
 
 ??? tip "Hint: Skeleton"
     ```sql

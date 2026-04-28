@@ -81,9 +81,9 @@ mediapulse/
 │   │       └── (empty)                     🔲  Group 3's job
 │   └── marts/
 │       ├── content/
-│       │   └── content_performance.sql     ⚠️  incomplete stub
+│       │   └── content_performance.sql     ⚠️  incomplete model
 │       └── revenue/
-│           └── revenue_by_content.sql      ⚠️  incomplete stub
+│           └── revenue_by_content.sql      ⚠️  incomplete model
 ├── seeds/
 │   └── (empty)                             🔲  Groups 2 & 3
 ├── snapshots/
