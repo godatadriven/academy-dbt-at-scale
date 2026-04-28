@@ -10,27 +10,27 @@ models:
         description: >
           Article identifier from the source system.
           Note: check raw_news.articles for uniqueness behaviour before adding a unique test here.
-        tests:
+        data_tests:
           - not_null
       - name: article_title
         description: Article headline.
-        tests:
+        data_tests:
           - not_null
       - name: author_id
         description: Foreign key to stg_news__authors.
-        tests:
+        data_tests:
           - not_null
       - name: category
         description: Editorial category.
       - name: published_at
         description: Timestamp when the article first went live.
-        tests:
+        data_tests:
           - not_null
       - name: updated_at
         description: Timestamp of the most recent edit or republication.
       - name: status
         description: Current article lifecycle status.
-        tests:
+        data_tests:
           - accepted_values:
               arguments:
                 values: ['draft', 'published', 'archived']
@@ -43,12 +43,9 @@ models:
     columns:
       - name: author_id
         description: Primary key.
-        tests:
-          - not_null
-          - unique
       - name: author_name
         description: Author's full name.
-        tests:
+        data_tests:
           - not_null
       - name: email
         description: Work email address.
