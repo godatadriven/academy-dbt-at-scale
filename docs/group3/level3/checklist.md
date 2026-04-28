@@ -77,7 +77,7 @@ Open `_ads__models.yml` and `_revenue__models.yml` and apply the following confi
 
 - [ ] Step complete
 
-Revenue tests that fail are always worth investigating row-by-row. Enable `store_failures` on your `assert_revenue_lte_spend` singular test, and cap the size of the resulting failures table with `limit`.
+Revenue tests that fail are always worth investigating row-by-row. Enable `store_failures` on your `assert_revenue_not_null` singular test, and cap the size of the resulting failures table with `limit`.
 
 Read the dbt docs on the config and figure out exactly where it goes for a singular test (it's a slightly different shape than for a generic test in YAML):
 
@@ -86,7 +86,7 @@ Read the dbt docs on the config and figure out exactly where it goes for a singu
 Once configured, run it:
 
 ```bash
-dbt test --select assert_revenue_lte_spend
+dbt test --select assert_revenue_not_null
 ```
 
 Then query the failures table. Even if the test passes, confirm the failures table exists and is empty - that's proof the test ran correctly.
@@ -176,7 +176,25 @@ Set `mediapulse_revenue_dollars >= 0` as `severity: error` - negative revenue is
 
 ---
 
-## Step 6 - Stretch your test suite: what else would you cover?
+## Step 6 - Run the full test suite and review severity split
+
+- [ ] Step complete
+
+```bash
+dbt build -s +revenue_by_content
+```
+
+Review and discuss:
+
+- Which tests did you set as `error` vs `warn` - and what was your reasoning?
+- The revenue tests are particularly high-stakes. Which ones would you make `error` that currently aren't?
+- How would you communicate test failures to non-technical stakeholders? (A failing revenue assertion isn't just a dbt problem.)
+
+As a group, draft a one-paragraph "test contract" for `revenue_by_content`: what guarantees does this model make to its consumers, and how does the test suite enforce those guarantees?
+
+---
+
+## Step 7 - Stretch your test suite: what else would you cover?
 
 - [ ] Step complete
 
@@ -199,21 +217,44 @@ Pick one or two ideas, add them to your YAML or `tests/` folder, and run them. N
 
 ---
 
-## Step 7 - Run the full test suite and review severity split
+## Step 8 - Break things on purpose
 
 - [ ] Step complete
 
-```bash
-dbt test --select staging.ads marts.revenue
-```
+For each scenario: edit the seed, `dbt seed`, `dbt build -s +revenue_by_content`, see what fails. **Predict the failure first.** Revert the seed before moving on.
 
-Review and discuss:
+??? tip "Negative spend"
+    Change a `spend_cents` in `seeds/raw_ads__spend.csv` to a negative number.
 
-- Which tests did you set as `error` vs `warn` - and what was your reasoning?
-- The revenue tests are particularly high-stakes. Which ones would you make `error` that currently aren't?
-- How would you communicate test failures to non-technical stakeholders? (A failing revenue assertion isn't just a dbt problem.)
+    ??? note "What fails?"
+        `assert_no_negative_spend`. `not_null` on `spend_dollars` does *not* fire - the value isn't null, just bad.
 
-As a group, draft a one-paragraph "test contract" for `revenue_by_content`: what guarantees does this model make to its consumers, and how does the test suite enforce those guarantees?
+??? tip "Click-through rate above 100%"
+    In `seeds/raw_ads__impressions.csv`, set one `clicks` value higher than the matching `impressions_count`.
+
+    ??? note "What fails?"
+        `dbt_expectations.expect_column_values_to_be_between` on `click_through_rate` (severity `error`) - hard fail, build stops.
+
+??? tip "Unknown campaign type"
+    In `seeds/raw_ads__campaigns.csv`, change one `campaign_type` to a value not in `commission_lookup.csv` (e.g. `banner`).
+
+    ??? note "What fails?"
+        Three tests at once: the `relationships` test on `campaign_type` (L2 Step 8), the `accepted_values` warn (L3 Step 2), and `assert_revenue_not_null` (L2 Step 6). One bug, three layers - defense in depth.
+
+??? tip "Zero impressions"
+    In `seeds/raw_ads__impressions.csv`, set one `impressions_count` to `0`.
+
+    ??? note "What fails?"
+        `dbt_expectations.expect_column_values_to_be_between` on `impressions_count` (min 1, severity `warn`).
+
+??? tip "Incremental: late-arriving correction"
+    With `fct_ad_impressions` already built, change a `clicks` or `impressions_count` value for an *existing* `(campaign_id, content_id, impression_date)` row in `seeds/raw_ads__impressions.csv`. Re-seed, then `dbt run --select fct_ad_impressions` (no `--full-refresh`).
+
+    ??? note "What happens?"
+        The corrected row is **not** picked up - your `append` strategy + high-watermark filter on `impression_date` skips it. Now run `dbt run --select fct_ad_impressions --full-refresh` and confirm the new value lands. This is the trade-off you accepted in L1 Step 10.
+
+!!! warning "Revert after each scenario"
+    Restore the seed and re-run `dbt seed` before the next one - otherwise you can't tell which test fired in response to what.
 
 ---
 
