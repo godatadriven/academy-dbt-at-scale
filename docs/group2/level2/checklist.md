@@ -49,8 +49,9 @@ dbt test --select stg_news__articles stg_news__authors stg_podcasts__episodes
       data_tests:
         - not_null
         - relationships:
-            to: ref('model_name') # or source('source_name', 'table_name')
-            field: column_name
+            arguments:
+              to: ref('model_name') # or source('source_name', 'table_name')
+              field: column_name
     ```
 
 ??? tip "Hint: accepted_values example"

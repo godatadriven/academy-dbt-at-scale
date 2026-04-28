@@ -50,7 +50,8 @@ Open `_news__models.yml` and `_podcasts__models.yml` and apply the following con
     - name: column_name
       data_tests:
         - accepted_values:
-            values: [...]
+            arguments:
+              values: [...]
             config:
               severity: warn
 
@@ -59,8 +60,9 @@ Open `_news__models.yml` and `_podcasts__models.yml` and apply the following con
               where: "column_name = 'some_value'"
 
         - relationships:
-            to: ref('model_name')
-            field: column_name
+            arguments:
+              to: ref('model_name')
+              field: column_name
             config:
               severity: warn
     ```
@@ -123,15 +125,18 @@ Add statistical guardrails to the articles model:
     - name: model_name
       data_tests:
         - dbt_expectations.expect_table_row_count_to_be_between:
-            min_value: <n>
+            arguments:
+              min_value: <n>
       columns:
         - name: column_name
           data_tests:
             - dbt_expectations.expect_column_values_to_be_between:
-                min_value: <n>
-                max_value: <n>
+                arguments:
+                  min_value: <n>
+                  max_value: <n>
             - dbt_expectations.expect_column_values_to_not_be_null:
-                row_condition: "status = 'published'"  # scope the test to rows where null is not acceptable
+                arguments:
+                  row_condition: "status = 'published'"  # scope the test to rows where null is not acceptable
     ```
 
 ---
@@ -151,8 +156,9 @@ Add guardrails to the episodes model:
     - name: column_name
       data_tests:
         - dbt_expectations.expect_column_values_to_be_between:
-            min_value: <n>
-            max_value: <n>
+            arguments:
+              min_value: <n>
+              max_value: <n>
     ```
 
     Think about what duration values would indicate a genuine data problem rather than just a statistical edge case.
@@ -177,7 +183,8 @@ Add mart-level guardrails:
     - name: column_name
       data_tests:
         - dbt_expectations.expect_column_distinct_values_to_equal_set:
-            value_set: ['val1', 'val2', ...]
+            arguments:
+              value_set: ['val1', 'val2', ...]
     ```
 
     `expect_column_distinct_values_to_equal_set` is stricter than `accepted_values` - it fails if a value appears that isn't in your set, but *also* if a value in your set doesn't appear in the column at all. Contrast with `expect_column_distinct_values_to_be_in_set`, which only checks one direction.
