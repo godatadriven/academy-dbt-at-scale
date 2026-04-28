@@ -65,14 +65,16 @@ models:
   - name: fct_ad_impressions
     data_tests:
       - dbt_expectations.expect_table_row_count_to_be_between:
-          min_value: 1000
-          max_value: 50000000
+          arguments:
+            min_value: 1000
+            max_value: 50000000
     columns:
       - name: impressions_count
         data_tests:
           - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 10000000
+              arguments:
+                min_value: 0
+                max_value: 10000000
 ```
 
 ### Model contracts
@@ -110,7 +112,7 @@ The slim CI job requires a **deferred environment** - it compares your changed m
 
 ## Time guide
 
-This is intentionally open-ended. A suggested arc:
+This is intentionally open-ended. A suggested arc is shown below, but this is your hackathon! If you feel the urge to investigate something in the MediaPulse project, or you want to dive into your own projects, let your instructor know!
 
 | Session | Focus |
 |---------|-------|
