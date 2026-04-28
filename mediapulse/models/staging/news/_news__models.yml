@@ -9,7 +9,6 @@ models:
       - name: article_id
         description: >
           Article identifier from the source system.
-          Note: check news.articles for uniqueness behaviour before adding a unique test here.
         data_tests:
           - not_null
       - name: article_title

@@ -224,3 +224,71 @@ This is the conversation that a real data team has when setting up a CI pipeline
 
 !!! success "Done?"
     You've moved from writing tests to *configuring* them - choosing severity, scoping with `where`, storing failures for debuggability, and adding statistical guardrails with `dbt_expectations`. These are the skills that separate a test suite that blocks CI from one that just generates noise.
+
+
+## Optional extras:
+
+Want a further challenge? Check out the extra investigations below...
+
+---
+
+## Optional 1 - Audit `stg_podcasts__episodes.sql`
+
+- [ ] Step complete
+
+Open `models/staging/podcasts/stg_podcasts__episodes.sql` and try to run it.
+
+Read the error message and then inspect the raw table:
+
+```sql
+select * from podcasts.episodes
+```
+
+What is the issue?
+
+??? tip "Hint: The bug"
+    The staging model references the wrong column name in its `SELECT` clause - can you spot which one? 
+
+    **The fix:** replace the name of the column in the staging file to fix it.
+
+    Rerun the model to make sure it exists in the warehouse:
+
+    ```bash
+    dbt run -s +stg_podcasts__episodes
+    ```
+
+Say you want to list all episodes ordered chronologically. 
+
+Query the staging model in a separate tab and order by the column `season_episode`. What issue do you see? Go back to the staging model to correct this.
+
+??? tip "Hint: What is happening?"
+    The bug: season_episode is a string like '1-3', '2-3', '3-3' where the episode is the first value and the season the second. This is causing two issues:
+    - When ordering the primary order is from the episode title. Meaning all episode 1s will be together from all seasons, then episode 2s etc.
+    - Even if fixed, since this is a string, '3-10' will come before '3-9' because '1' < '9' as characters. Any downstream model ordering by `season_episode` will silently return episodes in the wrong order.
+
+    It won't error, the values look completely reasonable at a glance, and the second problem only becomes visible once you have `10+` episodes in a season.
+
+---
+
+## Optional 2 - Fix `stg_podcasts__episodes.sql`
+
+- [ ] Step complete
+
+Apply the fixes:
+
+- Correct the name of the column `episode_name`
+- Split out the season_episode to be two columns. Make sure to select the right number!
+    - season
+    - episode
+
+```bash
+dbt run --select stg_podcasts__episodes
+dbt test --select stg_podcasts__episodes
+```
+
+??? tip "Hint: Syntax needed"
+    ```sql
+    split_part(column_name, '-', 1)::int as new_column_name,
+    ```
+
+---
