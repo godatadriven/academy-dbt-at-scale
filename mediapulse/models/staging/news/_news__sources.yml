@@ -13,6 +13,7 @@ sources:
 
     tables:
       - name: articles
+        identifier: articles_updated # commented out - used for snapshot_articles data
         description: >
           All articles ever published on NewsNow, including subsequent versions.
           A single article_id may appear more than once when an article is updated
@@ -55,6 +56,7 @@ sources:
             description: Date the author joined the NewsNow team.
 
       - name: page_views
+        identifier: views
         description: >
           Individual page view events recorded when a user loads an article page.
           One row per view event.
