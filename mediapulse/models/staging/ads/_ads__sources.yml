@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: ads
-    schema: ads
+    schema: "{{ target.schema }}_ads"
     description: >
       Raw data from AdConnect, MediaPulse's advertising platform.
       Loaded by the upstream ingestion pipeline.

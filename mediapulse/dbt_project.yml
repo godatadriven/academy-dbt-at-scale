@@ -34,8 +34,6 @@ models:
     marts:
       +materialized: table
       +schema: marts
-seeds:
-  +schema: seed_max
 
 snapshots:
   mediapulse:
