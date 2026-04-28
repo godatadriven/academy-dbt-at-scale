@@ -228,11 +228,11 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 3. `UNION ALL` the two after normalising to a common schema
 4. Join the result to `category_mapping` (your seed) to get `category_group`
 
-!!! warning "Check the existing stub first"
-    Open `models/marts/content/content_performance.sql`. The existing stub uses a `JOIN` between articles and episodes - why is this the incorrect approach?
+!!! warning "Check the existing model first"
+    Open `models/marts/content/content_performance.sql`. The existing model uses a `JOIN` between articles and episodes - why is this the incorrect approach?
 
-??? tip "Hint: Why the stub is wrong"
-    The stub does:
+??? tip "Hint: Why the model is wrong"
+    The model does:
 
     ```sql
     select ...

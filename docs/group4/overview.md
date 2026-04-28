@@ -50,7 +50,7 @@ Generates boilerplate YAML so you don't have to write it by hand.
 # Generate a source definition
 dbt run-operation generate_source --args '{"schema_name": "streaming"}'
 
-# Generate model YAML (columns + descriptions stub)
+# Generate model YAML (columns + descriptions)
 dbt run-operation generate_model_yaml --args '{"model_names": ["stg_streaming__watch_events"]}'
 ```
 
