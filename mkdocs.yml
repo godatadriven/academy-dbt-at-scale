@@ -80,27 +80,27 @@ nav:
   - "Group 1 - Intermediate":
       - Overview: group1/overview.md
       - Checklists:
-        - Level 1: group1/level1/checklist.md
-        - Level 2: group1/level2/checklist.md
-        - Level 3 - Bonus: group1/level3/checklist.md
+        - Group 1 - Level 1: group1/level1/checklist.md
+        - Group 1 - Level 2: group1/level2/checklist.md
+        - Group 1 - Level 3 - Bonus: group1/level3/checklist.md
   - "Group 2 - Advanced I":
       - Overview: group2/overview.md
       - Checklists:
-        - Level 1: group2/level1/checklist.md
-        - Level 2: group2/level2/checklist.md
-        - Level 3 - Bonus: group2/level3/checklist.md
+        - Group 2 - Level 1: group2/level1/checklist.md
+        - Group 2 - Level 2: group2/level2/checklist.md
+        - Group 2 - Level 3 - Bonus: group2/level3/checklist.md
   - "Group 3 - Advanced II":
       - Overview: group3/overview.md
       - Checklists:
-        - Level 1: group3/level1/checklist.md
-        - Level 2: group3/level2/checklist.md
-        - Level 3 - Bonus: group3/level3/checklist.md
+        - Group 3 - Level 1: group3/level1/checklist.md
+        - Group 3 - Level 2: group3/level2/checklist.md
+        - Group 3 - Level 3 - Bonus: group3/level3/checklist.md
   - "Group 4 - Power Users":
       - Overview: group4/overview.md
       - Checklists:
-        - Level 1: group4/level1/checklist.md
-        - Level 2: group4/level2/checklist.md
-        - Level 3 - Bonus: group4/level3/checklist.md
+        - Group 4 - Level 1: group4/level1/checklist.md
+        - Group 4 - Level 2: group4/level2/checklist.md
+        - Group 4 - Level 3 - Bonus: group4/level3/checklist.md
 
 extra_javascript:
   - javascripts/checklist.js
