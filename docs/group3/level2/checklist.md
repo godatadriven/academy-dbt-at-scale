@@ -335,32 +335,26 @@ Now turn the answers from Step 4 into config. Create `snapshots/snap_ads__campai
 
 ---
 
-## Step 6 - Write singular test: revenue does not exceed spend
+## Step 6 - Write a singular test: revenue is never null
 
 - [ ] Step complete
 
-Create `tests/assert_revenue_lte_spend.sql`. For each `(campaign_id, impression_date)`, allocated revenue should never exceed gross spend.
+Create `tests/assert_revenue_not_null.sql`. Every row in `revenue_by_content` represents spend MediaPulse has allocated to content, so every row should have a derivable `mediapulse_revenue_dollars` value. A NULL there means we've allocated spend we can't attribute revenue to.
 
 ??? tip "Hint: When does a dbt test pass?"
     A test **passes** when the query returns **zero rows** - any rows returned are failures.
 
 ??? tip "Hint"
     ```sql
-    -- Fails (returns rows) if allocated revenue exceeds gross spend for any campaign/day
-    select
-        campaign_id,
-        impression_date,
-        sum(allocated_spend_dollars)    as total_allocated,
-        max(spend_dollars)              as gross_spend
+    select *
     from {{ ref('revenue_by_content') }}
-    group by 1, 2
-    having sum(allocated_spend_dollars) > max(spend_dollars) * 1.001  -- 0.1% tolerance for float rounding
+    where mediapulse_revenue_dollars is null
     ```
 
     Run it:
 
     ```bash
-    dbt test --select assert_revenue_lte_spend
+    dbt test --select assert_revenue_not_null
     ```
 
 ---
@@ -395,6 +389,8 @@ Create `models/staging/ads/_ads__models.yml` and `models/marts/revenue/_revenue_
 
 Include at minimum:
 
+- **Primary keys** - on every model (`stg_ads__campaigns`, `stg_ads__spend`, `stg_ads__impressions`, `fct_ad_impressions`), add `not_null` and `unique` tests on the PK column (`campaign_id`, `spend_id`, `impression_id`, `impression_id`). For `revenue_by_content`, the PK is the composite `(campaign_id, content_id, impression_date)` - cover that with a `dbt_utils.unique_combination_of_columns` test.
+- **Not-null on the columns the mart depends on** - at minimum the foreign keys and the columns used in joins or measures: `campaign_id`, `content_id`, `impression_date`, `impressions_count`, `campaign_type`, `spend_dollars`, `net_spend_dollars`. A NULL in any of these silently breaks downstream joins or measures.
 - A `relationships` test on `fct_ad_impressions.campaign_id` → `stg_ads__campaigns.campaign_id`.
 - A `relationships` test on `stg_ads__campaigns.campaign_type` → `commission_lookup.campaign_type`. Every campaign type that appears in the data needs a commission rate downstream - this test enforces that. If it fails, don't just silence it; query the failing rows and work out *why* the lookup is missing them.
 - An `accepted_values` test on `campaign_type` in `stg_ads__campaigns`. Level 3 Step 2 will reconfigure this test - so make sure it exists.
@@ -418,26 +414,6 @@ Include at minimum:
               field: campaign_id
     ```
 
-??? tip "Hint: Use codegen to scaffold the YAML"
-
-    [dbt-codegen](https://hub.getdbt.com/dbt-labs/codegen/latest/) generates model YAML so you don't have to write it by hand. If you installed it back in Level 1 Step 6, you're already set; otherwise add it to `packages.yml` and run `dbt deps`.
-
-    **Option A - compile in an untitled file:** open an untitled file in dbt Cloud, paste the following, and click `</>` **Compile**:
-
-    ```sql
-    {{ codegen.generate_model_yaml(
-        model_names=["stg_ads__campaigns", "stg_ads__spend", "stg_ads__impressions", "fct_ad_impressions", "revenue_by_content"]
-    ) }}
-    ```
-
-    **Option B - use `dbt run-operation`:** prefer this if you'd rather stay on the command line. It prints the same YAML to stdout:
-
-    ```bash
-    dbt run-operation generate_model_yaml --args '{"model_names": ["stg_ads__campaigns", "stg_ads__spend", "stg_ads__impressions", "fct_ad_impressions", "revenue_by_content"]}'
-    ```
-
-    Either way: paste the output into your YAML files, then fill in descriptions and add any additional tests (including the `accepted_values` and `relationships` ones above).
-
 ---
 
 ## Step 9 - Run `dbt build --select +revenue_by_content`
@@ -450,26 +426,8 @@ dbt build --select +revenue_by_content
 
 This builds the full lineage - sources → staging → incremental fact → mart - and runs all tests. Fix any failures.
 
-??? tip "Hint: If the revenue test fails"
-    A failure in `assert_revenue_lte_spend` usually means the impression share doesn't sum to exactly 1.0 for all campaigns on all days (floating point rounding or gaps between impressions and spend records). The `* 1.001` tolerance in the test handles minor float rounding - if it still fails, look at campaigns where impressions exist but no matching spend row exists for that date.
-
----
-
-## Step 10 - BONUS: Test the incremental model more rigorously
-
-- [ ] Step complete
-
-Write a singular test that verifies no `impression_id` appears more than once in `fct_ad_impressions`:
-
-```sql
--- tests/assert_no_duplicate_impression_ids.sql
-select impression_id, count(*) as cnt
-from {{ ref('fct_ad_impressions') }}
-group by 1
-having count(*) > 1
-```
-
-Run `dbt build --full-refresh --select fct_ad_impressions` followed by a second incremental run, and confirm the dedup test passes both times.
+??? tip "Hint: If `assert_revenue_not_null` fails"
+    Look at the failing rows and check the `campaign_type` column. The most likely cause is a `campaign_type` value that exists in `stg_ads__campaigns` but isn't in `seeds/commission_lookup.csv`, so the left join in `revenue_by_content` produces a NULL `commission_rate` (and therefore a NULL `mediapulse_revenue_dollars`). The relationships test you added in Step 8 (`stg_ads__campaigns.campaign_type → commission_lookup.campaign_type`) should fail at the same time and point at the same root cause.
 
 ---
 
