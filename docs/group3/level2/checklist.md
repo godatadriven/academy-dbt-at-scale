@@ -200,6 +200,7 @@ Create `models/staging/ads/_ads__models.yml` and `models/marts/revenue/_revenue_
 Include at minimum:
 
 - A `relationships` test on `fct_ad_impressions.campaign_id` → `stg_ads__campaigns.campaign_id`.
+- A `relationships` test on `stg_ads__campaigns.campaign_type` → `commission_lookup.campaign_type`. Every campaign type that appears in the data needs a commission rate downstream - this test enforces that. If it fails, don't just silence it; query the failing rows and work out *why* the lookup is missing them.
 - An `accepted_values` test on `campaign_type` in `stg_ads__campaigns`. Level 3 Step 2 will reconfigure this test - so make sure it exists.
 
 !!! info "Figuring out the accepted values"
@@ -208,7 +209,7 @@ Include at minimum:
     - Query `stg_ads__campaigns` and pull the distinct `campaign_type` values.
     - Look at `seeds/commission_lookup.csv` - the seed already enumerates the campaign types the platform supports.
 
-    The two should agree. If they don't, that's itself a finding worth noting.
+    The two should agree. If they don't, that's itself a finding worth noting - and the `relationships` test above will tell you *which* values are out of sync.
 
 ??? tip "Hint: Relationships test"
     ```yaml
