@@ -19,9 +19,7 @@ sources:
           or republished - each version gets its own row with a new updated_at timestamp.
         columns:
           - name: article_id
-            description: >
-              Article identifier. Not a primary key - duplicates exist.
-              See updated_at to identify the most recent version of each article.
+            description: Article identifier. See updated_at to identify the most recent version of each article.
           - name: title
             description: Article headline.
           - name: author_id
@@ -50,6 +48,7 @@ sources:
             description: Date the author joined the NewsNow team.
 
       - name: page_views
+        identifier: views
         description: >
           Individual page view events recorded when a user loads an article page.
           One row per view event.
