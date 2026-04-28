@@ -1,4 +1,4 @@
-content_id,title,genre,content_type,release_date,runtime_minutes
+content_id,title,genre,ctnt_type,release_date,runtime_minutes
 cnt_001,Northlight,Drama,series,2023-09-01,45
 cnt_002,The Velocity Circuit,Sport,live,2024-01-20,120
 cnt_003,Depths Unknown,Documentary,film,2022-11-15,94
