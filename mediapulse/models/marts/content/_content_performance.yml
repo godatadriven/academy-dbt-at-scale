@@ -47,3 +47,11 @@ models:
                   - average
                 where_expression: "platform='podcasts'"
                 anomaly_sensitivity: 2
+
+      - name: category_group
+        data_type: varchar
+        description: ""
+        data_tests:
+          - assert_column_exists_when_other_column_present:
+              arguments:
+                other_column: category
