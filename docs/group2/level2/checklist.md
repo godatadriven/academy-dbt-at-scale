@@ -23,10 +23,17 @@ Look at `_news__models.yml` and `_podcasts__models.yml`. Are the tests comprehen
 Make a note of at least two gaps you'd like to fill. You'll add them in Step 2.
 
 ??? tip "Hint: Common gaps to look for"
-    - No `relationships` test linking `stg_news__articles.author_id` → `stg_news__authors.author_id`
-    - No `not_null` test on `published_at` in episodes
+
+    Some immediate concerns:
+
+    - No `not_null` or `unique` tests on primary keys
     - No `accepted_values` on `status` in articles (`draft`, `published`, `archived`)
     - No `unique` test on `episode_id` in episodes
+
+    Also interesting to note:
+
+    - No `relationships` test linking `stg_news__articles.author_id` → `stg_news__authors.author_id`
+
 
 ---
 

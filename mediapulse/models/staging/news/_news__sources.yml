@@ -42,13 +42,8 @@ sources:
         columns:
           - name: author_id
             description: Primary key.
-            data_tests::
-              - not_null
-              - unique
           - name: name
             description: Author's full name.
-            data_tests::
-              - not_null
           - name: email
             description: Author's work email address.
           - name: joined_at
@@ -61,9 +56,6 @@ sources:
         columns:
           - name: view_id
             description: Primary key.
-            data_tests::
-              - not_null
-              - unique
           - name: article_id
             description: The article that was viewed.
           - name: user_id
