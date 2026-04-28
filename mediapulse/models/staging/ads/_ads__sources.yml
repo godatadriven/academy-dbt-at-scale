@@ -1,0 +1,66 @@
+version: 2
+
+sources:
+  - name: ads
+    schema: ads
+    description: >
+      Raw data from AdConnect, MediaPulse's advertising platform.
+      Loaded by the upstream ingestion pipeline.
+
+    tables:
+      - name: campaigns
+        description: One row per advertising campaign.
+        columns:
+          - name: campaign_id
+            description: Primary key.
+            tests:
+              - not_null
+              - unique
+          - name: advertiser_id
+            description: The advertiser who owns this campaign.
+          - name: campaign_name
+            description: Display name of the campaign.
+          - name: campaign_type
+            description: Format of the campaign (display, video, sponsored_content, podcast_ad, newsletter).
+          - name: start_date
+            description: Campaign start date.
+          - name: end_date
+            description: Campaign end date.
+          - name: budget_cents
+            description: Total campaign budget in cents.
+
+      - name: impressions
+        description: Daily aggregate of ad impressions per campaign and content item.
+        columns:
+          - name: impression_id
+            description: Primary key.
+            tests:
+              - not_null
+              - unique
+          - name: campaign_id
+            description: Foreign key to campaigns.
+          - name: content_id
+            description: The content item the ad ran against.
+          - name: impression_date
+            description: Date of the impression aggregate.
+          - name: impressions_count
+            description: Number of ad impressions recorded.
+          - name: clicks
+            description: Number of clicks recorded.
+
+      - name: spend
+        description: Daily spend records per campaign. Rows can be updated retroactively.
+        columns:
+          - name: spend_id
+            description: Primary key.
+            tests:
+              - not_null
+              - unique
+          - name: campaign_id
+            description: Foreign key to campaigns.
+          - name: spend_date
+            description: Date the spend was recorded.
+          - name: spend_cents
+            description: Gross spend in cents.
+          - name: platform_fee_cents
+            description: Platform fee charged by AdConnect in cents.

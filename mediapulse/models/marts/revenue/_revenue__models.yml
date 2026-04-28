@@ -1,0 +1,134 @@
+version: 2
+
+models:
+  - name: fct_ad_impressions
+    description: >
+      Incremental fact table of daily ad impressions. One row per campaign per content item per day.
+      Enriched with campaign type and advertiser from stg_ads__campaigns.
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments:
+            min_value: 20
+    columns:
+      - name: impression_id
+        description: Primary key.
+        tests:
+          - not_null
+          - unique
+      - name: campaign_id
+        description: Foreign key to stg_ads__campaigns.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_ads__campaigns')
+                field: campaign_id
+              config:
+                severity: error
+      - name: content_id
+        description: Identifier for the content item where the ad was displayed.
+        tests:
+          - not_null
+      - name: impression_date
+        description: Date the impressions were recorded.
+        tests:
+          - not_null
+      - name: impressions_count
+        description: Number of times the ad was shown on this content item on this date.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 1
+              config:
+                severity: warn
+      - name: clicks
+        description: Number of clicks on the ad.
+        tests:
+          - not_null
+      - name: click_through_rate
+        description: Ratio of clicks to impressions, rounded to 4 decimal places.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0.0
+                max_value: 1.0
+              config:
+                severity: error
+      - name: campaign_type
+        description: Type of ad campaign, joined from stg_ads__campaigns.
+      - name: advertiser_id
+        description: Advertiser identifier, joined from stg_ads__campaigns.
+
+  - name: revenue_by_content
+    description: >
+      Revenue mart that allocates ad spend to individual content items proportionally
+      based on impression share. One row per campaign per content item per day.
+      Commission is applied to net spend to derive MediaPulse revenue.
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments:
+            min_value: 10
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - campaign_id
+              - content_id
+              - impression_date
+    columns:
+      - name: campaign_id
+        description: Foreign key to stg_ads__campaigns.
+        tests:
+          - not_null
+      - name: content_id
+        description: Identifier for the content item.
+        tests:
+          - not_null
+      - name: impression_date
+        description: Date of the impressions and spend allocation.
+        tests:
+          - not_null
+      - name: impressions_count
+        description: Impressions for this campaign/content/date, carried over from fct_ad_impressions.
+        tests:
+          - not_null
+      - name: campaign_type
+        description: Type of ad campaign.
+        tests:
+          - not_null
+      - name: spend_dollars
+        description: Gross daily spend for the campaign, before impression-share allocation.
+        tests:
+          - not_null
+      - name: net_spend_dollars
+        description: Daily campaign spend minus the platform fee.
+        tests:
+          - not_null
+      - name: impression_share
+        description: Fraction of campaign impressions attributed to this content item on this date.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0.0
+                max_value: 1.0
+              config:
+                severity: warn
+      - name: allocated_spend_dollars
+        description: Portion of gross spend allocated to this content item based on impression share.
+        tests:
+          - not_null
+      - name: allocated_net_spend_dollars
+        description: Portion of net spend (gross minus platform fee) allocated to this content item.
+        tests:
+          - not_null
+      - name: commission_rate
+        description: Commission rate from commission_lookup for this campaign type.
+      - name: mediapulse_revenue_dollars
+        description: Revenue earned by MediaPulse — allocated net spend multiplied by commission rate.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+              config:
+                severity: error

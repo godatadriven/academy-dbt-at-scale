@@ -1,37 +1,75 @@
--- MediaPulse revenue by content mart.
--- Show how ad revenue from AdConnect maps to individual content items
--- across the MediaPulse portfolio.
---
--- Status: work in progress - check the aggregation grain matches what consumers expect.
-
 with spend as (
-
     select * from {{ ref('stg_ads__spend') }}
-
 ),
 
 campaigns as (
-
     select * from {{ ref('stg_ads__campaigns') }}
-
 ),
 
-campaign_revenue as (
-
+impressions as (
     select
-        c.campaign_id,
-        c.campaign_name,
+        campaign_id,
+        content_id,
+        impression_date,
+        impressions_count
+    from {{ ref('fct_ad_impressions') }}
+),
+
+enriched as (
+    select
+        i.campaign_id,
+        i.content_id,
+        i.impression_date,
+        i.impressions_count,
         c.campaign_type,
-        c.advertiser_id,
-        sum(s.spend_cents)          as total_spend_dollars,
-        sum(s.spend_cents - platform_fee_cents)      as total_net_spend_dollars,
-        min(s.spend_date)             as first_spend_date,
-        max(s.spend_date)             as last_spend_date
+        s.spend_dollars,
+        s.net_spend_dollars
+    from impressions i
+    inner join campaigns c
+        using (campaign_id)
+    inner join spend s
+        on  i.campaign_id    = s.campaign_id
+        and i.impression_date = s.spend_date
+),
 
-    from spend s
-    inner join campaigns c using (campaign_id)
-    group by 1, 2, 3, 4
+with_share as (
+    select
+        *,
+        impressions_count
+            / nullif(sum(impressions_count) over (
+                partition by campaign_id, impression_date
+            ), 0) as impression_share
+    from enriched
+),
 
+allocated as (
+    select
+        *,
+        impression_share * spend_dollars     as allocated_spend_dollars,
+        impression_share * net_spend_dollars as allocated_net_spend_dollars
+    from with_share
+),
+
+with_commission as (
+    select
+        a.*,
+        cl.commission_rate,
+        a.allocated_net_spend_dollars * cl.commission_rate as mediapulse_revenue_dollars
+    from allocated a
+    left join {{ ref('commission_lookup') }} cl using (campaign_type)
 )
 
-select * from campaign_revenue
+select
+    campaign_id,
+    content_id,
+    impression_date,
+    impressions_count,
+    campaign_type,
+    spend_dollars,
+    net_spend_dollars,
+    impression_share,
+    allocated_spend_dollars,
+    allocated_net_spend_dollars,
+    commission_rate,
+    mediapulse_revenue_dollars
+from with_commission

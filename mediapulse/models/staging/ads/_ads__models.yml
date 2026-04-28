@@ -1,0 +1,115 @@
+version: 2
+
+models:
+  - name: stg_ads__campaigns
+    description: >
+      Staged campaign records from AdConnect. One row per campaign.
+      Budget is converted from cents to dollars and campaign_type is normalised to lowercase.
+    columns:
+      - name: campaign_id
+        description: Primary key.
+        tests:
+          - not_null
+          - unique
+      - name: advertiser_id
+        description: Foreign key to the advertiser.
+        tests:
+          - not_null
+      - name: campaign_name
+        description: Human-readable campaign name.
+        tests:
+          - not_null
+      - name: campaign_type
+        description: Type of ad campaign (e.g. display, video, sponsored_content).
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['display', 'video', 'sponsored_content', 'podcast_ad', 'newsletter']
+              config:
+                severity: warn
+      - name: start_date
+        description: Campaign start date.
+        tests:
+          - not_null
+      - name: end_date
+        description: Campaign end date.
+      - name: budget_dollars
+        description: Total campaign budget in dollars, converted from cents.
+        tests:
+          - not_null
+
+  - name: stg_ads__spend
+    description: >
+      Staged daily spend records from AdConnect. One row per campaign per day.
+      All monetary values are converted from cents to dollars.
+    columns:
+      - name: spend_id
+        description: Primary key.
+        tests:
+          - not_null
+          - unique
+      - name: campaign_id
+        description: Foreign key to stg_ads__campaigns.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_ads__campaigns')
+                field: campaign_id
+      - name: spend_date
+        description: Date the spend was recorded.
+        tests:
+          - not_null
+      - name: spend_dollars
+        description: Gross spend for the day in dollars.
+        tests:
+          - not_null:
+              config:
+                where: "spend_dollars > 0"
+      - name: platform_fee_dollars
+        description: AdConnect platform fee for the day in dollars.
+        tests:
+          - not_null
+      - name: net_spend_dollars
+        description: Gross spend minus platform fee in dollars.
+        tests:
+          - not_null
+
+  - name: stg_ads__impressions
+    description: >
+      Staged daily impression records from AdConnect. One row per campaign per content item per day.
+    columns:
+      - name: impression_id
+        description: Primary key.
+        tests:
+          - not_null
+          - unique
+      - name: campaign_id
+        description: Foreign key to stg_ads__campaigns.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_ads__campaigns')
+                field: campaign_id
+      - name: content_id
+        description: Identifier for the content item where the ad was displayed.
+        tests:
+          - not_null
+      - name: impression_date
+        description: Date the impressions were recorded.
+        tests:
+          - not_null
+      - name: impressions_count
+        description: Number of times the ad was shown.
+        tests:
+          - not_null
+      - name: clicks
+        description: Number of clicks on the ad.
+        tests:
+          - not_null
+      - name: click_through_rate
+        description: Ratio of clicks to impressions, rounded to 4 decimal places.
+        tests:
+          - not_null
