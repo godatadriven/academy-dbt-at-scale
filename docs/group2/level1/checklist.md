@@ -267,6 +267,13 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 ??? tip "Hint: The better approach"
     **What you're building:** A single unified content table that combines articles and podcast episodes, then enriches it with normalised category labels.
 
+    1. Pull all articles from stg_news__articles
+    2. Pull all episodes from stg_podcasts__episodes
+    3. UNION ALL the two after normalising to a common schema
+    4. Join the result to category_mapping (your seed) to get normalised_category and category_group
+
+    Match the steps to build out the following CTEs
+
     **CTEs 1 & 2 - `articles` and `episodes`**  
     Pull from each staging model and rename columns into a shared schema that works for both content types. For columns that only apply to one content type, explicitly fill the other with a placeholder. Add a hardcoded column to identify which platform each row came from.
 
@@ -277,6 +284,56 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 
     **CTE 4 - `with_category`**  
     Join to the `category_mapping` model on two conditions. Keep all content rows regardless of whether a mapping exists. Use `coalesce` to return the mapped category where available, falling back to the raw value if not.
+
+??? lab "Really stuck? See some example SQL:"
+    Adapt the following SQL code to use a better combination for episodes and articles:
+
+    ```sql 
+    with articles as ( 
+        select 
+            article_id as content_id, 
+            article_title as content_title, 
+            published_at, 
+            category as raw_category, 'news' as platform, 
+            word_count as content_length_units, -- words for articles null as duration_seconds 
+        from {{ ref('stg_news__articles') }} 
+    ),
+
+    episodes as (
+        select
+            -- ✏️ normalize columns that episodes have 
+            -- in common to match the above
+            
+
+            -- ✏️ add columns that don't exist to match 
+            -- the schema above
+
+
+            duration_seconds
+        from {{ ref('stg_podcasts__episodes') }}
+    ),
+
+    combined as (
+        select * from articles
+        union all
+        select * from episodes
+    ),
+
+    with_category as (
+        select
+            -- ✏️ add the category group and 
+            -- coalesce the category with raw_category
+
+
+        from -- select the correct CTE
+        left join -- add the seed reference
+        on -- raw_category
+        and -- platform
+    )
+
+    select * from with_category
+    ```
+
 
 ---
 
