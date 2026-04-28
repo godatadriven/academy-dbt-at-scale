@@ -203,18 +203,14 @@ dbt test --select stg_podcasts__episodes
 
 - [ ] Step complete
 
-Articles and podcast episodes both have a `category` column, but the values don't match (`news` uses `politics`, `podcasts` uses `Politics`). Create a seed that maps raw category values to a normalised label and a display-friendly group.
+Articles and podcast episodes both have a `category` column, but the values don't match what the end users expect. They have created the following mapping file for you:
 
 ```csv
-category,platform,normalised_category,category_group
-politics,news,politics,news_and_current_affairs
-Politics,podcasts,politics,news_and_current_affairs
-technology,news,technology,tech_and_science
-Technology,podcasts,technology,tech_and_science
-sport,news,sport,sport_and_health
-Sports,podcasts,sport,sport_and_health
-entertainment,news,entertainment,arts_and_culture
-Entertainment,podcasts,entertainment,arts_and_culture
+category,category_group
+politics,news_and_current_affairs
+technology,tech_and_science
+sport,sport_and_health
+entertainment,arts_and_culture
 ```
 
 Place this file at `seeds/category_mapping.csv`.
@@ -248,7 +244,7 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 1. Pull all articles from `stg_news__articles`
 2. Pull all episodes from `stg_podcasts__episodes`
 3. `UNION ALL` the two after normalising to a common schema
-4. Join the result to `category_mapping` (your seed) to get `normalised_category` and `category_group`
+4. Join the result to `category_mapping` (your seed) to get `category_group`
 
 !!! warning "Check the existing stub first"
     Open `models/marts/content/content_performance.sql`. The existing stub uses a `JOIN` between articles and episodes - why is this the incorrect approach?
@@ -283,7 +279,7 @@ Create `models/marts/content/content_performance.sql`. This mart should:
     Stack both CTEs into one dataset, keeping all rows from both.
 
     **CTE 4 - `with_category`**  
-    Join to the `category_mapping` model on two conditions. Keep all content rows regardless of whether a mapping exists. Use `coalesce` to return the mapped category where available, falling back to the raw value if not.
+    Join to the `category_mapping` model. Use `coalesce` to return the mapped category where available, falling back to the raw value if not.
 
 ??? lab "Really stuck? See some example SQL:"
     Adapt the following SQL code to use a better combination for episodes and articles:
@@ -327,8 +323,7 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 
         from -- select the correct CTE
         left join -- add the seed reference
-        on -- raw_category
-        and -- platform
+        using -- which column should you join on?
     )
 
     select * from with_category
