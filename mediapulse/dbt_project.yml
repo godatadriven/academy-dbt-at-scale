@@ -30,10 +30,8 @@ models:
   mediapulse:
     staging:
       +materialized: view
-      +schema: staging
     marts:
       +materialized: table
-      +schema: marts
 
 snapshots:
   mediapulse:
