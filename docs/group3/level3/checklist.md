@@ -221,6 +221,9 @@ Pick one or two ideas, add them to your YAML or `tests/` folder, and run them. N
 
 - [ ] Step complete
 
+!!! warning "One-time setup before this step"
+    Editing the seeds only affects *your* models if your source declaration is reading from your personal seed schema, not the shared one. In `models/staging/ads/_ads__sources.yml`, set the source's schema to `"{{ target.schema }}_ads"` if you haven't already - otherwise your changes won't flow through and you'll wonder why nothing fails.
+
 For each scenario: edit the seed, `dbt seed`, `dbt build -s +revenue_by_content`, see what fails. **Predict the failure first.** Revert the seed before moving on.
 
 ??? tip "Negative spend"
@@ -239,7 +242,7 @@ For each scenario: edit the seed, `dbt seed`, `dbt build -s +revenue_by_content`
     In `seeds/_seeds_setup/raw_ads__campaigns.csv`, change one `campaign_type` to a value not in `commission_lookup.csv` (e.g. `banner`).
 
     ??? note "What fails?"
-        Three tests at once: the `relationships` test on `campaign_type` (L2 Step 8), the `accepted_values` warn (L3 Step 2), and `assert_revenue_not_null` (L2 Step 6). One bug, three layers - defense in depth.
+        `accepted_values_stg_ads__campaigns_campaign_type__display__video__sponsored_content__podcast_ad__newsletter` warns - the new value isn't in the configured set (severity `warn` from L3 Step 2). If you also added the optional `relationships` test on `campaign_type → commission_lookup.campaign_type` from L2 Step 8, that would fire too.
 
 ??? tip "Zero impressions"
     In `seeds/_seeds_setup/raw_ads__impressions.csv`, set one `impressions_count` to `0`.
