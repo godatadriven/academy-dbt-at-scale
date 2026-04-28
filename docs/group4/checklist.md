@@ -165,20 +165,20 @@ Add statistical tests to the most important mart models. Focus on:
     ```yaml
     models:
       - name: fct_ad_impressions
-        tests:
+        data_tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 1000           # fail if the table is suspiciously small
               max_value: 100000000      # fail if it explodes (fan-out bug)
         columns:
           - name: impressions_count
-            tests:
+            data_tests:
               - dbt_expectations.expect_column_values_to_be_between:
                   min_value: 0
                   max_value: 10000000
               - dbt_expectations.expect_column_values_to_not_be_null:
                   mostly: 1.0           # 100% non-null required
           - name: click_through_rate
-            tests:
+            data_tests:
               - dbt_expectations.expect_column_values_to_be_between:
                   min_value: 0.0
                   max_value: 1.0        # CTR can't exceed 100%
@@ -188,12 +188,12 @@ Add statistical tests to the most important mart models. Focus on:
     ```yaml
     models:
       - name: content_performance
-        tests:
+        data_tests:
           - dbt_expectations.expect_table_row_count_to_be_between:
               min_value: 500
         columns:
           - name: platform
-            tests:
+            data_tests:
               - dbt_expectations.expect_column_distinct_values_to_equal_set:
                   value_set: ['news', 'podcasts']
     ```
@@ -248,7 +248,7 @@ Go through all model YAML files and consider which tests should be `warn` vs `er
     ```yaml
     columns:
       - name: mediapulse_revenue_dollars
-        tests:
+        data_tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 1000000
