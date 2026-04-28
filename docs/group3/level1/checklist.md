@@ -62,15 +62,15 @@ Before writing the YAML, think: what tests would actually be useful here? Source
           - name: campaigns
             columns:
               - name: campaign_id
-                tests: [not_null, unique]
+                data_tests: [not_null, unique]
           - name: impressions
             columns:
               - name: impression_id
-                tests: [not_null, unique]
+                data_tests: [not_null, unique]
           - name: spend
             columns:
               - name: spend_id
-                tests: [not_null, unique]
+                data_tests: [not_null, unique]
     ```
 
 ---

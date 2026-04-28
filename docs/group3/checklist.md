@@ -48,15 +48,15 @@ Create `models/staging/ads/_ads__sources.yml`. Define a source named `ads` with 
           - name: campaigns
             columns:
               - name: campaign_id
-                tests: [not_null, unique]
+                data_tests: [not_null, unique]
           - name: impressions
             columns:
               - name: impression_id
-                tests: [not_null, unique]
+                data_tests: [not_null, unique]
           - name: spend
             columns:
               - name: spend_id
-                tests: [not_null, unique]
+                data_tests: [not_null, unique]
     ```
 
 ---
@@ -439,7 +439,7 @@ Include a `relationships` test on `fct_ad_impressions.campaign_id` → `stg_ads_
 ??? tip "Hint: Relationships test"
     ```yaml
     - name: campaign_id
-      tests:
+      data_tests:
         - not_null
         - relationships:
             to: ref('stg_ads__campaigns')

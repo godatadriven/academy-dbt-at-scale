@@ -3,7 +3,7 @@ version: 2
 models:
   - name: stg_news__articles
     description: >
-      Staged articles from NewsNow, cleaned and renamed from raw_news.articles.
+      Staged articles from NewsNow, cleaned and renamed from news.articles.
       Review the source definition for important notes about article_id uniqueness.
     columns:
       - name: article_id

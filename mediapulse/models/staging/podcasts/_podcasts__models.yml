@@ -7,12 +7,12 @@ models:
     columns:
       - name: show_id
         description: Primary key.
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: show_name
         description: Display name of the show.
-        tests:
+        data_tests:
           - not_null
       - name: host_name
         description: Name of the primary host.
@@ -27,20 +27,20 @@ models:
     columns:
       - name: episode_id
         description: Primary key.
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: show_id
         description: Foreign key to stg_podcasts__shows.
-        tests:
+        data_tests:
           - not_null
       - name: episode_title
         description: Title of the episode.
-        tests:
+        data_tests:
           - not_null
       - name: published_at
         description: Timestamp when the episode was published.
-        tests:
+        data_tests:
           - not_null
       - name: duration_seconds
         description: Episode runtime in seconds.
