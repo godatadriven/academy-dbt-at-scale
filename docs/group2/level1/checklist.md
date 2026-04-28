@@ -44,6 +44,7 @@ In the `_news__models.yml` ...
     ```
 
 Once you have rerun the command, you should see some errors - find the code that is being executed to run this test in the `command history -> Debug logs`. Can you see why it has errored?
+
 ---
 
 ## Step 2 - Audit `stg_news__articles.sql`
@@ -138,13 +139,45 @@ Apply the deduplication fix. Keep only the most recent row per `article_id` (hig
     select * from renamed
     ```
 
-    After the fix, re-run the row count check against the staged model and confirm `article_id` is now unique.
+After the fix, re-run the row count check against the staged model and confirm `article_id` is now unique.
 
 ---
 
-## Step 4 - Use a package
+## Step 4 - Check for unique combination of columns
 
-...
+- [ ] Step complete
+
+We have seen that the article_id in the raw data is not unique. However, new articles should only be added to the source when they were updated with a new updated_at timestamp. We can verify this by adding another data test on the uniqueness of the combination. 
+
+Add the dbt_utils package to `packages.yml`:
+
+```yaml
+packages:
+  - package: dbt-labs/dbt_utils
+    version: 1.3.3
+```
+
+Run the following command in the CLI to load the packages.
+
+```bash
+dbt deps
+```
+
+Now add a test for the unique combination of `article_id` and `updated_at` to the source in `_news__sources.yml`.
+
+??? tip "Hint: unique_combination_of_columns test"
+    Add the test at the table level (not column level) in your `.yml` file:
+
+    ```yaml
+    tables:
+      - name: table_name
+        data_tests:
+        - dbt_utils.unique_combination_of_columns:
+            arguments: # available in v1.10.5 and higher. Older versions can set the <argument_name> as the top-level property.
+                combination_of_columns:
+                - column_one
+                - column_two
+    ```
 
 ---
 
