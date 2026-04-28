@@ -224,31 +224,31 @@ Pick one or two ideas, add them to your YAML or `tests/` folder, and run them. N
 For each scenario: edit the seed, `dbt seed`, `dbt build -s +revenue_by_content`, see what fails. **Predict the failure first.** Revert the seed before moving on.
 
 ??? tip "Negative spend"
-    Change a `spend_cents` in `seeds/raw_ads__spend.csv` to a negative number.
+    Change a `spend_cents` in `seeds/_seeds_setup/raw_ads__spend.csv` to a negative number.
 
     ??? note "What fails?"
         `assert_no_negative_spend`. `not_null` on `spend_dollars` does *not* fire - the value isn't null, just bad.
 
 ??? tip "Click-through rate above 100%"
-    In `seeds/raw_ads__impressions.csv`, set one `clicks` value higher than the matching `impressions_count`.
+    In `seeds/_seeds_setup/raw_ads__impressions.csv`, set one `clicks` value higher than the matching `impressions_count`.
 
     ??? note "What fails?"
         `dbt_expectations.expect_column_values_to_be_between` on `click_through_rate` (severity `error`) - hard fail, build stops.
 
 ??? tip "Unknown campaign type"
-    In `seeds/raw_ads__campaigns.csv`, change one `campaign_type` to a value not in `commission_lookup.csv` (e.g. `banner`).
+    In `seeds/_seeds_setup/raw_ads__campaigns.csv`, change one `campaign_type` to a value not in `commission_lookup.csv` (e.g. `banner`).
 
     ??? note "What fails?"
         Three tests at once: the `relationships` test on `campaign_type` (L2 Step 8), the `accepted_values` warn (L3 Step 2), and `assert_revenue_not_null` (L2 Step 6). One bug, three layers - defense in depth.
 
 ??? tip "Zero impressions"
-    In `seeds/raw_ads__impressions.csv`, set one `impressions_count` to `0`.
+    In `seeds/_seeds_setup/raw_ads__impressions.csv`, set one `impressions_count` to `0`.
 
     ??? note "What fails?"
         `dbt_expectations.expect_column_values_to_be_between` on `impressions_count` (min 1, severity `warn`).
 
 ??? tip "Incremental: late-arriving correction"
-    With `fct_ad_impressions` already built, change a `clicks` or `impressions_count` value for an *existing* `(campaign_id, content_id, impression_date)` row in `seeds/raw_ads__impressions.csv`. Re-seed, then `dbt run --select fct_ad_impressions` (no `--full-refresh`).
+    With `fct_ad_impressions` already built, change a `clicks` or `impressions_count` value for an *existing* `(campaign_id, content_id, impression_date)` row in `seeds/_seeds_setup/raw_ads__impressions.csv`. Re-seed, then `dbt run --select fct_ad_impressions` (no `--full-refresh`).
 
     ??? note "What happens?"
         The corrected row is **not** picked up - your `append` strategy + high-watermark filter on `impression_date` skips it. Now run `dbt run --select fct_ad_impressions --full-refresh` and confirm the new value lands. This is the trade-off you accepted in L1 Step 10.
