@@ -172,8 +172,9 @@ Now add a test for the unique combination of `article_id` and `updated_at` to th
     tables:
       - name: table_name
         data_tests:
-          - dbt_utils.unique_combination_of_columns:
-              combination_of_columns:
+        - dbt_utils.unique_combination_of_columns:
+            arguments: # available in v1.10.5 and higher. Older versions can set the <argument_name> as the top-level property.
+                combination_of_columns:
                 - column_one
                 - column_two
     ```
