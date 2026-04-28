@@ -33,20 +33,6 @@ dbt seed --select category_mapping  # loads one
 
 Snapshots implement SCD Type 2 - they track how a row changes over time by appending new versions rather than overwriting.
 
-```sql
-{% snapshot snap_articles %}
-{{
-    config(
-        target_schema='snapshots',
-        unique_key='article_id',
-        strategy='timestamp',
-        updated_at='updated_at',
-    )
-}}
-select * from {{ source('news', 'articles') }}
-{% endsnapshot %}
-```
-
 Every time you run `dbt snapshot`, dbt compares the current source to the last snapshot and inserts a new row for any changed record, populating `dbt_valid_from` and `dbt_valid_to`.
 
 ### Reviewing existing models

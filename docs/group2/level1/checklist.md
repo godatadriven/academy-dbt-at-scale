@@ -18,22 +18,38 @@ Work through the steps in order. Expand a hint only after you've had a genuine a
 
 - [ ] Step complete
 
-Open `models/staging/news/stg_news__articles.sql` and read it carefully. Then query the raw source:
+Open `models/staging/news/stg_news__articles.sql` and read it carefully. Then query the raw source to see if there are any data inconsistencies that should be treated in the staging model.
 
-```sql
-select article_id, count(*) as cnt
-from news.articles
-group by 1
-having count(*) > 1
-order by 2 desc
-```
+Look particularly at the article_id - is this unique? Use a window function to check.
 
 Does the staging model handle this? What happens downstream if it doesn't?
 
-??? tip "Hint: What to look for"
-    The raw `articles` table contains duplicate `article_id` values - articles get republished with a new `updated_at` timestamp. The current staging model selects `*` without deduplication. This means any downstream model joining on `article_id` will fan out and produce inflated row counts.
+??? tip "Hint: Use a window function to identify duplicates"
+    Run the following:
 
-    **The fix:** use a `ROW_NUMBER()` window function to keep only the most recent version of each article.
+    ```sql
+    with window_article as (
+        select 
+            *, 
+            count(*) over (partition by article_id) as cnt_article_id
+        from news.articles
+    )
+
+    select * from window_article
+    where cnt_article_id > 1
+    order by article_id, published_at
+    ```
+    What is happening?
+    
+??? question "Why are there duplicates?"
+    The raw `articles` table contains duplicate `article_id` values - articles get republished with a new `updated_at` timestamp. 
+    Better yet... you can add a unique test to ttest unqieu.
+    
+    
+??? bug "Fix needed!"
+    The current staging model selects `*` without deduplication. This means any downstream model joining on `article_id` will fan out and produce inflated row counts.
+
+    You will apply this fix in the following step.
 
 ---
 
@@ -43,39 +59,39 @@ Does the staging model handle this? What happens downstream if it doesn't?
 
 Apply the deduplication fix. Keep only the most recent row per `article_id` (highest `updated_at`).
 
-??? tip "Hint 1: Useful SQL snippets"
+??? tip "Hint: Adapt the window function from step 1"
 
-    Here are some useful code snippets you can adapt for your needs:
-
-    ```sql
-    select *,
-        row_number() over (
-            partition by /*column_name*/
-            order by /*column_name*/ desc
-        ) as row_num
-    from /*table_name*/
-    ```
+    Remember the code used to check for duplicates? How could this be adapted to **keep only the most up to date** version of the article (i.e. the one most recently (re)published)?
 
     ```sql
-    where row_num = 1
+    with window_article as (
+        select 
+            *, 
+            count(*) over (partition by article_id) as cnt_article_id
+        from news.articles
+    )
+
+    select * from window_article
+    where cnt_article_id > 1
+    order by article_id, published_at
     ```
 
     After the fix, re-run the row count check against the staged model and confirm `article_id` is now unique.
 
-??? tip "Hint 2: ROW_NUMBER() dedup pattern"
+??? example "Really stuck? Check this SQL here:"
 
-    Here are some useful code snippets you can adapt for your needs:
+    Here is a useful code snippets you can adapt for your needs. Read it through and make sure you an understand each part.
 
     ```sql
     with source as (
-        select * from {{ source('news', 'articles') }}
+        select * from {{ source('source_name', 'table_name') }}
     ),
 
     deduped as (
         select *,
             row_number() over (
-                partition by article_id
-                order by updated_at desc
+                partition by unique_id
+                order by date_column desc
             ) as row_num
         from source
     ),
@@ -94,7 +110,36 @@ Apply the deduplication fix. Keep only the most recent row per `article_id` (hig
 
 ---
 
-## Step 3 - Audit `stg_podcasts__episodes.sql`
+## Step 3 - Add a unique test to `stg_news__articles.sql`
+
+
+- [ ] Step complete
+
+In the `_news__models.yml` and a `unique` test to the primary key the table.
+
+There is already a `not_null` test, you can add the `unique` test below this.
+
+??? tip "Hint: Tests on source columns"
+    ```yaml
+    tables:
+      - name: table_name
+        identifier: table_name
+        columns:
+          - name: column_name
+            tests:
+              - not_null
+              - unique
+    ```
+
+    Run source tests:
+
+    ```bash
+    dbt test --select staging.news
+    ```
+
+---
+
+## Step 4 - Audit `stg_podcasts__episodes.sql`
 
 - [ ] Step complete
 
@@ -113,9 +158,15 @@ What is the issue?
 
     **The fix:** replace the name of the column in the staging file to fix it.
 
+    Rerun the model to make sure it exists in the warehouse:
+
+    ```bash
+    dbt run -s +stg_podcasts__episodes
+    ```
+
 Say you want to list all episodes ordered chronologically. 
 
-Query the staging model and order by the column `season_episode`. What issue do you see? Go back to the staging model to correct this.
+Query the staging model in a separate tab and order by the column `season_episode`. What issue do you see? Go back to the staging model to correct this.
 
 ??? tip "Hint: What is happening?"
     The bug: season_episode is a string like '1-3', '2-3', '3-3' where the episode is the first value and the season the second. This is causing two issues:
@@ -131,7 +182,7 @@ Query the staging model and order by the column `season_episode`. What issue do 
 - [ ] Step complete
 
 Apply the fixes:
-- Correct the name of the column
+- Correct the name of the column `episode_name`
 - Split out the season_episode to be two columns. Make sure to select the right number!
     - season
     - episode
@@ -152,18 +203,14 @@ dbt test --select stg_podcasts__episodes
 
 - [ ] Step complete
 
-Articles and podcast episodes both have a `category` column, but the values don't match (`news` uses `politics`, `podcasts` uses `Politics`). Create a seed that maps raw category values to a normalised label and a display-friendly group.
+Articles and podcast episodes both have a `category` column, but the values don't match what the end users expect. They have created the following mapping file for you:
 
 ```csv
-category,platform,normalised_category,category_group
-politics,news,politics,news_and_current_affairs
-Politics,podcasts,politics,news_and_current_affairs
-technology,news,technology,tech_and_science
-Technology,podcasts,technology,tech_and_science
-sport,news,sport,sport_and_health
-Sports,podcasts,sport,sport_and_health
-entertainment,news,entertainment,arts_and_culture
-Entertainment,podcasts,entertainment,arts_and_culture
+category,category_group
+politics,news_and_current_affairs
+technology,tech_and_science
+sport,sport_and_health
+entertainment,arts_and_culture
 ```
 
 Place this file at `seeds/category_mapping.csv`.
@@ -197,7 +244,7 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 1. Pull all articles from `stg_news__articles`
 2. Pull all episodes from `stg_podcasts__episodes`
 3. `UNION ALL` the two after normalising to a common schema
-4. Join the result to `category_mapping` (your seed) to get `normalised_category` and `category_group`
+4. Join the result to `category_mapping` (your seed) to get `category_group`
 
 !!! warning "Check the existing stub first"
     Open `models/marts/content/content_performance.sql`. The existing stub uses a `JOIN` between articles and episodes - why is this the incorrect approach?
@@ -216,14 +263,72 @@ Create `models/marts/content/content_performance.sql`. This mart should:
 ??? tip "Hint: The better approach"
     **What you're building:** A single unified content table that combines articles and podcast episodes, then enriches it with normalised category labels.
 
+    1. Pull all articles from stg_news__articles
+    2. Pull all episodes from stg_podcasts__episodes
+    3. UNION ALL the two after normalising to a common schema
+    4. Join the result to category_mapping (your seed) to get normalised_category and category_group
+
+    Match the steps to build out the following CTEs
+
     **CTEs 1 & 2 - `articles` and `episodes`**  
     Pull from each staging model and rename columns into a shared schema that works for both content types. For columns that only apply to one content type, explicitly fill the other with a placeholder. Add a hardcoded column to identify which platform each row came from.
+
+    > **Note:** Episodes don't have a `category` column — it lives on `stg_podcasts__shows`. Join `stg_podcasts__shows` into the `episodes` CTE on `show_id` to bring it in.
 
     **CTE 3 - `combined`**  
     Stack both CTEs into one dataset, keeping all rows from both.
 
     **CTE 4 - `with_category`**  
-    Join to the `category_mapping` model on two conditions. Keep all content rows regardless of whether a mapping exists. Use `coalesce` to return the mapped category where available, falling back to the raw value if not.
+    Join to the `category_mapping` model. Use `coalesce` to return the mapped category where available, falling back to the raw value if not.
+
+??? lab "Really stuck? See some example SQL:"
+    Adapt the following SQL code to use a better combination for episodes and articles:
+
+    ```sql 
+    with articles as ( 
+        select 
+            article_id as content_id, 
+            article_title as content_title, 
+            published_at, 
+            category as raw_category, 'news' as platform, 
+            word_count as content_length_units, -- words for articles null as duration_seconds 
+        from {{ ref('stg_news__articles') }} 
+    ),
+
+    episodes as (
+        select
+            -- ✏️ normalize columns that episodes have 
+            -- in common to match the above
+            
+
+            -- ✏️ add columns that don't exist to match 
+            -- the schema above
+
+
+            duration_seconds
+        from {{ ref('stg_podcasts__episodes') }}
+    ),
+
+    combined as (
+        select * from articles
+        union all
+        select * from episodes
+    ),
+
+    with_category as (
+        select
+            -- ✏️ add the category group and 
+            -- coalesce the category with raw_category
+
+
+        from -- select the correct CTE
+        left join -- add the seed reference
+        using -- which column should you join on?
+    )
+
+    select * from with_category
+    ```
+
 
 ---
 

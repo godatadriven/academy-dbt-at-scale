@@ -21,7 +21,7 @@ Work through the steps in order. Expand a hint only after you've had a genuine a
 Add the package to `packages.yml`:
 
 ```yaml
-- package: calogica/dbt_expectations
+- package: metaplane/dbt_expectations
   version: # check the current version on the dbt hub
 ```
 
@@ -50,7 +50,8 @@ Open `_news__models.yml` and `_podcasts__models.yml` and apply the following con
     - name: column_name
       data_tests:
         - accepted_values:
-            values: [...]
+            arguments:
+              values: [...]
             config:
               severity: warn
 
@@ -59,8 +60,9 @@ Open `_news__models.yml` and `_podcasts__models.yml` and apply the following con
               where: "column_name = 'some_value'"
 
         - relationships:
-            to: ref('model_name')
-            field: column_name
+            arguments:
+              to: ref('model_name')
+              field: column_name
             config:
               severity: warn
     ```
@@ -73,12 +75,12 @@ Open `_news__models.yml` and `_podcasts__models.yml` and apply the following con
 
 `store_failures: true` writes failing rows to a table in your target schema, making it easy to query and understand *which* rows caused the failure.
 
-Enable it on the `not_null` test for `published_at` in `stg_news__articles`. Add a `limit` to cap the size of the failures table.
+Add a `unique` test to the `article_id` in the source `news.articles` - recall that this column is not unique *in the source* since articles can be republished.
 
 Run the test:
 
 ```bash
-dbt test --select stg_news__articles
+dbt test --select source:news
 ```
 
 Then find and query the failures table in Snowflake. Does seeing the actual failing rows help you understand the issue faster than a simple pass/fail count?
@@ -101,9 +103,6 @@ Then find and query the failures table in Snowflake. Does seeing the actual fail
     ```
     Stored N failures in: <schema>.<test_name>
     ```
-
-    The `limit` cap prevents very large failure tables from filling your schema.
-
 ---
 
 ## Step 4 - Add `dbt_expectations` tests to `stg_news__articles`
@@ -114,7 +113,6 @@ Add statistical guardrails to the articles model:
 
 - The table should have at least 20 rows (catch a silent seed/source failure)
 - `word_count` should be between 50 and 5000 (catch data entry errors - no article is 2 words or 50,000 words)
-- `word_count` should be non-null for published articles only
 
 ??? tip "Hint: Row count and value bounds"
     Row count tests go at the model level; value tests go under a column:
@@ -123,64 +121,94 @@ Add statistical guardrails to the articles model:
     - name: model_name
       data_tests:
         - dbt_expectations.expect_table_row_count_to_be_between:
-            min_value: <n>
+            arguments:
+              min_value: <n>
       columns:
         - name: column_name
           data_tests:
             - dbt_expectations.expect_column_values_to_be_between:
-                min_value: <n>
-                max_value: <n>
-            - dbt_expectations.expect_column_values_to_not_be_null:
-                mostly: <0-1>   # minimum fraction of non-null rows required
+                arguments:
+                  min_value: <n>
+                  max_value: <n>  # scope the test to rows where null is not acceptable
     ```
 
 ---
 
-## Step 5 - Add `dbt_expectations` tests to `stg_podcasts__episodes`
+## Step 5 - Add `elementary` tests to `context_performance`
 
 - [ ] Step complete
 
-Add guardrails to the episodes model:
+Check out the [elementary package.]().
 
-- `duration_seconds` should be between 60 and 14400 (1 minute to 4 hours)
-- The table should have at least 10 rows
-- The distinct set of `show_id` values should be a subset of the shows that exist in `stg_podcasts__shows` - use `expect_column_values_to_be_in_set` with a hardcoded list, or think about which built-in test already covers this relationship
+Install the package into your project.
 
-??? tip "Hint: Duration bounds"
-    ```yaml
-    - name: column_name
-      data_tests:
-        - dbt_expectations.expect_column_values_to_be_between:
-            min_value: <n>
-            max_value: <n>
+Add the [anomaly test](https://docs.elementary-data.com/data-tests/anomaly-detection-tests/column-anomalies#column_anomalies) to the duraction column to check whether the number of 
+
+Add the [anomaly test](https://docs.elementary-data.com/data-tests/anomaly-detection-tests/column-anomalies#column_anomalies) to the duration column to check whether the number of 
+seconds in an episode falls outside the expected range based on historical averages.
+
+!!! note "Before running your tests, make sure Elementary's internal tables exist in your schema"
+
+    ```bash
+    dbt run --select elementary
     ```
+    You only need to do this once per environment.
+    What do you see in your output?
 
-    Think about what duration values would indicate a genuine data problem rather than just a statistical edge case.
-
-??? tip "Hint: Relationship vs expectations"
-    The `relationships` generic test already covers foreign key checks. `dbt_expectations` adds value for *statistical* bounds - ranges, null rates, row counts - not for referential integrity, where the built-in test is cleaner and faster.
+When would this test fail?
 
 ---
 
-## Step 6 - Add `dbt_expectations` tests to `content_performance`
+## Step 6 - Add a singular test
 
-- [ ] Step complete
+Add a singular test to ensure that if there is a `category` in the `content_performance` mart there is always a `category_group`.
 
-Add mart-level guardrails:
+??? tip "Hint: What is a custom singular test??"
+    Singular tests are plain `.sql` files that return rows when they **fail**. 
+    
+    They live in the `tests/` directory. It should be called `assert_<test_functionality>.sql`, where you finish the name describing what the test is doing.
 
-- The mart should have at least 30 rows
-- `platform` should only ever be `'news'` or `'podcasts'` - use `expect_column_distinct_values_to_equal_set` (this is stricter than `accepted_values`: it also fails if a *new* platform appears that isn't in the set)
-- `published_at` should never be null - use `expect_column_values_to_not_be_null` with `mostly: 1.0`
+When you have your test save run 
+```bash
+dbt test --select `content_peformance`
+```
 
-??? tip "Hint: Strict distinct value check"
-    ```yaml
-    - name: column_name
-      data_tests:
-        - dbt_expectations.expect_column_distinct_values_to_equal_set:
-            value_set: ['val1', 'val2', ...]
+Does your new test pass?
+
+??? lab "Extension: convert this test to a generic test"
+    Generic tests live in the `tests/generic/` folder and are reusable across any model and column.
+    
+    Can you refactor your singular test into a generic one that accepts the model and a list of expected values as arguments?
+
+    1. Create a folder called `generic/` in the `tests/` directory
+    2. Move your current test into the new folder `generic/`
+
+    ```sql
+    {% test assert_two_columns_are_equal(model, column_name, other_column_name) %}
+    
+    select
+      {{ column_name }}
+    from {{ model }}
+    where {{ column_name }} = {{ other_column_name }}
+
+    {% endtest %}
     ```
 
-    `expect_column_distinct_values_to_equal_set` is stricter than `accepted_values` - it fails if a value appears that isn't in your set, but *also* if a value in your set doesn't appear in the column at all. Contrast with `expect_column_distinct_values_to_be_in_set`, which only checks one direction.
+Once you have written your generic, how would you apply it in a `.yml` file?
+
+??? question "How to apply a generic test in a yaml file?"
+    Given a generic test, you can apply it in a `.yml` file like this:
+
+    ```yaml
+    - name: model_name
+      columns:
+        - name: column_name
+          data_tests:
+            - assert_two_columns_are_equal:
+                other_column_name: other_column
+    ```
+
+    The arguments (`model`, `column_name`) are always the model and column the test is defined under. Any additional arguments become named parameters beneath the test name.
 
 ---
 
@@ -202,3 +230,22 @@ Review the output and discuss as a group:
 
 !!! success "Done?"
     You've moved from writing tests to *configuring* them - choosing severity, scoping with `where`, storing failures for debuggability, and adding statistical guardrails with `dbt_expectations`. These are the skills that separate a test suite that blocks CI from one that just generates noise.
+
+## Stretch your test suite! What else would you cover?
+
+You've now applied generic tests, singular tests, severity/`where` config, `store_failures`, and a handful of `dbt_expectations` checks. Step back and ask: **what else would you test on these models if this were a real production pipeline?**
+
+Brainstorm with your group, then pick one or two extra tests to actually add. Some directions to consider:
+
+- **Within `dbt_utils`** (already installed): tests like `expression_is_true`, `equal_rowcount`, `recency`, or `mutually_exclusive_ranges` cover things that pure `not_null` / `unique` won't.
+- **Anomaly / freshness** - is the latest `impression_date` recent enough? Is yesterday's row count within 20% of the 7-day average?
+- **Cross-model invariants** - does the sum of `allocated_spend_dollars` reconcile to total `spend_dollars` per day? (You partly tested this in Level 2 Step 3 - tighten the tolerance, or add the inverse check.)
+- **Distribution shape** - `expect_column_quantile_values_to_be_between`, `expect_column_stdev_to_be_between` from `dbt_expectations`.
+
+Other packages worth looking at on the [dbt package hub](https://hub.getdbt.com/):
+
+- 📦 **[`elementary`](https://hub.getdbt.com/elementary-data/elementary/latest/)** - anomaly detection on volume, freshness, and column-level statistics out of the box.
+- 📦 **[`dbt_project_evaluator`](https://hub.getdbt.com/dbt-labs/dbt_project_evaluator/latest/)** - tests the *project itself* (model naming, missing tests, missing documentation) rather than the data.
+- 📦 **[`dbt_meta_testing`](https://hub.getdbt.com/tnightengale/dbt_meta_testing/latest/)** - assert that every model has a minimum set of tests/docs.
+
+Pick one or two ideas, add them to your YAML or `tests/` folder, and run them. Note what was easy vs awkward to express - test gaps usually live in that awkwardness.

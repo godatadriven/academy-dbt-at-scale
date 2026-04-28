@@ -23,10 +23,16 @@ Look at `_news__models.yml` and `_podcasts__models.yml`. Are the tests comprehen
 Make a note of at least two gaps you'd like to fill. You'll add them in Step 2.
 
 ??? tip "Hint: Common gaps to look for"
+
+    Some immediate concerns:
+
+    - No `not_null` or `unique` tests on primary keys
+    - No `accepted_values` on `status` in articles when they can only be `draft`, `published` or `archived`
+
+    Also interesting to note:
+
     - No `relationships` test linking `stg_news__articles.author_id` → `stg_news__authors.author_id`
-    - No `not_null` test on `published_at` in episodes
-    - No `accepted_values` on `status` in articles (`draft`, `published`, `archived`)
-    - No `unique` test on `episode_id` in episodes
+
 
 ---
 
@@ -49,8 +55,9 @@ dbt test --select stg_news__articles stg_news__authors stg_podcasts__episodes
       data_tests:
         - not_null
         - relationships:
-            to: ref('model_name') # or source('source_name', 'table_name')
-            field: column_name
+            arguments:
+              to: ref('model_name') # or source('source_name', 'table_name')
+              field: column_name
     ```
 
 ??? tip "Hint: accepted_values example"
@@ -91,10 +98,11 @@ Create `models/marts/content/_content__models.yml`. Document `content_performanc
 
 Include at minimum:
 
-- A `not_null` test on `content_id`
+- Primary key tests on `content_id`
 - A `not_null` test on `platform`
 - A `not_null` test on `published_at`
 - An `accepted_values` test on `platform`
+    - At the moment you are only measuring news and podcast episode performance - what happens when you include more platforms? How will you account for this in this test?
 
 ??? tip "Hint: Use the codegen package to generate the model yaml"
 
@@ -131,27 +139,26 @@ Include at minimum:
 
 Create `snapshots/snap_news__articles.sql`. This should track changes to article `title`, `category`, and `status` over time using the `timestamp` strategy.
 
-You can run this snapshot on the source data using the `source()` macro.
+You should run this snapshot on the staging model where the `article_id` has been treated using the `ref()` macro.
 
 ??? tip "Hint: Snapshot block"
 
-    Add the following yaml
+    Create a `snapshot_articles.yml` file inside the `snapshots/` directory using this structure:
 
     ```yaml
-
     snapshots:
-      - name: <string> # the name of your snapshot
-        +relation: source('my_source', 'my_table') | ref('my_model')
-        +database: <string>
-        +schema: <string>
-        +alias: <string>
-        +unique_key: <column_name_or_expression>
-        +strategy: timestamp | check # choose the most appropriate
-        +updated_at: <column_name> # only when timestamp strategy is selected
-        +check_cols: [<column_name>] | all # only when timestamp strategy is selected
-        +dbt_valid_to_current: <string> # default is NULL
-        +hard_deletes: 'ignore' | 'invalidate' | 'new_record' # default is ignore
+    - name: <string>
+        relation: ref() | source()
+        config:
+        database: <string>
+        schema: <string>
+        unique_key: <column_name_or_expression>
+        strategy: timestamp | check
+        updated_at: <column_name> # only needed with timestamp strategy
+        check_cols: [<column_name>] | all # only needed with check strategy
     ```
+
+    The `target_schema` is already set to `snapshots` in `dbt_project.yml` — you don't need to repeat it.
 
     Run it:
 
@@ -175,7 +182,12 @@ To see the snapshot in action, update the underlying source table name to point 
 
 !!! warning "Note: In practice the underlying source table would change, and you would not change any reference in dbt!!"
 
-Then run `dbt snapshot` again and query the snapshot table:
+Then run 
+
+- `dbt run -s stg_news__articles`
+- `dbt snapshot` 
+
+again and query the snapshot table:
 
 ```sql
 select * from snapshots.snap_news__articles

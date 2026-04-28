@@ -78,20 +78,20 @@ Seeds simulate raw source data. Each CSV maps to a schema and table:
 
 | CSV file | Snowflake target |
 |----------|-----------------|
-| `raw_news__articles.csv` | `news.articles` |
-| `raw_news__articles_updated.csv` | `news.articles_updated` |
-| `raw_news__authors.csv` | `news.authors` |
-| `raw_news__page_views.csv` | `news.views` |
-| `raw_podcasts__shows.csv` | `podcasts.shows` |
-| `raw_podcasts__episodes.csv` | `podcasts.episodes` |
-| `raw_podcasts__episodes_updated.csv` | `podcasts.episodes_updated` |
-| `raw_podcasts__listens.csv` | `podcasts.listens` |
-| `raw_streaming__content_catalog.csv` | `streaming.content_catalog` |
-| `raw_streaming__subscriptions.csv` | `streaming.subscriptions` |
-| `raw_streaming__watch_events.csv` | `streaming.watch_events` |
-| `raw_ads__campaigns.csv` | `ads.campaigns` |
-| `raw_ads__impressions.csv` | `ads.impressions` |
-| `raw_ads__spend.csv` | `ads.spend` |
+| `news__articles.csv` | `news.articles` |
+| `news__articles_updated.csv` | `news.articles_updated` |
+| `news__authors.csv` | `news.authors` |
+| `news__page_views.csv` | `news.views` |
+| `podcasts__shows.csv` | `podcasts.shows` |
+| `podcasts__episodes.csv` | `podcasts.episodes` |
+| `podcasts__episodes_updated.csv` | `podcasts.episodes_updated` |
+| `podcasts__listens.csv` | `podcasts.listens` |
+| `streaming__content_catalog.csv` | `streaming.content_catalog` |
+| `streaming__subscriptions.csv` | `streaming.subscriptions` |
+| `streaming__watch_events.csv` | `streaming.watch_events` |
+| `ads__campaigns.csv` | `ads.campaigns` |
+| `ads__impressions.csv` | `ads.impressions` |
+| `ads__spend.csv` | `ads.spend` |
 
 The `_updated` variants (`articles_updated`, `episodes_updated`) are used in the Group 2 snapshot exercises - they simulate what the source table looks like after upstream changes, to demonstrate SCD Type 2 behaviour.
 
