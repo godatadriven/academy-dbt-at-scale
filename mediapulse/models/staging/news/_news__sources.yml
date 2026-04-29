@@ -13,13 +13,16 @@ sources:
 
     tables:
       - name: articles
+        identifier: articles_updated # commented out - used for snapshot_articles data
         description: >
           All articles ever published on NewsNow, including subsequent versions.
           A single article_id may appear more than once when an article is updated
           or republished - each version gets its own row with a new updated_at timestamp.
         columns:
           - name: article_id
-            description: Article identifier. See updated_at to identify the most recent version of each article.
+            description: >
+              Article identifier. Not a primary key - duplicates exist.
+              See updated_at to identify the most recent version of each article.
           - name: title
             description: Article headline.
           - name: author_id
@@ -40,8 +43,13 @@ sources:
         columns:
           - name: author_id
             description: Primary key.
+            tests:
+              - not_null
+              - unique
           - name: name
             description: Author's full name.
+            tests:
+              - not_null
           - name: email
             description: Author's work email address.
           - name: joined_at
@@ -55,6 +63,9 @@ sources:
         columns:
           - name: view_id
             description: Primary key.
+            tests:
+              - not_null
+              - unique
           - name: article_id
             description: The article that was viewed.
           - name: user_id

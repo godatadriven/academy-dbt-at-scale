@@ -3,41 +3,75 @@ version: 2
 models:
   - name: stg_news__articles
     description: >
-      Staged articles from NewsNow, cleaned and renamed from news.articles.
+      Staged articles from NewsNow, cleaned and renamed from raw_news.articles.
       Review the source definition for important notes about article_id uniqueness.
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments:
+            min_value: 20
     columns:
       - name: article_id
         description: >
           Article identifier from the source system.
-        data_tests:
+          Note: check raw_news.articles for uniqueness behaviour before adding a unique test here.
+        tests:
           - not_null
+          - unique:
+              config:
+                where: published_at is not null
       - name: article_title
         description: Article headline.
-        data_tests:
+        tests:
           - not_null
       - name: author_id
         description: Foreign key to stg_news__authors.
-        data_tests:
+        tests:
           - not_null
+          - relationships:
+              arguments: 
+                to: ref('stg_news__authors')
+                field: author_id
+              config:
+                severity: warn
       - name: category
         description: Editorial category.
       - name: published_at
-        description: Timestamp when the article first went live. There are no unpublished articles.
+        description: Timestamp when the article first went live.
+        tests:
+          - not_null
       - name: updated_at
         description: Timestamp of the most recent edit or republication.
       - name: status
         description: Current article lifecycle status.
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['draft', 'published', 'archived']
+              config:
+                severity: warn
       - name: word_count
         description: Number of words in the article body.
-
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 50
+                max_value: 5000
+          - dbt_expectations.expect_column_values_to_not_be_null:
+              arguments:
+                row_condition: "status = 'published'" 
   - name: stg_news__authors
     description: >
       Staged author records from NewsNow. One row per author.
     columns:
       - name: author_id
         description: Primary key.
+        tests:
+          - not_null
+          - unique
       - name: author_name
-        description: Author's full name, should always be populated.
+        description: Author's full name.
+        tests:
+          - not_null
       - name: email
         description: Work email address.
       - name: joined_at

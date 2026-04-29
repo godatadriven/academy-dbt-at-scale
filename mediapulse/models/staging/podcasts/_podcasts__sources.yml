@@ -15,12 +15,12 @@ sources:
         columns:
           - name: show_id
             description: Primary key.
-            data_tests:
+            tests:
               - not_null
               - unique
           - name: show_name
             description: Display name of the show.
-            data_tests:
+            tests:
               - not_null
           - name: host_name
             description: Name of the primary show host.
@@ -36,12 +36,12 @@ sources:
         columns:
           - name: episode_id
             description: Primary key.
-            data_tests:
+            tests:
               - not_null
               - unique
           - name: show_id
             description: Foreign key to shows.
-            data_tests:
+            tests:
               - not_null
               - relationships:
                   arguments: 
@@ -64,7 +64,7 @@ sources:
         columns:
           - name: listen_id
             description: Primary key.
-            data_tests:
+            tests:
               - not_null
               - unique
           - name: episode_id
