@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: int_campaign_content_spend_allocation
+    description: >
+      Allocates actual campaign spend (from the spend table) down to individual content
+      items, proportional to each item's share of impressions within the campaign.
+
+      The allocation rule differs by campaign type. Brand/awareness campaigns (display,
+      video, newsletter) distribute spend across all content regardless of engagement.
+      Performance campaigns (sponsored_content, podcast_ad) only attribute spend to
+      content that drove at least one click — and crucially, zero-click content is
+      removed from the denominator too, so the remaining items still sum to 100% of spend.
+      This means the same impressions data produces completely different allocations
+      depending on campaign_type.
+    config:
+      materialized: view
+    columns:
+      - name: campaign_id
+        description: Foreign key to stg_ads__campaigns.
+        data_tests:
+          - not_null
+      - name: campaign_type
+        description: Campaign type inherited from campaigns. Drives the allocation rule.
+      - name: content_id
+        description: >
+          The content item receiving the allocated spend. For performance campaigns,
+          only content items with clicks > 0 appear.
+        data_tests:
+          - not_null
+      - name: total_spend_cents
+        description: Total actual spend for the campaign across all spend records.
+      - name: impressions_count
+        description: Impression count for this content item within the campaign.
+      - name: total_eligible_impressions
+        description: >
+          Sum of impressions across all eligible content items in the campaign.
+          For performance campaigns this excludes zero-click content, which changes
+          the denominator used in the allocation.
+      - name: allocated_spend_cents
+        description: >
+          Spend attributed to this content item, rounded to the nearest cent.
+          Equals total_spend_cents * (impressions_count / total_eligible_impressions).
+  - name: int_episode_listen_completion
+    description: >
+      Per-episode listen completion statistics. Joins podcast episodes to individual
+      listen sessions, computes a per-session completion rate (capped at 1.0 to handle
+      sessions that exceed the episode duration), then aggregates to the episode level.
+      Episodes with no listens are retained via LEFT JOIN and receive an engagement_tier
+      of 'no_listens'.
+    config:
+      materialized: view
+    columns:
+      - name: episode_id
+        description: Primary key — one row per episode.
+        data_tests:
+          - not_null
+          - unique
+      - name: show_id
+        description: Foreign key to stg_podcasts__shows.
+        data_tests:
+          - not_null
+      - name: published_at
+        description: Timestamp when the episode was published.
+      - name: duration_seconds
+        description: Total runtime of the episode in seconds.
+      - name: total_listen_sessions
+        description: Number of distinct listen sessions recorded for this episode. Zero when no sessions exist.
+      - name: avg_completion_rate
+        description: >
+          Average fraction of the episode listened to across all sessions.
+          Each session is capped at 1.0 before averaging, so a listen longer than the
+          episode duration counts as fully completed rather than exceeding 100%.
+          NULL when the episode has no listen sessions.
+      - name: total_listen_seconds
+        description: Sum of listen_duration_seconds across all sessions for this episode.
+      - name: engagement_tier
+        description: >
+          Categorical engagement label derived from avg_completion_rate:
+          'completed' (>= 75%), 'partial' (25-74%), 'dropped' (< 25%), 'no_listens'.

@@ -223,5 +223,11 @@ Discuss:
 
 ---
 
+## Step 6 BONUS - Expand your test suite!
+
+Look at the intermediate models, is there any logic there that should be covered by a unit test? 
+
+---
+
 !!! success "Done?"
     You've conducted a project-wide test configuration audit, learned the difference between unit tests and data tests, and written unit tests that verify transformation logic in isolation. Combined with the evaluator work from Level 1 and the dbt-expectations work from Level 2, you now have a full testing toolkit - from structural auditing to statistical guardrails to logic verification.
