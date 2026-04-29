@@ -4,8 +4,16 @@ with source as (
 
 ),
 
-renamed as (
+deduped as (
+    select *,
+        row_number() over (
+            partition by article_id
+            order by cast(updated_at   as timestamp) desc
+        ) as row_num
+    from source
+),
 
+renamed as (
     select
         article_id,
         title                                as article_title,
@@ -15,9 +23,8 @@ renamed as (
         cast(updated_at   as timestamp)      as updated_at,
         status,
         word_count
-
-    from source
-
+    from deduped
+    where row_num = 1
 )
 
 select * from renamed

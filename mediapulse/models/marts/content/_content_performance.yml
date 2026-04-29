@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: content_performance
+    description: ""
+    columns:
+      - name: content_id_sk
+        data_type: varchar
+        description: ""
+        data_tests:
+          - unique
+          - not_null
+
+      - name: content_id
+        data_type: varchar
+        description: ""
+
+      - name: content_title
+        data_type: varchar
+        description: ""
+
+      - name: published_at
+        data_type: timestamp_ntz
+        description: ""
+        data_tests:
+          - not_null
+
+      - name: category
+        data_type: varchar
+        description: ""
+
+      - name: platform
+        data_type: varchar
+        description: ""
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['podcasts', 'news']
+
+      - name: content_length_units
+        data_type: number
+        description: ""
+        data_tests:
+          - elementary.column_anomalies:
+              arguments: 
+                column_anomalies:
+                  - average
+                where_expression: "platform='podcasts'"
+                anomaly_sensitivity: 2
+
+      - name: category_group
+        data_type: varchar
+        description: ""
+        data_tests:
+          - assert_column_exists_when_other_column_present:
+              arguments:
+                other_column: category
