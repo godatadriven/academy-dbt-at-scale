@@ -24,7 +24,7 @@ impressions as (
         content_id,
         impressions_count,
         clicks
-    from {{ source('ads', 'impressions') }}
+    from {{ ref('stg_ads__impressions') }}
 
 ),
 
