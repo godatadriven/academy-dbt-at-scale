@@ -6,7 +6,7 @@ This is an audit-first track. Your job is to find what's broken or missing in th
 
 In this level you will:
 
-- **Install audit packages** - dbt-project-evaluator and dbt-codegen
+- **Install audit packages** - `dbt-project-evaluator`, `dbt-codegen` and `elementary`
 - **Run the evaluator** and surface violations
 - **Triage findings** by risk level
 - **Fix the highest-priority violations**
@@ -90,7 +90,7 @@ For each evaluator violation, decide:
 - **Should fix**: documentation gaps, naming convention violations
 - **Won't fix / acceptable**: architectural decisions made consciously (e.g., a mart that intentionally queries a source for performance)
 
-Record your triage decisions with a brief rationale - you'll present this.
+Record your triage decisions with a brief rationale.
 
 ??? tip "Hint: What usually matters most"
     In practice, the highest-risk findings are:
@@ -163,22 +163,54 @@ Paste the output into the appropriate YAML files, then fill in the descriptions.
 
 ---
 
-## Step 6 - BONUS: Deep dive on a specific evaluator finding
+## Step 6 - elementary
 
-- [ ] Step complete
+[Elementary](https://docs.elementary-data.com/data-tests/dbt/dbt-package) is an open-source dbt package for data observability: anomaly detection tests, a run history dashboard, and alerting — without leaving dbt.
 
-Pick the evaluator finding that surprised you most and dig into it:
+Your goal is to install this package, run its models and apply some of its tests.
 
-1. Which models are affected?
-2. What's the concrete risk - what could go wrong in production?
-3. Is the fix straightforward or does it require refactoring?
+Elementary ships as a dbt package. Its models run inside the dbt project and write results to an `elementary` schema. A separate CLI tool (`edr`) reads those results to generate reports and send alerts.
 
-Write a short paragraph (3–5 sentences) describing your finding. You'll use this in your presentation.
+```yaml
+# packages.yml
+packages:
+  - package: elementary-data/elementary
+    version: [">=0.13.0", "<0.14.0"]
+```
+
+??? question "How can you run elementary?"
+
+    ```bash
+    dbt run --select elementary      # build Elementary's internal audit models
+    edr report                       # generate local HTML report
+    edr send-report                  # send to Slack / email
+    ```
+
+??? question "What are some key tests to run?"
+    Key anomaly tests
+
+    | Test | What it detects |
+    |---|---|
+    | `elementary.volume_anomalies` | Row count spikes or drops vs. historical baseline |
+    | `elementary.freshness_anomalies` | Data arriving later than usual |
+    | `elementary.null_count_anomalies` | Null rate changes in a column |
+    | `elementary.all_columns_anomalies` | Runs multiple checks across all columns automatically |
+
+    ```yaml
+    models:
+      - name: stg_news__articles
+        data_tests:
+          - elementary.volume_anomalies:
+              timestamp_column: published_at
+          - elementary.freshness_anomalies:
+              timestamp_column: updated_at
+    ```
+
 
 ---
 
 !!! success "Done?"
     You've installed the audit toolchain, surfaced violations, triaged them by risk, and fixed the highest-priority issues. The project is materially safer than when you started.
 
-    Now head to [Level 2](../level2/checklist.md) to add statistical guardrails, model contracts, design the CI/CD pipeline, and prepare your presentation!
+    Now head to [Level 2](../level2/checklist.md) to add statistical guardrails, model contracts and design the CI/CD pipeline!
 

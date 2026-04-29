@@ -2,7 +2,7 @@
 
 ## Your mission
 
-You're the platform team. The other groups are building features; you're making sure the whole MediaPulse project is ready to run in production. That means auditing quality, enforcing standards, hardening tests, and designing a CI/CD pipeline that catches problems before they reach the warehouse.
+You're the release engineering team. The other groups are building features; you're making sure the whole MediaPulse project is ready to run in production. That means auditing quality, enforcing standards, hardening tests, and designing a CI/CD pipeline that catches problems before they reach the warehouse.
 
 This is a **2-day open hackathon**. There is no prescribed order beyond the checklist steps - prioritise based on what you find.
 
