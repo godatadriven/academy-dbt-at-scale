@@ -1,0 +1,22 @@
+sources:
+  - name: ads
+    schema: ads
+    tables:
+      - name: spend
+        columns:
+          - name: spend_id
+            tests:
+              - not_null
+              - unique
+      - name: impressions
+        columns:
+          - name: impression_id
+            tests:
+              - not_null
+              - unique
+      - name: campaigns
+        columns:
+          - name: campaign_id
+            tests:
+              - not_null
+              - unique
