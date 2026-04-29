@@ -13,7 +13,6 @@ sources:
 
     tables:
       - name: articles
-        identifier: articles_updated # commented out - used for snapshot_articles data
         description: >
           All articles ever published on NewsNow, including subsequent versions.
           A single article_id may appear more than once when an article is updated

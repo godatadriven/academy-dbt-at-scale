@@ -22,8 +22,6 @@ clean-targets:
 # ---------------------------------------------------------------------------
 vars:
   raw_database: "RAW"   # change to match your warehouse setup
-  elementary:
-    elementary_schema: dbt_lushep_elementary
 
 # ---------------------------------------------------------------------------
 # Model materialisation defaults
@@ -38,11 +36,3 @@ models:
 snapshots:
   mediapulse:
     +target_schema: snapshots
-
-seeds:
-  mediapulse:
-    +schema: seeds # choose where the seeds should land in the warehouse
-    category_mapping:
-      +column_types:
-        category: varchar
-        category_group: varchar

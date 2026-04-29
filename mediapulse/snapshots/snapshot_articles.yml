@@ -1,8 +1,0 @@
-snapshots:
-  - name: snapshot_articles
-    relation: ref('stg_news__articles')
-    config:
-      schema: snapshots
-      unique_key: article_id
-      strategy: timestamp
-      updated_at: updated_at

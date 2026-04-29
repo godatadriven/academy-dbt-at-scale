@@ -9,12 +9,10 @@ renamed as (
     select 
         episode_id,
         show_id,
-        title as episode_title,
+        episode_name as episode_title,
         cast(published_at as timestamp) as published_at,
         duration_seconds,
-        SPLIT_PART(season_episode, '-', 2) AS season,
-        SPLIT_PART(season_episode, '-', 1) AS episode,
-        category
+        season_episode
 
     from source
 
