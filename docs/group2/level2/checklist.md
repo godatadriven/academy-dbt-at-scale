@@ -137,7 +137,7 @@ Include at minimum:
 
 - [ ] Step complete
 
-Create `snapshots/snap_news__articles.sql`. This should track changes to article `title`, `category`, and `status` over time using the `timestamp` strategy.
+Create `snapshots/snap_news__articles.yml`. This should track changes to article `title`, `category`, and `status` over time using the `timestamp` strategy.
 
 You should run this snapshot on the staging model where the `article_id` has been treated using the `ref()` macro.
 
@@ -150,12 +150,12 @@ You should run this snapshot on the staging model where the `article_id` has bee
     - name: <string>
         relation: ref() | source()
         config:
-        database: <string>
-        schema: <string>
-        unique_key: <column_name_or_expression>
-        strategy: timestamp | check
-        updated_at: <column_name> # only needed with timestamp strategy
-        check_cols: [<column_name>] | all # only needed with check strategy
+            database: <string>
+            schema: <string>
+            unique_key: <column_name_or_expression>
+            strategy: timestamp | check
+            updated_at: <column_name> # only needed with timestamp strategy
+            check_cols: [<column_name>] | all # only needed with check strategy
     ```
 
     The `target_schema` is already set to `snapshots` in `dbt_project.yml` — you don't need to repeat it.
