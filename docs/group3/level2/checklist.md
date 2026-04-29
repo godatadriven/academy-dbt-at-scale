@@ -293,36 +293,24 @@ Before writing any code, take 5-10 minutes with your group to work through the q
 
 - [ ] Step complete
 
-Now turn the answers from Step 4 into config. Create `snapshots/snap_ads__campaigns.sql`. Three things you've effectively decided already:
+Now turn the answers from Step 4 into config. Create `snapshots/snap_ads__campaigns.yml`. Three things you've effectively decided already:
 
 1. **`unique_key`** - which column identifies a campaign across versions (your answer to Step 4 question 1's "what is a campaign?").
 2. **`strategy`** - your answer to Step 4 question 4 should rule out `timestamp`. Use `check` instead.
 3. **`check_cols`** - the list of columns from Step 4 question 3 that actually move.
 
 ??? tip "Hint: Snapshot skeleton"
-    ```sql
-    {% snapshot snap_ads__campaigns %}
-
-    {{
-        config(
-            target_schema='snapshots',
-            unique_key='campaign_id',
-            strategy='check',
-            check_cols=['budget_cents', 'end_date', 'campaign_type'],
-        )
-    }}
-
-    select
-        campaign_id,
-        advertiser_id,
-        campaign_name,
-        campaign_type,
-        budget_cents,
-        start_date,
-        end_date
-    from {{ source('ads', 'campaigns') }}
-
-    {% endsnapshot %}
+    ```yaml
+    snapshots:
+    - name: <string>
+        relation: ref() | source()
+        config:
+        database: <string>
+        schema: <string>
+        unique_key: <column_name_or_expression>
+        strategy: timestamp | check
+        updated_at: <column_name> # only needed with timestamp strategy
+        check_cols: [<column_name>] | all # only needed with check strategy
     ```
 
     Run it:
