@@ -1,0 +1,175 @@
+version: 2
+
+sources:
+  - name: streaming # you choose this
+    schema: streaming
+    tables:
+      - name: content_catalog # you choose this
+        identifier: content_ctlg
+        columns:
+          - name: content_id
+            data_tests:
+              - not_null
+              - unique              
+      - name: watch_events # you choose this
+        identifier: usr_watch_events_log
+        columns:
+          - name: concat(event_id, user_id, watched_at)
+            data_tests:
+              - not_null
+              - unique
+        config: 
+          freshness:
+            warn_after:
+              count: 5
+              period: day
+            error_after:
+              count: 2000
+              period: day
+          loaded_at_field: batched_at
+      - name: subscriptions # you choose this
+        identifier: subscriptions_lifecycle_rec
+        columns:
+          - name: subscription_id
+            data_tests:
+              - not_null
+              - unique
+models:
+  - name: stg_streaming__watch_events
+    description: "View on the raw streaming events source data"
+    columns:
+      - name: event_id
+        data_type: varchar
+        description: "Id for the event"
+        data_tests:
+          - not_null
+
+      - name: user_id
+        data_type: varchar
+        description: "User id"
+        data_tests:
+          - not_null
+
+      - name: content_id
+        data_type: varchar
+        description: "Content id"
+        data_tests:
+          - not_null
+
+      - name: watched_at
+        data_type: varchar
+        description: "Timestap the content has been watched"
+        data_tests:
+          - not_null
+
+      - name: watch_duration_seconds
+        data_type: number
+        description: "Watch duration in seconds"
+
+      - name: device_type
+        data_type: varchar
+        description: "Type of device content has been watched"
+
+      - name: batched_at
+        data_type: timestamp_ntz
+        description: "Timestamp at which the event has been created"
+        data_tests:
+          - not_null
+
+      - name: hash_key
+        data_type: varchar
+        description: "MD5 hashkey based on event_id, user_id and content_id"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_streaming__content_catalog
+    description: ""
+    columns:
+      - name: content_id
+        data_type: varchar
+        description: "Content ID"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: title
+        data_type: varchar
+        description: "Title of content watched"
+
+      - name: genre
+        data_type: varchar
+        description: "Genre of content"
+
+      - name: content_type
+        data_type: varchar
+        description: "Type of content"
+
+      - name: release_date
+        data_type: varchar
+        description: "Release date of content"
+        data_tests:
+          - not_null
+
+      - name: runtime_in_minutes
+        data_type: number
+        description: "Runtime in minutes of content"
+ 
+  - name: stg_streaming__subscriptions
+    description: ""
+    columns:
+      - name: subscription_id
+        data_type: varchar
+        description: "ID of subscription"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        data_type: varchar
+        description: "User ID"
+        data_tests:
+          - not_null
+
+      - name: plan_type
+        data_type: varchar
+        description: "Type of plan"
+
+      - name: subscription_status
+        data_type: varchar
+        description: "Status of subscription"
+
+      - name: start_date
+        data_type: varchar
+        description: "Start date of subscription"
+        data_tests:
+          - not_null
+
+      - name: start_time
+        data_type: varchar
+        description: "Start time of subscription"
+        data_tests:
+          - not_null
+
+      - name: started_at
+        data_type: timestamp_ntz
+        description: "Start time stamp of subscription"
+        data_tests:
+          - not_null
+
+      - name: end_date
+        data_type: varchar
+        description: "End date of subscription"
+
+      - name: end_time
+        data_type: varchar
+        description: "End time of subscription"
+
+      - name: ended_at
+        data_type: timestamp_ntz
+        description: "End time stamp of subscription"
+
+      - name: monthly_fee_dollars
+        data_type: number
+        description: "Monthly fee in dollars"
+
