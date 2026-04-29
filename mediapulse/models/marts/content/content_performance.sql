@@ -24,30 +24,32 @@ episodes as (
     select
         episode_id          as content_id,
         episode_title       as content_title,
+        s.category          as category,
         published_at,
         'podcasts'          as platform,
         null::int           as content_length_units,
         duration_seconds
-
-    from {{ ref('stg_podcasts__episodes') }}
+    from {{ ref('stg_podcasts__episodes') }} e
+    left join {{ ref('stg_podcasts__shows') }} s on e.show_id = s.show_id
 
 ),
 
 combined as (
 
-    select
-        a.content_id,
-        a.content_title,
-        a.category,
-        a.published_at,
-        a.platform,
-        a.content_length_units,
-        a.duration_seconds
-
-    from articles a
-    inner join episodes e
-        on a.category = e.category
+select * from articles
+union all
+select * from episodes
 
 )
 
-select * from combined
+select 
+c.content_id,
+c.content_title,
+c.category,
+c.published_at,
+c.platform,
+c.content_length_units,
+c.duration_seconds,
+coalesce(m.category_group, 'other') as category_group     
+from combined c
+left join {{ ref('category_mapping') }} m on c.category = m.category
