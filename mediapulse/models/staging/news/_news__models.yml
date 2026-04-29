@@ -11,6 +11,7 @@ models:
           Article identifier from the source system.
         data_tests:
           - not_null
+          - unique
       - name: article_title
         description: Article headline.
         data_tests:
