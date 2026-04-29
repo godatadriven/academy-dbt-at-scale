@@ -1,0 +1,11 @@
+snapshots:
+  - name: snap_ads__campaigns_yml
+    relation: source('ads', 'campaigns')
+    config:
+      schema: snapshots
+      unique_key: campaign_id
+      strategy: check
+      check_cols:
+        - budget_cents
+        - end_date
+        - campaign_type
