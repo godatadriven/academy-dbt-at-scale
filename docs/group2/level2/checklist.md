@@ -137,7 +137,7 @@ Include at minimum:
 
 - [ ] Step complete
 
-Create `snapshots/snap_news__articles.yml`. This should track changes to article `title`, `category`, and `status` over time using the `timestamp` strategy.
+Create `snapshots/snapshot_articles.yml`. This should track changes to article `title`, `category`, and `status` over time using the `timestamp` strategy.
 
 You should run this snapshot on the staging model where the `article_id` has been treated using the `ref()` macro.
 
