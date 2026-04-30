@@ -142,8 +142,6 @@ Check out the [elementary package.]().
 
 Install the package into your project.
 
-Add the [anomaly test](https://docs.elementary-data.com/data-tests/anomaly-detection-tests/column-anomalies#column_anomalies) to the duraction column to check whether the number of 
-
 Add the [anomaly test](https://docs.elementary-data.com/data-tests/anomaly-detection-tests/column-anomalies#column_anomalies) to the duration column to check whether the number of 
 seconds in an episode falls outside the expected range based on historical averages.
 
