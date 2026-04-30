@@ -1,6 +1,7 @@
 {{
     config(
         materialized='incremental',
+        incremental_strategy='append',
         unique_key='impression_id'
     )
 }}
@@ -10,6 +11,7 @@ with
 impressions as (
 
     select * from {{ ref('stg_ads__impressions') }}
+
     {% if is_incremental() %}
         -- this filter will only be applied on an incremental run
         where impression_date > (select max(impression_date) from {{ this }}) 

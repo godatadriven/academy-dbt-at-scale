@@ -1,0 +1,6 @@
+version: 2
+
+seeds:
+- name: commission_lookup
+  config:
+    schema: news

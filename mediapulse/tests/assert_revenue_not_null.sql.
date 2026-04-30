@@ -1,0 +1,6 @@
+select
+    campaign_id,
+    sum(mediapulse_revenue_dollars) as total_mediapulse_revenue_dollars
+from {{ ref('fct_ad_impressions') }}
+group by 1
+having total_mediapulse_revenue_dollars < 0

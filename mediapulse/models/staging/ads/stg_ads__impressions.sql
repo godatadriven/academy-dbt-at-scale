@@ -1,5 +1,7 @@
 with 
-
+/*
+Grain per impression_id
+*/
 source as (
 
     select * from {{ source('ads', 'impressions') }}

@@ -1,0 +1,16 @@
+models:
+  - name: stg_ads__spend
+    description: This model processes advertising spend data, converting monetary values from cents to dollars and ensuring data is organized by spend_id. It is used to analyze and report on advertising expenditures and platform fees.
+    columns:
+      - name: spend_id
+        description: A unique identifier for each spend record.
+      - name: campaign_id
+        description: The identifier for the advertising campaign associated with the spend.
+      - name: spend_date
+        description: The date when the spend occurred.
+      - name: spend_dollars
+        description: The amount spent on advertising, converted from cents to dollars.
+      - name: platform_fee_dollars
+        description: The platform fee charged, converted from cents to dollars.
+      - name: net_spend_dollars
+        description: The net amount spent on advertising after deducting platform fees, in dollars.

@@ -1,0 +1,26 @@
+models:
+- name: fct_ad_impressions
+  description: This model aggregates ad impression data by joining impression details
+    with campaign information. It is designed to incrementally append new impression
+    records, ensuring up-to-date insights into ad performance metrics such as impressions
+    count, clicks, and click-through rate.
+  columns:
+  - name: impression_id
+    description: A unique identifier for each ad impression.
+  - name: campaign_id
+    description: The identifier for the campaign associated with the impression.
+  - name: content_id
+    description: The identifier for the content displayed in the ad impression.
+  - name: impression_date
+    description: The date when the ad impression occurred.
+  - name: impressions_count
+    description: The total number of times the ad was displayed.
+  - name: clicks
+    description: The number of clicks received by the ad.
+  - name: click_through_rate
+    description: The ratio of clicks to impressions, indicating the effectiveness
+      of the ad.
+  - name: campaign_type
+    description: The type of campaign, such as display or video.
+  - name: advertiser_id
+    description: The identifier for the advertiser responsible for the campaign.

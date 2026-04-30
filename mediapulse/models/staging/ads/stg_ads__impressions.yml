@@ -1,0 +1,21 @@
+models:
+- name: stg_ads__impressions
+  description: This model processes ad impression data to calculate the click-through
+    rate for each impression. It transforms and renames fields from the source data
+    to ensure consistency and readability.
+  columns:
+  - name: impression_id
+    description: A unique identifier for each ad impression.
+  - name: campaign_id
+    description: The identifier for the advertising campaign associated with the impression.
+  - name: content_id
+    description: The identifier for the content associated with the impression.
+  - name: impression_date
+    description: The date when the impression occurred.
+  - name: click_through_rate
+    description: The ratio of clicks to the number of impressions, indicating the
+      effectiveness of the ad.
+  - name: impressions_count
+    description: The total number of times the ad was displayed.
+  - name: clicks
+    description: The total number of clicks received by the ad.

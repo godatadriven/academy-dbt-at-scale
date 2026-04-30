@@ -16,22 +16,98 @@ campaigns as (
 
 ),
 
-campaign_revenue as (
+impressions as (
+
+    select * from {{ ref('fct_ad_impressions') }}
+
+),
+
+commission_lookup as (
+
+ select * from {{ ref('commission_lookup') }}
+
+),
+
+enriched as (
 
     select
-        c.campaign_id,
-        c.campaign_name,
+
+        i.campaign_id,
+        i.content_id,
+        i.impression_date,
+        i.impressions_count,
         c.campaign_type,
-        c.advertiser_id,
-        sum(s.spend_cents)          as total_spend_dollars,
-        sum(s.spend_cents - platform_fee_cents)      as total_net_spend_dollars,
-        min(s.spend_date)             as first_spend_date,
-        max(s.spend_date)             as last_spend_date
+        s.spend_dollars,
+        s.platform_fee_dollars,
+        s.net_spend_dollars
 
-    from spend s
-    inner join campaigns c using (campaign_id)
-    group by 1, 2, 3, 4
+    from impressions as i
+    inner join campaigns as c
+        on i.campaign_id = c.campaign_id
+    inner join spend as s
+        on i.campaign_id = s.campaign_id
+        and i.impression_date = s.spend_date
 
+),
+
+with_impression_share as (
+
+    select
+
+        *,
+        impressions_count / nullif(
+            sum(impressions_count) over (
+                partition by campaign_id, impression_date
+            ), 0
+        ) as impression_share
+
+    from enriched
+
+),
+
+allocated as (
+
+    select
+
+        *,
+        impression_share * spend_dollars as allocated_spend_dollars,
+        impression_share * net_spend_dollars as allocated_net_spend_dollars
+    
+    from with_impression_share
+),
+
+with_commission as (
+
+    select
+
+        a.*,
+        cl.commission_rate,
+        cl.commission_rate * a.net_spend_dollars as mediapulse_revenue_dollars
+
+    from allocated as a
+    left join commission_lookup as cl
+        on a.campaign_type = cl.campaign_type
+
+),
+
+final as (
+
+    select
+
+        campaign_id,
+        content_id,
+        impression_date,
+        impressions_count,
+        campaign_type,
+        spend_dollars,
+        net_spend_dollars,
+        impression_share,
+        allocated_spend_dollars,
+        allocated_net_spend_dollars,
+        commission_rate,
+        mediapulse_revenue_dollars
+        
+    from with_commission
 )
 
-select * from campaign_revenue
+select * from final

@@ -1,0 +1,13 @@
+snapshots:
+  - name: campaign_snapshot
+    relation: ref('stg_ads__campaigns')
+    description: SCD2 history of campaign attributes
+    config:
+      schema: ads
+      strategy: check
+      unique_key: campaign_id
+      check_cols: [budget_dollar, end_date]
+      # updated_at: column_name
+      # snapshot_meta_column_names: dictionary
+      # dbt_valid_to_current: string
+      # hard_deletes: ignore | invalidate | new_record
