@@ -37,12 +37,21 @@ sources:
 models:
   - name: stg_streaming__watch_events
     description: "View on the raw streaming events source data"
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments: 
+            min_value: 10
     columns:
       - name: event_id
         data_type: varchar
         description: "Id for the event"
         data_tests:
           - not_null
+          - unique:
+              arguments:
+                config:
+                  store_failures: true
+                  where: "device_type != 'mobile'"
 
       - name: user_id
         data_type: varchar
@@ -69,6 +78,11 @@ models:
       - name: watch_duration_seconds
         data_type: number
         description: "Watch duration in seconds"
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 86400
 
       - name: device_type
         data_type: varchar
@@ -76,7 +90,12 @@ models:
         data_tests:
           - accepted_values:
               arguments: 
-                values: ['smart tv', 'tablet', 'mobile', 'web']
+                values: ['smart tv', 'tablet', 'mobile', 'web', 'console']
+              config: 
+                severity: warn
+          - dbt_expectations.expect_column_distinct_values_to_contain_set:
+              arguments: 
+                value_set: ['smart tv', 'tablet', 'mobile', 'web']
 
       - name: batched_at
         data_type: timestamp_ntz
@@ -131,6 +150,10 @@ models:
  
   - name: stg_streaming__subscriptions
     description: ""
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments: 
+            min_value: 5
     columns:
       - name: subscription_id
         data_type: varchar
@@ -160,6 +183,8 @@ models:
           - accepted_values:
               arguments: 
                 values: ['paused', 'cancelled', 'active', 'trialing']
+              config: 
+                severity: warn
 
       - name: start_date
         data_type: varchar
@@ -194,4 +219,10 @@ models:
       - name: monthly_fee_dollars
         data_type: number
         description: "Monthly fee in dollars"
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0.01
+                row_condition: "subscription_status != 'trialing'"
+                
 

@@ -9,10 +9,12 @@ renamed as (
     select 
         episode_id,
         show_id,
-        episode_name as episode_title,
+        title as episode_title,
         cast(published_at as timestamp) as published_at,
         duration_seconds,
-        season_episode
+        season_episode,
+        split_part(season_episode, '-', 2)::int as season_number,
+        split_part(season_episode, '-', 1)::int as episode_number,
 
     from source
 
