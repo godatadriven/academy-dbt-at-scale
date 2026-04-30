@@ -2,7 +2,7 @@ with spend as (
 
     select
         campaign_id,
-        sum(spend_cents) as total_spend_cents
+        sum(spend_dollars) as total_spend_dollars
     from {{ ref('stg_ads__spend') }}
     group by campaign_id
 
@@ -63,15 +63,15 @@ final as (
         c.campaign_id,
         c.campaign_type,
         ei.content_id,
-        s.total_spend_cents,
+        s.total_spend_dollars,
         ei.impressions_count,
         ei.total_eligible_impressions,
         case
             when ei.total_eligible_impressions = 0 then 0
             else round(
-                1.0 * s.total_spend_cents * ei.impressions_count / ei.total_eligible_impressions
+                1.0 * s.total_spend_dollars * ei.impressions_count / ei.total_eligible_impressions
             )
-        end                                                                    as allocated_spend_cents
+        end                                                                    as allocated_spend_dollars
     from impression_shares as ei
     inner join campaigns as c on ei.campaign_id = c.campaign_id
     inner join spend as s on ei.campaign_id = s.campaign_id

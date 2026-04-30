@@ -1,37 +1,48 @@
--- MediaPulse revenue by content mart.
--- Show how ad revenue from AdConnect maps to individual content items
--- across the MediaPulse portfolio.
---
--- Status: work in progress - check the aggregation grain matches what consumers expect.
-
 with spend as (
-
     select * from {{ ref('stg_ads__spend') }}
-
 ),
 
 campaigns as (
-
     select * from {{ ref('stg_ads__campaigns') }}
-
 ),
 
-campaign_revenue as (
-
+impressions as (
     select
-        c.campaign_id,
-        c.campaign_name,
-        c.campaign_type,
-        c.advertiser_id,
-        sum(s.spend_cents)          as total_spend_dollars,
-        sum(s.spend_cents - platform_fee_cents)      as total_net_spend_dollars,
-        min(s.spend_date)             as first_spend_date,
-        max(s.spend_date)             as last_spend_date
+        campaign_id,
+        campaign_type,
+        content_id,
+        impression_date,
+        impressions_count
+    from {{ ref('fct_ad_impressions') }}
+),
 
-    from spend s
-    inner join campaigns c using (campaign_id)
-    group by 1, 2, 3, 4
+enriched as (
+    select
+        i.campaign_id,
+        i.content_id,
+        i.impression_date,
+        i.impressions_count,
+        i.campaign_type,
+        s.spend_dollars,
+        s.net_spend_dollars
+    from impressions i
+    inner join campaigns c
+        using (campaign_id)
+    inner join spend s
+        on  i.campaign_id     = s.campaign_id
+        and i.impression_date = s.spend_date
+),
 
+final as (
+    select
+        campaign_id,
+        content_id,
+        impression_date,
+        impressions_count,
+        campaign_type,
+        spend_dollars,
+        net_spend_dollars
+    from enriched
 )
 
-select * from campaign_revenue
+select * from final
