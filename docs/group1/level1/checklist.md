@@ -120,14 +120,15 @@ Use autocomplete (tab) as this will auto populate what you need to add to config
     ```yaml
     tables:
       - name: table_name
-        loaded_at_field: column_name
-        freshness:
-          warn_after: 
-            count: int # Your tolerance, eg 4 days
-            period: day/hour/minute/second
-          error_after: 
-            count: int # Your tolerance, eg 4 days
-            period: day/hour/minute/second
+        config:
+            loaded_at_field: column_name
+            freshness:
+            warn_after: 
+                count: int # Your tolerance, eg 4 days
+                period: day/hour/minute/second
+            error_after: 
+                count: int # Your tolerance, eg 4 days
+                period: day/hour/minute/second
     ```
 
     Test it with:
