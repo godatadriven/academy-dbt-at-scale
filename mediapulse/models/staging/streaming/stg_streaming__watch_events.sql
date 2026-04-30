@@ -14,16 +14,17 @@ renamed as (
         content_id,
         watched_at,
         watch_duration_seconds,
-        trim(lower(device_type)) as device_type,
+        {{ clean_string('device_type') }} as device_type,
         batched_at,
-        MD5(
-    CONCAT(
-        COALESCE(event_id, ''), '|',
-        COALESCE(user_id, ''), '|',
-        COALESCE(watched_at, '')
-    ) 
-) AS hash_key,
+        {{ dbt_utils.generate_surrogate_key(['event_id', 'user_id', 'watched_at'])}} as hash_key
 
+--         MD5(
+--     CONCAT(
+--         COALESCE(event_id, ''), '|',
+--         COALESCE(user_id, ''), '|',
+--         COALESCE(watched_at, '')
+--     ) 
+-- ) AS hash_key,
     from source
 
 )

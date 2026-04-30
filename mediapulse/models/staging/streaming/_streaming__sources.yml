@@ -55,6 +55,10 @@ models:
         description: "Content id"
         data_tests:
           - not_null
+          - relationships:
+              arguments: 
+                to: ref('stg_streaming__content_catalog')
+                field: content_id
 
       - name: watched_at
         data_type: varchar
@@ -69,6 +73,10 @@ models:
       - name: device_type
         data_type: varchar
         description: "Type of device content has been watched"
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['smart tv', 'tablet', 'mobile', 'web']
 
       - name: batched_at
         data_type: timestamp_ntz
@@ -104,6 +112,12 @@ models:
       - name: content_type
         data_type: varchar
         description: "Type of content"
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['live', 'series', 'film']
+              config: 
+                severity: warn
 
       - name: release_date
         data_type: varchar
@@ -134,10 +148,18 @@ models:
       - name: plan_type
         data_type: varchar
         description: "Type of plan"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['premium', 'standard', 'basic']
 
       - name: subscription_status
         data_type: varchar
         description: "Status of subscription"
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['paused', 'cancelled', 'active', 'trialing']
 
       - name: start_date
         data_type: varchar

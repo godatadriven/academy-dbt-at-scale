@@ -11,7 +11,7 @@ renamed as (
     select
         content_id,
         title,
-        trim(lower(genre)) as genre,
+        {{ clean_string('genre') }} as genre,
         ctnt_type as content_type,
         release_date,
         runtime_minutes as runtime_in_minutes
