@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: content_performance
+    description: >
+      Combines shows and episodes data.
+    columns:
+      - name: content_id
+        description: Primary key
+        data_tests:
+          - not_null
+          - unique
+      - name: content_title
+        description: title of the article
+      - name: category
+        description: category it belongs to
+      - name: published_at
+        description: published date
+        data_tests:
+          - not_null
+      - name: platform
+        description: content platform
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['news', 'podcasts']
+      - name: content_length_units
+        description: content lenght
+      - name: duration_seconds
+        description: content duration in seconds
+      - name: category_group
+        description: aggregated category grouping  

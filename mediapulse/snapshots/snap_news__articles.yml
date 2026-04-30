@@ -1,0 +1,17 @@
+snapshots:
+  - name: articles_snapshot
+    relation: ref('stg_news__articles')
+    config:
+      schema: snapshots
+      unique_key: article_id
+      strategy: timestamp
+      updated_at: updated_at
+
+
+  - name: podcasts_snapshot
+    relation: ref('stg_podcasts__episodes') 
+    config:
+      schema: snapshots
+      unique_key: episode_id
+      strategy: timestamp
+      updated_at: published_at

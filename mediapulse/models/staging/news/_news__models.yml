@@ -20,6 +20,10 @@ models:
         description: Foreign key to stg_news__authors.
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_news__authors')
+                field: author_id
       - name: category
         description: Editorial category.
       - name: published_at
@@ -37,6 +41,9 @@ models:
     columns:
       - name: author_id
         description: Primary key.
+        data_tests:
+         - not_null
+         - unique
       - name: author_name
         description: Author's full name, should always be populated.
       - name: email

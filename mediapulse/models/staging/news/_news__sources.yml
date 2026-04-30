@@ -2,16 +2,13 @@ version: 2
 
 sources:
   - name: news
-    # database: "{{ var('raw_database') }}"
-    # Uncomment the line above and set raw_database in dbt_project.yml vars
-    # if your raw data lives in a separate database (e.g. Snowflake multi-db).
-    # For the workshop seed setup, leave commented - seeds load into your target database.
     schema: news
     description: >
       Raw data from NewsNow, MediaPulse's digital news outlet.
       Loaded by the upstream ingestion pipeline.
     tables:
       - name: articles
+        identifier: articles_updated 
         description: >
           All articles ever published on NewsNow, including subsequent versions.
           A single article_id may appear more than once when an article is updated
