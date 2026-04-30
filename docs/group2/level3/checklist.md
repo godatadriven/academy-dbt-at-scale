@@ -138,7 +138,7 @@ Add statistical guardrails to the articles model:
 
 - [ ] Step complete
 
-Check out the [elementary package.]().
+Check out the [elementary package.](https://docs.elementary-data.com/data-tests/dbt/dbt-package).
 
 Install the package into your project.
 
