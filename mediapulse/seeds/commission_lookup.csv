@@ -2,5 +2,5 @@ campaign_type,commission_rate
 display,0.15
 video,0.20
 sponsored_content,0.25
-podcast-ad,0.18
+podcast_ad,0.18
 newsletter,0.12

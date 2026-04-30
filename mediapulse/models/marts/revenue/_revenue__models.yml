@@ -1,0 +1,97 @@
+version: 2
+
+models:
+- name: fct_ad_impressions
+  description: This model aggregates ad impression data with campaign details to provide
+    insights into advertising performance. It combines impression metrics with campaign
+    attributes to facilitate analysis of ad effectiveness and budget utilization.
+  columns:
+  - name: impression_id
+    description: A unique identifier for each ad impression.
+    data_tests:
+      - not_null
+      - unique
+  - name: campaign_id
+    description: The identifier for the campaign associated with the impression.
+    data_tests:
+      - not_null
+      - relationships:
+          arguments:
+            to: ref('stg_ads__campaigns')
+            field: campaign_id
+          config:
+            severity: error
+  - name: content_id
+    description: The identifier for the content displayed in the ad impression.
+    data_tests:
+      - not_null
+  - name: impression_date
+    description: The date when the ad impression occurred.
+    data_tests:
+      - not_null
+  - name: advertiser_id
+    description: The identifier for the advertiser running the campaign.
+  - name: campaign_type
+    description: The type of advertising campaign.
+    data_tests:
+      - not_null
+  - name: campaign_name
+    description: The name of the advertising campaign.
+  - name: campaign_start_date
+    description: The start date of the advertising campaign.
+  - name: campaign_end_date
+    description: The end date of the advertising campaign.
+  - name: campaign_budget_dollars
+    description: The budget allocated for the advertising campaign in dollars.
+  - name: impressions
+    description: The total number of times the ad was displayed.
+    data_tests:
+      - not_null
+  - name: clicks
+    description: The total number of clicks received by the ad.
+  - name: ctr
+    description: The click-through rate, calculated as clicks divided by impressions.
+- name: revenue_by_content
+  description: This model calculates the allocation of ad revenue to individual content
+    items across the MediaPulse portfolio. It integrates data from ad spend, campaigns,
+    and impressions to determine the share of impressions and allocate spend accordingly.
+    The model also computes the net spend and MediaPulse revenue based on commission
+    rates.
+  data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: 
+            combination_of_columns:
+              - campaign_id
+              - content_id
+              - impression_date
+  columns:
+  - name: campaign_id
+    description: Unique identifier for the advertising campaign.
+  - name: content_id
+    description: Unique identifier for the content item.
+  - name: impression_date
+    description: The date when the impressions were recorded.
+  - name: impressions
+    description: The total number of ad impressions for the campaign on the given
+      date.
+  - name: campaign_type
+    description: The type of advertising campaign.
+  - name: spend_dollars
+    description: The total amount spent on the campaign in dollars.
+  - name: net_spend_dollars
+    description: The net amount spent on the campaign after deducting platform fees.
+  - name: impression_share
+    description: The proportion of total impressions attributed to the campaign on
+      the given date.
+  - name: allocated_spend_dollars
+    description: The portion of spend dollars allocated to the content based on impression
+      share.
+  - name: allocated_net_spend_dollars
+    description: The portion of net spend dollars allocated to the content based on
+      impression share.
+  - name: commission_rate
+    description: The commission rate applied to the net spend to calculate MediaPulse
+      revenue.
+  - name: mediapulse_revenue_dollars
+    description: The revenue generated for MediaPulse from the allocated net spend
+      based on the commission rate.

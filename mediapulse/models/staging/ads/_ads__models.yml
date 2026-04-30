@@ -1,0 +1,103 @@
+version: 2
+
+models:
+- name: stg_ads__campaigns
+  description: This model serves to transform and prepare campaign data from the ads
+    source for further analysis. It includes renaming and formatting of fields such
+    as converting budget from cents to dollars and ensuring campaign names are in
+    uppercase.
+  columns:
+  - name: campaign_id
+    description: A unique identifier for each campaign.
+    data_tests:
+      - not_null
+      - unique
+  - name: advertiser_id
+    description: A unique identifier for the advertiser associated with the campaign.
+  - name: campaign_name
+    description: The name of the campaign, converted to uppercase for consistency.
+  - name: campaign_type
+    description: The type or category of the campaign.
+    data_tests:
+      - not_null
+      - relationships:
+          arguments:
+            to: ref('commission_lookup')
+            field: campaign_type
+      - accepted_values:
+          arguments: 
+            values: ['display', 'video', 'podcast_ad', 'sponsored_content','newsletter']
+          config:  
+            severity: warn
+  - name: start_date
+    description: The date when the campaign starts.
+  - name: end_date
+    description: The date when the campaign ends.
+  - name: budget_cents
+    description: The budget allocated for the campaign, expressed in cents.
+  - name: budget_dollars
+    description: The budget allocated for the campaign, converted from cents to dollars
+      for easier interpretation.
+- name: stg_ads__impressions
+  description: This model processes ad impression data, calculating the click-through
+    rate (CTR) for each impression. It is used to analyze the effectiveness of ad
+    campaigns by linking impressions to specific campaigns and content.
+  columns:
+  - name: impression_id
+    description: A unique identifier for each ad impression.
+    data_tests:
+      - not_null
+      - unique
+  - name: campaign_id
+    description: The identifier for the ad campaign associated with the impression.
+    data_tests:
+      - not_null
+  - name: content_id
+    description: The identifier for the content associated with the impression.
+    data_tests:
+      - not_null
+  - name: impression_date
+    description: The date when the impression occurred.
+    data_tests:
+      - not_null
+  - name: impressions
+    description: The total number of times the ad was displayed.
+    data_tests:
+      - not_null
+  - name: clicks
+    description: The number of times the ad was clicked.
+  - name: ctr
+    description: The click-through rate, calculated as the number of clicks divided
+      by the number of impressions.
+- name: stg_ads__spend
+  description: This model processes advertising spend data, converting spend and platform
+    fee amounts from cents to dollars, and calculates the net spend by subtracting
+    platform fees from total spend. It is used to analyze advertising costs and net
+    expenditures.
+  columns:
+  - name: spend_id
+    description: A unique identifier for each spend record.
+    data_tests:
+      - not_null
+      - unique
+  - name: campaign_id
+    description: The identifier for the advertising campaign associated with the spend.
+  - name: spend_date
+    description: The date when the spend occurred.
+  - name: spend_cents
+    description: The total spend amount in cents.
+  - name: spend_dollars
+    description: The total spend amount converted to dollars.
+    data_tests:
+      - not_null:
+          config:
+            where: "spend_dollars > 0"
+  - name: platform_fee_cents
+    description: The platform fee amount in cents.
+  - name: platform_fee_dollars
+    description: The platform fee amount converted to dollars.
+  - name: net_spend_dollars
+    description: The net spend amount in dollars after subtracting platform fees from
+      total spend.
+    data_tests:
+      - not_null
