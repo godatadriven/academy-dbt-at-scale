@@ -22,23 +22,46 @@ impressions as (
 
 ),
 
-campaign_revenue as (
+enriched as (
 
     select
         i.campaign_id,
         i.content_id,
+        i.impression_date,
         i.campaign_name,
+        i.impressions,
         i.campaign_type,
-        i.advertiser_id,
-        sum(s.spend_cents)          as total_spend_dollars,
-        sum(s.spend_cents - platform_fee_cents)      as total_net_spend_dollars,
-        min(s.spend_date)             as first_spend_date,
-        max(s.spend_date)             as last_spend_date
+        s.spend_dollars,
+        s.spend_dollars - s.platform_fee_dollars      as net_spend_dollars,
+        DIV0(i.impressions, sum(i.impressions) over (partition by i.campaign_id, i.impression_date)) as impression_share
 
     from impressions i
-    inner join spend s using (campaign_id)
-    group by 1, 2, 3, 4, 5
+    inner join spend s 
+        on s.campaign_id = i.campaign_id
+        and s.spend_date = i.impression_date
+),
 
+final as (
+    select e.*,
+        e.impression_share * e.spend_dollars as allocated_spend_dollars,
+        e.impression_share * e.net_spend_dollars as allocated_net_spend_dollars,
+        cl.commission_rate,
+        (allocated_net_spend_dollars * cl.commission_rate) as mediapulse_revenue_dollars
+    from enriched e
+    left join {{ ref('commission_lookup') }} cl using (campaign_type)
 )
 
-select * from campaign_revenue
+select  
+    campaign_id,
+    content_id,
+    impression_date,
+    impressions,
+    campaign_type,
+    spend_dollars,
+    net_spend_dollars,
+    impression_share,
+    allocated_spend_dollars,
+    allocated_net_spend_dollars,
+    commission_rate,
+    mediapulse_revenue_dollars
+from final
