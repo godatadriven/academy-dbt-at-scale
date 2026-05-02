@@ -10,6 +10,10 @@ models:
         description: The date when the spend occurred.
       - name: spend_dollars
         description: The amount spent on advertising, converted from cents to dollars.
+        data_tests:
+        - not_null:
+            config:
+              where: "spend_dollars > 0"
       - name: platform_fee_dollars
         description: The platform fee charged, converted from cents to dollars.
       - name: net_spend_dollars

@@ -1,26 +1,64 @@
 models:
-- name: fct_ad_impressions
-  description: This model aggregates ad impression data by joining impression details
-    with campaign information. It is designed to incrementally append new impression
-    records, ensuring up-to-date insights into ad performance metrics such as impressions
-    count, clicks, and click-through rate.
-  columns:
-  - name: impression_id
-    description: A unique identifier for each ad impression.
-  - name: campaign_id
-    description: The identifier for the campaign associated with the impression.
-  - name: content_id
-    description: The identifier for the content displayed in the ad impression.
-  - name: impression_date
-    description: The date when the ad impression occurred.
-  - name: impressions_count
-    description: The total number of times the ad was displayed.
-  - name: clicks
-    description: The number of clicks received by the ad.
-  - name: click_through_rate
-    description: The ratio of clicks to impressions, indicating the effectiveness
-      of the ad.
-  - name: campaign_type
-    description: The type of campaign, such as display or video.
-  - name: advertiser_id
-    description: The identifier for the advertiser responsible for the campaign.
+  - name: fct_ad_impressions
+    description: >
+      This model aggregates ad impression data by joining impression details
+      with campaign information. It is designed to incrementally append new impression
+      records, ensuring up-to-date insights into ad performance metrics such as impressions
+      count, clicks, and click-through rate.
+    tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments:
+            min_value: 20
+      - dbt_expectations.expect_row_values_to_have_recent_data:
+          arguments:
+            column_name: impression_date
+            datepart: day
+            interval: 2
+            row_condition: 'impression_id is not null' #optional
+            config:
+              severity: warn
+    columns:
+      - name: impression_id
+        description: A unique identifier for each ad impression.
+      - name: campaign_id
+        description: The identifier for the campaign associated with the impression.
+        tests:
+          - relationships:
+              arguments: # available in v1.10.5 and higher. Older versions can set the <argument_name> as the top-level property.
+                to: ref('stg_ads__campaigns')
+                field: campaign_id
+                config:
+                  severity: warn
+      - name: content_id
+        description: The identifier for the content displayed in the ad impression.
+      - name: impression_date
+        description: The date when the ad impression occurred.
+        tests:
+          - not_null
+          
+      - name: impressions_count
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                severity: warn
+        description: The total number of times the ad was displayed.
+      - name: clicks
+        description: The number of clicks received by the ad.
+      - name: click_through_rate
+        description:
+          The ratio of clicks to impressions, indicating the effectiveness
+          of the ad.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0.0
+                max_value: 1.0
+              config:
+                severity: error
+
+
+      - name: campaign_type
+        description: The type of campaign, such as display or video.
+      - name: advertiser_id
+        description: The identifier for the advertiser responsible for the campaign.

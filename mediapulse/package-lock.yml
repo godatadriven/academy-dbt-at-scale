@@ -5,4 +5,13 @@ packages:
   - name: codegen
     package: dbt-labs/codegen
     version: 0.13.1
-sha1_hash: a5ae92b4157c9495f6ee6926cadfefbce4b7f424
+  - name: dbt_expectations
+    package: metaplane/dbt_expectations
+    version: 0.10.10
+  - name: elementary
+    package: elementary-data/elementary
+    version: 0.23.1
+  - name: dbt_date
+    package: godatadriven/dbt_date
+    version: 0.17.2
+sha1_hash: 20a75ffd4f94b122cd049acbc5655f66bb946d0a

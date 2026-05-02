@@ -4,13 +4,13 @@ config-version: 2
 
 profile: "mediapulse"
 
-model-paths:    ["models"]
+model-paths: ["models"]
 analysis-paths: ["analyses"]
-test-paths:     ["tests"]
-seed-paths:     ["seeds"]
-macro-paths:    ["macros"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-docs-paths:     ["docs"]
+docs-paths: ["docs"]
 
 clean-targets:
   - "target"
@@ -22,6 +22,7 @@ clean-targets:
 # ---------------------------------------------------------------------------
 vars:
   raw_database: "RAW"   # change to match your warehouse setup
+  dbt_date:time_zone: "UTC"
 
 # ---------------------------------------------------------------------------
 # Model materialisation defaults
@@ -36,3 +37,5 @@ models:
 snapshots:
   mediapulse:
     +target_schema: snapshots
+flags:
+  require_generic_test_arguments_property: true

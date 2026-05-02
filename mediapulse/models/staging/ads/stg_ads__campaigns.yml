@@ -1,22 +1,43 @@
 models:
-- name: stg_ads__campaigns
-  description: This model provides a detailed view of advertising campaigns, including
-    their identifiers, associated advertisers, names, types, start and end dates,
-    and budgets. It is useful for analyzing campaign performance and planning future
-    advertising strategies.
-  columns:
-  - name: campaign_id
-    description: A unique identifier for each advertising campaign.
-  - name: advertiser_id
-    description: The identifier for the advertiser associated with the campaign.
-  - name: campaign_name
-    description: The name of the advertising campaign.
-  - name: campaign_type
-    description: The type or category of the advertising campaign.
-  - name: start_date
-    description: The date when the advertising campaign begins.
-  - name: end_date
-    description: The date when the advertising campaign ends.
-  - name: budget_dollar
-    description: The total budget allocated for the advertising campaign, converted
-      from cents to dollars.
+  - name: stg_ads__campaigns
+    description:
+      This model provides a detailed view of advertising campaigns, including
+      their identifiers, associated advertisers, names, types, start and end dates,
+      and budgets. It is useful for analyzing campaign performance and planning future
+      advertising strategies.
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          arguments:
+            lower_bound_column: start_date
+            upper_bound_column: end_date
+            partition_by: campaign_id # Ensures ranges are only compared within the same campaign
+            gaps: not_allowed
+    columns:
+      - name: campaign_id
+        description: A unique identifier for each advertising campaign.
+      - name: advertiser_id
+        description: The identifier for the advertiser associated with the campaign.
+      - name: campaign_name
+        description: The name of the advertising campaign.
+      - name: campaign_type
+        description: The type or category of the advertising campaign.
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  [
+                    "display",
+                    "video",
+                    "sponsored_content",
+                    "podcast-ad",
+                    "newsletter",
+                  ]
+                severity: warn
+      - name: start_date
+        description: The date when the advertising campaign begins.
+      - name: end_date
+        description: The date when the advertising campaign ends.
+      - name: budget_dollar
+        description:
+          The total budget allocated for the advertising campaign, converted
+          from cents to dollars.

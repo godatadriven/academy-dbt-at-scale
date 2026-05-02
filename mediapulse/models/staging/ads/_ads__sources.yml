@@ -8,15 +8,20 @@ sources:
             tests:
               - not_null
               - unique
+          - name: spend_cents
+            tests:
+              - not_null
       - name: impressions
         columns:
           - name: impression_id
             tests:
               - not_null
               - unique
+
       - name: campaigns
         columns:
           - name: campaign_id
             tests:
               - not_null
               - unique
+          

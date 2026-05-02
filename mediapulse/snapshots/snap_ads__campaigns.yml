@@ -1,5 +1,5 @@
 snapshots:
-  - name: campaign_snapshot
+  - name: snap_ads__campaigns
     relation: ref('stg_ads__campaigns')
     description: SCD2 history of campaign attributes
     config:
