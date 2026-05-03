@@ -1,0 +1,21 @@
+models:
+  - name: stg_streaming__usr_watch_events_log
+    columns:
+      - name: event_id
+        tests:
+          - unique
+          - not_null
+      - name: user_id
+        tests:
+          - not_null
+      - name: content_id
+        tests:
+          - not_null
+      - name: watched_at
+        tests:
+          - not_null
+      - name: watch_duration_seconds
+      - name: device_type
+      - name: batched_at
+        tests:
+          - not_null

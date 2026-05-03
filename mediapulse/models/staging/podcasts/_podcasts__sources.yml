@@ -77,3 +77,19 @@ sources:
             description: How long the user actually listened.
           - name: platform
             description: "Platform used. Expected: ios, android, web, alexa, other."
+      - name: episodes_updated
+        columns:
+          - name: episode_id
+            data_type: varchar
+          - name: show_id
+            data_type: varchar
+          - name: title
+            data_type: varchar
+          - name: published_at
+            data_type: varchar
+          - name: duration_seco nds
+            data_type: number
+          - name: season_episode
+            data_type: varchar
+          - name: category
+            data_type: varchar

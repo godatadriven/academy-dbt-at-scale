@@ -1,0 +1,1 @@
+select * from dbt_project_evaluator.fct_missing_primary_key_tests;

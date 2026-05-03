@@ -1,0 +1,24 @@
+models:
+- name: stg_streaming__content_ctlg
+  description: This model serves as a staging layer for the streaming content catalog,
+    providing a clean and standardized view of content data. It includes essential
+    information about each piece of content, such as its title, genre, type, release
+    date, and runtime, which can be used for further analysis and reporting.
+  columns:
+  - name: content_id
+    description: A unique identifier for each piece of content.
+    data_tests:
+      - unique
+      - not_null
+  - name: title
+    description: The title of the content.
+    data_tests:
+      - not_null
+  - name: genre
+    description: The genre classification of the content.
+  - name: ctnt_type
+    description: The type of content, such as movie or series.
+  - name: release_date
+    description: The date when the content was released.
+  - name: runtime_minutes
+    description: The duration of the content in minutes.

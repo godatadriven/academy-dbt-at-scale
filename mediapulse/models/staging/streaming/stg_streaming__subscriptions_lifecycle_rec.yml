@@ -1,0 +1,27 @@
+models:
+  - name: stg_streaming__subscriptions_lifecycle_rec
+    columns:
+      - name: subscription_id
+        tests:
+          - unique
+          - not_null
+      - name: user_id
+        tests:
+          - not_null
+      - name: plan_type
+        tests:
+          - not_null
+      - name: status
+        tests:
+          - not_null
+      - name: start_date
+        tests:
+          - not_null
+      - name: start_time
+        tests:
+          - not_null
+      - name: end_date
+      - name: end_time
+      - name: monthly_fee_cents
+        tests:
+          - not_null
