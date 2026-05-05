@@ -11,24 +11,39 @@ models:
           Article identifier from the source system.
         data_tests:
           - not_null
+          - unique
+          
       - name: article_title
         description: Article headline.
         data_tests:
           - not_null
+      
       - name: author_id
         description: Foreign key to stg_news__authors.
         data_tests:
           - not_null
+      
       - name: category
         description: Editorial category.
+      
       - name: published_at
         description: Timestamp when the article first went live. There are no unpublished articles.
+      
       - name: updated_at
         description: Timestamp of the most recent edit or republication.
+      
       - name: status
         description: Current article lifecycle status.
+      
       - name: word_count
         description: Number of words in the article body.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - article_id
+              - updated_at
 
   - name: stg_news__authors
     description: >

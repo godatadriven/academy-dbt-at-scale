@@ -34,6 +34,7 @@ sources:
             data_tests:
               - not_null
               - unique
+              
 models:
   - name: stg_streaming__watch_events
     description: "View on the raw streaming events source data"
