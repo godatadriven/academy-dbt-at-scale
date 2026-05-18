@@ -1,0 +1,10 @@
+snapshots:
+- name: episodes_snapshot
+  relation: ref('stg_podcasts__episodes')
+  config:
+    # database: <string>
+    # The target_schema is already set to snapshots in dbt_project.yml — you don't need to repeat it.
+    # schema: snapshots
+    unique_key: episode_id
+    strategy: check
+    check_cols: [episode_title, duration_seconds]

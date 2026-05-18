@@ -1,0 +1,10 @@
+snapshots:
+- name: articles_snapshot
+  relation: ref('stg_news__articles')
+  config:
+    # database: <string>
+    # The target_schema is already set to snapshots in dbt_project.yml — you don't need to repeat it.
+    # schema: snapshots
+    unique_key: article_id
+    strategy: timestamp
+    updated_at: updated_at # only needed with timestamp strategy

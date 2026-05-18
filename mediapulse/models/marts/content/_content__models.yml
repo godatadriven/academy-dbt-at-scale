@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: content_performance
+    description: ""
+    columns:
+      - name: content_id
+        data_type: varchar
+        description: "Primary key for the content"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: content_title
+        data_type: varchar
+        description: "Title of the content"
+
+      - name: category
+        data_type: varchar
+        description: "Editorial category of the content"
+
+      - name: published_at
+        data_type: timestamp_ntz
+        description: "Publish date of the content. Should always be populated"
+        data_tests:
+          - not_null
+
+      - name: platform
+        data_type: varchar
+        description: "Platform type"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['news', 'podcasts']
+              config: 
+                severity: warn
+        
+      - name: content_length_units
+        data_type: number
+        description: "Units of lenght of the content"
+
+      - name: duration_seconds
+        data_type: number
+        description: "Duration of the content in seconds"

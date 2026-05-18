@@ -30,6 +30,7 @@ sources:
             description: Date the show launched on PodcastHub.
 
       - name: episodes
+        identifier: episodes_updated
         description: >
           One row per episode published under a show.
           Note: the raw column for the episode name is 'title', not 'episode_name'.

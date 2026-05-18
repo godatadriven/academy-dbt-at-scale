@@ -7,8 +7,7 @@ models:
       Review the source definition for important notes about article_id uniqueness.
     columns:
       - name: article_id
-        description: >
-          Article identifier from the source system.
+        description: Article identifier from the source system.
         data_tests:
           - not_null
           - unique
@@ -22,21 +21,49 @@ models:
         description: Foreign key to stg_news__authors.
         data_tests:
           - not_null
+          - relationships:
+              arguments: 
+                to: ref('stg_news_authors')
+                field: author_id
       
       - name: category
         description: Editorial category.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['entertainment', 'politics', 'sport', 'technology']
+              config: 
+                severity: warn
       
       - name: published_at
         description: Timestamp when the article first went live. There are no unpublished articles.
+        data_tests:
+          - not_null
       
       - name: updated_at
         description: Timestamp of the most recent edit or republication.
       
       - name: status
         description: Current article lifecycle status.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['draft', 'published', 'archived', 'new']
+              config: 
+                severity: warn
       
       - name: word_count
         description: Number of words in the article body.
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              arguments:
+                column_type: number
+
 
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -46,14 +73,25 @@ models:
               - updated_at
 
   - name: stg_news__authors
-    description: >
-      Staged author records from NewsNow. One row per author.
+    description: Staged author records from NewsNow. One row per author.
     columns:
       - name: author_id
         description: Primary key.
+        data_tests:
+          - unique
+          - not_null
+          
       - name: author_name
         description: Author's full name, should always be populated.
+        data_tests:
+          - not_null
+      
       - name: email
         description: Work email address.
+        data_tests:
+          - not_null
+      
       - name: joined_at
         description: Date the author joined the NewsNow team.
+        data_tests:
+          - not_null
