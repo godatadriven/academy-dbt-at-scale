@@ -8,7 +8,10 @@ packages:
   - name: dbt_expectations
     package: metaplane/dbt_expectations
     version: 0.10.10
+  - name: elementary
+    package: elementary-data/elementary
+    version: 0.23.0
   - name: dbt_date
     package: godatadriven/dbt_date
-    version: 0.17.2
-sha1_hash: 91a28e1c09f48b710b8fa8b5009c6f3e146920b2
+    version: 0.18.0
+sha1_hash: ca52e71c3036cc794ac8573b87e902d7fcd60207

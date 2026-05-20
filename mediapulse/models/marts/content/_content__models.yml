@@ -3,6 +3,9 @@ version: 2
 models:
   - name: content_performance
     description: ""
+    config:
+      elementary:
+        timestamp_column: published_at
     columns:
       - name: content_id
         data_type: varchar
@@ -18,6 +21,13 @@ models:
       - name: category
         data_type: varchar
         description: "Editorial category of the content"
+        data_tests:
+          - assert_category_group:
+              arguments: 
+                category_group_table: ref('category_mapping')
+                category_group_column: category_group
+              config:
+                severity: warn
 
       - name: published_at
         data_type: timestamp_ntz
@@ -31,11 +41,11 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              arguments: 
-                values: ['news', 'podcasts']
-              config: 
+              arguments:
+                values: ["news", "podcasts"]
+              config:
                 severity: warn
-        
+
       - name: content_length_units
         data_type: number
         description: "Units of lenght of the content"
@@ -43,3 +53,10 @@ models:
       - name: duration_seconds
         data_type: number
         description: "Duration of the content in seconds"
+        data_tests:
+          - elementary.column_anomalies:
+              arguments:
+                column_anomalies:
+                  - average
+                where_expression: "platform = 'podcasts' and duration_seconds is not null"
+

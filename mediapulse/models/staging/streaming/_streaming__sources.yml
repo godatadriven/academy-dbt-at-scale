@@ -49,10 +49,9 @@ models:
         data_tests:
           - not_null
           - unique:
-              arguments:
-                config:
-                  store_failures: true
-                  where: "device_type != 'mobile'"
+              config:
+                store_failures: true
+                where: "device_type != 'mobile'"
 
       - name: user_id
         data_type: varchar

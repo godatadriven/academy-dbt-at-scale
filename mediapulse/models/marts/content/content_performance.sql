@@ -63,7 +63,3 @@ with_category as (
 )
 
 select * from with_category
-
-
-
--- select * from {{ ref('stg_podcasts__episodes') }}

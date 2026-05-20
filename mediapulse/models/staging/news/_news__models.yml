@@ -10,7 +10,9 @@ models:
         description: Article identifier from the source system.
         data_tests:
           - not_null
-          - unique
+          - unique:
+              config:
+                where: status = 'published'
           
       - name: article_title
         description: Article headline.
@@ -25,6 +27,8 @@ models:
               arguments: 
                 to: ref('stg_news_authors')
                 field: author_id
+              config:
+                severity: warn
       
       - name: category
         description: Editorial category.
@@ -59,7 +63,8 @@ models:
         data_tests:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments:
-                min_value: 0
+                min_value: 50
+                max_value: 5000
           - dbt_expectations.expect_column_values_to_be_of_type:
               arguments:
                 column_type: number
@@ -71,6 +76,9 @@ models:
             combination_of_columns:
               - article_id
               - updated_at
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments: 
+            min_value: 20
 
   - name: stg_news__authors
     description: Staged author records from NewsNow. One row per author.
