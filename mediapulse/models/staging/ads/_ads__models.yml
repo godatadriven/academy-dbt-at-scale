@@ -1,0 +1,186 @@
+version: 2
+
+models:
+  - name: stg_ads__campaigns
+    description: Staging model for the campaigns
+    columns:
+      - name: campaign_id
+        data_type: varchar
+        description: Unique ID of the campaign
+        data_tests:
+          - unique
+          - not_null
+
+      - name: advertiser_id
+        data_type: varchar
+        description: ID of the advertiser
+        data_tests:
+          - not_null
+
+      - name: campaign_name
+        data_type: varchar
+        description: Name of the campaign
+
+      - name: campaign_type
+        data_type: varchar
+        description: Type of the campaign
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['podcast_ad','newsletter','sponsored_content','display','video']
+              config:
+                severity: warn
+
+      - name: start_date
+        data_type: date
+        description: Start date of the campaign
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
+
+      - name: end_date
+        data_type: date
+        description: End date of the campaign
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
+
+      - name: budget_dollars
+        data_type: number
+        description: Budget of the campaign in dollars
+        data_tests:
+          - not_null:
+              config: 
+                severity: warn
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+              config:
+                where: "budget_dollars is not null"
+          
+
+  - name: stg_ads__impressions
+    description: Table counting the shows and clicks of all the impressions per date, campaign and content
+    columns:
+      - name: impression_id
+        data_type: varchar
+        description: Unique ID of the impression
+        data_tests:
+          - not_null
+          - unique
+
+      - name: campaign_id
+        data_type: varchar
+        description: ID of the campaign
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: 
+                to: ref('stg_ads__campaigns')
+                field: campaign_id
+
+      - name: content_id
+        data_type: varchar
+        description: ID of the content
+        data_tests:
+          - not_null
+
+      - name: impression_date
+        data_type: date
+        description: Date of the impression
+        data_tests:
+          - not_null
+
+      - name: impressions_count
+        data_type: number
+        description: number of times the impression is shown on the impression date
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+              config:
+                where: "impressions_count is not null"              
+
+      - name: clicks
+        data_type: number
+        description: number of times the impression is clicked on on the impression date
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+              config:
+                where: "impressions_count is not null" 
+
+      - name: click_through_rate
+        data_type: number
+        description: Click through rate on the impression date
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+              config:
+                where: "impressions_count is not null"
+
+  - name: stg_ads__spend
+    description: ""
+    columns:
+      - name: spend_id
+        data_type: varchar
+        description: Unique ID of the spend
+        data_tests:
+          - not_null
+          - unique
+
+      - name: campaign_id
+        data_type: varchar
+        description: ID of the campaign
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: 
+                to: ref('stg_ads__campaigns')
+                field: campaign_id
+
+      - name: spend_date
+        data_type: date
+        description: Date of the spend
+        data_tests:
+          - not_null
+
+      - name: spend_dollars
+        data_type: number
+        description: Total amount spent on campaign on spend date expressed in dollars
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+              config:
+                where: "spend_dollars is not null"
+
+      - name: platform_fee_dollars
+        data_type: number
+        description: Amount spent on platform for campaign on spend date expressed in dollars
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+              config:
+                where: "spend_dollars is not null"
+
+      - name: net_spend_dollars
+        data_type: number
+        description: Net amount spent on for campaign (total minus platform) on spend date expressed in dollars
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+              config:
+                where: "spend_dollars is not null"

@@ -1,0 +1,89 @@
+version: 2
+
+sources:
+  - name: ads
+    schema: ads
+    tables:
+      - name: campaigns
+        description: Overview of all campaigns
+        columns:
+          - name: campaign_id
+            description: Unique ID of the campaign
+            data_tests:
+              - unique
+              - not_null
+              
+          - name: advertiser_id
+            description: Id of the advertiser
+            data_tests:
+              - not_null
+          
+          - name: campaign_name
+            description: Name of the campaign
+          
+          - name: campaign_type
+            description: Type of the campaign
+          
+          - name: start_date
+            description: Start date of the campaign
+          
+          - name: end_date
+            description: End date of the campaign
+          
+          - name: budget_cents
+            description: Budget of the campaign in cents
+      
+      - name: impressions
+        description: All impressions aggregated per day, one row per campaign x content x day
+        columns:
+          - name: impression_id
+            description: Unique ID of the impression
+            data_tests:
+              - unique
+              - not_null
+              
+          - name: campaign_id
+            description: ID of the campaign
+            data_tests:
+              - not_null
+              
+          - name: content_id
+            description: ID of the content
+            data_tests:
+              - not_null
+              
+          - name: impression_date
+            description: Show date of the impression
+            data_tests:
+              - not_null
+
+          - name: impressions_count
+            description: number of time impression is show on impression date
+
+          - name: clicks
+            description: number of time impressios is clicked on on impression date
+  
+      - name: spend
+        description: All spends per campaing per day
+        columns:
+          - name: spend_id
+            description: Unique ID of the spend
+            data_tests:
+              - unique
+              - not_null
+          
+          - name: campaign_id
+            description: Id of the campaign
+            data_tests:
+              - not_null
+              
+          - name: spend_date
+            description: Date of the spending
+            data_tests:
+              - not_null
+
+          - name: spend_cents
+            description: amount spent in cents
+
+          - name: platform_fee_cents
+            description: amount spent on platform in cents
