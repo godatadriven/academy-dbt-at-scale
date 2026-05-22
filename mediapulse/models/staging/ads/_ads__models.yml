@@ -25,11 +25,16 @@ models:
         data_type: varchar
         description: Type of the campaign
         data_tests:
+          - not_null
           - accepted_values:
               arguments: 
                 values: ['podcast_ad','newsletter','sponsored_content','display','video']
               config:
                 severity: warn
+          - relationships:
+              arguments: 
+                to: ref('commission_lookup')
+                field: campaign_type
 
       - name: start_date
         data_type: date
@@ -57,8 +62,6 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments: 
                 min_value: 0
-              config:
-                where: "budget_dollars is not null"
           
 
   - name: stg_ads__impressions
@@ -100,9 +103,7 @@ models:
           - not_null
           - dbt_expectations.expect_column_values_to_be_between:
               arguments: 
-                min_value: 0
-              config:
-                where: "impressions_count is not null"              
+                min_value: 0         
 
       - name: clicks
         data_type: number
@@ -112,8 +113,6 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments: 
                 min_value: 0
-              config:
-                where: "impressions_count is not null" 
 
       - name: click_through_rate
         data_type: number
@@ -123,8 +122,6 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments: 
                 min_value: 0
-              config:
-                where: "impressions_count is not null"
 
   - name: stg_ads__spend
     description: ""
@@ -160,8 +157,6 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments: 
                 min_value: 0
-              config:
-                where: "spend_dollars is not null"
 
       - name: platform_fee_dollars
         data_type: number
@@ -171,8 +166,6 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments: 
                 min_value: 0
-              config:
-                where: "spend_dollars is not null"
 
       - name: net_spend_dollars
         data_type: number
@@ -182,5 +175,3 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments: 
                 min_value: 0
-              config:
-                where: "spend_dollars is not null"

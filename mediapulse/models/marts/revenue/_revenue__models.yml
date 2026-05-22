@@ -1,0 +1,211 @@
+version: 2
+
+models:
+  - name: revenue_by_content
+    description: Table containing revenue facts per campaign x content x impression date
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - campaign_id
+              - content_id
+              - impression_date
+    
+    columns:
+      - name: campaign_id
+        data_type: varchar
+        description: Unique ID of the campaign
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: 
+                to: ref('stg_ads_campaigns')
+                field: campaign_id
+
+      - name: content_id
+        data_type: varchar
+        description: Unique ID of the content
+        data_tests:
+          - not_null
+
+      - name: impression_date
+        data_type: date
+        description: Date of the impression
+        data_tests:
+          - not_null
+
+      - name: impressions_count
+        data_type: number
+        description: Number of times impression has been shown
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+      - name: campaign_type
+        data_type: varchar
+        description: Type of type campaign
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['podcast_ad','newsletter','sponsored_content','display','video']
+              config:
+                severity: warn
+          - relationships:
+              arguments: 
+                to: ref('commission_lookup')
+                field: campaign_type
+
+      - name: spend_dollars
+        data_type: number
+        description: Budget spent on the impression on impression date in dollars
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+      - name: net_spend_dollars
+        data_type: number
+        description: Net spend (budget minus platform cost) on the impression on impression date in dollars
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+      - name: impression_share
+        data_type: number
+        description: share of impression of spend of that day
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+                max_value: 100
+
+      - name: allocated_spend_dollars
+        data_type: number
+        description: total spend on the impression itself
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+      - name: allocated_net_spend_dollars
+        data_type: number
+        description: total net spend on the impression itself
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+      - name: commission_rate
+        data_type: float
+        description: Commission rate of the campaign based on campaign type
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+                max_value: 100
+
+      - name: mediapulse_revenue_dollars
+        data_type: float
+        description: Revenue for Mediapulse on the impression
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+  - name: fct_ad_impressions
+    description: Table containing all impressions enriched with campaign info
+    columns:
+      - name: impression_id
+        data_type: varchar
+        description: Unique ID of the impression
+        data_tests:
+          - not_null
+          - unique
+
+      - name: campaign_id
+        data_type: varchar
+        description: Unique ID of the campaign
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: 
+                to: ref('stg_ads_campaigns')
+                field: campaign_id
+
+      - name: content_id
+        data_type: varchar
+        description: Unique ID of the content
+        data_tests:
+          - not_null
+
+      - name: impression_date
+        data_type: date
+        description: Date of the impression
+        data_tests:
+          - not_null
+
+      - name: impressions_count
+        data_type: number
+        description: Number times impression is shown on the impression date
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+      - name: clicks
+        data_type: number
+        description: Number of clicks on the impressions on the impression date
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+      - name: click_through_rate
+        data_type: number
+        description: Click through rate of impression (clicks/counts) on impression date
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+                max_value: 100
+              config:
+                where: "click_through_rate is not null"
+
+      - name: campaign_name
+        data_type: varchar
+        description: Name of the campaign
+        data_tests:
+          - not_null
+
+      - name: campaign_type
+        data_type: varchar
+        description: Type of the campaign
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['podcast_ad','newsletter','sponsored_content','display','video']
+              config:
+                severity: warn
+          - relationships:
+              arguments: 
+                to: ref('commission_lookup')
+                field: campaign_type
+
+      - name: advertiser_id
+        data_type: varchar
+        description: ID of the advertiser
+        data_tests:
+          - not_null

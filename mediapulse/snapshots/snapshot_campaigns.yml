@@ -1,0 +1,10 @@
+snapshots:
+  - name: campaigns_snapshot
+    relation: ref('stg_ads__campaigns')
+    config:
+      unique_key: campaign_id
+      strategy: check
+      check_cols: 
+        - campaign_type
+        - end_date
+        - budget_dollars
