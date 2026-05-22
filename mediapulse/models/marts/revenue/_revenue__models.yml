@@ -10,6 +10,9 @@ models:
               - campaign_id
               - content_id
               - impression_date
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments:
+            min_value: 10
     
     columns:
       - name: campaign_id
@@ -121,9 +124,16 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments: 
                 min_value: 0
+              config: 
+                severity: error
 
   - name: fct_ad_impressions
     description: Table containing all impressions enriched with campaign info
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          arguments:
+            min_value: 20
+
     columns:
       - name: impression_id
         data_type: varchar
@@ -141,6 +151,9 @@ models:
               arguments: 
                 to: ref('stg_ads_campaigns')
                 field: campaign_id
+              config:
+                severity: warn
+                # ok to miss a campaign ID, we need all spends in this model
 
       - name: content_id
         data_type: varchar
@@ -162,6 +175,8 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments: 
                 min_value: 0
+                strictly: true
+                
 
       - name: clicks
         data_type: number

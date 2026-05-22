@@ -1,3 +1,10 @@
+{{ 
+    config(
+        store_failures = true,
+        limit = 100
+    ) 
+}}
+
 select 
     *
 from
