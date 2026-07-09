@@ -1,0 +1,45 @@
+name: "mediapulse_platform"
+version: "1.0.0"
+config-version: 2
+
+profile: "mediapulse_platform"
+
+model-paths:    ["models"]
+analysis-paths: ["analyses"]
+test-paths:     ["tests"]
+seed-paths:     ["seeds"]
+macro-paths:    ["macros"]
+snapshot-paths: ["snapshots"]
+docs-paths:     ["docs"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# ---------------------------------------------------------------------------
+# Variable overrides - set raw_database to wherever your source data lives.
+# In dbt Cloud set this as an environment-level variable.
+# ---------------------------------------------------------------------------
+vars:
+  raw_database: "RAW"
+
+# ---------------------------------------------------------------------------
+# Model materialisation and access defaults
+# ---------------------------------------------------------------------------
+models:
+  mediapulse_platform:
+    staging:
+      +materialized: view
+      +access: protected
+    intermediate:
+      +materialized: view
+      +access: protected
+
+snapshots:
+  mediapulse_platform:
+    +target_schema: snapshots
+
+seeds:
+  mediapulse_platform:
+    _seeds_setup:
+      +schema: seeds_setup

@@ -1,0 +1,110 @@
+version: 2
+
+seeds:
+  # Raw source seeds simulate the upstream data pipelines.
+  # They land in the same schemas the source definitions point at,
+  # so the project works without an external ingestion layer.
+  - name: raw_news__authors
+    config:
+      schema: news
+      alias: authors
+      column_types:
+        joined_at: varchar
+
+  - name: raw_news__articles
+    config:
+      schema: news
+      alias: articles
+      column_types:
+        published_at: varchar
+        updated_at: varchar
+
+  - name: raw_news__articles_updated
+    config:
+      schema: news
+      alias: articles_updated
+      column_types:
+        published_at: varchar
+        updated_at: varchar
+
+  - name: raw_news__page_views
+    config:
+      schema: news
+      alias: views
+      column_types:
+        viewed_at: varchar
+
+  - name: raw_podcasts__shows
+    config:
+      schema: podcasts
+      alias: shows
+      column_types:
+        launched_at: varchar
+
+  - name: raw_podcasts__episodes
+    config:
+      schema: podcasts
+      alias: episodes
+      column_types:
+        published_at: varchar
+
+  - name: raw_podcasts__episodes_updated
+    config:
+      schema: podcasts
+      alias: episodes_updated
+      column_types:
+        published_at: varchar
+
+  - name: raw_podcasts__listens
+    config:
+      schema: podcasts
+      alias: listens
+      column_types:
+        listened_at: varchar
+
+  - name: raw_streaming__content_catalog
+    config:
+      schema: streaming
+      alias: content_ctlg
+      column_types:
+        release_date: varchar
+
+  - name: raw_streaming__subscriptions
+    config:
+      schema: streaming
+      alias: subscriptions_lifecycle_rec
+      column_types:
+        start_date: varchar
+        start_time: varchar
+        end_date: varchar
+        end_time: varchar
+
+  - name: raw_streaming__watch_events
+    config:
+      schema: streaming
+      alias: usr_watch_events_log
+      column_types:
+        watched_at: varchar
+        batched_at: timestamp
+
+  - name: raw_ads__campaigns
+    config:
+      schema: ads
+      alias: campaigns
+      column_types:
+        start_date: varchar
+        end_date: varchar
+
+  - name: raw_ads__impressions
+    config:
+      schema: ads
+      alias: impressions
+      column_types:
+        impression_date: varchar
+
+  - name: raw_ads__spend
+    config:
+      schema: ads
+      alias: spend
+      column_types:
+        spend_date: varchar
