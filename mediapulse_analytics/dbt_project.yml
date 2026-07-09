@@ -1,0 +1,32 @@
+name: "mediapulse_analytics"
+version: "1.0.0"
+config-version: 2
+
+profile: "mediapulse_analytics"
+
+model-paths:    ["models"]
+analysis-paths: ["analyses"]
+test-paths:     ["tests"]
+seed-paths:     ["seeds"]
+macro-paths:    ["macros"]
+snapshot-paths: ["snapshots"]
+docs-paths:     ["docs"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  raw_database: "RAW"
+
+# ---------------------------------------------------------------------------
+# Model materialisation defaults
+# ---------------------------------------------------------------------------
+models:
+  mediapulse_analytics:
+    marts:
+      +materialized: table
+
+snapshots:
+  mediapulse_analytics:
+    +target_schema: snapshots
