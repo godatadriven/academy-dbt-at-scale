@@ -1,248 +1,172 @@
 # Group 4 - Checklist Level 2
 
-## dbt Level Up: Hardening for Production
+## dbt Mesh: Cross-project References and Infrastructure
 
-Start on this checklist once you have completed [Checklist Level 1](../level1/checklist.md).
+Start on this checklist once you have completed [Level 1](../level1/checklist.md).
 
-In this level you will apply the following skills:
+In this level you will:
 
-- **dbt-expectations** - statistical guardrails on critical models
-- **Model contracts** - schema enforcement at compile time
-- **Test severity** - `warn` vs `error` decisions
-- **CI/CD design** - slim CI, nightly refresh, production deploy
-- **Hard requirements** - what must pass before any production deploy
-
-Work through the steps in order. Document decisions as you go - you'll present findings at 16:00 on Day 2.
+- **Wire cross-project references** in `mediapulse_analytics` to consume the contracted platform models
+- **Fix the mart bugs** that become visible once cross-project refs are in place
+- **Verify** the full two-project pipeline runs end to end
 
 ---
 
-## Step 1 - Apply dbt-expectations to critical models
+## Step 1 - Understand what the analytics project needs
 
 - [ ] Step complete
 
-Add statistical tests to the most important mart models. Focus on:
+Open `mediapulse_analytics/models/marts/` and audit both mart models. For each model:
 
-- Row count bounds (catch silent truncations)
-- Column value bounds (catch sign errors, unit errors)
-- Column completeness (null rate below threshold)
+- Which staging models does it `ref()`?
+- Which of those models now lives in `mediapulse_platform`?
+- Which can stay as local `ref()` calls (if any analytics-only staging models exist)?
 
-??? tip "Hint: dbt-expectations on `fct_ad_impressions`"
-    ```yaml
-    models:
-      - name: fct_ad_impressions
-        data_tests:
-          - dbt_expectations.expect_table_row_count_to_be_between:
-              min_value: 1000           # fail if the table is suspiciously small
-              max_value: 100000000      # fail if it explodes (fan-out bug)
-        columns:
-          - name: impressions_count
-            data_tests:
-              - dbt_expectations.expect_column_values_to_be_between:
-                  min_value: 0
-                  max_value: 10000000
-              - dbt_expectations.expect_column_values_to_not_be_null:
-                  mostly: 1.0           # 100% non-null required
-          - name: click_through_rate
-            data_tests:
-              - dbt_expectations.expect_column_values_to_be_between:
-                  min_value: 0.0
-                  max_value: 1.0        # CTR can't exceed 100%
-    ```
-
-??? tip "Hint: dbt-expectations on `content_performance`"
-    ```yaml
-    models:
-      - name: content_performance
-        data_tests:
-          - dbt_expectations.expect_table_row_count_to_be_between:
-              min_value: 500
-        columns:
-          - name: platform
-            data_tests:
-              - dbt_expectations.expect_column_distinct_values_to_equal_set:
-                  value_set: ['news', 'podcasts']
-    ```
+List the specific `ref()` calls that need to become cross-project refs.
 
 ---
 
-## Step 2 - Define model contracts on critical marts
+## Step 2 - Update `fct_content_performance.sql` to use cross-project refs
 
 - [ ] Step complete
 
-Add `contract: {enforced: true}` to `content_performance` and `revenue_by_content`. This means dbt will verify the model's output schema matches the YAML definition at compile time.
+Open `models/marts/content/fct_content_performance.sql` and update every reference to a platform staging model to use the cross-project ref syntax:
 
-??? tip "Hint: Contract config"
-    ```yaml
-    models:
-      - name: revenue_by_content
-        config:
-          contract:
-            enforced: true
-        columns:
-          - name: content_id
-            data_type: varchar
-            constraints:
-              - type: not_null
-          - name: impression_date
-            data_type: date
-            constraints:
-              - type: not_null
-          - name: mediapulse_revenue_dollars
-            data_type: float
-    ```
+```sql
+{{ ref('mediapulse_platform', 'stg_news__articles') }}
+```
 
-    If the model produces a column with a different type or name, the run fails with a clear error - this catches schema drift before it reaches consumers.
+While you are in this file, fix the logic bug: the model uses `INNER JOIN` between articles and episodes on `category`, which produces a cross-join explosion. The correct approach is `UNION ALL` after normalising both to a common schema. See the [analytics project overview](../../mediapulse/analytics-overview.md) for the bug description.
 
-    !!! warning
-        Contracts require that **all** columns in the model are listed in YAML. Missing columns cause a compile error. Use dbt-codegen (Level 1 Step 5) to get the full column list first.
+Run the fixed model:
+
+```bash
+dbt run --select fct_content_performance
+```
+
+Confirm the row count is articles + episodes, not a Cartesian product.
 
 ---
 
-## Step 3 - Review test severity across the project
+## Step 3 - Update `fct_ad_revenue.sql` to use cross-project refs
 
 - [ ] Step complete
 
-Go through all model YAML files and consider which tests should be `warn` vs `error`:
+Open `models/marts/revenue/fct_ad_revenue.sql` and update all platform staging model references to cross-project refs.
 
-| Severity | Use when |
-|----------|----------|
-| `error` | Failure means data is corrupt or a key business invariant is violated |
-| `warn` | Failure is unexpected but not immediately harmful; needs investigation |
+Also fix the grain bug: the model currently groups at `campaign_id` grain. Rewrite it to produce one row per `(campaign_id, content_id, impression_date)`, allocating spend proportionally by impression share.
 
-??? tip "Hint: Setting severity"
-    ```yaml
-    columns:
-      - name: mediapulse_revenue_dollars
-        data_tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-              config:
-                severity: warn    # revenue exceeding $1M/row is suspicious but not a hard stop
-    ```
+Run and verify:
 
-    Good candidates for `warn` severity:
-    - Row count bounds (catch trends, not hard failures)
-    - Freshness checks beyond a certain threshold
-    - `accepted_values` tests on categories that might legitimately grow
-
-    Hard `error`:
-    - `not_null` on primary keys
-    - `unique` on primary keys
-    - `relationships` tests (broken FK = broken joins)
-    - Revenue assertions (money must be right)
+```bash
+dbt run --select fct_ad_revenue
+```
 
 ---
 
-## Step 4 - Design the CI/CD pipeline
+## Step 4 - Create the commission lookup seed
 
 - [ ] Step complete
 
-Design a dbt Cloud job structure for MediaPulse. You need at minimum three jobs:
+Create `seeds/commission_lookup.csv` in `mediapulse_analytics`:
 
-1. **Slim CI** - triggered on PR open/update; runs only changed models and their downstream
-2. **Nightly full-refresh** - runs at 02:00; full `--full-refresh` to catch schema drift
-3. **Production deploy** - triggered on merge to main; runs `+state:modified+` against production environment
+```
+campaign_type,commission_rate
+display,0.15
+video,0.20
+sponsored_content,0.25
+podcast_ad,0.18
+newsletter,0.12
+```
 
-For each job, define:
-
-- Trigger (PR event, cron, API)
-- dbt command and selector
-- Environment (CI vs prod)
-- Whether it uses a deferred environment
-
-??? tip "Hint: Slim CI configuration"
-    The slim CI job uses `state:modified+` to only run what changed:
-
-    ```bash
-    # In dbt Cloud job commands:
-    dbt build --select state:modified+ --defer --state ./logs/prod-artifacts
-    ```
-
-    The `--defer` flag tells dbt to use production-compiled models for any upstream models that weren't selected. The `--state` flag points to a folder containing the production `manifest.json`.
-
-    In dbt Cloud, you set the **Deferral environment** in the job config and don't need to handle `--state` manually.
-
-??? tip "Hint: Nightly job"
-    ```bash
-    dbt build --full-refresh
-    ```
-
-    Schedule at 02:00 UTC. Send alerts to a Slack channel on failure. This job should also run `dbt source freshness` to catch upstream data delivery issues.
+Load it with `dbt seed`, then update `fct_ad_revenue.sql` to join this seed and derive `mediapulse_revenue_dollars`.
 
 ---
 
-## Step 5 - Define hard requirements vs nice-to-haves
+## Step 5 - Run the full end-to-end build
 
 - [ ] Step complete
 
-As a group, write a short document (a markdown file in the repo under `docs/production_requirements.md`) that answers:
+Run the platform project first, then the analytics project:
 
-**Hard requirements - must pass before any production deploy:**
+```bash
+# In mediapulse_platform:
+dbt build
 
-- [ ] All `not_null` + `unique` tests on primary keys pass
-- [ ] All `relationships` tests pass
-- [ ] No model contract violations
-- [ ] `content_performance` and `revenue_by_content` row counts within expected bounds
-- [ ] Singular revenue assertion tests pass
-- [ ] dbt-project-evaluator: zero `must_fix` violations remain
+# In mediapulse_analytics:
+dbt build
+```
 
-**Nice-to-haves - target within next sprint:**
+All models should pass. A cross-project ref failure at this stage usually means either the platform model is not marked `public` or the `dependencies.yml` in the analytics project does not match the platform project name.
 
-- [ ] 100% of models have descriptions
-- [ ] All source columns have tests
-- [ ] dbt-expectations tests on all fact tables
-- [ ] `warn`-severity tests for statistical bounds on dimension tables
-
-??? tip "Hint: Framing for your presentation"
-    The distinction between hard requirements and nice-to-haves is a conversation about risk tolerance. A good way to frame it:
-
-    - Hard requirements = failures here mean "someone is making a wrong decision based on this data today"
-    - Nice-to-haves = failures here mean "we might catch a problem tomorrow instead of today"
-
-    Be prepared to justify each item in your list. Not everything needs to be a blocker.
+??? tip "Hint: debugging cross-project ref failures"
+    Check three things in order:
+    1. The platform model has `access: public` in its YAML.
+    2. The platform project has been built and its manifest is accessible.
+    3. The project name in `dependencies.yml` exactly matches the `name:` field in the platform's `dbt_project.yml`.
 
 ---
 
-## Step 6 - BONUS: Evaluate dbt-project-evaluator coverage gaps
+## Step 6 - Consider model versioning
 
 - [ ] Step complete
 
-dbt-project-evaluator is configurable - you can disable checks that don't apply to your project or add custom rules. Review the [evaluator documentation](https://dbt-labs.github.io/dbt-project-evaluator/) and:
+Now that `mediapulse_platform` exposes public contracted models, changing a column name or type is a breaking change for `mediapulse_analytics`.
 
-1. Identify any default rules that don't make sense for MediaPulse
-2. Disable them in `dbt_project.yml` using the evaluator's `vars` config
-3. Consider whether any project-specific rules are missing (e.g., "all marts must have an exposure defined")
+Read the [model access documentation](https://docs.getdbt.com/docs/mesh/govern/model-access) section on model versions.
 
-??? tip "Hint: Disabling a rule"
-    ```yaml
-    # dbt_project.yml
-    vars:
-      dbt_project_evaluator:
-        # Disable the check for models that don't follow naming conventions
-        # because our legacy models use a different system
-        enforce_model_name_convention: false
-    ```
+Discuss with your group:
+
+- When would you version a public model vs. just make the breaking change?
+- How would the analytics team pin to a specific version of a platform model during a migration?
+- Who is responsible for deprecating old versions?
+
+There is no code to write for this step. The goal is to understand the governance trade-offs.
 
 ---
 
-## Step 7 - Prepare your presentation
+## Step 7 - CAPSTONE: design and build `fct_campaign_daily_performance`
 
 - [ ] Step complete
 
-At 16:00 Day 2 you have 10–15 minutes to present. Structure:
+The revenue domain has two facts so far: `fct_ad_revenue` (content x campaign x date, from Step 3) and the underlying `int_campaign_content_spend_allocation` (campaign x content). Neither answers the simplest question a media buyer asks first: "how is this campaign doing, day by day?" Build the mart that answers it.
 
-1. **What we found** - top 5 evaluator violations by risk level
-2. **What we fixed** - concrete before/after
-3. **What we added** - dbt-expectations tests, contracts, severity review
-4. **CI/CD design** - diagram of your three jobs and what each catches
-5. **Hard requirements** - your final list with rationale
-6. **What we'd do next** - honest backlog
+Create `models/marts/revenue/fct_campaign_daily_performance.sql` in `mediapulse_analytics`.
+
+Grain: one row per `(campaign_id, date)` - a coarser rollup than `fct_ad_revenue`, with no content breakdown.
+
+Use cross-project refs to the platform project throughout, the same way you did in Steps 2-3:
+
+- `impressions_count` and `clicks`, summed by day, from `{{ ref('mediapulse_platform', 'stg_ads__impressions') }}`
+- `spend_cents` and `platform_fee_cents`, summed by day, from `{{ ref('mediapulse_platform', 'stg_ads__spend') }}`
+- `campaign_name` and `campaign_type` from `{{ ref('mediapulse_platform', 'dim_campaigns') }}` (already built for you - a small preview of what a finished, contracted platform dim looks like)
+
+Derive `spend_dollars` and `net_spend_dollars` (spend minus platform fee, in dollars) as part of the mart, the same conversion pattern you have already used for `fct_ad_revenue`.
+
+??? tip "Hint: two source tables, two grains, one join key"
+    `stg_ads__impressions` and `stg_ads__spend` are both already at daily grain per campaign - they just don't share a table. Aggregate each to `(campaign_id, date)` in its own CTE, then join them on that composite key before bringing in `dim_campaigns`. A `full outer join` (or `coalesce`-guarded `left join`s from a unioned date/campaign spine) protects you from silently dropping days that have spend but no impressions, or vice versa.
+
+Decide whether this new mart should be documented and tested the same way you are governing the platform's public models - what would a downstream BI tool expect from a model like this? Run and test it:
+
+```bash
+dbt build --select fct_campaign_daily_performance
+```
+
+---
+
+## Step 8 - BONUS: Add a campaign budget snapshot
+
+- [ ] Step complete
+
+Create `snapshots/snap_ads__campaigns.yml` in `mediapulse_analytics`. Track budget changes on campaigns over time using the `check` strategy (there is no `updated_at` column on `ads.campaigns`).
+
+Read the [snapshots documentation](https://docs.getdbt.com/docs/build/snapshots) for the YAML syntax.
+
+Run the snapshot and query the output to confirm the SCD Type 2 columns are populated correctly.
 
 ---
 
 !!! success "Done?"
-    You've audited, hardened, and documented the MediaPulse platform to production-ready standards. The other groups built features; you built the safety net. Neither is more important - the platform needs both.
+    You have wired the two projects together using dbt mesh cross-project refs, fixed both mart bugs, verified the full pipeline runs end to end, and designed the revenue domain's daily campaign rollup fact.
 
-    Now head to [Level 3](../level3/checklist.md) to audit test configuration project-wide, and learn dbt unit testing to verify transformation logic in isolation!
-
+    Head to [Level 3](../level3/checklist.md) for CI/CD pipeline design and bonus topics!

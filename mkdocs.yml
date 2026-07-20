@@ -73,34 +73,40 @@ plugins:
 
 nav:
   - Home: index.md
-  - Agenda: agenda.md
+  - Agenda:
+      - Agenda - September 2026: agenda-2.md
+      - Agenda - April 2026: agenda-1.md
   - MediaPulse Project:
       - Overview: mediapulse/overview.md
+      - Platform Project: mediapulse/platform-overview.md
+      - Analytics Project: mediapulse/analytics-overview.md
       - Data ERD: mediapulse/data-erd.md
-  - "Group 1 - Intermediate":
+  - "Group 1 - Next Level dbt":
       - Overview: group1/overview.md
       - Checklists:
         - Group 1 - Level 1: group1/level1/checklist.md
         - Group 1 - Level 2: group1/level2/checklist.md
         - Group 1 - Level 3 - Bonus: group1/level3/checklist.md
-  - "Group 2 - Advanced I":
+  - "Group 2 - Optimization":
       - Overview: group2/overview.md
       - Checklists:
         - Group 2 - Level 1: group2/level1/checklist.md
         - Group 2 - Level 2: group2/level2/checklist.md
         - Group 2 - Level 3 - Bonus: group2/level3/checklist.md
-  - "Group 3 - Advanced II":
+  - "Group 3 - Multi-project":
       - Overview: group3/overview.md
       - Checklists:
         - Group 3 - Level 1: group3/level1/checklist.md
         - Group 3 - Level 2: group3/level2/checklist.md
         - Group 3 - Level 3 - Bonus: group3/level3/checklist.md
+      - Extra Topics: extra-topics.md
   - "Group 4 - Power Users":
       - Overview: group4/overview.md
       - Checklists:
         - Group 4 - Level 1: group4/level1/checklist.md
         - Group 4 - Level 2: group4/level2/checklist.md
         - Group 4 - Level 3 - Bonus: group4/level3/checklist.md
+      - Extra Topics: extra-topics.md
 
 extra_javascript:
   - javascripts/checklist.js

@@ -1,6 +1,6 @@
 # MediaPulse - Project Overview
 
-**MediaPulse** is a fictional media company that manages four distinct platforms. Each platform generates its own data, and all four feed into a shared dbt project that your group will work on today.
+**MediaPulse** is a fictional media company that manages four distinct platforms. All four feed data into a dbt platform that your group will work on today.
 
 ---
 
@@ -8,105 +8,47 @@
 
 | Platform | What it does | Raw schema |
 |----------|-------------|------------|
-| **StreamVault** | Subscription streaming service - films, series, live sport | `streaming` |
-| **NewsNow** | Digital news outlet - articles, authors, page views | `news` |
-| **PodcastHub** | Podcast network - shows, episodes, listener events | `podcasts` |
-| **AdConnect** | Programmatic ad platform - campaigns, impressions, spend | `ads` |
+| **StreamVault** | Subscription streaming service: films, series, live sport | `streaming` |
+| **NewsNow** | Digital news outlet: articles, authors, page views | `news` |
+| **PodcastHub** | Podcast network: shows, episodes, listener events | `podcasts` |
+| **AdConnect** | Programmatic ad platform: campaigns, impressions, spend | `ads` |
+
+---
+
+## Two connected dbt projects
+
+The MediaPulse analytics platform is split into two dbt projects that depend on each other.
+
+| Project | What it owns | Who works here |
+|---------|-------------|----------------|
+| [mediapulse_platform](platform-overview.md) | All domain staging models, intermediate calculations, shared macros and seeds | Groups 1 and 2 primarily; Groups 3 and 4 audit and harden it |
+| [mediapulse_analytics](analytics-overview.md) | Business marts, commission seeds, campaign snapshots, singular tests | Groups 3 and 4 primarily |
+
+This separation mirrors how real analytics engineering teams work at scale. The platform team controls the trusted data contract boundary. The analytics team builds on top of that foundation and can iterate independently.
+
+See the individual project pages for structure diagrams, getting started steps, and which models belong to each group's exercise.
+
+---
+
+## Why two projects?
+
+When a single dbt project grows large enough, different teams start stepping on each other's changes, CI runs take too long, and a bad mart model can delay a platform job that other teams depend on.
+
+Splitting into two projects lets each team:
+
+- Deploy on their own schedule without waiting for unrelated work
+- Expose only what downstream projects need, through versioned, contracted public models
+- Limit the blast radius of a change: a bug in an analytics mart cannot break a platform staging run
+
+Groups 3 and 4 wire the two projects together using dbt mesh and cross-project refs. That exercise is the practical payoff of the split.
 
 ---
 
 ## Raw source tables
 
-There are four schemas which hold key data for the company:
-- `streaming`
-- `news`
-- `podcasts`
-- `ads`
+There are four raw schemas. See the [Data ERD](data-erd.md) for the full entity relationship diagram.
 
-- `streaming`
-
-    | Table | Key columns |
-    |-------|-------------|
-    | `watch_events` | `event_id`, `user_id`, `content_id`, `watched_at`, `watch_duration_seconds`, `device_type` |
-    | `subscriptions` | `subscription_id`, `user_id`, `plan_type`, `status`, `started_at`, `ended_at`, `monthly_fee_cents` |
-    | `content_catalog` | `content_id`, `title`, `genre`, `content_type`, `release_date`, `runtime_minutes` |
-
-- `news`
-
-    | Table | Key columns |
-    |-------|-------------|
-    | `articles` | `article_id`, `title`, `author_id`, `category`, `published_at`, `updated_at`, `status`, `word_count` |
-    | `authors` | `author_id`, `name`, `email`, `joined_at` |
-    | `page_views` | `view_id`, `article_id`, `user_id`, `viewed_at`, `referrer_source` |
-
-- `podcasts`
-
-    | Table | Key columns |
-    |-------|-------------|
-    | `shows` | `show_id`, `show_name`, `host_name`, `category`, `launched_at` |
-    | `episodes` | `episode_id`, `show_id`, `title`, `published_at`, `duration_seconds`, `season`, `episode_number` |
-    | `listens` | `listen_id`, `episode_id`, `user_id`, `listened_at`, `listen_duration_seconds`, `platform` |
-
-- `ads`
-
-    | Table | Key columns |
-    |-------|-------------|
-    | `campaigns` | `campaign_id`, `advertiser_id`, `campaign_name`, `campaign_type`, `start_date`, `end_date`, `budget_cents` |
-    | `impressions` | `impression_id`, `campaign_id`, `content_id`, `impression_date`, `impressions_count`, `clicks` |
-    | `spend` | `spend_id`, `campaign_id`, `spend_date`, `spend_cents`, `platform_fee_cents` |
-
----
-
-## dbt project structure
-
-```
-mediapulse/
-├── dbt_project.yml
-├── packages.yml
-├── models/
-│   ├── staging/
-│   │   ├── news/
-│   │   │   ├── _news__sources.yml          ✅  defined
-│   │   │   ├── _news__models.yml           ✅  defined
-│   │   │   ├── stg_news__articles.sql      ⚠️  has a bug
-│   │   │   └── stg_news__authors.sql       ✅  complete
-│   │   ├── podcasts/
-│   │   │   ├── _podcasts__sources.yml      ✅  defined
-│   │   │   ├── _podcasts__models.yml       ✅  defined
-│   │   │   ├── stg_podcasts__episodes.sql  ⚠️  has a bug
-│   │   │   └── stg_podcasts__shows.sql     ✅  complete
-│   │   ├── streaming/
-│   │   │   └── (empty)                     🔲  Group 1's job
-│   │   └── ads/
-│   │       └── (empty)                     🔲  Group 3's job
-│   └── marts/
-│       ├── content/
-│       │   └── content_performance.sql     ⚠️  incomplete model
-│       └── revenue/
-│           └── revenue_by_content.sql      ⚠️  incomplete model
-├── seeds/
-│   └── (empty)                             🔲  Groups 2 & 3
-├── snapshots/
-│   └── (empty)                             🔲  Groups 2 & 3
-├── macros/
-│   └── (empty)                             🔲  Group 1
-└── tests/
-    └── (empty)                             🔲  Group 3
-```
-
----
-
-## Getting started
-
-To get started, access the project on dbt Cloud:
-- Accept the invite received from your trainer/host to access the Training Account on dbt Cloud. 
-- Then login to dbt Cloud and access the project: `MediaPulse - dbt@scale`
-- Go to the studio on this project and fill in the username and password credentials.
-- Run the below command to make sure your project runs as expected.
-
-```bash
-dbt build         # see what breaks (expected at the start!)
-```
-
-Your facilitator will provide the username + password needed to connect to the Snowflake warehouse and data.
-
+- `streaming`: `watch_events`, `subscriptions`, `content_catalog`
+- `news`: `articles`, `authors`, `page_views`
+- `podcasts`: `shows`, `episodes`, `listens`
+- `ads`: `campaigns`, `impressions`, `spend`

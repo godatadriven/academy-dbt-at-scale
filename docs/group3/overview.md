@@ -1,8 +1,12 @@
-# Group 3 - Advanced II: Incremental Models, Singular Tests & Revenue Analytics
+# Group 3 - Multi-project Deployment Best Practices
+
+Head to [Level 1](level1/checklist.md) when you are ready to start.
+
+---
 
 ## Your slice of MediaPulse
 
-You own the **revenue** story - how much money MediaPulse makes through AdConnect, and how that revenue maps back to the content it runs against. The ad platform generates huge volumes of impression data, making it a perfect candidate for incremental loading. You'll also track how advertiser budgets shift over time and write custom tests to validate your revenue numbers.
+You work **across both projects**: auditing and hardening `mediapulse_platform`, then wiring `mediapulse_analytics` to depend on the platform via dbt mesh. You also build out the revenue side of the analytics project.
 
 ---
 
@@ -10,81 +14,88 @@ You own the **revenue** story - how much money MediaPulse makes through AdConnec
 
 By the end of the hackathon you will be able to:
 
-- Define sources and build staging models for the **ads** domain
-- Implement an **incremental model** with a correct `unique_key` and `is_incremental()` filter
-- Understand the trade-offs between incremental strategies (`append`, `merge`, `insert_overwrite`)
-- Build a **revenue mart** that allocates ad spend to content via impressions
-- Create a **snapshot** to track advertiser campaign budget changes
-- Write **singular (custom) tests** that express business logic as SQL assertions
-- Load a **seed** for commission/rate lookups
+- Run **dbt-project-evaluator** against a real project and triage findings by risk
+- Apply **elementary** package tests for anomaly detection on key models
+- Define **model contracts** that enforce schema at run time
+- Apply **model access** controls (`public`, `protected`, `private`) and **groups** to expose selected models to other projects
+- Define **exposures** to document what downstream tools consume platform data
+- Configure a cross-project ref (dbt mesh) so `mediapulse_analytics` consumes public models from `mediapulse_platform`
+- Design and set up **dbt Cloud CI/CD jobs**: slim CI, nightly full-refresh, and production deploy
+- Explain the trade-offs of each job trigger and selector
+- Design and build a governed **fact table** from an existing intermediate model, deciding what to promote and what caveats to document
 
 ---
 
 ## Key concepts
 
-### Incremental models
+### dbt-project-evaluator
 
-An incremental model only processes new or changed rows on subsequent runs, making it practical for high-volume fact tables.
+A dbt package that runs a suite of models querying your project metadata and flags structural violations: missing tests, missing documentation, marts that join directly to raw sources, fan-out issues, and more.
 
-```sql
-{{
-    config(
-        materialized='incremental',
-        unique_key='impression_id',
-        incremental_strategy='merge'
-    )
-}}
+Read the [dbt-project-evaluator documentation](https://dbt-labs.github.io/dbt-project-evaluator/latest/) before running it.
 
-select
-    impression_id,
-    campaign_id,
-    content_id,
-    impression_date,
-    impressions_count,
-    clicks
-from {{ source('ads', 'impressions') }}
+### Elementary
 
-{% if is_incremental() %}
-    where impression_date >= (select max(impression_date) from {{ this }})
-{% endif %}
-```
+An open-source dbt package for data observability. It adds anomaly detection tests (volume, freshness, column-level statistics) and a run-history dashboard, all inside your dbt project.
 
-On the **first run** the `{% if is_incremental() %}` block is skipped - the full history loads. On every **subsequent run** only new records are processed.
+Read the [elementary dbt package documentation](https://docs.elementary-data.com/data-tests/dbt/dbt-package).
 
-### Singular tests
+### Model contracts and access
 
-Singular tests are plain SQL files in `tests/`. A test **passes** when the query returns zero rows.
+Model contracts enforce that a model's output schema matches its YAML definition at run time. Combined with model access controls, they form the governed interface that other projects depend on.
+
+Read the [model contracts documentation](https://docs.getdbt.com/docs/mesh/govern/model-contracts) and the [model access documentation](https://docs.getdbt.com/docs/mesh/govern/model-access).
+
+### Exposures
+
+Exposures document what downstream tools (BI dashboards, notebooks, ML pipelines) consume your dbt models. They appear in the lineage DAG so you can see the full impact of a change.
+
+Read the [exposures documentation](https://docs.getdbt.com/docs/build/exposures).
+
+### dbt mesh and cross-project refs
+
+dbt mesh is the architecture pattern for connecting multiple dbt projects. Once `mediapulse_platform` exposes public contracted models, `mediapulse_analytics` can reference them using:
 
 ```sql
--- tests/assert_no_negative_spend.sql
-select spend_id
-from {{ ref('stg_ads__spend') }}
-where spend_cents < 0
+{{ ref('mediapulse_platform', 'stg_news__articles') }}
 ```
 
-Use singular tests when generic tests can't express the rule - e.g. cross-model consistency checks or complex aggregation assertions.
+Read the [dbt mesh introduction](https://docs.getdbt.com/best-practices/how-we-mesh/mesh-1-intro) for the full guide.
 
-### Revenue allocation
+### CI/CD in dbt Cloud
 
-Ad spend sits at `campaign_id` grain. Content performance sits at `content_id` grain. To link them you need the `impressions` table, which records how many times each `campaign_id` ran against each `content_id`. Allocate spend proportionally:
+The goal is to catch problems as early as possible:
 
-```
-content_revenue = campaign_spend × (content_impressions / total_campaign_impressions)
-```
+| Job | Trigger | Purpose |
+|-----|---------|---------|
+| Slim CI | PR opened or updated | Rebuild only changed models and downstream |
+| Nightly full-refresh | Cron 02:00 | Full rebuild to catch schema drift |
+| Production deploy | Merge to main | Run critical-path models and tests |
+
+Read the [dbt Cloud CI jobs documentation](https://docs.getdbt.com/docs/deploy/ci-jobs).
 
 ---
 
-## Relevant tables
+## Relevant assets
 
-All in `ads` - none wired into dbt yet:
-
-- `ads.campaigns`
-- `ads.impressions`
-- `ads.spend`
-
-See the [MediaPulse overview](../mediapulse/overview.md) for full column details.
+| Asset | Location | Your task |
+|-------|----------|-----------|
+| Both dbt projects | `mediapulse_platform/` and `mediapulse_analytics/` | Audit, harden, and connect |
+| `stg_*` models | `mediapulse_platform/models/staging/` | Add contracts and access controls |
+| `fct_content_performance.sql` | `mediapulse_analytics/models/marts/content/` | Fix logic bug, wire cross-project ref |
+| `fct_ad_revenue.sql` | `mediapulse_analytics/models/marts/revenue/` | Fix grain bug, complete the mart |
+| `fct_ad_impressions.sql` | `mediapulse_platform/models/marts/ads/` | Missing - design and build this fact table |
+| `seeds/commission_lookup.csv` | `mediapulse_analytics/seeds/` | Create this seed |
+| `snapshots/snap_ads__campaigns` | `mediapulse_analytics/snapshots/` | Create this snapshot |
+| `tests/` | `mediapulse_analytics/tests/` | Write singular tests |
 
 ---
 
-Head to the [Checklist](level1/checklist.md) when you're ready to start.
+## Time guide
 
+| Session | Target |
+|---------|--------|
+| Day 1 AM (10:00 - 12:00) | Level 1: dbt-project-evaluator audit, triage findings |
+| Day 1 PM (13:30 - 16:30) | Level 1: elementary tests; begin Level 2 (contracts, groups) |
+| Day 2 AM (09:45 - 12:00) | Level 2: exposures, cross-project refs |
+| Day 2 PM (13:00 - 15:30) | Level 3: CI/CD setup, presentation prep |

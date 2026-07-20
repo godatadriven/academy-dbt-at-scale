@@ -1,314 +1,229 @@
 # Group 1 - Checklist Level 1
 
-## dbt Fundamentals
+## dbt Modeling Refresh and Bug Fixing
 
-Start here to practice and apply the dbt fundamental skills:
+Start here. The first steps cover the fundamentals so everyone in the group is working from the same base, then move into finding and fixing real bugs.
 
-- **Sources** and source freshness
-- **Testing** primary keys with built-in tests
-- **Staging models**
-- **Documentation**
-- **Making use of packages**: `codegen` 
+In this level you will:
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
+- **Review** how sources, tests, and staging models fit together
+- **Fix bugs** in existing staging models by reading error output
+- **Build** the streaming staging layer from scratch
+- **Add tests** and source freshness to your new models
+
+Work through the steps in order. Expand a hint only after you've had a genuine attempt. The struggle is where the learning happens.
 
 ---
 
-## Step 1 - Explore the raw streaming tables
+## Step 1 - Orient yourself: run dbt build
 
 - [ ] Step complete
 
-Before writing any dbt code, understand what you're working with. Query the raw tables and note:
+Open `mediapulse_platform` in dbt Cloud and run:
 
-- How many rows are in each table?
-- What does a typical row look like?
-- Are there any obvious quality issues (nulls, unexpected values, duplicate IDs)?
-
-```sql
-select * from streaming.watch_events
+```bash
+dbt build
 ```
 
+Read the output carefully. How many models ran? How many failed? What do the error messages say?
+
+Write down the names of any failing models and the exact error text. You will come back to these.
+
+??? tip "Hint: reading dbt error output"
+    The key line in a dbt error is the one that says `Compilation Error` or `Database Error`. Everything below that tells you which model broke and why. The model name appears in the path, e.g. `model.mediapulse_platform.stg_podcasts__episodes`.
+
+---
+
+## Step 2 - Fix `stg_podcasts__episodes.sql`
+
+- [ ] Step complete
+
+Open `models/staging/podcasts/stg_podcasts__episodes.sql` and compare it to the raw source table:
+
 ```sql
-select * from streaming.subscriptions
+select * from podcasts.episodes limit 10
 ```
 
-```sql
-select * from streaming.content_catalog
+Find the column name that the model is referencing incorrectly. Fix it, then run:
+
+```bash
+dbt run --select stg_podcasts__episodes
 ```
 
-??? tip "Hint: What to look for"
-    Pay attention to:
+Once the model runs, query it and try ordering by the column named `season_episode`. What do you notice about the ordering?
 
-    - `monthly_fee_cents` in `subscriptions` - is this in the right unit for reporting?
-    - `status` in `subscriptions` - what values exist? Are they consistent?
-    - `genre` or `content_type` in `content_catalog` - any inconsistent casing?
+??? tip "Hint: two bugs in one model"
+    The first bug is a column name mismatch: the raw table uses a different name than what the model selects. Fix that first.
 
-    You'll use these observations to write tests and decide what transformations are needed at the staging layer.
+    The second issue is in how `season_episode` is constructed. It stores season and episode as a combined string like `1-3`, where the episode number comes first. This means ordering by the string produces wrong results (all episode 1s together, then all episode 2s). A downstream model ordering chronologically would silently return episodes in the wrong sequence.
 
----
-
-## Step 2 - Define sources in YAML
-
-- [ ] Step complete
-
-Create the file `models/staging/streaming/_streaming__sources.yml`. Define a source named `streaming` with all three tables.
-
-!!! note "Rename the tables with more human readable names"
-
-??? tip "Hint: Source YAML structure"
-    ```yaml
-    version: 2
-
-    sources:
-      - name: source_name # you choose this
-        database: can be dynamically set using "{{ env_var('DBT_DATABASE') }}"
-        schema: name_of_schema
-        tables:
-          - name: table_name # you choose this
-            identifier: table_name_as_in_warehouse
-          - name: table_name_2 # you choose this
-            identifier: table_name_2_as_in_warehouse
-    ```
-
-    Then you'll refer to this using `{{ source('source_name', 'table_name') }}` calls.
+    Fix both: correct the column name, and split `season_episode` into two separate integer columns called `season` and `episode_number`.
 
 ---
 
-## Step 3 - Add generic tests to sources
+## Step 3 - Audit `stg_news__articles.sql`
 
 - [ ] Step complete
 
-Add the following tests to the primary keys of each table:
-- `not_null`
-- `unique` 
+Open `models/staging/news/stg_news__articles.sql` and read it carefully.
 
-You will need to add a new key called `columns:` to configure the name of the primary key column. Then you'll need to add the key `data_tests:`.
+Then query the raw source to understand the data:
 
-??? tip "Hint: Tests on source columns"
-    ```yaml
-    tables:
-      - name: table_name
-        identifier: table_name
-        columns:
-          - name: column_name
-            tests:
-              - not_null
-              - unique
-    ```
+```sql
+select
+    article_id,
+    count(*) as row_count
+from news.articles
+group by article_id
+having count(*) > 1
+order by row_count desc
+```
 
-    Run source data_tests:
+Are there duplicate `article_id` values? What does the staging model do with them? What happens to any downstream model that joins on `article_id` if the staging model does not deduplicate?
 
-    ```bash
-    dbt test --select source:streaming
-    ```
+??? tip "Hint: the deduplication problem"
+    The raw `articles` table contains articles that get republished with a new `updated_at` timestamp. Each republication adds a new row with the same `article_id`. The current staging model selects without deduplication, so any join on `article_id` downstream fans out and inflates row counts.
+
+    The fix: keep only the most recent row per `article_id` (the one with the highest `updated_at`).
 
 ---
 
-## Step 4 - Add source freshness config
+## Step 4 - Fix `stg_news__articles.sql`
 
 - [ ] Step complete
 
-Add a `loaded_at_field` and `freshness` block to at least one table (start with `watch_events`).
+Apply the fix. Keep only the most recent row per `article_id`.
 
-Add two new keys under the same level as the table in your source yaml:
-- freshness
-- loaded_at_field
+After the fix, run the test suite for this model:
 
-Use autocomplete (tab) as this will auto populate what you need to add to configure the source freshness correctly.
+```bash
+dbt test --select stg_news__articles
+```
 
-??? tip "Hint: Freshness config"
-    ```yaml
-    tables:
-      - name: table_name
-        config:
-            loaded_at_field: column_name
-            freshness:
-            warn_after: 
-                count: int # Your tolerance, eg 4 days
-                period: day/hour/minute/second
-            error_after: 
-                count: int # Your tolerance, eg 4 days
-                period: day/hour/minute/second
-    ```
+Confirm that `article_id` is now unique in the staged output.
 
-    Test it with:
+??? tip "Hint: which SQL pattern to use"
+    A window function with `row_number()` partitioned by `article_id` and ordered by `updated_at desc` gives each row a rank. Filtering to `row_num = 1` keeps only the most recent version. Wrap your staging logic in CTEs: `source`, then `deduped`, then `renamed`.
+
+---
+
+## Step 5 - Define sources for the streaming domain
+
+- [ ] Step complete
+
+Create `models/staging/streaming/_streaming__sources.yml`. Define a source named `streaming` with all three tables: `watch_events`, `subscriptions`, and `content_catalog`.
+
+Read the [dbt sources documentation](https://docs.getdbt.com/docs/build/sources) before you write the YAML.
+
+Things to decide:
+
+- What `name` do you give each table? You can use a more readable alias than the raw table name.
+- Which primary key column do you test on each table?
+- Does the database and schema match where the raw data lives?
+
+After creating the file, run:
+
+```bash
+dbt test --select source:streaming
+```
+
+??? tip "Hint: getting started with source freshness"
+    The sources documentation covers freshness configuration under the `loaded_at_field` and `freshness` keys. Add these to `watch_events` once your basic source definition is working. Use the `watched_at` column as the freshness marker. Run freshness checks with:
 
     ```bash
     dbt source freshness --select source:streaming
     ```
 
-    dbt compares `max(watched_at)` against the current timestamp and raises a warning or error if data is older than the threshold.
-
 ---
 
-## Step 5 - Build `stg_streaming__content_catalog.sql`
+## Step 6 - Build `stg_streaming__content_catalog.sql`
 
 - [ ] Step complete
 
-Create `models/staging/streaming/stg_streaming__content_catalog.sql`. 
+Create `models/staging/streaming/stg_streaming__content_catalog.sql`.
 
-You can do this by clicking the `Generate model` button that appears above the name of your table in the source yaml you already created.
+Use the `Generate model` button in the dbt Cloud IDE to scaffold it from your source definition, then make the following improvements:
 
-When the code is generated, click save - notice where this file is saved? Why is that?
+- Rename columns to be clear and consistent with the rest of the project
+- Normalise `genre` and `content_type`: check for casing inconsistencies
 
-**Goals**: Make the following changes to clean the data
+```sql
+select distinct genre from {{ source('streaming', 'content_catalog') }}
+```
 
-- Rename columns to be clear and consistent
-- Cast any data types that are incorrect
-- Clean the string columns - notice any inconsistencies with casing or spaces?
+What values do you see? Are they consistent?
 
-??? tip "Hint: Try running the following - what do you see?"
-    ```sql
-    select 
-        distinct genre
-    from {{ source('streaming', 'content_catalog') }} 
-    ```
-    Are these values consistent?
-
-    ```sql
-    select 
-        *
-    from {{ source('streaming', 'content_catalog') }} 
-    where genre = 'drama'
-    ```
-    How many rows did you expect to be returned? What is the issue?
-
-    - `lower(trim(...))` can be used to normalise string values.
+??? tip "Hint: normalising string columns"
+    `lower(trim(column_name))` removes leading and trailing whitespace and converts to lowercase. This is the standard pattern for normalising string columns before tests or joins.
 
 ---
 
-## Step 6 - Build `stg_streaming__subscriptions.sql`
+## Step 7 - Build `stg_streaming__subscriptions.sql`
 
 - [ ] Step complete
 
 Create `models/staging/streaming/stg_streaming__subscriptions.sql`.
 
-**Goals**: Make the following changes to clean the data
+Goals:
 
-- Convert all cents columns to dollars 
-- Normalize the `status` column and rename to `subscription_status`
-- Create two new `timestamp` columns from the existing date and time columns
-    - `started_at`: from `start_date` and `start_time`
-    - `ended_at`: from `end_date` and `end_time`
+- Convert `monthly_fee_cents` to dollars
+- Normalise the `status` column
+- Create `started_at` and `ended_at` timestamps from the separate date and time columns in the raw table
 
-??? tip "Hint: Handling cents conversion"
+??? tip "Hint: combining date and time columns into a timestamp"
+    Snowflake accepts string concatenation to build a timestamp:
+
     ```sql
-    column_in_cents / 100.0 as column_in_dollars
-    ```
-
-??? tip "Hint: Handling status column normalization"
-    ```sql
-    lower(trim(...)) as new_column
-    ```
-
-??? tip "Hint: Handling date columns"
-    ```sql
-    cast(column_date || ' ' || column_time as timestamp) as new_column_name,
+    cast(date_column || ' ' || time_column as timestamp) as started_at
     ```
 
 ---
 
-## Step 7 - Build `stg_streaming__watch_events.sql`
+## Step 8 - Build `stg_streaming__watch_events.sql`
 
 - [ ] Step complete
 
 Create `models/staging/streaming/stg_streaming__watch_events.sql`.
 
-This is the highest-volume table - fact-style, one row per viewing event. The values in `event_id` are reused when the source data collects the event stream data. This means that this column is not unique.
+This is the highest-volume table: one row per viewing event. Note that the raw `event_id` values are reused when the source system re-emits the event stream. This means `event_id` is not unique in the raw data.
 
-??? tip "Hint: Using Snowflake's MD5 function"
-    Snowflake's `MD5` function will create a hash key from a given value. To get one value you first need to concatencate the columns and then use the `MD5` function on that result - see below for an example.
-    ```sql
-    MD5(
-        CONCAT(
-            COALESCE(column_1, ''), '|',
-            COALESCE(column_2, ''), '|',
-            COALESCE(column_3, '')
-        ) 
-    ) AS hash_key,
-    ```
+You will need to generate a surrogate key from a combination of columns that together identifies a unique event. Use the `dbt_utils.generate_surrogate_key()` macro from the `dbt_utils` package (already installed).
+
+??? tip "Hint: which columns to use for the surrogate key"
+    Think about which combination of columns would make a row unique: user, content item, the time the event was recorded. Use those as inputs to `generate_surrogate_key`.
 
 ---
-## Step 8 - Create a staging models YAML
+
+## Step 9 - Create a staging models YAML
 
 - [ ] Step complete
 
-Create `models/staging/streaming/_streaming__models.yml`. 
-
-You will use this to document all three staging models with (at a minimum) the following info and tests:
+Create `models/staging/streaming/_streaming__models.yml`. Document all three staging models with:
 
 - A model-level description
-- `not_null` + `unique` tests on the primary key column
+- `not_null` and `unique` tests on the primary key of each model
 - `not_null` tests on key foreign keys and timestamp columns
 
-??? tip "Hint: Use the codegen package to generate the model yaml"
+Read the [dbt data tests documentation](https://docs.getdbt.com/docs/build/data-tests) for the test syntax.
 
-    [dbt-codegen](https://hub.getdbt.com/dbt-labs/codegen/latest/) generates model YAML so you don't have to write it by hand.
-
-    **1. Add the package to `packages.yml`** by adding the following two lines under `dbt_utils`:
-
-    ```yaml
-        - package: dbt-labs/codegen
-            version: 0.13.1
-    ```
-
-    **2. Install it:** It should automatically install, however to manually do this you can run the following in the command line.
-
-    ```bash
-        dbt deps
-    ```
-
-    **3. Open a new (or existing) untitled file in dbt Cloud and paste the following, then click `</>` **Compile**:**
-
-    ```sql
-        {{ codegen.generate_model_yaml(
-            model_names=["model_name"]
-        ) }}
-    ```
-
-    Copy the compiled output into your `_streaming__models.yml` and fill in descriptions and any additional tests.
-
+??? tip "Hint: using codegen to scaffold the YAML"
+    The `dbt-codegen` package can generate the column list from your compiled SQL so you don't have to write it by hand. If it is already in `packages.yml`, compile the `codegen.generate_model_yaml` macro for each model name and paste the output into your YAML file. Then add descriptions and tests.
 
 ---
 
-## Step 9 BONUS - Run the full test suite
+## Step 10 - Run the full test suite
 
 - [ ] Step complete
 
-To run all tests run:
-- `dbt test --select source:streaming+`
+```bash
+dbt test --select source:streaming+
+```
 
-To run *only* on the sources:
-- `dbt test --select source:streaming`
-
-To run *only* on the staging models:
-- `dbt test --select staging.streaming`
-
-Fix any failures. A test failure is information - read the error message, query the failing rows, understand why.
-
-??? tip "Hint: Investigating a test failure"
-    To see failing rows for any test:
-    - navigate to the failing test and toggle `Debug logs`
-    - find the code being executed to run the test (see below for an example)
-    - copy and paste the code into an untitled file
-    - run the code (preview) to see which rows are causing the tests to fail
-    - decide on the best course of action to fix the failing tests
-
-    Example SQL code:
-    ```sql
-    select
-        content_id as unique_field,
-        count(*) as n_records
-
-    from MEDIAPULSE.streaming.content_ctlg
-    where content_id is not null
-    group by content_id
-    having count(*) > 1
-    ```
+Fix any failures. Read the error message before changing anything. Which rows are failing? Why?
 
 ---
 
 !!! success "Done?"
-    You've added sources, source freshness checks, primary key built-in tests, creating staging models and used a common dbt package (`codegen`) to make your workflow more efficient.
+    You've diagnosed and fixed two production bugs, built and tested a complete streaming staging layer, and added source freshness monitoring. That is a solid base.
 
-    Now head to [Level 2](../level2/checklist.md) to continue applying new skills!
+    Head to [Level 2](../level2/checklist.md) to add seeds and snapshots!

@@ -1,251 +1,139 @@
 # Group 2 - Checklist Level 3
 
-## Advanced Testing
+## Advanced Testing: Custom Generic Tests
 
-Start on this checklist once you have completed [Checklist Level 2](../level2/checklist.md).
+Start on this checklist once you have completed [Level 2](../level2/checklist.md).
 
-In this level you will apply the following skills:
+In this level you will:
 
-- **Test configuration** - `severity`, `where`, `store_failures`, `limit`
-- **Package-based tests** - `dbt_expectations` for statistical guardrails
-- **Test strategy** - deciding what to test, at what severity, and why
+- **Write custom generic tests** that encode business rules once and apply them everywhere
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
+Read the [custom generic tests guide](https://docs.getdbt.com/best-practices/writing-custom-generic-tests) before starting.
 
 ---
 
-## Step 1 - Install `dbt_expectations`
+## Step 1 - Understand when to write a custom generic test
 
 - [ ] Step complete
 
-Add the package to `packages.yml`:
+The four built-in generic tests (`not_null`, `unique`, `accepted_values`, `relationships`) cover data quality at the column level. Custom generic tests let you encode any business rule as a reusable test.
 
-```yaml
-- package: metaplane/dbt_expectations
-  version: # check the current version on the dbt hub
-```
+Answer these questions before writing any code:
 
-Then install:
+1. What business rules exist in your domain that the built-in tests cannot express?
+2. If you wrote a singular test for one of those rules, could the same logic apply to a different model or column? If yes, a generic test is the right tool.
+3. What arguments would a generic version of that test need to accept?
 
-```bash
-dbt deps
-```
+Read the [custom generic tests guide](https://docs.getdbt.com/best-practices/writing-custom-generic-tests) for the `{% test %}` macro structure.
 
 ---
 
-## Step 2 - Add `severity` and `where` to existing tests
+## Step 2 - Write a `assert_category_has_group` generic test
 
 - [ ] Step complete
 
-Open `_news__models.yml` and `_podcasts__models.yml` and apply the following configuration:
+In the content performance domain, every `category` value should map to a `category_group` in the seed. A category with no group is a data quality problem.
 
-1. Set `severity: warn` on the `accepted_values` test for `status` in `stg_news__articles` - new statuses may be added legitimately and shouldn't hard-fail CI.
-2. Add a `where` filter to the `unique` test on `article_id` so it only evaluates `published` articles (drafts may intentionally appear multiple times while being edited).
-3. Set `severity: warn` on the `relationships` test linking `author_id` → `stg_news__authors` - orphaned authors are worth flagging but shouldn't block a deploy.
+Write a generic test `assert_column_not_null_when_other_not_null.sql` in `tests/generic/`. The test should accept:
 
-??? tip "Hint: Test config syntax"
-    Add a `config:` block nested inside any test to change its behaviour:
+- `model`: the model being tested
+- `column_name`: the column that must not be null
+- `when_column`: the column whose non-null value triggers the check
 
-    ```yaml
-    - name: column_name
-      data_tests:
-        - accepted_values:
-            arguments:
-              values: [...]
-            config:
-              severity: warn
+The test should return rows where `column_name` is null but `when_column` is not null.
 
-        - unique:
-            config:
-              where: "column_name = 'some_value'"
+Apply it to `fct_content_performance` in `mediapulse_analytics`: assert that `category_group` is not null whenever `category` is not null.
 
-        - relationships:
-            arguments:
-              to: ref('model_name')
-              field: column_name
-            config:
-              severity: warn
-    ```
+Run the test and confirm it catches the case.
 
 ---
 
-## Step 3 - Enable `store_failures` on a test
+## Step 3 - Write a `assert_value_in_range` generic test
 
 - [ ] Step complete
 
-`store_failures: true` writes failing rows to a table in your target schema, making it easy to query and understand *which* rows caused the failure.
+Write a generic test `assert_value_in_range.sql` in `tests/generic/`. The test should accept:
 
-Add a `unique` test to the `article_id` in the source `news.articles` - recall that this column is not unique *in the source* since articles can be republished.
+- `model`: the model being tested
+- `column_name`: the column to check
+- `min_value`: minimum allowed value (inclusive)
+- `max_value`: maximum allowed value (inclusive)
 
-Run the test:
+It should return rows where the column falls outside the range.
 
-```bash
-dbt test --select source:news
-```
+Apply it to `content_length_units` in `fct_content_performance` with a minimum of 1 and a sensible maximum based on your knowledge of the data. What maximum would you choose, and why?
 
-Then find and query the failures table in Snowflake. Does seeing the actual failing rows help you understand the issue faster than a simple pass/fail count?
-
-??? tip "Hint: store_failures config"
-    Add `store_failures` inside a `config:` block on the test:
-
-    ```yaml
-    - name: column_name
-      data_tests:
-        - not_null:
-            config:
-              store_failures: true
-              limit: <n>
-    ```
-
-??? tip "Hint: Finding the failures table"
-    After running, dbt prints the table name in the run output:
-
-    ```
-    Stored N failures in: <schema>.<test_name>
-    ```
 ---
 
-## Step 4 - Add `dbt_expectations` tests to `stg_news__articles`
+## Step 4 - Refactor an existing singular test into a generic test
 
 - [ ] Step complete
 
-Add statistical guardrails to the articles model:
+Look at the existing singular test approach in Level 1 (`dbt test` assertions). Pick one business rule that could be generalised and rewrite it as a generic test.
 
-- The table should have at least 20 rows (catch a silent seed/source failure)
-- `word_count` should be between 50 and 5000 (catch data entry errors - no article is 2 words or 50,000 words)
-
-??? tip "Hint: Row count and value bounds"
-    Row count tests go at the model level; value tests go under a column:
-
-    ```yaml
-    - name: model_name
-      data_tests:
-        - dbt_expectations.expect_table_row_count_to_be_between:
-            arguments:
-              min_value: <n>
-      columns:
-        - name: column_name
-          data_tests:
-            - dbt_expectations.expect_column_values_to_be_between:
-                arguments:
-                  min_value: <n>
-                  max_value: <n>  # scope the test to rows where null is not acceptable
-    ```
+After creating the generic test, apply it to at least two different models or columns to prove the reusability.
 
 ---
 
-## Step 5 - Add `elementary` tests to `context_performance`
-
-- [ ] Step complete
-
-Check out the [elementary package.]().
-
-Install the package into your project.
-
-Add the [anomaly test](https://docs.elementary-data.com/data-tests/anomaly-detection-tests/column-anomalies#column_anomalies) to the duraction column to check whether the number of 
-
-Add the [anomaly test](https://docs.elementary-data.com/data-tests/anomaly-detection-tests/column-anomalies#column_anomalies) to the duration column to check whether the number of 
-seconds in an episode falls outside the expected range based on historical averages.
-
-!!! note "Before running your tests, make sure Elementary's internal tables exist in your schema"
-
-    ```bash
-    dbt run --select elementary
-    ```
-    You only need to do this once per environment.
-    What do you see in your output?
-
-When would this test fail?
-
----
-
-## Step 6 - Add a singular test
-
-Add a singular test to ensure that if there is a `category` in the `content_performance` mart there is always a `category_group`.
-
-??? tip "Hint: What is a custom singular test??"
-    Singular tests are plain `.sql` files that return rows when they **fail**. 
-    
-    They live in the `tests/` directory. It should be called `assert_<test_functionality>.sql`, where you finish the name describing what the test is doing.
-
-When you have your test save run 
-```bash
-dbt test --select `content_peformance`
-```
-
-Does your new test pass?
-
-??? lab "Extension: convert this test to a generic test"
-    Generic tests live in the `tests/generic/` folder and are reusable across any model and column.
-    
-    Can you refactor your singular test into a generic one that accepts the model and a list of expected values as arguments?
-
-    1. Create a folder called `generic/` in the `tests/` directory
-    2. Move your current test into the new folder `generic/`
-
-    ```sql
-    {% test assert_two_columns_are_equal(model, column_name, other_column_name) %}
-    
-    select
-      {{ column_name }}
-    from {{ model }}
-    where {{ column_name }} = {{ other_column_name }}
-
-    {% endtest %}
-    ```
-
-Once you have written your generic, how would you apply it in a `.yml` file?
-
-??? question "How to apply a generic test in a yaml file?"
-    Given a generic test, you can apply it in a `.yml` file like this:
-
-    ```yaml
-    - name: model_name
-      columns:
-        - name: column_name
-          data_tests:
-            - assert_two_columns_are_equal:
-                other_column_name: other_column
-    ```
-
-    The arguments (`model`, `column_name`) are always the model and column the test is defined under. Any additional arguments become named parameters beneath the test name.
-
----
-
-## Step 7 - Run the full test suite and review severity split
+## Step 5 - Review test strategy across the content domain
 
 - [ ] Step complete
 
 ```bash
-dbt test --select staging.news staging.podcasts marts.content
+dbt test --select staging.news staging.podcasts
 ```
 
-Review the output and discuss as a group:
+With your group, review the output:
 
-- Which tests block CI (`error`) vs flag for investigation (`warn`)?
-- Where did you use `where` to scope a test - and was the scoping decision correct?
-- Which `store_failures` tables would you keep permanently vs enable only for debugging?
+- Which tests are `error` severity vs `warn`?
+- Are there tests that would benefit from `where` clauses to scope them correctly?
+- Which tests would you add `store_failures: true` to permanently?
+
+Draft a short test contract for `stg_news__articles`: what does the test suite guarantee to downstream consumers?
+
+Read the [data tests documentation](https://docs.getdbt.com/docs/build/data-tests) for configuration syntax if needed.
+
+---
+
+## Step 6 - CAPSTONE: design and build `fct_content_engagement`
+
+- [ ] Step complete
+
+The content domain is missing its engagement fact table. `fct_content_performance` (in `mediapulse_analytics`) describes *what* content exists, but nothing in the project yet measures *how much it was read or listened to*. That is your job.
+
+Create `models/marts/content/fct_content_engagement.sql` in `mediapulse_platform`.
+
+Decide the grain yourself, then check it against these questions:
+
+1. What does one row represent - one page view? One listen? Or an aggregate, like one content item per day?
+2. `stg_news__page_views` (the incremental model you built in Level 1) is already at view-event grain. What aggregation, if any, does it need to reach the grain you chose?
+3. `int_episode_listen_completion` already aggregates podcast listens to one row per episode - across all time, with no date. Can you combine it with a daily-grain news metric without misrepresenting either one? What grain compromise or caveat would you document?
+
+A reasonable core scope:
+
+- One row per `content_id` (article) per `engagement_date`
+- Columns: `content_id`, `platform`, `engagement_date`, `engagement_count` (views that day), `unique_users`
+- Built from `stg_news__page_views` joined to `stg_news__articles` for context
+
+??? tip "Hint: getting started"
+    Group and count `stg_news__page_views` by `article_id` and the date part of `viewed_at`. That alone gives you a working, if news-only, `fct_content_engagement`. Get that running and tested before attempting the podcast side.
+
+??? tip "Stretch: bring podcasts into the same fact"
+    PodcastHub has no staging model for listens yet - `int_episode_listen_completion` reads straight from `source('podcasts', 'listens')`, bypassing staging entirely (which is itself a violation Group 3's dbt-project-evaluator audit would flag).
+
+    To fold podcasts into `fct_content_engagement` properly:
+
+    1. Build `stg_podcasts__listens.sql`, mirroring the pattern you used for `stg_news__page_views`.
+    2. Aggregate it to daily grain per episode, the same way you aggregated page views per article.
+    3. `union all` the two daily-grain results together, normalising both to the same column names (`content_id`, `platform`, `engagement_date`, `engagement_count`, `unique_users`) - the same pattern that fixes the bug in `fct_content_performance`.
+
+Document the model in a new `_content__models.yml` alongside it: a description, and `not_null`/`unique` tests on the grain you chose. Run and test it:
+
+```bash
+dbt build --select fct_content_engagement
+```
 
 ---
 
 !!! success "Done?"
-    You've moved from writing tests to *configuring* them - choosing severity, scoping with `where`, storing failures for debuggability, and adding statistical guardrails with `dbt_expectations`. These are the skills that separate a test suite that blocks CI from one that just generates noise.
-
-## Stretch your test suite! What else would you cover?
-
-You've now applied generic tests, singular tests, severity/`where` config, `store_failures`, and a handful of `dbt_expectations` checks. Step back and ask: **what else would you test on these models if this were a real production pipeline?**
-
-Brainstorm with your group, then pick one or two extra tests to actually add. Some directions to consider:
-
-- **Within `dbt_utils`** (already installed): tests like `expression_is_true`, `equal_rowcount`, `recency`, or `mutually_exclusive_ranges` cover things that pure `not_null` / `unique` won't.
-- **Anomaly / freshness** - is the latest `impression_date` recent enough? Is yesterday's row count within 20% of the 7-day average?
-- **Cross-model invariants** - does the sum of `allocated_spend_dollars` reconcile to total `spend_dollars` per day? (You partly tested this in Level 2 Step 3 - tighten the tolerance, or add the inverse check.)
-- **Distribution shape** - `expect_column_quantile_values_to_be_between`, `expect_column_stdev_to_be_between` from `dbt_expectations`.
-
-Other packages worth looking at on the [dbt package hub](https://hub.getdbt.com/):
-
-- 📦 **[`elementary`](https://hub.getdbt.com/elementary-data/elementary/latest/)** - anomaly detection on volume, freshness, and column-level statistics out of the box.
-- 📦 **[`dbt_project_evaluator`](https://hub.getdbt.com/dbt-labs/dbt_project_evaluator/latest/)** - tests the *project itself* (model naming, missing tests, missing documentation) rather than the data.
-- 📦 **[`dbt_meta_testing`](https://hub.getdbt.com/tnightengale/dbt_meta_testing/latest/)** - assert that every model has a minimum set of tests/docs.
-
-Pick one or two ideas, add them to your YAML or `tests/` folder, and run them. Note what was easy vs awkward to express - test gaps usually live in that awkwardness.
+    You have written reusable custom generic tests that encode your domain's business rules in one place and apply them everywhere, and designed the content domain's missing fact table from event-grain data. Combined with the incremental models and macros from Levels 1 and 2, you have a production-ready analytics engineering foundation.

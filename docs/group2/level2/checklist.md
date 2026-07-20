@@ -1,239 +1,121 @@
 # Group 2 - Checklist Level 2
 
-## dbt Level Up
+## Jinja Review and Macros
 
-Start on this checklist once you have completed [Checklist Level 1](../level1/checklist.md).
+Start on this checklist once you have completed [Level 1](../level1/checklist.md).
 
 In this level you will apply the following skills:
 
-- **Testing** - `relationships`, `accepted_values`, `not_null` gap-filling
-- **Documentation** - YAML for your mart
-- **Snapshots** - SCD Type 2 for slowly-changing article metadata
+- **Jinja review**: using Jinja templating to write cleaner, more dynamic SQL
+- **Macros**: writing reusable functions and a `generate_schema_name` macro for environment-based schema routing
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
-
----
-
-## Step 1 - Review existing tests and identify gaps
-
-- [ ] Step complete
-
-Look at `_news__models.yml` and `_podcasts__models.yml`. Are the tests comprehensive? What's missing?
-
-Make a note of at least two gaps you'd like to fill. You'll add them in Step 2.
-
-??? tip "Hint: Common gaps to look for"
-
-    Some immediate concerns:
-
-    - No `not_null` or `unique` tests on primary keys
-    - No `accepted_values` on `status` in articles when they can only be `draft`, `published` or `archived`
-
-    Also interesting to note:
-
-    - No `relationships` test linking `stg_news__articles.author_id` → `stg_news__authors.author_id`
-
+Read the [Jinja and macros documentation](https://docs.getdbt.com/docs/build/jinja-macros) before starting.
 
 ---
 
-## Step 2 - Fill the test gaps
+## Step 1 - Review Jinja in existing models
 
 - [ ] Step complete
 
-Go back to `_news__models.yml` and `_podcasts__models.yml` and add the missing tests you identified in Step 1.
+Open the existing staging models and find places where Jinja is already used. Identify:
 
-Run them and understand any failures before fixing:
+- `{{ source(...) }}` and `{{ ref(...) }}` calls
+- Any `{% if ... %}` or `{% for ... %}` blocks
+- Any macro calls from packages (e.g. `dbt_utils.generate_surrogate_key`)
+
+Answer: what problem does each piece of Jinja solve compared to writing plain SQL?
+
+---
+
+## Step 2 - Write a `clean_string` macro
+
+- [ ] Step complete
+
+Several staging models apply the same pattern to normalise string columns: trim whitespace, convert to lowercase, coalesce nulls to an empty string.
+
+Create `macros/clean_string.sql` in `mediapulse_platform`. The macro should accept a column name and return the normalised expression.
+
+Read the [Jinja and macros documentation](https://docs.getdbt.com/docs/build/jinja-macros) for the `{% macro %}` block syntax.
+
+After creating the macro, apply it to the following columns in the staging models you fixed in Level 1:
+
+- `stg_news__articles`: `category`, `status`
+- `stg_podcasts__episodes`: `category` (via the shows join if present)
+
+Run the models and confirm the output is unchanged:
 
 ```bash
-dbt test --select stg_news__articles stg_news__authors stg_podcasts__episodes
+dbt run --select stg_news__articles stg_podcasts__episodes
+dbt test --select stg_news__articles stg_podcasts__episodes
 ```
 
-??? tip "Hint: Relationships test example"
-    ```yaml
-    - name: model_name
-      description: Foreign key to # other model name here
-      data_tests:
-        - not_null
-        - relationships:
-            arguments:
-              to: ref('model_name') # or source('source_name', 'table_name')
-              field: column_name
-    ```
-
-??? tip "Hint: accepted_values example"
-    Use the list structure in yaml - you have two options.
-
-    Option 1:
-
-    ```yaml
-    - name: column_name
-      data_tests:
-        - accepted_values:
-            arguments:
-                values: ['val1', 'val2', 'val3', ...]
-    ```
-
-    Option 2:
-
-    ```yaml
-    - name: column_name
-      data_tests:
-        - accepted_values:
-            arguments:
-                - val1
-                - val2
-                - val3
-                ...
-    ```
-
-    Run first to observe the failure, then decide: update the accepted list, or normalise the values in the staging model?
-
----
-
-## Step 3 - Add a YAML file for the mart
-
-- [ ] Step complete
-
-Create `models/marts/content/_content__models.yml`. Document `content_performance` with descriptions and tests.
-
-Include at minimum:
-
-- Primary key tests on `content_id`
-- A `not_null` test on `platform`
-- A `not_null` test on `published_at`
-- An `accepted_values` test on `platform`
-    - At the moment you are only measuring news and podcast episode performance - what happens when you include more platforms? How will you account for this in this test?
-
-??? tip "Hint: Use the codegen package to generate the model yaml"
-
-    [dbt-codegen](https://hub.getdbt.com/dbt-labs/codegen/latest/) generates model YAML so you don't have to write it by hand.
-
-    **1. Add the package to `packages.yml`** by adding the following two lines under `dbt_utils`:
-
-    ```yaml
-        - package: dbt-labs/codegen
-            version: 0.13.1
-    ```
-
-    **2. Install it:** It should automatically install, however to manually do this you can run the following in the command line.
-
-    ```bash
-        dbt deps
-    ```
-
-    **3. Open a new (or existing) untitled file in dbt Cloud and paste the following, then click `</>` **Compile**:**
+??? tip "Hint: how macros are called in SQL"
+    After defining a macro, you call it in a model like any function:
 
     ```sql
-        {{ codegen.generate_model_yaml(
-            model_names=["model_name"]
-        ) }}
+    {{ clean_string('column_name') }} as column_name
     ```
 
-    Copy the compiled output into your `_streaming__models.yml` and fill in descriptions and any additional tests.
+    The macro receives the column name as a string and returns a SQL expression. The compiled output is the full expression, which the warehouse evaluates.
 
 ---
 
-## Step 4 - Create a snapshot for article metadata
+## Step 3 - Write a `cents_to_dollars` macro
 
 - [ ] Step complete
 
-Create `snapshots/snap_news__articles.yml`. This should track changes to article `title`, `category`, and `status` over time using the `timestamp` strategy.
+Create `macros/cents_to_dollars.sql` in `mediapulse_platform`. The macro should accept a column name and return a dollar-rounded expression.
 
-You should run this snapshot on the staging model where the `article_id` has been treated using the `ref()` macro.
-
-??? tip "Hint: Snapshot block"
-
-    Create a `snapshot_articles.yml` file inside the `snapshots/` directory using this structure:
-
-    ```yaml
-    snapshots:
-    - name: <string>
-        relation: ref() | source()
-        config:
-            database: <string>
-            schema: <string>
-            unique_key: <column_name_or_expression>
-            strategy: timestamp | check
-            updated_at: <column_name> # only needed with timestamp strategy
-            check_cols: [<column_name>] | all # only needed with check strategy
-    ```
-
-    The `target_schema` is already set to `snapshots` in `dbt_project.yml` — you don't need to repeat it.
-
-    Run it:
-
-    ```bash
-    dbt snapshot
-    ```
-
-    Check the output table. What columns did dbt add? (`dbt_scd_id`, `dbt_updated_at`, `dbt_valid_from`, `dbt_valid_to`)
+Apply it to any monetary columns in the staging models you have worked on.
 
 ---
 
-## Step 5 - Run the snapshot a second time (simulate a change)
+## Step 4 - Understand `generate_schema_name`
 
 - [ ] Step complete
 
-To see the snapshot in action, update the underlying source table name to point to the updated table:
-```yaml
-- name: articles
-  identifier: articles_updated # add this into the source yaml file
-```
+The `mediapulse_platform` project already contains `macros/generate_schema_name.sql`. Open it and read it carefully.
 
-!!! warning "Note: In practice the underlying source table would change, and you would not change any reference in dbt!!"
+Answer:
 
-Then run 
+- What does this macro do differently from the default dbt schema naming?
+- When would this macro produce a different output than the default?
+- How does it ensure that dev schemas and prod schemas stay separate?
 
-- `dbt run -s stg_news__articles`
-- `dbt snapshot` 
-
-again and query the snapshot table:
-
-```sql
-select * from snapshots.snap_news__articles
-where dbt_valid_to is not null
-order by dbt_updated_at desc
-```
-
-You should see the old row with a `dbt_valid_to` value and a new current row with `dbt_valid_to is null`.
-
-??? tip "Hint: Reading snapshot output"
-    | Column | Meaning |
-    |--------|---------|
-    | `dbt_valid_from` | When this version of the row became current |
-    | `dbt_valid_to` | When this version was superseded (`NULL` = still current) |
-    | `dbt_scd_id` | Surrogate key for this snapshot row |
+The [Jinja and macros documentation](https://docs.getdbt.com/docs/build/jinja-macros) has context on how dbt uses `generate_schema_name`.
 
 ---
 
-## Step 6 - Run dbt build
+## Step 5 - Extend `generate_schema_name` for a new environment
 
 - [ ] Step complete
 
-This builds the full lineage and runs all tests together.
+The current macro handles `dev` and `prod`. Extend it to also handle a `ci` target, where all schemas should be prefixed with `ci_` (e.g. `ci_staging_news`, `ci_marts`).
+
+Test your change by looking at the compiled output for a model in the `ci` target:
 
 ```bash
-dbt build --select +content_performance
+dbt compile --target ci --select stg_news__articles
 ```
 
-Fix any remaining failures. A test failure is information - read the error, query the failing rows, understand why before changing anything.
+Check the compiled SQL to confirm the schema name matches your expectation.
+
+??? tip "Hint: how to add a target condition"
+    The `generate_schema_name` macro uses `target.name` to check the current target. Add an `elif target.name == 'ci'` branch with the appropriate prefix logic.
 
 ---
 
-## Step 7 - BONUS: Snapshot for podcast episodes
+## Step 6 - BONUS: Refactor repetitive SQL with a Jinja for loop
 
 - [ ] Step complete
 
-Create a snapshot for `podcasts.episodes` tracking changes to `title` and `duration_seconds`. Why might you want to track duration changes?
+Find a model that applies the same transformation to several columns in a row (e.g. normalising five string columns with `lower(trim(...))`). Refactor it to use a `{% for ... %}` loop over a list of column names, and call your `clean_string` macro inside the loop.
 
-You can follow the same steps as above, using the "updated" data for episodes.
+Does the refactored version produce identical compiled SQL? Run `dbt compile` to check.
 
 ---
 
 !!! success "Done?"
-    You've added relationship integrity checks, filled test gaps, documented your mart, and implemented SCD Type 2 for article metadata. These are the building blocks of a production-grade test suite - nicely done.
+    You have written two reusable macros, applied them across staging models, and extended the environment-routing macro. Your project now has less repetition and clearer SQL.
 
-    Your work directly enables Group 3's revenue attribution - they need clean content data to allocate ad revenue correctly.
-
-    Now head to [Level 3](../level3/checklist.md) to configure your tests with severity, `where` clauses, and statistical guardrails from `dbt_expectations`!
-
+    Head to [Level 3](../level3/checklist.md) for custom generic tests!

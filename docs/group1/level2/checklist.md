@@ -1,309 +1,161 @@
 # Group 1 - Checklist Level 2
 
-## dbt Level Up
+## Seeds and Snapshots
 
-Start on this checklist once you have completed [Checklist Level 1](../level1/checklist.md).
+Start on this checklist once you have completed [Level 1](../level1/checklist.md).
 
 In this level you will apply the following skills:
 
-- **Further testing** - `accepted_values` and `relationships`
-- **External package** - Use the `generate_surrogate_key` macro from `dbt_utils`
-- **Jinja & Macros** - `clean_string` and `cents_to_dollars`
-- **Singular tests** - custom SQL assertions
+- **Seeds**: version-controlled reference data loaded into the warehouse as tables
+- **Snapshots**: SCD Type 2 tracking for slowly changing records
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
+Work through the steps in order.
 
 ---
 
-## Step 1 - Add `accepted_values` tests
+## Step 1 - Understand when to use a seed
 
 - [ ] Step complete
 
-Accordingly to internal documentation, these columns should only have the following values:
-- `subscription_status` in `stg_streaming__subscriptions`
-    - paused
-    - cancelled
-    - active
-    - trialing 
-- `plan_type` in `stg_streaming__subscriptions`
-    - premium
-    - standard
-    - basic
-- `device_type` in `stg_streaming__watch_events`
-    - smart tv
-    - tablet
-    - web
-    - mobile
+Before creating a seed, answer these questions for the data you are about to load:
 
-Add three `accepted_values` tests to `_streaming__models.yml` for those columns. 
+1. Is this data small and slow-changing (days or weeks between updates)?
+2. Does it belong in version control (so every change is tracked in git)?
+3. Would a source table or a YAML `vars` block be a better fit for this data?
 
-Then run the tests and observe what happens.
+Read the [dbt seeds documentation](https://docs.getdbt.com/docs/build/seeds) if you have not already.
 
-```bash
-dbt test --select stg_streaming__subscriptions stg_streaming__watch_events
+---
+
+## Step 2 - Create a device type category seed
+
+- [ ] Step complete
+
+The streaming team wants to group device types into categories for reporting:
+
+```
+device_type,device_category
+smart tv,connected_tv
+tablet,mobile
+web,desktop
+mobile,mobile
 ```
 
-Expect failures. The goal right now is to understand *why* they fail - not fix them yet.
+Create this file at `seeds/device_category_map.csv` in `mediapulse_platform`.
 
+Think about:
 
-??? tip "Hint: accepted_values YAML structure"
-    Use the list structure in yaml - you have two options.
+- Where in the project should this seed land in the warehouse (which schema)?
+- What column types should you declare to avoid Snowflake inferring the wrong types?
 
-    Option 1:
-
-    ```yaml
-    - name: column_name
-      data_tests:
-        - accepted_values:
-            arguments:
-                values: ['val1', 'val2', 'val3', ...]
-    ```
-
-    Option 2:
-
-    ```yaml
-    - name: column_name
-      data_tests:
-        - accepted_values:
-            arguments:
-                - val1
-                - val2
-                - val3
-                ...
-    ```
-
-??? question "How can you find out what values exist?"
-
-    ```sql
-    select distinct subscription_status from {{ ref('stg_streaming__subscriptions') }}
-    ```
-
-    ```sql
-    select distinct plan_type from {{ ref('stg_streaming__subscriptions') }}
-    ```
-
-    ```sql
-    select distinct device_type from {{ ref('stg_streaming__watch_events') }}
-    ```
-
-    You'll see values like `'Premium'` alongside `'premium'`, and `'Smart TV'` alongside `'smart tv'`. Your `accepted_values` list needs to match exactly what comes out of the staging model - so you have two choices: list *every* casing variant, or *normalise the values in the staging model*.
-    
-    It is up to you to decide which is the right option.
-
-
----
-
-## Step 2 - Add a `relationships` test
-
-- [ ] Step complete
-
-A `relationships` test checks that every value in one column exists in another model's column - the dbt equivalent of a foreign key check.
-
-Add a `relationships` test to `stg_streaming__watch_events` to assert that every `content_id` in watch events has a matching row in `stg_streaming__content_catalog`.
-
-??? tip "Hint: relationships test syntax"
-    In `_streaming__models.yml`, under `stg_streaming__watch_events`:
-
-    ```yaml
-    columns:
-      - name: column_name
-        description: Foreign key to column_name in table_name
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('model_name')
-                field: primary_key_column_name
-    ```
-
-??? warning "Important: Do you understand the logic?"
-    Find the code for the relationships test in Debug logs - does the SQL make sense? When would this test fail?
-    
-    What would cause that in a real system?
-
----
-
-## Step 3 - Use the `dbt_utils.generate_surrogate_key()` macro
-
-- [ ] Step complete
-
-Replace your code that uses the `MD5` function in `stg_streaming__watch_events` so that it uses the macro from the `dbt_utils` package.
-
-- Check that dbt_utils is in the `packages.yml` file
-- Look up the [generate_surrogate_key](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/#generate_surrogate_key%20(source):~:text=generate_series(upper_bound%3D1000)%20%7D%7D-,generate_surrogate_key%20(source),-This%20macro%20implements) documentation to see how it works
-- Update your code to use the `generate_surrogate_key` function from the `dbt_utils` package
-
-??? tip "Hint: Surrogate key with dbt_utils"
-    Here's the syntax for using the `generate_surrogate_key` function. Notice the need for the `{{ double curly braces }}`! 
-
-    ```sql
-    {{
-        dbt_utils.generate_surrogate_key(['column_1', 'column_2', 'column_3'])
-    }}   as name_of_column
-    ```
-
----
-
-## Step 4 - Write a `clean_string` macro
-
-- [ ] Step complete
-
-Create `macros/clean_string.sql`. The macro should accept a column name and return an expression that trims whitespace, converts to lowercase, and coalesces nulls to an empty string.
-
-??? tip "Hint: Writing the macro"
-    ```sql
-    {% macro clean_string(column_name) %}
-        coalesce(lower(trim({{ column_name }})), '')
-    {% endmacro %}
-    ```
-
-
----
-
-## Step 5 - Apply `clean_string` in your staging models
-
-- [ ] Step complete
-
-Update the following columns in the models to use your new macro:
-
-- `stg_streaming__content_catalog` 
-    - `genre`
-    - `content_type`
-- `stg_streaming__watch_events` 
-    - `device_type`
-- `stg_streaming__subscriptions` 
-    - `status` 
-    - `plan_type`
+After creating the file, load it:
 
 ```bash
-dbt run --select stg_streaming__watch_events stg_streaming__subscriptions
-dbt test --select stg_streaming__watch_events stg_streaming__subscriptions
+dbt seed --select device_category_map
 ```
 
-??? tip "Hint: Calling the macro"
+Confirm the table exists in the warehouse and looks correct.
 
-    Macros receive expressions, so callers pass the column name as a string:
-
-    ```sql
-    {{ clean_string('device_type') }} as device_type
-    ```
-
-??? warning "Check!"
-    Do the `accepted_values` tests you wrote in Step 1 still pass?
+??? tip "Hint: seed configuration in dbt_project.yml"
+    Seeds are configured in `dbt_project.yml` under a `seeds:` block. You can set a target schema and declare column types there. Read the [seeds documentation](https://docs.getdbt.com/docs/build/seeds) for the config keys.
 
 ---
 
-## Step 6 - Write a `cents_to_dollars` macro and apply it
+## Step 3 - Use the seed in a staging model
 
 - [ ] Step complete
 
-Create `macros/cents_to_dollars.sql`. The macro accepts a column name and returns a division expression.
+Update `stg_streaming__watch_events.sql` to join to your new seed and add a `device_category` column.
 
-Then update `stg_streaming__subscriptions.sql` to use it for `monthly_fee_cents`.
+Use `{{ ref('device_category_map') }}` to reference the seed. This keeps the lineage visible in the DAG.
 
-??? tip "Hint: Create the macro"
-    The functionality you want is this:
-
-    ```sql
-    column_name / 100.0::numeric(16, 2)
-    ```
-
-??? tip "Hint: Call the macro"
-    Create a macro wrapper in your new file and apply it later using:
-
-    ```sql
-    {{ cents_to_dollars('column_name') }} as new_column_name
-    ```
-
-    Verify the output looks right by running the code in `stg_streaming__subscriptions`
-
----
-
-## Step 7 - Write a singular test
-
-- [ ] Step complete
-
-Singular tests are plain `.sql` files in the `tests/` folder. 
-
-??? question "When does a test pass in dbt?"
-    A test **passes** when the query returns **zero rows** - any rows returned are failures.
-    
-Write a test that asserts no watch event has a duration longer than the content's total runtime. A user can't watch more seconds of content than exist in it.
-
-??? question "Which columns do you need and from which tables?"
-    - `runtime_minutes` from `stg_streaming__content_catalog`
-    - `watch_duration_seconds` from `stg_streaming__watch_event`
-
-
-You can choose to do this on the *source data*, the *staging model* or *both*.
-
-Create `tests/assert_watch_duration_lte_runtime.sql`.
-
-??? tip "Hint: Test logic"
-    ```sql
-    -- Returns rows where a watch event is longer than the content's runtime.
-    -- Zero rows = test passes.
-    select
-        -- add select columns here
-    from -- use the ref OR source macro
-    left join -- use the ref OR source macro
-        using -- add the required column
-    where -- add the condition where a watch event is longer than the content's runtime.
-    ```
-
-    Run it:
-
-    ```bash
-    dbt test --select assert_watch_duration_lte_runtime
-    ```
-
-    Does it pass on the data? If it fails, look at the failing rows - is it a data quality issue or a logic issue in the test?
-
-??? example "Optional: Write a second singular test"
-    Try a second one: assert that no subscription has a `monthly_fee_dollars` of 0 unless the `plan_type` is `trialing`.
-
-    Choose the name of your test and run `dbt test` on that file to check it works.
-
----
-
-## Step 8 - Run the full test suite
-
-- [ ] Step complete
+Run and test:
 
 ```bash
-dbt test --select +staging.streaming
+dbt run --select stg_streaming__watch_events
+dbt test --select stg_streaming__watch_events
 ```
-
-Fix any remaining failures. A test failure is information - read the error, query the failing rows, understand why before changing anything.
-
 
 ---
 
-## Step 9 - BONUS: `dbt build` and check lineage
+## Step 4 - Understand when to use a snapshot
 
 - [ ] Step complete
 
+Before writing snapshot config, answer these questions:
+
+1. Which records in the `streaming` domain could change over time after they are first created? (Think about subscriptions: a user's `plan_type` or `status` can change.)
+2. Why would overwriting the current row lose valuable business information?
+3. What does "SCD Type 2" mean, and how does dbt implement it?
+
+Read the [dbt snapshots documentation](https://docs.getdbt.com/docs/build/snapshots) before writing any YAML.
+
+??? tip "Hint: the core insight"
+    `stg_streaming__subscriptions` is rebuilt from `streaming.subscriptions` on every run. If a user upgrades from `basic` to `premium`, the previous state disappears permanently. Snapshots solve this by inserting a new row for the changed record, setting `dbt_valid_to` on the old row, and leaving `dbt_valid_to` null on the new row.
+
+    `dbt_valid_from` and `dbt_valid_to` together let you answer "what was this user's plan on date X?"
+
+---
+
+## Step 5 - Create a subscription snapshot
+
+- [ ] Step complete
+
+Create `snapshots/snap_streaming__subscriptions.yml` in `mediapulse_platform`.
+
+The snapshot should track changes to `plan_type` and `status` on subscription records over time. Decide:
+
+- `unique_key`: which column identifies a subscription record?
+- `strategy`: does `streaming.subscriptions` have an `updated_at` column? If yes, use `timestamp`. If no, use `check` and list the columns to monitor.
+- Which columns are likely to change over time, and which are essentially static?
+
+Read the [snapshots documentation](https://docs.getdbt.com/docs/build/snapshots) for the YAML syntax.
+
+Run the snapshot:
+
 ```bash
-dbt build --select +staging.streaming
+dbt snapshot --select snap_streaming__subscriptions
 ```
 
-This runs models and tests together in dependency order. Then open the DAG in dbt Cloud and confirm all three staging models appear with green source nodes from `streaming`.
+Query the snapshot table. What columns did dbt add? What do `dbt_valid_from`, `dbt_valid_to`, and `dbt_scd_id` mean?
 
-??? tip "Hint: Generating docs"
-    ```bash
-    dbt docs generate
-    ```
+---
 
-    Now click on the Documentation button - you can find this in the top-left of the console, to the right of the name of your branch. 
-    
-    You should see `streaming` → `stg_streaming__*` with source nodes shown in green.
+## Step 6 - Simulate a change and re-run the snapshot
 
-??? note "What does the `+` indicate in a dbt command?"
-    The `+` selects the model and **all** of its **upstream** (if placed before) or **downstream** (if placed after) dependencies.
+- [ ] Step complete
+
+To see the snapshot in action without waiting for real data to change, update the source definition to point at an updated version of the seed data (your facilitator will tell you which table to use or how to simulate a change in the workshop environment).
+
+Run:
+
+```bash
+dbt snapshot --select snap_streaming__subscriptions
+```
+
+Then query:
+
+```sql
+select * from snapshots.snap_streaming__subscriptions
+where dbt_valid_to is not null
+order by dbt_updated_at desc
+```
+
+You should see old rows with a `dbt_valid_to` date and new current rows with `dbt_valid_to is null`.
+
+---
+
+## Step 7 - BONUS: Snapshot for news articles
+
+- [ ] Step complete
+
+Create a second snapshot for `news.articles` tracking changes to `title`, `category`, and `status`. Use the `timestamp` strategy with `updated_at` as the marker.
+
+Why would you want to track article title changes? Think of a business question you could only answer with this history.
 
 ---
 
 !!! success "Done?"
-    You've added accepted_values tests, relationship integrity checks, normalized messy source data with macros, and written your first custom dbt singular test. These are the building blocks of a production-grade test suite - nicely done!
+    You have loaded reference data as a seed, used it in a staging model, and implemented SCD Type 2 tracking for subscription records. You can now answer questions about what was true at any point in the past.
 
-    Ready for a further challenge? Head to [Level 3](../level3/checklist.md) to configure your tests with severity, `where` clauses, and statistical guardrails from `dbt_expectations`!
+    Head to [Level 3](../level3/checklist.md) for next-level testing: test configurations and custom generic tests!

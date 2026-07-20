@@ -1,206 +1,128 @@
 # Group 1 - Checklist Level 3
 
-## Advanced Testing
+## Next Level Testing: Configurations and Custom Generic Tests
 
-Start on this checklist once you have completed [Checklist Level 2](../level2/checklist.md).
+Start on this checklist once you have completed [Level 2](../level2/checklist.md).
 
-In this level you will apply the following skills:
+In this level you will:
 
-- **Test configuration** - `severity`, `where`, `store_failures`, `limit`
-- **Package-based tests** - `dbt_expectations` for statistical guardrails
-- **Test strategy** - deciding what to test, at what severity, and why
+- **Configure tests** with `severity`, `where`, and `store_failures`
+- **Write custom generic tests** that are reusable across any model or column
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
+Read the [dbt data tests documentation](https://docs.getdbt.com/docs/build/data-tests) and the [custom generic tests guide](https://docs.getdbt.com/best-practices/writing-custom-generic-tests) before starting.
 
 ---
 
-## Step 1 - Enable `store_failures` on a test
+## Step 1 - Audit your current test suite
 
 - [ ] Step complete
 
-!!! abstract " The purpose of storing failures" 
-    `store_failures: true` tells dbt to write the failing rows to a table in your target schema instead of just reporting a pass/fail count. This makes it much easier to debug *which* rows failed and why.
-
-Add a `unique` test on the `event_id` column in `stg_streaming__events`. 
-
-You should expect this test to fail - due to the known issue with `event_id`s being reused in watch events. Check that by running the test:
+Run the full test suite for the streaming staging layer:
 
 ```bash
-dbt test --select stg_streaming__watch_events
+dbt test --select staging.streaming
 ```
 
-Enable the `store-failures` flag to cap how many failing rows are stored.
+Then answer:
 
-Rerun the tests, then find and query the failures table in Snowflake. Does seeing the actual failing rows help you understand the problem faster than a row count alone?
+1. Which tests currently fail? Should a failure block CI or just flag for investigation?
+2. Are there tests that apply to all rows but should only apply to a subset? (For example, a price check that should skip rows where price is legitimately zero.)
+3. Which failing tests would be hardest to debug from a row count alone? Those are candidates for `store_failures`.
 
-??? tip "Hint: store_failures config"
-    Add `store_failures` and `limit` inside a `config:` block on the test:
-
-    ```yaml
-    - unique:
-        arguments:
-          config:
-            store_failures: true
-    ```
-
-??? tip "Hint: Finding the failures table"
-    After running with `store_failures: true`, dbt prints the table name in the command output:
-
-    ```
-    Stored N failures in: <schema>.<test_name>
-    ```
-
-    You can also use `store_failures_as: view` if you prefer a view that's refreshed on each run.
+Make a list of the configuration changes you want to make before moving on.
 
 ---
 
-## Step 2 - Add `severity` and `where` to existing tests
+## Step 2 - Add `severity` to appropriate tests
 
 - [ ] Step complete
 
-Test configuration lets you tune *how* a test fails and *which rows it applies to*. Open `_streaming__models.yml` and apply the following:
+Open `_streaming__models.yml` and apply severity settings to the tests you identified:
 
-- [ ] Set `severity: warn` on your `accepted_values` tests for `device_type` and `subscription_status` 
+- Set `severity: warn` on tests where a failure is worth investigating but should not block CI (for example, `accepted_values` tests on categories that might legitimately expand)
+- Confirm that primary key tests (`not_null` and `unique` on the surrogate key) are set to `severity: error` (the default)
 
-??? question "Why set the severity as warn?"
-    These categories might legitimately expand and shouldn't block a CI run.
-
-- [ ] Add a `where` condition to the `unique` test on the `event_id` column.
-
-??? question "Why use a where statement?"
-    There is a bug in the system and these event_ids are repeated, but only for some events - can you find the bug? 
-
-??? question "How can you identifiy the bug?"
-    Use a window function to count up the repititions of the values in the `event_id` column.
-
-    Use this to filter where there are repeated entries - what do you notice?
-
-    What where statement can you use to account for this known bug?
-
-??? tip "Hint: Test config syntax"
-    Add a `config:` block nested inside any test to change its behaviour:
-
-    ```yaml
-    - name: column_name
-      data_tests:
-        - accepted_values:
-            arguments:
-              values: [...]
-              config:
-                severity: warn  # or error (default)
-
-    - name: column_name
-      data_tests:
-        - unique:
-            arguments:
-              config:
-                where: "column_name = 'some_value'"
-    ```
-
-    The `where` clause filters which rows the test evaluates - rows that don't match are skipped entirely.
+Read the [data tests documentation](https://docs.getdbt.com/docs/build/data-tests) for the `config:` block syntax.
 
 ---
 
-## Step 3 - Install `dbt_expectations`
+## Step 3 - Add `where` filters to scoped tests
 
 - [ ] Step complete
 
-Add the package to `packages.yml`:
+Add `where` conditions to tests that should not evaluate all rows. For example:
 
-```yaml
-- package: metaplane/dbt_expectations
-  version: [">=0.10.0", "<1.0.0"]
+- The `unique` test on `event_id` in `stg_streaming__watch_events` should exclude rows where the source system is known to re-emit duplicate IDs
+
+Find the right filter by querying the duplicate rows:
+
+```sql
+select
+    event_id,
+    count(*) as cnt
+from {{ ref('stg_streaming__watch_events') }}
+group by event_id
+having count(*) > 1
 ```
 
-Then install manually to make sure it's available:
+What distinguishes the duplicate rows from the unique ones? That condition is your `where` filter.
+
+---
+
+## Step 4 - Enable `store_failures` on revenue-sensitive tests
+
+- [ ] Step complete
+
+Enable `store_failures: true` on the tests most likely to fail in production: the `not_null` test on `watch_duration_seconds` and the `unique` test on the surrogate key.
+
+Run the tests, then find the failures table in Snowflake. Does seeing the actual failing rows help you understand the issue faster than a row count alone?
+
+Read the [data tests documentation](https://docs.getdbt.com/docs/build/data-tests) for how to configure `store_failures` and `limit` at the test level.
+
+---
+
+## Step 5 - Write a custom generic test: `assert_not_negative`
+
+- [ ] Step complete
+
+Create `tests/generic/assert_not_negative.sql` in `mediapulse_platform`.
+
+A generic test is a Jinja macro that accepts a model and a column name (and any additional arguments), and returns SQL that returns rows when the test fails.
+
+Read the [custom generic tests guide](https://docs.getdbt.com/best-practices/writing-custom-generic-tests) for the `{% test %}` macro syntax.
+
+The test should fail (return rows) for any row where the specified column is negative.
+
+After creating the test, apply it in `_streaming__models.yml` to:
+
+- `watch_duration_seconds` in `stg_streaming__watch_events`
+- `monthly_fee_dollars` in `stg_streaming__subscriptions`
+
+Run:
 
 ```bash
-dbt deps
+dbt test --select stg_streaming__watch_events stg_streaming__subscriptions
 ```
 
 ---
 
-## Step 4 - Add `dbt_expectations` tests to `stg_streaming__watch_events`
+## Step 6 - Write a custom generic test: `assert_column_is_one_of`
 
 - [ ] Step complete
 
-Add statistical guardrails to the highest-volume model. In `_streaming__models.yml`, add the following model-level and column-level expectations:
+Create `tests/generic/assert_column_is_one_of.sql`. This test should accept:
 
-- [ ] The table should have at least 10 rows (catch a silent truncation)
-- [ ] `watch_duration_seconds` should always be greater than 0
-- [ ] `watch_duration_seconds` should never exceed 24 hours - a sanity cap
-- [ ] Apply the `expect_column_distinct_values_to_contain_set` to `device_type` -- what is this test doing? 
-    - Add `console` as a device_type within this test AND within the `accepted_values` test. If you add the `store_failures` flag, what failures are stored?
+- `model`: the model being tested (automatically passed by dbt)
+- `column_name`: the column to check (automatically passed by dbt)
+- `allowed_values`: a list of acceptable values
 
-??? tip "Hint: Model-level row count test"
-    Row count tests go at the model level, not under a column:
+It should fail for any row where the column value is not in the allowed list.
 
-    ```yaml
-    - name: model_name
-      data_tests:
-        - dbt_expectations.expect_table_row_count_to_be_between:
-            arguments:
-              min_value: <n>
-    ```
-
-??? tip "Hint: Column value bounds"
-    ```yaml
-    - name: column_name
-      data_tests:
-        - dbt_expectations.expect_column_values_to_be_between:
-            arguments:
-              min_value: <n>
-              max_value: <n>
-    ```
-
-    Think about what bounds would catch a genuine data quality issue - not just what happens to be in the current dataset.
-
-??? tip "Hint: Distinct value set"
-    ```yaml
-    - name: column_name
-      data_tests:
-        - dbt_expectations.expect_column_distinct_values_to_contain_set:
-            arguments:
-              value_set: 
-                - val1
-                - val2
-                - ...
-    ```
-
-??? question "What is the `expect_column_distinct_values_to_contain_set` doing"
-    `expect_column_distinct_values_to_contain_set` checks that specific values **must exist** in the column. Similar to `accepted_values`... but `accepted_values` checks that no values exist **outside** the allowed set — they test opposite directions.
-
-    When `console` is added to the set of values, this value will be pushed to the `store_failures` table.
+Apply it to `device_type` in `stg_streaming__watch_events` with the known allowed values. Run the test and compare its behaviour to the built-in `accepted_values` test. When would you use your custom version over the built-in one?
 
 ---
 
-## Step 5 - Add `dbt_expectations` tests to `stg_streaming__subscriptions`
-
-- [ ] Step complete
-
-Add guardrails to the subscriptions model:
-
-- [ ] `monthly_fee_dollars` should be 0 or greater (no negative fees)
-- [ ] `monthly_fee_dollars` should be 0 only when `subscription_status` is `'trialing'`
-- [ ] The table should have at least 5 rows
-
-The second assertion requires a `where` clause - a fee of 0 on a non-trialing subscription is a data error.
-
-??? tip "Hint: Scoping a test with where"
-    You can limit which rows a `dbt_expectations` test evaluates using the `row_condition` key:
-
-    ```yaml
-    - name: column_name
-      data_tests:
-        - dbt_expectations.expect_column_values_to_be_between:
-            arguments:
-              min_value: <n>
-              row_condition: "another_column != 'some_value'"
-    ```
-
----
-
-## Step 6 - Run the full test suite and review severity split
+## Step 7 - Run the full suite and review
 
 - [ ] Step complete
 
@@ -208,87 +130,45 @@ The second assertion requires a `where` clause - a fee of 0 on a non-trialing su
 dbt test --select staging.streaming
 ```
 
-Review the output:
+Review the output with your group:
 
-- Which tests are `warn` vs `error`?
-- Are there any `warn` tests you think should actually be `error`? Vice versa?
-- Would you add any tests to `store_failures` to make ongoing debugging easier?
+- Which tests are `warn` vs `error`? Does the split feel right?
+- Are there any tests that would be more useful with `store_failures` enabled permanently?
+- Draft one sentence that describes the testing contract for `stg_streaming__watch_events`: what guarantees does the test suite make to downstream consumers?
 
-As a group, agree on a short list of rules:
-- "This type of test is always `error`: ..."
-- "This type of test is always `warn`: ..."
+---
 
-This is the conversation that a real data team has when setting up a CI pipeline.
+## Step 8 - CAPSTONE: design and build `fct_streaming_engagement`
+
+- [ ] Step complete
+
+The streaming domain has a fully tested staging layer, a seed, and a snapshot - but no fact table. Every other domain in MediaPulse ends with a governed fact model that downstream consumers can build on. Streaming's is still missing: `fct_streaming_engagement`.
+
+Create `models/marts/streaming/fct_streaming_engagement.sql` in `mediapulse_platform`.
+
+Grain: one row per watch event (the same grain as `stg_streaming__watch_events`).
+
+A reasonable core scope, joining the three staging models you already built:
+
+- `user_id`, `content_id`, `watched_at`, `watch_duration_seconds`, `device_category` from `stg_streaming__watch_events`
+- `plan_type` from `stg_streaming__subscriptions`, joined on `user_id`
+- `genre` and `content_type` from `stg_streaming__content_catalog`, joined on `content_id`
+
+??? tip "Hint: which key to join subscriptions on"
+    `stg_streaming__watch_events` doesn't carry a `subscription_id`. Join to `stg_streaming__subscriptions` on `user_id` instead. What happens if a user has more than one subscription record over time? Decide how you want to handle that before writing the join - it's the same class of problem your snapshot exists to solve.
+
+??? tip "Stretch: resolve plan_type as of the watch event, not today"
+    Joining directly to `stg_streaming__subscriptions` gives you the user's *current* plan, not the plan they were on when they watched. You built `snap_streaming__subscriptions` in Level 2 specifically to answer "what was true at a point in time."
+
+    Join to the snapshot instead, matching `watched_at` between `dbt_valid_from` and `coalesce(dbt_valid_to, current_timestamp())`. This gets you the plan_type that was actually active at watch time - a much more defensible number for any churn or plan-tier analysis downstream.
+
+Document the model in a new `_streaming__marts.yml` alongside it: a description, and `not_null`/`unique` tests on your grain key. Run and test it:
+
+```bash
+dbt build --select fct_streaming_engagement
+```
 
 ---
 
 !!! success "Done?"
-    You've moved from writing tests to *configuring* them - choosing severity, scoping with `where`, storing failures for debuggability, and adding statistical guardrails with `dbt_expectations`. These are the skills that separate a test suite that blocks CI from one that just generates noise.
-
-
-## Optional extras:
-
-Want a further challenge? Check out the extra investigations below...
-
----
-
-## Optional 1 - Audit `stg_podcasts__episodes.sql`
-
-- [ ] Step complete
-
-Open `models/staging/podcasts/stg_podcasts__episodes.sql` and try to run it.
-
-Read the error message and then inspect the raw table:
-
-```sql
-select * from podcasts.episodes
-```
-
-What is the issue?
-
-??? tip "Hint: The bug"
-    The staging model references the wrong column name in its `SELECT` clause - can you spot which one? 
-
-    **The fix:** replace the name of the column in the staging file to fix it.
-
-    Rerun the model to make sure it exists in the warehouse:
-
-    ```bash
-    dbt run -s +stg_podcasts__episodes
-    ```
-
-Say you want to list all episodes ordered chronologically. 
-
-Query the staging model in a separate tab and order by the column `season_episode`. What issue do you see? Go back to the staging model to correct this.
-
-??? tip "Hint: What is happening?"
-    The bug: season_episode is a string like '1-3', '2-3', '3-3' where the episode is the first value and the season the second. This is causing two issues:
-    - When ordering the primary order is from the episode title. Meaning all episode 1s will be together from all seasons, then episode 2s etc.
-    - Even if fixed, since this is a string, '3-10' will come before '3-9' because '1' < '9' as characters. Any downstream model ordering by `season_episode` will silently return episodes in the wrong order.
-
-    It won't error, the values look completely reasonable at a glance, and the second problem only becomes visible once you have `10+` episodes in a season.
-
----
-
-## Optional 2 - Fix `stg_podcasts__episodes.sql`
-
-- [ ] Step complete
-
-Apply the fixes:
-
-- Correct the name of the column `episode_name`
-- Split out the season_episode to be two columns. Make sure to select the right number!
-    - season
-    - episode
-
-```bash
-dbt run --select stg_podcasts__episodes
-dbt test --select stg_podcasts__episodes
-```
-
-??? tip "Hint: Syntax needed"
-    ```sql
-    split_part(column_name, '-', 1)::int as new_column_name,
-    ```
-
----
+    You have configured an existing test suite with severity, scoping, and failure storage, written two custom generic tests that are reusable across the whole project, and designed the streaming domain's fact table from your own staging layer. These skills turn a basic test suite into a production-ready one - and a documented staging layer into a usable analytics product.

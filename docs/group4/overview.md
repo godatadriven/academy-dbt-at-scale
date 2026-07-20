@@ -1,10 +1,14 @@
-# Group 4 - Power Users: Production Hardening
+# Group 4 - Power Users
+
+Head to [Level 1](level1/checklist.md) when you are ready to start.
+
+---
 
 ## Your mission
 
-You're the release engineering team. The other groups are building features; you're making sure the whole MediaPulse project is ready to run in production. That means auditing quality, enforcing standards, hardening tests, and designing a CI/CD pipeline that catches problems before they reach the warehouse.
+You are the most experienced group in the room. Your job is to go deep on multi-project architecture and dbt mesh, and to set a production-ready standard for the MediaPulse platform. You work across both dbt projects.
 
-This is a **2-day open hackathon**. There is no prescribed order beyond the checklist steps - prioritise based on what you find.
+Further topics beyond the checklist levels will be agreed live with your facilitator based on where you are by Day 2 afternoon.
 
 ---
 
@@ -12,114 +16,65 @@ This is a **2-day open hackathon**. There is no prescribed order beyond the chec
 
 By the end of the hackathon you will be able to:
 
-- Run **dbt-project-evaluator** and interpret its output to identify structural problems
-- Use **dbt-codegen** to auto-generate YAML for undocumented sources and models
-- Apply **dbt-expectations** for statistical and distributional data quality tests
-- Define **model contracts** to enforce column-level schemas at run time
-- Reason about **test severity** (`error` vs `warn`) and when each is appropriate
-- Design a **CI/CD pipeline** using dbt Cloud jobs: slim CI, nightly full-refresh, PR validation
-- Articulate the difference between **hard requirements** (must pass before deploy) and **nice-to-haves**
+- Design and implement **model contracts** that enforce schema and protect downstream consumers
+- Apply **model access controls** and **groups** to govern which models are public across project boundaries
+- Configure **cross-project references** (dbt mesh) so `mediapulse_analytics` consumes governed models from `mediapulse_platform`
+- Reason about version strategy: when to use **model versions** vs just updating a model
+- Design a **CI/CD pipeline** for a multi-project dbt setup
+- Identify architectural trade-offs in a mesh deployment and defend your decisions
+- Design and build a **fact table** that rolls up two source tables to a new grain via cross-project refs
 
 ---
 
-## Key tools
+## Key concepts
 
-### dbt-project-evaluator
+### Model contracts and access
 
-Installs as a dbt package. Runs a suite of models that query your project's metadata and flags structural violations (missing documentation, fan-out tests, exposure gaps, etc.).
+Model contracts enforce that a model's output schema matches its YAML definition at run time. Model access controls determine which models are visible to other projects. Combined, they form the data contract boundary between teams.
 
-```yaml
-# packages.yml
-packages:
-  - package: dbt-labs/dbt_project_evaluator
-    version: [">=0.8.0", "<1.0.0"]
-```
+Read the [model contracts documentation](https://docs.getdbt.com/docs/mesh/govern/model-contracts) and the [model access documentation](https://docs.getdbt.com/docs/mesh/govern/model-access).
 
-```bash
-dbt deps
-dbt build --select package:dbt_project_evaluator
-```
+### dbt mesh
 
-Results land in models prefixed `fct_` and `rpt_` - query them to see violations.
+dbt mesh is the architectural pattern for connecting multiple independent dbt projects via cross-project refs. Each project owns its slice and controls what it exposes.
 
-### dbt-codegen
+Read the [dbt mesh introduction](https://docs.getdbt.com/best-practices/how-we-mesh/mesh-1-intro).
 
-Generates boilerplate YAML so you don't have to write it by hand.
+### CI/CD in a multi-project setup
 
-```bash
-# Generate a source definition
-dbt run-operation generate_source --args '{"schema_name": "streaming"}'
+With two projects, CI/CD gets more interesting. Changes in `mediapulse_platform` can break `mediapulse_analytics` models if the contracts are not maintained. The job design needs to account for this dependency.
 
-# Generate model YAML (columns + descriptions)
-dbt run-operation generate_model_yaml --args '{"model_names": ["stg_streaming__watch_events"]}'
-```
-
-Paste the output into your YAML files and fill in descriptions.
-
-### dbt-expectations
-
-A port of Great Expectations into dbt. Adds dozens of statistical tests beyond the four built-in generics.
-
-```yaml
-models:
-  - name: fct_ad_impressions
-    data_tests:
-      - dbt_expectations.expect_table_row_count_to_be_between:
-          arguments:
-            min_value: 1000
-            max_value: 50000000
-    columns:
-      - name: impressions_count
-        data_tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              arguments:
-                min_value: 0
-                max_value: 10000000
-```
-
-### Model contracts
-
-Contracts enforce that a model's schema matches its YAML definition at run time. If a column is missing or has the wrong type, the run fails.
-
-```yaml
-models:
-  - name: revenue_by_content
-    config:
-      contract:
-        enforced: true
-    columns:
-      - name: content_id
-        data_type: varchar
-        constraints:
-          - type: not_null
-```
+Read the [dbt Cloud CI jobs documentation](https://docs.getdbt.com/docs/deploy/ci-jobs).
 
 ---
 
-## CI/CD in dbt Cloud
+## Relevant assets
 
-The goal is to catch problems as early as possible:
+| Asset | Location | Your task |
+|-------|----------|-----------|
+| Both dbt projects | `mediapulse_platform/` and `mediapulse_analytics/` | Add contracts, mesh, CI/CD |
+| `stg_*` models | `mediapulse_platform/models/staging/` | Define contracts, set access levels |
+| `fct_content_performance.sql` | `mediapulse_analytics/models/marts/content/` | Wire cross-project ref, fix logic |
+| `fct_ad_revenue.sql` | `mediapulse_analytics/models/marts/revenue/` | Wire cross-project ref, fix grain |
+| `fct_campaign_daily_performance.sql` | `mediapulse_analytics/models/marts/revenue/` | Missing - design and build this fact table |
+| `dependencies.yml` | `mediapulse_analytics/` | Already created, ready to use |
 
-| Job | Trigger | Selector | Purpose |
-|-----|---------|----------|---------|
-| **Slim CI** | PR opened / updated | `state:modified+` | Only rebuild what changed and its downstream |
-| **Nightly full-refresh** | Cron 02:00 | `+` (all) | Full rebuild, catch schema drift |
-| **PR validation** | PR merge | `tag:critical` | Run critical-path models + tests before merge |
+---
 
-The slim CI job requires a **deferred environment** - it compares your changed models against the production manifest (`manifest.json`) so it knows what "state:modified" means.
+## Further topics
+
+!!! info "Further topics agreed live"
+    This group is the most advanced. After completing the checklist, you will discuss further topics directly with your facilitator. Likely directions include deeper dbt mesh governance, model versioning, Semantic Layer integration, and dbt Wizard.
+
+    See the [Extra Topics](../extra-topics.md) page for the semantic layer and dbt Wizard exercises, which you can pick up at any point.
 
 ---
 
 ## Time guide
 
-This is intentionally open-ended. A suggested arc is shown below, but this is your hackathon! If you feel the urge to investigate something in the MediaPulse project, or you want to dive into your own projects, let your instructor know!
-
-| Session | Focus |
-|---------|-------|
-| Day 1 AM | Audit with dbt-project-evaluator; triage findings |
-| Day 1 PM | Fix highest-priority violations; add dbt-codegen YAML |
-| Day 2 AM | dbt-expectations; model contracts; test severity review |
-| Day 2 PM | CI/CD design; hard requirements document; prep presentation |
-
-Head to the [Checklist](level1/checklist.md) when you're ready to start.
-
+| Session | Target |
+|---------|--------|
+| Day 1 AM (10:00 - 12:00) | Level 1: contracts, groups, access controls |
+| Day 1 PM (13:30 - 16:30) | Level 2: cross-project refs, mesh setup |
+| Day 2 AM (09:45 - 12:00) | Level 2 completion, Level 3 starts |
+| Day 2 PM (13:00 - 15:30) | Level 3 and agreed further topics |

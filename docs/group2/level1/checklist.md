@@ -1,49 +1,40 @@
 # Group 2 - Checklist Level 1
 
-## dbt Fundamentals + Bug Fixing
+## Modeling Best Practices and Incremental Models
 
-Start here. The first four steps are about reading critically and fixing what's broken - resist the urge to skip straight to building. Understanding *why* a bug exists is more valuable than the fix itself.
+Start here. The first steps review the existing project for structural best-practice violations, then move into building an incremental model for a high-volume event table.
 
 In this level you will:
 
-- **Read and fix existing staging models** with real production bugs
-- **Create a seed** for a reference lookup table
-- **Build a cross-domain mart** combining news and podcast content
+- **Audit** existing staging models for best-practice violations
+- **Fix** staging bugs and improve the models
+- **Build** an incremental staging model for the news page views event stream
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
+Work through the steps in order. Expand a hint only after you've had a genuine attempt.
 
 ---
 
-## Step 1 - Add tests to `stg_news__articles.sql`
-
+## Step 1 - Review the project structure
 
 - [ ] Step complete
 
-In the `_news__models.yml` ...
+Before writing any code, do a manual audit. Open each staging model in `mediapulse_platform/models/staging/` and answer these questions for each:
 
-- what is the primary key of the `stg_news__articles` model?
-- run `dbt test --select stg_news__articles` - what tests are already being executed?
-- which built-in test is missing for a primary key? Add it and rerun the test command.
+- Does it select from `{{ source(...) }}` or from raw SQL table references?
+- Does it have a corresponding YAML file with tests?
+- Are primary keys tested with both `not_null` and `unique`?
+- Are there any columns that should be renamed or normalised but are not?
 
-??? tip "Hint: Tests on source columns"
-    ```yaml
-    tables:
-      - name: table_name
-        identifier: table_name
-        columns:
-          - name: column_name
-            tests:
-              - not_null
-              - unique
-    ```
+Make a note of the gaps. You will fix them in the next steps.
 
-    Run source tests:
+??? tip "Hint: what to look for"
+    Common violations in real projects:
 
-    ```bash
-    dbt test --select staging.news
-    ```
-
-Once you have rerun the command, you should see some errors - find the code that is being executed to run this test in the `command history -> Debug logs`. Can you see why it has errored?
+    - Models that select `*` without explicitly named columns (no control over what comes through)
+    - Missing tests on primary keys (silent duplicates can propagate downstream)
+    - String columns that are not normalised (mixed casing causes silent join misses)
+    - Monetary values stored in cents without conversion
+    - Missing descriptions on models and columns
 
 ---
 
@@ -51,38 +42,18 @@ Once you have rerun the command, you should see some errors - find the code that
 
 - [ ] Step complete
 
-Open `models/staging/news/stg_news__articles.sql` and read it carefully. Query the raw source to see if there are any data inconsistencies that should be treated in the staging model.
+Open `stg_news__articles.sql` and compare it to the raw `news.articles` table. Run:
 
-Look particularly at the article_id - is this unique? Use a window function to check.
+```sql
+select
+    article_id,
+    count(*) as row_count
+from news.articles
+group by article_id
+having count(*) > 1
+```
 
-Does the staging model handle this? What happens downstream if it doesn't?
-
-??? tip "Hint: Use a window function to identify duplicates"
-    Run the following:
-
-    ```sql
-    with window_article as (
-        select 
-            *, 
-            count(*) over (partition by article_id) as cnt_article_id
-        from news.articles
-    )
-
-    select * from window_article
-    where cnt_article_id > 1
-    order by article_id, published_at
-    ```
-    What is happening?
-    
-??? question "Why are there duplicates?"
-    The raw `articles` table contains duplicate `article_id` values - articles get republished with a new `updated_at` timestamp. 
-    Better yet... you can add a unique test to test uniqueness.
-    
-    
-??? bug "Fix needed!"
-    The current staging model selects `*` without deduplication. This means any downstream model joining on `article_id` will fan out and produce inflated row counts.
-
-    You will apply this fix in the following step.
+Are there duplicate `article_id` values? Does the staging model handle them? What happens to the `fct_content_performance` mart if duplicates flow through?
 
 ---
 
@@ -90,246 +61,153 @@ Does the staging model handle this? What happens downstream if it doesn't?
 
 - [ ] Step complete
 
-Apply the deduplication fix. Keep only the most recent row per `article_id` (highest `updated_at`).
+Fix the deduplication issue: keep only the most recent row per `article_id` (highest `updated_at`).
 
-??? tip "Hint: Adapt the window function from step 1"
-
-    Remember the code used to check for duplicates? How could this be adapted to **keep only the most up to date** version of the article (i.e. the one most recently (re)published)?
-
-    ```sql
-    with window_article as (
-        select 
-            *, 
-            count(*) over (partition by article_id) as cnt_article_id
-        from news.articles
-    )
-
-    select * from window_article
-    where cnt_article_id > 1
-    order by article_id, published_at
-    ```
-
-    After the fix, re-run the row count check against the staged model and confirm `article_id` is now unique.
-
-??? example "Really stuck? Check this SQL here:"
-
-    Here is a useful code snippets you can adapt for your needs. Read it through and make sure you an understand each part.
-
-    ```sql
-    with source as (
-        select * from {{ source('source_name', 'table_name') }}
-    ),
-
-    deduped as (
-        select *,
-            row_number() over (
-                partition by unique_id
-                order by date_column desc
-            ) as row_num
-        from source
-    ),
-
-    renamed as (
-        select
-            -- column cleaning
-        from deduped
-        where row_num = 1
-    )
-
-    select * from renamed
-    ```
-
-After the fix, re-run the row count check against the staged model and confirm `article_id` is now unique.
-
----
-
-## Step 4 - Check for unique combination of columns
-
-- [ ] Step complete
-
-We have seen that the article_id in the raw data is not unique. However, new articles should only be added to the source when they were updated with a new updated_at timestamp. We can verify this by adding another data test on the uniqueness of the combination. 
-
-Add the dbt_utils package to `packages.yml`:
-
-```yaml
-packages:
-  - package: dbt-labs/dbt_utils
-    version: 1.3.3
-```
-
-Run the following command in the CLI to load the packages.
+After fixing, run the tests:
 
 ```bash
-dbt deps
+dbt test --select stg_news__articles
 ```
 
-Now add a test for the unique combination of `article_id` and `updated_at` to the source in `_news__sources.yml`.
-
-??? tip "Hint: unique_combination_of_columns test"
-    Add the test at the table level (not column level) in your `.yml` file:
-
-    ```yaml
-    tables:
-      - name: table_name
-        data_tests:
-        - dbt_utils.unique_combination_of_columns:
-            arguments: # available in v1.10.5 and higher. Older versions can set the <argument_name> as the top-level property.
-                combination_of_columns:
-                - column_one
-                - column_two
-    ```
+??? tip "Hint"
+    A `row_number()` window function partitioned by `article_id` and ordered by `updated_at desc` assigns each row a rank. Filter to `row_num = 1` to keep only the most recent.
 
 ---
 
-## Step 5 - Create `seeds/category_mapping.csv`
+## Step 4 - Audit `stg_podcasts__episodes.sql`
 
 - [ ] Step complete
 
-Articles and podcast episodes both have a `category` column, but the values don't match what the end users expect. They have created the following mapping file for you:
-
-```csv
-category,category_group
-politics,news_and_current_affairs
-technology,tech_and_science
-sport,sport_and_health
-entertainment,arts_and_culture
-```
-
-Place this file at `seeds/category_mapping.csv`.
-
-??? tip "Hint: Adding a seed config"
-    In `dbt_project.yml`, you can configure the seed's schema and column types:
-
-    ```yaml
-    seeds:
-      mediapulse:
-        +schema: schema_name # choose where the seeds should land in the warehouse
-        category_mapping:
-          +column_types:
-            column_name: # add a data type, eg varchar(50)
-    ```
-
-    Then load it:
-
-    ```bash
-    dbt seed --select category_mapping
-    ```
-
----
-
-## Step 6 - Build `content_performance.sql`
-
-- [ ] Step complete
-
-Create `models/marts/content/content_performance.sql`. This mart should:
-
-1. Pull all articles from `stg_news__articles`
-2. Pull all episodes from `stg_podcasts__episodes`
-3. `UNION ALL` the two after normalising to a common schema
-4. Join the result to `category_mapping` (your seed) to get `category_group`
-
-!!! warning "Check the existing model first"
-    Open `models/marts/content/content_performance.sql`. The existing model uses a `JOIN` between articles and episodes - why is this the incorrect approach?
-
-??? tip "Hint: Why the model is wrong"
-    The model does:
-
-    ```sql
-    select ...
-    from stg_news__articles a
-    inner join stg_podcasts__episodes e on a.category = e.category
-    ```
-
-    This produces a cross-join of every article in a category with every episode in the same category - exactly the row explosion the dedup fix was meant to prevent elsewhere. Articles and episodes are separate content items; they should be stacked, not joined.
-
-??? tip "Hint: The better approach"
-    **What you're building:** A single unified content table that combines articles and podcast episodes, then enriches it with normalised category labels.
-
-    1. Pull all articles from stg_news__articles
-    2. Pull all episodes from stg_podcasts__episodes
-    3. UNION ALL the two after normalising to a common schema
-    4. Join the result to category_mapping (your seed) to get normalised_category and category_group
-
-    Match the steps to build out the following CTEs
-
-    **CTEs 1 & 2 - `articles` and `episodes`**  
-    Pull from each staging model and rename columns into a shared schema that works for both content types. For columns that only apply to one content type, explicitly fill the other with a placeholder. Add a hardcoded column to identify which platform each row came from.
-
-    > **Note:** Episodes don't have a `category` column — it lives on `stg_podcasts__shows`. Join `stg_podcasts__shows` into the `episodes` CTE on `show_id` to bring it in.
-
-    **CTE 3 - `combined`**  
-    Stack both CTEs into one dataset, keeping all rows from both.
-
-    **CTE 4 - `with_category`**  
-    Join to the `category_mapping` model. Use `coalesce` to return the mapped category where available, falling back to the raw value if not.
-
-??? lab "Really stuck? See some example SQL:"
-    Adapt the following SQL code to use a better combination for episodes and articles:
-
-    ```sql 
-    with articles as ( 
-        select 
-            article_id as content_id, 
-            article_title as content_title, 
-            published_at, 
-            category as raw_category, 'news' as platform, 
-            word_count as content_length_units, -- words for articles null as duration_seconds 
-        from {{ ref('stg_news__articles') }} 
-    ),
-
-    episodes as (
-        select
-            -- ✏️ normalize columns that episodes have 
-            -- in common to match the above
-            
-
-            -- ✏️ add columns that don't exist to match 
-            -- the schema above
-
-
-            duration_seconds
-        from {{ ref('stg_podcasts__episodes') }}
-    ),
-
-    combined as (
-        select * from articles
-        union all
-        select * from episodes
-    ),
-
-    with_category as (
-        select
-            -- ✏️ add the category group and 
-            -- coalesce the category with raw_category
-
-
-        from -- select the correct CTE
-        left join -- add the seed reference
-        using -- which column should you join on?
-    )
-
-    select * from with_category
-    ```
-
-
----
-
-## Step 7 - BONUS: Run `dbt build --select +content_performance`
-
-- [ ] Step complete
-
-This builds the entire upstream lineage of your mart plus the mart itself, then runs all tests.
+Open `stg_podcasts__episodes.sql` and try to run it:
 
 ```bash
-dbt build --select +content_performance
+dbt run --select stg_podcasts__episodes
 ```
 
-Fix any failures before moving on. A test failure is information - read the error message, query the failing rows, understand why.
+Read the error message. What column does the model reference that does not exist in the raw table? Fix it.
+
+Then query the staged model and try ordering by `season_episode`. Does the ordering look right? Is there a second issue?
+
+??? tip "Hint: the season_episode ordering problem"
+    The `season_episode` column stores values like `1-3`, `2-10`, `3-2`. Because it is a string, `'2-10'` sorts before `'2-9'` (character comparison). Any downstream model ordering by this column silently returns episodes in the wrong order once season episode counts exceed 9.
+
+    Fix both the column name bug and the ordering problem by splitting `season_episode` into separate integer columns.
+
+---
+
+## Step 5 - Fill test gaps in existing YAML
+
+- [ ] Step complete
+
+Look at `_news__models.yml` and `_podcasts__models.yml`. Using the audit from Step 1, add the missing tests. At a minimum:
+
+- `not_null` and `unique` on every primary key
+- `accepted_values` on `status` in `stg_news__articles` (expected values: `draft`, `published`, `archived`)
+- A `relationships` test linking `stg_news__articles.author_id` to `stg_news__authors.author_id`
+
+Read the [dbt data tests documentation](https://docs.getdbt.com/docs/build/data-tests) for the syntax.
+
+Run the tests and understand any failures before deciding how to handle them:
+
+```bash
+dbt test --select stg_news__articles stg_news__authors stg_podcasts__episodes stg_podcasts__shows
+```
+
+---
+
+## Step 6 - Understand incremental models
+
+- [ ] Step complete
+
+Before building anything, read the [incremental models documentation](https://docs.getdbt.com/docs/build/incremental-models) and answer these questions for `news.page_views`:
+
+1. What is the grain of the `page_views` table? (one row per what?)
+2. Do existing rows ever change after they are first written, or are new events always new rows?
+3. Which column would you use as the high-watermark filter on subsequent runs?
+4. Given your answers, which incremental strategy fits best: `append`, `merge`, or `insert_overwrite`?
+
+Discuss with your group before moving on. The answers drive your config choices.
+
+??? tip "Hint: how the strategies differ"
+    - `append`: inserts new rows only. Fastest and simplest. Correct when source rows never change after they are written.
+    - `merge`: upserts on a `unique_key`. Handles late-arriving or corrected rows. Slightly slower.
+    - `insert_overwrite`: deletes and rewrites a whole partition. Best for very large tables with a clear partition boundary (e.g. by month).
+
+    Page view events are immutable once written. A user cannot retroactively un-view an article. That points to one strategy.
+
+---
+
+## Step 7 - Build `stg_news__page_views.sql` as an incremental model
+
+- [ ] Step complete
+
+Create `models/staging/news/stg_news__page_views.sql`.
+
+The source table `news.page_views` records every page view event. It is high volume and append-only. Build this as an incremental staging model using the strategy you chose in Step 6.
+
+The model should:
+
+- Reference `{{ source('news', 'page_views') }}`
+- Rename columns to be consistent with the rest of the staging layer
+- Cast `viewed_at` to a proper timestamp type
+- Include an `{% if is_incremental() %}` filter so subsequent runs only process new rows
+
+Read the [incremental models documentation](https://docs.getdbt.com/docs/build/incremental-models) for the `is_incremental()` macro and the `config()` block syntax.
+
+Run it twice and compare the row counts:
+
+```bash
+dbt run --select stg_news__page_views
+dbt run --select stg_news__page_views   -- second run: fewer rows processed
+```
+
+??? tip "Hint: the is_incremental filter pattern"
+    Inside the `{% if is_incremental() %}` block, filter the source to rows where the watermark column is greater than the maximum value already in the current table. Use `{{ this }}` to reference the existing table:
+
+    ```sql
+    where viewed_at > (select coalesce(max(viewed_at), '1900-01-01') from {{ this }})
+    ```
+
+    On the first run, `{{ this }}` does not exist, so the `{% if is_incremental() %}` block is skipped and all rows load.
+
+---
+
+## Step 8 - Add the page views source definition
+
+- [ ] Step complete
+
+Add `page_views` to `_news__sources.yml`. Add at minimum a `not_null` test on `view_id`.
+
+Read the [dbt sources documentation](https://docs.getdbt.com/docs/build/sources) for the syntax if needed.
+
+---
+
+## Step 9 - Document `stg_news__page_views` in YAML
+
+- [ ] Step complete
+
+Add `stg_news__page_views` to `_news__models.yml`. Include:
+
+- A model description
+- `not_null` and `unique` tests on the primary key
+- A `not_null` test on `viewed_at`
+- A `relationships` test linking `view_id` to `article_id` in `stg_news__articles`
+
+---
+
+## Step 10 - BONUS: Run dbt build across news staging
+
+- [ ] Step complete
+
+```bash
+dbt build --select staging.news
+```
+
+Fix any failures, then open the lineage graph and confirm `stg_news__page_views` appears with green source nodes from `news`.
 
 ---
 
 !!! success "Done?"
-    You've fixed two real production bugs and built a cross-domain content mart that unifies news and podcast data. Nice work.
+    You have audited the existing models, fixed two staging bugs, filled test gaps, and built an incremental model for a high-volume event stream. You now understand why and when incremental matters.
 
-    Now head to [Level 2](../level2/checklist.md) to add snapshots, improve test coverage, and document your models!
-
+    Head to [Level 2](../level2/checklist.md) to add Jinja and macros!

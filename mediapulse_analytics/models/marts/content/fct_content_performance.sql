@@ -1,4 +1,4 @@
--- MediaPulse unified content performance mart.
+-- fct_content_performance: MediaPulse unified content performance fact.
 -- Intended to combine NewsNow articles and PodcastHub episodes into a single
 -- content catalogue enriched with category metadata.
 --

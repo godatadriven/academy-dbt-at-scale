@@ -103,8 +103,8 @@ Several models contain deliberate bugs for participants to find and fix:
 |-------|-----|
 | `stg_news__articles.sql` | No deduplication - `news.articles` has duplicate `article_id` rows |
 | `stg_podcasts__episodes.sql` | References column `episode_name` which doesn't exist (should be `title`) |
-| `marts/content/content_performance.sql` | INNER JOINs articles to episodes on category - produces a cross-product fan-out |
-| `marts/revenue/revenue_by_content.sql` | Aggregates at `campaign_id` grain, not `content_id` - wrong for a "by content" mart |
+| `marts/content/fct_content_performance.sql` | INNER JOINs articles to episodes on category - produces a cross-product fan-out |
+| `marts/revenue/fct_ad_revenue.sql` | Aggregates at `campaign_id` grain, not `content_id` - wrong for a "by content" mart |
 
 Raw data quality issues (for testing exercises):
 - `streaming.subscriptions`: mixed casing on `plan_type` and `status` columns

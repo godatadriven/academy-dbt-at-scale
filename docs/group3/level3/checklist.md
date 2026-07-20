@@ -1,265 +1,109 @@
 # Group 3 - Checklist Level 3
 
-## Advanced Testing
+## CI/CD Pipelines for a Multi-project Setup
 
-Start on this checklist once you have completed [Checklist Level 2](../level2/checklist.md).
+Start on this checklist once you have completed [Level 2](../level2/checklist.md).
 
-In this level you will apply the following skills:
+In this level you will:
 
-- **Test configuration** - `severity`, `where`, `store_failures`, `limit`
-- **Package-based tests** - `dbt_expectations` for statistical guardrails on revenue models
-- **Test strategy** - deciding what to test, at what severity, and why
+- **Design and set up dbt Cloud CI/CD jobs** for both the platform and analytics projects
+- **Think through the ordering and dependency implications** of a two-project pipeline
+- **Document hard requirements** for production deployment
 
-Work through the steps in order. Expand a hint only after you've had a genuine attempt - the struggle is where the learning happens!
-
----
-
-## Step 1 - Install `dbt_expectations`
-
-- [ ] Step complete
-
-Add the package to `packages.yml`:
-
-```yaml
-- package: metaplane/dbt_expectations
-  version: # check the current version on the dbt hub
-```
-
-Then install:
-
-```bash
-dbt deps
-```
+Read the [dbt Cloud CI jobs documentation](https://docs.getdbt.com/docs/deploy/ci-jobs) before starting.
 
 ---
 
-## Step 2 - Add `severity` and `where` to existing tests
+## Step 1 - Design the job structure for both projects
 
 - [ ] Step complete
 
-Open `_ads__models.yml` and `_revenue__models.yml` and apply the following configuration:
+Before clicking anything in dbt Cloud, design the job structure on paper (or a shared whiteboard). For each project, you need:
 
-1. Set `severity: warn` on the `accepted_values` test for `campaign_type` - new campaign types may be introduced and shouldn't hard-fail CI.
-2. Add a `where` filter to the `not_null` test on `spend_dollars` in `stg_ads__spend` so it only evaluates rows where `spend_dollars > 0` (zero-spend rows are valid for paused campaigns).
-3. Configure the `relationships` test linking `fct_ad_impressions.campaign_id` → `stg_ads__campaigns`. **You decide:** what severity is appropriate here, and why? Think about what a broken foreign key means for the revenue numbers downstream consumers will see, and what should happen in CI when it breaks. Be ready to defend your choice in the group discussion at the end of this level.
+1. A **slim CI job** triggered on PR open or update: rebuilds only changed models and their downstream
+2. A **nightly full-refresh job** to catch schema drift
+3. A **production deploy job** triggered on merge to main
 
-??? tip "Hint: Test config syntax"
-    A `config:` block nested under a test changes its behaviour:
+For a two-project setup, also answer:
 
-    ```yaml
-    - name: campaign_type
-      data_tests:
-        - accepted_values:
-            arguments:
-              values: ['display', 'video', 'sponsored_content', 'podcast_ad', 'newsletter']
-            config:
-              severity: warn
+- If a change to `mediapulse_platform` breaks a model in `mediapulse_analytics`, which CI job catches that?
+- Should the platform's production deploy trigger the analytics project's production deploy? How?
+- What should happen if the platform nightly fails? Should the analytics nightly still run?
 
-    - name: spend_dollars
-      data_tests:
-        - not_null:
-            config:
-              where: "spend_dollars > 0"
-
-    - name: campaign_id
-      data_tests:
-        - relationships:
-            arguments:
-              to: ref('stg_ads__campaigns')
-              field: campaign_id
-            config:
-              severity: # your call
-    ```
+There is no single right answer. Document your choices and be ready to defend them.
 
 ---
 
-## Step 3 - Enable `store_failures` on a revenue test
+## Step 2 - Set up the platform slim CI job
 
 - [ ] Step complete
 
-Revenue tests that fail are always worth investigating row-by-row. Enable `store_failures` on your `assert_revenue_not_null` singular test, and cap the size of the resulting failures table with `limit`.
+In dbt Cloud, create a CI job for `mediapulse_platform` with:
 
-Read the dbt docs on the config and figure out exactly where it goes for a singular test (it's a slightly different shape than for a generic test in YAML):
+- Trigger: PR events (open and update)
+- Command: `dbt build --select state:modified+`
+- Deferred environment: production (so dbt knows what "modified" means relative to)
 
-- 📖 [`store_failures`](https://docs.getdbt.com/reference/resource-configs/store_failures?version=1.12)
+Read the [CI jobs documentation](https://docs.getdbt.com/docs/deploy/ci-jobs) for how to configure a deferred environment and the `state:modified+` selector.
 
-Once configured, run it:
+??? tip "Hint: what slim CI actually does"
+    The `state:modified+` selector compares your current code to the production manifest. Only models that have changed code (or depend on a changed model) are rebuilt. This makes CI fast: a one-line fix to `stg_news__articles` does not rebuild the entire project.
 
-```bash
-dbt test --select assert_revenue_not_null
-```
-
-Then query the failures table. Even if the test passes, confirm the failures table exists and is empty - that's proof the test ran correctly.
-
-!!! note "Heads-up: dbt_expectations is needed from Step 4 onwards"
-    The next steps lean on `dbt_expectations`. If you skipped Step 1, find the package on the [dbt package hub](https://hub.getdbt.com/) and add it to your `packages.yml`, then run `dbt deps` to install it.
+    The `--defer` flag tells dbt to use production-compiled models for any upstream dependencies that were not selected. This avoids rebuilding the whole upstream graph just to test one model.
 
 ---
 
-## Step 4 - Add `dbt_expectations` tests to `fct_ad_impressions`
+## Step 3 - Set up the analytics slim CI job
 
 - [ ] Step complete
 
-This is the highest-volume, most critical fact table. Add the following guardrails in `_revenue__models.yml`:
+Create a CI job for `mediapulse_analytics` with the same structure. Note:
 
-- The table should have at least 20 rows (catch a load failure)
-- `impressions_count` should always be greater than 0
-- `click_through_rate` should be between 0 and 1 - a CTR above 100% is physically impossible and indicates a calculation error
-- `impression_date` should not be null
-
-??? tip "Hint: CTR bounds"
-    ```yaml
-    models:
-      - name: fct_ad_impressions
-        data_tests:
-          - dbt_expectations.expect_table_row_count_to_be_between:
-              arguments:
-                min_value: 20
-        columns:
-          - name: click_through_rate
-            data_tests:
-              - dbt_expectations.expect_column_values_to_be_between:
-                  arguments:
-                    min_value: 0.0
-                    max_value: 1.0
-                  config:
-                    severity: error
-          - name: impressions_count
-            data_tests:
-              - dbt_expectations.expect_column_values_to_be_between:
-                  arguments:
-                    min_value: 1
-                  config:
-                    severity: warn
-    ```
+- The analytics project depends on the platform project. If the platform contracts change, the analytics CI should catch the breakage.
+- Consider adding a step that first builds the platform project (or validates that the platform production manifest is current) before running the analytics CI.
 
 ---
 
-## Step 5 - Add `dbt_expectations` tests to `revenue_by_content`
+## Step 4 - Set up nightly full-refresh jobs
 
 - [ ] Step complete
 
-Add guardrails to the revenue mart:
+Create nightly jobs for both projects, scheduled at 02:00:
 
-- `mediapulse_revenue_dollars` should always be 0 or greater (revenue can't be negative)
-- `allocated_spend_dollars` should be greater than 0 (zero-allocation rows indicate a join miss)
-- `impression_share` should be between 0 and 1
-- Add a row count lower bound
+- Platform job: `dbt build --full-refresh` then `dbt source freshness`
+- Analytics job: `dbt build --full-refresh` (runs after platform completes if possible)
 
-Set `mediapulse_revenue_dollars >= 0` as `severity: error` - negative revenue is a hard data error that must block CI.
-
-??? tip "Hint"
-    ```yaml
-    models:
-      - name: revenue_by_content
-        data_tests:
-          - dbt_expectations.expect_table_row_count_to_be_between:
-              arguments:
-                min_value: 10
-        columns:
-          - name: mediapulse_revenue_dollars
-            data_tests:
-              - dbt_expectations.expect_column_values_to_be_between:
-                  arguments:
-                    min_value: 0
-                  config:
-                    severity: error
-          - name: impression_share
-            data_tests:
-              - dbt_expectations.expect_column_values_to_be_between:
-                  arguments:
-                    min_value: 0.0
-                    max_value: 1.0
-                  config:
-                    severity: warn
-    ```
+Add failure alerting: dbt Cloud can send notifications to Slack or email when a job fails. Configure at least one notification channel.
 
 ---
 
-## Step 6 - Run the full test suite and review severity split
+## Step 5 - Define hard requirements for production
 
 - [ ] Step complete
 
-```bash
-dbt build -s +revenue_by_content
-```
+As a group, write a short document listing what must pass before any merge to main in either project:
 
-Review and discuss:
+**Platform hard requirements:**
+- All `not_null` and `unique` tests on primary keys
+- All model contracts enforced without errors
+- Zero `must_fix` violations in dbt-project-evaluator
 
-- Which tests did you set as `error` vs `warn` - and what was your reasoning?
-- The revenue tests are particularly high-stakes. Which ones would you make `error` that currently aren't?
-- How would you communicate test failures to non-technical stakeholders? (A failing revenue assertion isn't just a dbt problem.)
+**Analytics hard requirements:**
+- Cross-project refs resolve without errors
+- Revenue singular tests pass (`assert_revenue_not_null`, `assert_no_negative_spend`)
+- Row counts on key mart models are within expected bounds
 
-As a group, draft a one-paragraph "test contract" for `revenue_by_content`: what guarantees does this model make to its consumers, and how does the test suite enforce those guarantees?
+Document what is a "nice to have" vs a "must have" and be ready to defend the distinction.
 
 ---
 
-## Step 7 - Stretch your test suite: what else would you cover?
+## Step 6 - BONUS: See the extra topics
 
 - [ ] Step complete
 
-You've now applied generic tests, singular tests, severity/`where` config, `store_failures`, and a handful of `dbt_expectations` checks. Step back and ask: **what else would you test on these models if this were a real production pipeline?**
-
-Brainstorm with your group, then pick one or two extra tests to actually add. Some directions to consider:
-
-- **Within `dbt_utils`** (already installed): tests like `expression_is_true`, `equal_rowcount`, `recency`, or `mutually_exclusive_ranges` cover things that pure `not_null` / `unique` won't.
-- **Anomaly / freshness** - is the latest `impression_date` recent enough? Is yesterday's row count within 20% of the 7-day average?
-- **Cross-model invariants** - does the sum of `allocated_spend_dollars` reconcile to total `spend_dollars` per day? (You partly tested this in Level 2 Step 3 - tighten the tolerance, or add the inverse check.)
-- **Distribution shape** - `expect_column_quantile_values_to_be_between`, `expect_column_stdev_to_be_between` from `dbt_expectations`.
-
-Other packages worth looking at on the [dbt package hub](https://hub.getdbt.com/):
-
-- 📦 **[`elementary`](https://hub.getdbt.com/elementary-data/elementary/latest/)** - anomaly detection on volume, freshness, and column-level statistics out of the box.
-- 📦 **[`dbt_project_evaluator`](https://hub.getdbt.com/dbt-labs/dbt_project_evaluator/latest/)** - tests the *project itself* (model naming, missing tests, missing documentation) rather than the data.
-- 📦 **[`dbt_meta_testing`](https://hub.getdbt.com/tnightengale/dbt_meta_testing/latest/)** - assert that every model has a minimum set of tests/docs.
-
-Pick one or two ideas, add them to your YAML or `tests/` folder, and run them. Note what was easy vs awkward to express - test gaps usually live in that awkwardness.
-
----
-
-## Step 8 - Break things on purpose
-
-- [ ] Step complete
-
-!!! warning "One-time setup before this step"
-    Editing the seeds only affects *your* models if your source declaration is reading from your personal seed schema, not the shared one. In `models/staging/ads/_ads__sources.yml`, set the source's schema to `"{{ target.schema }}_ads"` if you haven't already - otherwise your changes won't flow through and you'll wonder why nothing fails.
-
-For each scenario: edit the seed, `dbt seed`, `dbt build -s +revenue_by_content`, see what fails. **Predict the failure first.** Revert the seed before moving on.
-
-??? tip "Negative spend"
-    Change a `spend_cents` in `seeds/_seeds_setup/raw_ads__spend.csv` to a negative number.
-
-    ??? note "What fails?"
-        `assert_no_negative_spend`. `not_null` on `spend_dollars` does *not* fire - the value isn't null, just bad.
-
-??? tip "Click-through rate above 100%"
-    In `seeds/_seeds_setup/raw_ads__impressions.csv`, set one `clicks` value higher than the matching `impressions_count`.
-
-    ??? note "What fails?"
-        `dbt_expectations.expect_column_values_to_be_between` on `click_through_rate` (severity `error`) - hard fail, build stops.
-
-??? tip "Unknown campaign type"
-    In `seeds/_seeds_setup/raw_ads__campaigns.csv`, change one `campaign_type` to a value not in `commission_lookup.csv` (e.g. `banner`).
-
-    ??? note "What fails?"
-        `accepted_values_stg_ads__campaigns_campaign_type__display__video__sponsored_content__podcast_ad__newsletter` warns - the new value isn't in the configured set (severity `warn` from L3 Step 2). If you also added the optional `relationships` test on `campaign_type → commission_lookup.campaign_type` from L2 Step 8, that would fire too.
-
-??? tip "Zero impressions"
-    In `seeds/_seeds_setup/raw_ads__impressions.csv`, set one `impressions_count` to `0`.
-
-    ??? note "What fails?"
-        `dbt_expectations.expect_column_values_to_be_between` on `impressions_count` (min 1, severity `warn`).
-
-??? tip "Incremental: late-arriving correction"
-    With `fct_ad_impressions` already built, change a `clicks` or `impressions_count` value for an *existing* `(campaign_id, content_id, impression_date)` row in `seeds/_seeds_setup/raw_ads__impressions.csv`. Re-seed, then `dbt run --select fct_ad_impressions` (no `--full-refresh`).
-
-    ??? note "What happens?"
-        The corrected row is **not** picked up - your `append` strategy + high-watermark filter on `impression_date` skips it. Now run `dbt run --select fct_ad_impressions --full-refresh` and confirm the new value lands. This is the trade-off you accepted in L1 Step 10.
-
-!!! warning "Revert after each scenario"
-    Restore the seed and re-run `dbt seed` before the next one - otherwise you can't tell which test fired in response to what.
+See the [Extra Topics](../extra-topics.md) page for the dbt Semantic Layer and dbt Wizard exercises. Pick these up if you have time.
 
 ---
 
 !!! success "Done?"
-    You've moved from writing tests to *configuring* them - choosing severity, scoping with `where`, storing failures for debuggability, and adding statistical guardrails around your revenue models. A well-configured test suite is the difference between a pipeline that fails loudly and one that silently serves wrong numbers.
+    You have designed and set up a production-grade CI/CD pipeline for a two-project dbt mesh, defined hard requirements for production deployment, and thought through the cross-project dependency implications of the pipeline.
