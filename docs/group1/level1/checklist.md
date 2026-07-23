@@ -50,14 +50,16 @@ Find the column name that the model is referencing incorrectly. Fix it, then run
 dbt run --select stg_podcasts__episodes
 ```
 
-Once the model runs, query it and try ordering by the column named `season_episode`. What do you notice about the ordering?
+Once the model runs, query it and try ordering by the column named `episode_season`. What do you notice about the ordering?
 
 ??? tip "Hint: two bugs in one model"
     The first bug is a column name mismatch: the raw table uses a different name than what the model selects. Fix that first.
 
-    The second issue is in how `season_episode` is constructed. It stores season and episode as a combined string like `1-3`, where the episode number comes first. This means ordering by the string produces wrong results (all episode 1s together, then all episode 2s). A downstream model ordering chronologically would silently return episodes in the wrong sequence.
+    The second issue is in how `episode_season` is constructed. It stores season and episode as a combined string like `1-3`, where the episode number comes first. This means ordering by the string produces wrong results (all episode 1s together, then all episode 2s). A downstream model ordering chronologically would silently return episodes in the wrong sequence.
 
-    Fix both: correct the column name, and split `season_episode` into two separate integer columns called `season` and `episode_number`.
+    Fix both: 
+    - correct the column name that has changed
+    - split `episode_season` into two separate integer columns called `season` and `episode_number`.
 
 ---
 
@@ -71,39 +73,34 @@ Then query the raw source to understand the data:
 
 ```sql
 select
-    article_id,
-    count(*) as row_count
+    *
 from news.articles
-group by article_id
-having count(*) > 1
-order by row_count desc
+order by article_id
 ```
 
-Are there duplicate `article_id` values? What does the staging model do with them? What happens to any downstream model that joins on `article_id` if the staging model does not deduplicate?
+What does this table capture? Does it capture articles or article upload events? 
 
 ??? tip "Hint: the deduplication problem"
-    The raw `articles` table contains articles that get republished with a new `updated_at` timestamp. Each republication adds a new row with the same `article_id`. The current staging model selects without deduplication, so any join on `article_id` downstream fans out and inflates row counts.
+    The raw `articles` table contains events, capturing the status of the article at that time. 
+    This is not an issue, but should be corrected for - should the table really be called `articles` or `article_events`?
+    
+    At some point in the project, the articles need to be deduplicated so that they can be used independently of the status update information. This can be done in an intermediate model `int_dedupe_articles.sql`. 
 
-    The fix: keep only the most recent row per `article_id` (the one with the highest `updated_at`).
+    The fix: 
+    - rename the staging model to `stg_news__article_events`
+    - make an intermediate model to keep only the most recent row per `article_id` (the one with the highest `updated_at`).
 
 ---
 
-## Step 4 - Fix `stg_news__articles.sql`
+## Step 4 - Add tests to the intermediate model
 
 - [ ] Step complete
 
-Apply the fix. Keep only the most recent row per `article_id`.
+Now that you have an intermediate model that deduplicates the `article_id` field, it's time to test whether this primary key is valid. 
 
-After the fix, run the test suite for this model:
-
-```bash
-dbt test --select stg_news__articles
-```
-
-Confirm that `article_id` is now unique in the staged output.
-
-??? tip "Hint: which SQL pattern to use"
-    A window function with `row_number()` partitioned by `article_id` and ordered by `updated_at desc` gives each row a rank. Filtering to `row_num = 1` keeps only the most recent version. Wrap your staging logic in CTEs: `source`, then `deduped`, then `renamed`.
+??? tip "Hint: Testing the primary key"
+    - Create a new yaml file for the intermediate model created in step 3.
+    - Add the unique and not_null tests to the `article_id` column.
 
 ---
 
