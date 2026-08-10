@@ -1,6 +1,6 @@
 # Agenda
 
-Welcome to dbt@scale! A 2-day Hackathon event organized by Xebia and hosted by Host Company. 
+Welcome to dbt@scale! A 2-day Hackathon event organized by Xebia. 
 
 
 
