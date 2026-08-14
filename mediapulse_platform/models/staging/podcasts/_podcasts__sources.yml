@@ -2,8 +2,7 @@ version: 2
 
 sources:
   - name: podcasts
-    # database: "{{ var('raw_database') }}"
-    # Uncomment if your raw data lives in a separate database.
+    database: mediapulse_raw
     schema: podcasts
     description: >
       Raw data from PodcastHub, MediaPulse's podcast network.
