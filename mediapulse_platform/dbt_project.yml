@@ -34,6 +34,9 @@ models:
     intermediate:
       +materialized: view
       +access: protected
+    marts:
+      +materialized: table
+      +access: protected
 
 snapshots:
   mediapulse_platform:

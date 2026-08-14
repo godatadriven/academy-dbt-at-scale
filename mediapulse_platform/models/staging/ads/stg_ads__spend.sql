@@ -1,1 +1,1 @@
-select * from mediapulse.ads.spend
+select * from mediapulse_raw.ads.spend

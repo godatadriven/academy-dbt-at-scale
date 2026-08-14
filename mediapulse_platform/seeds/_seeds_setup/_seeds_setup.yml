@@ -6,6 +6,7 @@ seeds:
   # so the project works without an external ingestion layer.
   - name: raw_news__authors
     config:
+      database: mediapulse_raw
       schema: news
       alias: authors
       column_types:
@@ -13,6 +14,7 @@ seeds:
 
   - name: raw_news__articles
     config:
+      database: mediapulse_raw
       schema: news
       alias: articles
       column_types:
@@ -21,6 +23,7 @@ seeds:
 
   - name: raw_news__articles_updated
     config:
+      database: mediapulse_raw
       schema: news
       alias: articles_updated
       column_types:
@@ -29,6 +32,7 @@ seeds:
 
   - name: raw_news__page_views
     config:
+      database: mediapulse_raw
       schema: news
       alias: views
       column_types:
@@ -36,6 +40,7 @@ seeds:
 
   - name: raw_podcasts__shows
     config:
+      database: mediapulse_raw
       schema: podcasts
       alias: shows
       column_types:
@@ -43,6 +48,7 @@ seeds:
 
   - name: raw_podcasts__episodes
     config:
+      database: mediapulse_raw
       schema: podcasts
       alias: episodes
       column_types:
@@ -50,6 +56,7 @@ seeds:
 
   - name: raw_podcasts__episodes_updated
     config:
+      database: mediapulse_raw
       schema: podcasts
       alias: episodes_updated
       column_types:
@@ -57,6 +64,7 @@ seeds:
 
   - name: raw_podcasts__listens
     config:
+      database: mediapulse_raw
       schema: podcasts
       alias: listens
       column_types:
@@ -64,6 +72,7 @@ seeds:
 
   - name: raw_streaming__content_catalog
     config:
+      database: mediapulse_raw
       schema: streaming
       alias: content_ctlg
       column_types:
@@ -71,6 +80,7 @@ seeds:
 
   - name: raw_streaming__subscriptions
     config:
+      database: mediapulse_raw
       schema: streaming
       alias: subscriptions_lifecycle_rec
       column_types:
@@ -81,6 +91,7 @@ seeds:
 
   - name: raw_streaming__watch_events
     config:
+      database: mediapulse_raw
       schema: streaming
       alias: usr_watch_events_log
       column_types:
@@ -89,6 +100,7 @@ seeds:
 
   - name: raw_ads__campaigns
     config:
+      database: mediapulse_raw
       schema: ads
       alias: campaigns
       column_types:
@@ -97,6 +109,7 @@ seeds:
 
   - name: raw_ads__impressions
     config:
+      database: mediapulse_raw
       schema: ads
       alias: impressions
       column_types:
@@ -104,6 +117,7 @@ seeds:
 
   - name: raw_ads__spend
     config:
+      database: mediapulse_raw
       schema: ads
       alias: spend
       column_types:
