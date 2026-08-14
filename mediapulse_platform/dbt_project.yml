@@ -23,7 +23,7 @@ models:
   mediapulse_platform:
     staging:
       +materialized: view
-      +access: protected
+      +access: public
     intermediate:
       +materialized: view
       +access: protected
