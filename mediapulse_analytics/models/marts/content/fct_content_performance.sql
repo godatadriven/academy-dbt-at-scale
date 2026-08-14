@@ -15,7 +15,7 @@ with articles as (
         word_count          as content_length_units,
         null::int           as duration_seconds
 
-    from {{ ref('stg_news__articles') }}
+    from {{ ref('mediapulse_platform', 'stg_news__articles') }}
 
 ),
 
@@ -29,7 +29,7 @@ episodes as (
         null::int           as content_length_units,
         duration_seconds
 
-    from {{ ref('stg_podcasts__episodes') }}
+    from {{ ref('mediapulse_platform', 'stg_podcasts__episodes') }}
 
 ),
 
