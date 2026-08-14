@@ -12,7 +12,8 @@ renamed as (
         title as episode_title,
         cast(published_at as timestamp) as published_at,
         duration_seconds,
-        episode_season
+        episode_season,
+        category
 
     from source
 
