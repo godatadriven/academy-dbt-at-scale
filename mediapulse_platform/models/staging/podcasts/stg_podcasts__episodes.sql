@@ -5,11 +5,11 @@ with
 
         select
             -- add a surrogate key
-            episode_number_id,
-            show_number_id,
+            episode_id,
+            show_id,
             title as episode_title,
             cast(published_at as timestamp) as published_at,
-            duration,
+            duration_seconds,
             episode_season
 
         from source

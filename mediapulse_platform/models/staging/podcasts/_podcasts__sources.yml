@@ -34,12 +34,12 @@ sources:
           One row per episode published under a show.
           Note: the raw column for the episode name is 'title', not 'episode_name'.
         columns:
-          - name: episode_number_id
+          - name: episode_id
             description: Primary key.
             data_tests:
               - not_null
               - unique
-          - name: show_number_id
+          - name: show_id
             description: Foreign key to shows.
             data_tests:
               - not_null
