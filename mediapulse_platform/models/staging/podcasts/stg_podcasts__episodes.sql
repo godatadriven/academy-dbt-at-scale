@@ -1,21 +1,20 @@
-with source as (
+with
+    source as (select * from {{ source("podcasts", "episodes") }}),
 
-    select * from {{ source('podcasts', 'episodes') }}
+    renamed as (
 
-),
+        select
+            -- add a surrogate key
+            episode_number_id,
+            show_number_id,
+            title as episode_title,
+            cast(published_at as timestamp) as published_at,
+            duration,
+            episode_season
 
-renamed as (
+        from source
 
-    select 
-        episode_id,
-        show_id,
-        episode_name as episode_title,
-        cast(published_at as timestamp) as published_at,
-        duration_seconds,
-        season_episode
+    )
 
-    from source
-
-)
-
-select * from renamed
+select *
+from renamed
