@@ -1,4 +1,4 @@
--- MediaPulse revenue by content mart.
+-- fct_ad_revenue: MediaPulse revenue by content fact.
 -- Show how ad revenue from AdConnect maps to individual content items
 -- across the MediaPulse portfolio.
 --
