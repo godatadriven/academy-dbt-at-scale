@@ -8,9 +8,9 @@ A two-day hands-on workshop where you tackle a real-world dbt project under the 
 
 | Role | Organisation |
 |------|--------------|
-| **Participants and host** | DPG |
-| **Facilitation and analytics engineering** | Xebia |
-| **dbt expertise and talks** | dbt Labs |
+| **Participants & host** | Host Company |
+| **Facilitation & analytics engineering** | Xebia |
+| **dbt expertise & talks** | dbt Labs |
 
 ---
 
