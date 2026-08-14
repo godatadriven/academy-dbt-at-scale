@@ -1,8 +1,6 @@
 -- fct_content_performance: MediaPulse unified content performance fact.
 -- Intended to combine NewsNow articles and PodcastHub episodes into a single
 -- content catalogue enriched with category metadata.
---
--- Status: work in progress - review the join logic before using downstream.
 
 with articles as (
 
@@ -27,7 +25,8 @@ episodes as (
         published_at,
         'podcasts'          as platform,
         null::int           as content_length_units,
-        duration_seconds
+        duration_seconds,
+        category
 
     from {{ ref('mediapulse_platform', 'stg_podcasts__episodes') }}
 
