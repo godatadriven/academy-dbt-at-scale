@@ -17,30 +17,19 @@ clean-targets:
   - "dbt_packages"
 
 # ---------------------------------------------------------------------------
-# Variable overrides - set raw_database to wherever your source data lives.
-# In dbt Cloud set this as an environment-level variable.
-# ---------------------------------------------------------------------------
-vars:
-  raw_database: "RAW"
-
-# ---------------------------------------------------------------------------
 # Model materialisation and access defaults
 # ---------------------------------------------------------------------------
 models:
   mediapulse_platform:
     staging:
       +materialized: view
-      +access: protected
+      +access: public
     intermediate:
       +materialized: view
       +access: protected
     marts:
       +materialized: table
       +access: protected
-
-snapshots:
-  mediapulse_platform:
-    +target_schema: snapshots
 
 seeds:
   mediapulse_platform:
