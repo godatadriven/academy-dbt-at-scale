@@ -9,7 +9,7 @@ models:
       The allocation rule differs by campaign type. Brand/awareness campaigns (display,
       video, newsletter) distribute spend across all content regardless of engagement.
       Performance campaigns (sponsored_content, podcast_ad) only attribute spend to
-      content that drove at least one click — and crucially, zero-click content is
+      content that drove at least one click - and crucially, zero-click content is
       removed from the denominator too, so the remaining items still sum to 100% of spend.
       This means the same impressions data produces completely different allocations
       depending on campaign_type.
@@ -52,7 +52,7 @@ models:
       materialized: view
     columns:
       - name: episode_id
-        description: Primary key — one row per episode.
+        description: Primary key - one row per episode.
         data_tests:
           - not_null
           - unique
