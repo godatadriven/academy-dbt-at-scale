@@ -5,7 +5,7 @@ with episodes as (
         show_id,
         published_at,
         duration_seconds
-    from {{ source('podcasts', 'episodes') }}
+    from {{ ref('stg_podcasts__episodes') }}
 
 ),
 
@@ -14,7 +14,7 @@ listens as (
     select
         episode_id,
         listen_duration_seconds
-    from {{ source('podcasts', 'listens') }}
+    from {{ ref('stg_podcasts__listens') }}
 
 ),
 
