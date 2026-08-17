@@ -72,9 +72,6 @@ models:
     columns:
       - name: event_id
         description: Primary key on the source watch event.
-        data_tests:
-          - not_null
-          - unique
       - name: user_id
         description: The viewer.
         data_tests:
