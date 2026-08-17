@@ -128,7 +128,7 @@ seeds:
   - name: raw_legacy_streaming__content_catalog
     config:
       database: mediapulse_raw
-      schema: legacy_streaming
+      schema: streamview_legacy
       alias: media_catalog_archive
       column_types:
         release_dt: varchar
@@ -136,7 +136,7 @@ seeds:
   - name: raw_legacy_streaming__subscriptions
     config:
       database: mediapulse_raw
-      schema: legacy_streaming
+      schema: streamview_legacy
       alias: acct_subs_archive
       column_types:
         start_dt: varchar
@@ -147,7 +147,7 @@ seeds:
   - name: raw_legacy_streaming__watch_pings
     config:
       database: mediapulse_raw
-      schema: legacy_streaming
+      schema: streamview_legacy
       alias: playback_heartbeats
       column_types:
         ping_date: varchar

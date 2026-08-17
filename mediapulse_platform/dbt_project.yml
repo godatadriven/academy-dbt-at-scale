@@ -30,8 +30,5 @@ models:
     marts:
       +materialized: table
       +access: protected
-
-seeds:
-  mediapulse_platform:
-    _seeds_setup:
-      +schema: seeds_setup
+      streaming:
+        +access: public

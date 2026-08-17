@@ -1,0 +1,24 @@
+models:
+  - name: dim_campaigns
+    description: >
+      One row per AdConnect campaign. The conformed campaign dimension - both
+      fct_ad_impressions (mediapulse_platform) and the revenue marts in
+      mediapulse_analytics join to this for campaign attributes.
+    columns:
+      - name: campaign_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: campaign_name
+        description: Human-readable campaign name.
+      - name: campaign_type
+        description: "Campaign type. Expected values: display, video, sponsored_content, podcast_ad, newsletter."
+      - name: advertiser_id
+        description: The advertiser who owns this campaign.
+      - name: start_date
+        description: Campaign start date.
+      - name: end_date
+        description: Campaign end date.
+      - name: budget_dollars
+        description: Total campaign budget, converted from budget_cents.
