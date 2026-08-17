@@ -1,21 +1,24 @@
 # mediapulse_platform
 
-A dbt project that models MediaPulse's core content and advertising domains: news, podcasts, and ads. It owns the staging, intermediate, and marts layers for these domains and exposes shared dimensions and building blocks that other dbt projects can build on.
-
-Streaming has raw seed data and a `models/staging/streaming/` folder but no models yet.
+A dbt project that models MediaPulse's core content and advertising domains: news, podcasts, streaming, and ads. It owns the staging, intermediate, and marts layers for these domains and exposes shared dimensions and building blocks that other dbt projects can build on.
 
 ## Structure
 
 ```
 models/
 ├── staging/
-│   ├── ads/
-│   ├── news/
-│   ├── podcasts/
-│   └── streaming/
+│   ├── ads/          campaigns, impressions, spend
+│   ├── news/          articles, authors, page_views
+│   ├── podcasts/     shows, episodes, listens
+│   └── streaming/    content_ctlg, subscriptions_lifecycle_rec, usr_watch_events_log
 ├── intermediate/
+│   ├── int_campaign_content_spend_allocation
+│   └── int_episode_listen_completion
 └── marts/
-    ├── ads/
+    ├── ads/          dim_campaigns, fct_ad_impressions
+    ├── news/          dim_authors, fct_news_page_views
+    ├── podcasts/     dim_shows, fct_podcast_listens
+    ├── streaming/    dim_content_catalog, dim_subscriptions, fct_streaming_events
     └── dim_dates.sql
 ```
 
@@ -25,9 +28,25 @@ Materialization defaults, set in `dbt_project.yml`:
 |---|---|---|
 | staging | view | public |
 | intermediate | view | protected |
-| marts | table | protected |
+| marts | table | protected (streaming marts: public) |
 
-`protected` is the dbt default and means these models can be referenced anywhere within `mediapulse_platform`, but not from another dbt project unless a model overrides its access to `public`. 
+`protected` is the dbt default and means these models can be referenced anywhere within `mediapulse_platform`, but not from another dbt project unless a model overrides its access to `public`.
+
+## Marts
+
+Ten marts across four domains:
+
+- **ads** - `dim_campaigns` (conformed campaign dimension), `fct_ad_impressions` (one row per campaign/content impression, with click-through rate)
+- **news** - `dim_authors` (with article output stats), `fct_news_page_views` (one row per article view)
+- **podcasts** - `dim_shows` (with episode output stats), `fct_podcast_listens` (one row per listen session, with completion rate)
+- **streaming** - `dim_content_catalog`, `dim_subscriptions` (lifecycle timestamps, current-status flag), `fct_streaming_events` (watch events enriched with content and subscription details)
+- **shared** - `dim_dates`, a calendar spine both this project and `mediapulse_analytics` are meant to join to
+
+`stg_ads__campaigns`, `stg_ads__impressions`, and `stg_ads__spend` read directly from the raw `ads` tables rather than through a `source()` definition.
+
+## How this relates to mediapulse_analytics
+
+`mediapulse_analytics` is a separate dbt project that declares this project as a dbt Mesh dependency (see its `dependencies.yml`). It resolves `ref()` calls to models such as `stg_news__articles`, `stg_podcasts__episodes`, `stg_ads__campaigns`, and `stg_ads__spend` against this project instead of defining its own staging layer for those domains. `mediapulse_platform` has no dependency in the other direction and does not reference anything from `mediapulse_analytics`.
 
 ## Setup
 

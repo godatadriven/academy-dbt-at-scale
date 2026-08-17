@@ -48,3 +48,31 @@ models:
         description: Season number (nullable).
       - name: episode_number
         description: Episode number within the show.
+
+  - name: stg_podcasts__listens
+    description: >
+      Staged listen session records from PodcastHub. One row per listen session.
+    columns:
+      - name: listen_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: episode_id
+        description: Foreign key to stg_podcasts__episodes.
+        data_tests:
+          - not_null
+      - name: user_id
+        description: The listener. Null for anonymous sessions.
+      - name: listened_at
+        description: Timestamp when the listen session started.
+        data_tests:
+          - not_null
+      - name: listen_duration_seconds
+        description: How long the user actually listened, in seconds.
+      - name: platform
+        description: "Platform used. Expected: ios, android, web, alexa, other."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["ios", "android", "web", "alexa", "other"]

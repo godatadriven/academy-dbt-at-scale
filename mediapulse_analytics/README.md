@@ -1,18 +1,35 @@
 # mediapulse_analytics
 
-A dbt project that builds cross-domain analytics marts for MediaPulse: content performance across news and podcasts, and ad revenue by campaign. It has no staging layer or sources of its own; it consumes staging models owned by `mediapulse_platform` through a dbt Mesh dependency.
+A dbt project that builds cross-domain analytics marts for MediaPulse: content performance across news and podcasts, ad revenue by campaign, a StreamView legacy-migration domain, and an advertiser CRM domain. The content and revenue marts have no staging layer or sources of their own; they consume staging models owned by `mediapulse_platform` through a dbt Mesh dependency. The legacy and CRM domains are fully self-contained, with their own sources, seeds, staging, and marts local to this project.
 
 ## Structure
 
 ```
 models/
 ├── staging/
-│   ├── streaming_legacy/     
-├── intermediate/    
+│   ├── streamview_legacy/    content, subscriptions, watch_pings
+│   └── crm/                  sales_reps, advertiser_accounts, contracts, touchpoints
 └── marts/
+    ├── content/               fct_content_performance
+    ├── revenue/               fct_ad_revenue
+    ├── streamview_legacy/     dim_legacy_content, dim_legacy_subscribers,
+    │                          fct_legacy_subscription_lifecycle_events, fct_legacy_watch_events
+    └── crm/                   dim_advertisers, dim_sales_reps,
+                               fct_advertiser_contracts, fct_crm_touchpoints
 ```
 
-`dbt_project.yml` sets `marts` to materialize as tables. There's a `raw_database: "RAW"` var defined but nothing in this project currently reads it, since there are no local source definitions.
+`dbt_project.yml` sets `staging` to materialize as views and `marts` as tables. There's a `raw_database: "RAW"` var defined but nothing in this project currently reads it.
+
+## Marts
+
+Ten marts across four domains:
+
+- **content** (cross-project) - `fct_content_performance`, combining NewsNow articles and PodcastHub episodes
+- **revenue** (cross-project) - `fct_ad_revenue`, AdConnect spend rolled up by campaign
+- **streamview_legacy** (local) - `dim_legacy_content` and `dim_legacy_subscribers` (resolved to current MediaPulse ids where a mapping exists), `fct_legacy_subscription_lifecycle_events` (unpivoted start/end events), `fct_legacy_watch_events` (playback heartbeat pings)
+- **crm** (local) - `dim_advertisers`, `dim_sales_reps`, `fct_advertiser_contracts`, `fct_crm_touchpoints`, tracking the advertiser accounts also seen in the ads domain's `advertiser_id`
+
+The legacy domain reads from the `streamview_legacy` schema in `mediapulse_raw` (the archive tables StreamView is being migrated off of) and resolves legacy ids to current MediaPulse ids using the `map_streaming_legacy_fields` seed - not every legacy subscriber or content item has been migrated yet, so `is_mapped` can be false.
 
 ## Cross-project dependency
 
@@ -23,7 +40,7 @@ projects:
   - name: mediapulse_platform
 ```
 
-This lets `ref()` calls in this project resolve to models defined in `mediapulse_platform` rather than requiring their own copies. 
+This lets `ref()` calls in `fct_content_performance` and `fct_ad_revenue` resolve to staging models defined in `mediapulse_platform` rather than requiring their own copies. The `streamview_legacy` and `crm` domains don't use this dependency at all - they only read from their own sources and seeds.
 
 ## Setup
 

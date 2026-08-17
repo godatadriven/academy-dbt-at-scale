@@ -1,0 +1,111 @@
+version: 2
+
+models:
+  - name: dim_content_catalog
+    description: >
+      One row per streaming catalog item (series, movie, or live event).
+    columns:
+      - name: content_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: title
+        description: Title of the content item.
+        data_tests:
+          - not_null
+      - name: genre
+      - name: content_type
+        description: "Content format. Expected: series, film, live."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["series", "film", "live"]
+      - name: release_date
+        data_tests:
+          - not_null
+      - name: runtime_minutes
+
+  - name: dim_subscriptions
+    description: >
+      One row per streaming subscription, with lifecycle timestamps and a
+      current-status flag. plan_type and status are lowercased to normalise the
+      mixed casing present in the raw subscriptions table.
+    columns:
+      - name: subscription_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: user_id
+        description: The subscriber.
+        data_tests:
+          - not_null
+      - name: plan_type
+        description: "Subscription tier, lowercased. Expected: basic, standard, premium."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["basic", "standard", "premium"]
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["active", "cancelled", "paused", "trialing"]
+      - name: subscription_started_at
+        data_tests:
+          - not_null
+      - name: subscription_ended_at
+        description: Timestamp the subscription ended. Null while still active.
+      - name: monthly_fee_dollars
+      - name: is_current
+        description: True when the subscription has no end date.
+        data_tests:
+          - not_null
+
+  - name: fct_streaming_events
+    description: >
+      One row per watch event, enriched with the viewed content's catalog
+      attributes and the viewer's subscription details at the time of the join.
+      Subscriptions are joined on user_id without a date-range filter, so a
+      user with multiple historical subscriptions will fan out here.
+    columns:
+      - name: event_id
+        description: Primary key on the source watch event.
+        data_tests:
+          - not_null
+          - unique
+      - name: user_id
+        description: The viewer.
+        data_tests:
+          - not_null
+      - name: content_id
+        description: Foreign key to dim_content_catalog.
+        data_tests:
+          - not_null
+      - name: watched_at
+        description: Timestamp the watch event started.
+        data_tests:
+          - not_null
+      - name: watch_duration_seconds
+        description: How long the user actually watched, in seconds.
+        data_tests:
+          - not_null
+      - name: device_type
+      - name: batched_at
+      - name: title
+      - name: genre
+      - name: ctnt_type
+      - name: release_date
+      - name: runtime_minutes
+      - name: subscription_id
+        description: Foreign key to dim_subscriptions.
+      - name: plan_type
+      - name: status
+      - name: start_date
+      - name: start_time
+      - name: end_date
+      - name: end_time
+      - name: monthly_fee_cents
+      - name: subscription_started_at
+      - name: subscription_ended_at

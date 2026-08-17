@@ -24,6 +24,8 @@ vars:
 # ---------------------------------------------------------------------------
 models:
   mediapulse_analytics:
+    staging:
+      +materialized: view
     marts:
       +materialized: table
 
