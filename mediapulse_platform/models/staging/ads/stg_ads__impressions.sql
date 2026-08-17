@@ -1,1 +1,1 @@
-select * from mediapulse_raw.ads.impressions
+select * from {{ source('ads', 'impressions') }}

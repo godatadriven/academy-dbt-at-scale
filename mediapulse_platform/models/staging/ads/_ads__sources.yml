@@ -1,0 +1,77 @@
+version: 2
+
+sources:
+  - name: ads
+    schema: ads
+    description: >
+      Raw advertising campaign, spend, and impression data loaded by the upstream ingestion pipeline.
+
+    tables:
+      - name: campaigns
+        description: One row per advertising campaign.
+        columns:
+          - name: campaign_id
+            description: Primary key for the advertising campaign.
+            data_tests:
+              - not_null
+              - unique
+          - name: advertiser_id
+            description: Identifier for the advertiser that owns the campaign.
+          - name: campaign_name
+            description: Advertiser-provided name of the campaign.
+          - name: campaign_type
+            description: Advertising format for the campaign.
+          - name: start_date
+            description: Date the campaign begins.
+          - name: end_date
+            description: Date the campaign ends.
+          - name: budget_cents
+            description: Total campaign budget in cents.
+
+      - name: impressions
+        description: One row per campaign and content impression record.
+        columns:
+          - name: impression_id
+            description: Primary key for the impression record.
+            data_tests:
+              - not_null
+              - unique
+          - name: campaign_id
+            description: Foreign key to the campaigns table.
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('ads', 'campaigns')
+                    field: campaign_id
+          - name: content_id
+            description: Identifier for the content associated with the impression.
+          - name: impression_date
+            description: Date the impression record was captured.
+          - name: impressions_count
+            description: Number of impressions represented by the record.
+          - name: clicks
+            description: Number of clicks represented by the record.
+
+      - name: spend
+        description: One row per campaign spend record.
+        columns:
+          - name: spend_id
+            description: Primary key for the spend record.
+            data_tests:
+              - not_null
+              - unique
+          - name: campaign_id
+            description: Foreign key to the campaigns table.
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('ads', 'campaigns')
+                    field: campaign_id
+          - name: spend_date
+            description: Date the spend was recorded.
+          - name: spend_cents
+            description: Campaign spend in cents.
+          - name: platform_fee_cents
+            description: Platform fee charged for the spend, in cents.
