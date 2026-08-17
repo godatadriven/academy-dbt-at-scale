@@ -79,22 +79,41 @@ nav:
       - Data ERD: mediapulse/data-erd.md
   - "Group 1 - Intermediate":
       - Overview: group1/overview.md
-      - Checklists:
-        - Group 1 - Level 1: group1/level1/checklist.md
-        - Group 1 - Level 2: group1/level2/checklist.md
-        - Group 1 - Level 3 - Bonus: group1/level3/checklist.md
+      - Part 1:
+        - 1. dbt Catalog: group1/1.1-dbt-catalog.md
+        - 2. Modeling refresh: group1/1.2-modeling-refresh.md
+        - 3. Testing: group1/1.3-testing.md
+        - 4. Jinja & Macros: group1/1.4-jinja-and-macros.md
+        - 5. dbt Wizard: group1/1.5-dbt-wizard.md
+      - Part 2:
+        - 1. Advanced testing: group1/2.1-advanced-testing.md
+        - 2. Snapshots: group1/2.2-snapshots.md
+        - 3. Model governance: group1/2.3-model-governance.md
+        - 4. Incremental modeling: group1/2.4-incremental-modeling.md
   - "Group 2 - Advanced I":
       - Overview: group2/overview.md
-      - Checklists:
-        - Group 2 - Level 1: group2/level1/checklist.md
-        - Group 2 - Level 2: group2/level2/checklist.md
-        - Group 2 - Level 3 - Bonus: group2/level3/checklist.md
+      - Part 1:
+        - 1. dbt Catalog & review: group2/1.1-dbt-catalog-and-review.md
+        - 2. Advanced testing: group2/1.2-advanced-testing.md
+        - 3. Jinja/Macros & Custom schema logic: group2/1.3-jinja-macros-and-custom-schema-logic.md
+        - 4. dbt Mesh: group2/1.4-dbt-mesh.md
+      - Part 2:
+        - 1. Project evaluation & further tests: group2/2.1-project-evaluation-and-further-tests.md
+        - 2. dbt Mesh: group2/2.2-dbt-mesh.md
+        - 3. Dynamic data masking: group2/2.3-dynamic-data-masking.md
+        - 4. Deployment & CI/CD: group2/2.4-deployment-and-cicd.md
   - "Group 3 - Advanced II":
       - Overview: group3/overview.md
-      - Checklists:
-        - Group 3 - Level 1: group3/level1/checklist.md
-        - Group 3 - Level 2: group3/level2/checklist.md
-        - Group 3 - Level 3 - Bonus: group3/level3/checklist.md
+      - Part 1:
+        - 1. dbt Catalog & review: group3/1.1-dbt-catalog-and-review.md
+        - 2. Testing coverage: group3/1.2-testing-coverage.md
+        - 3. Deployment & CI/CD: group3/1.3-deployment-and-cicd.md
+        - 4. dbt Mesh: group3/1.4-dbt-mesh.md
+      - Part 2:
+        - 1. dbt Mesh review: group3/2.1-dbt-mesh-review.md
+        - 2. Advanced Testing: group3/2.2-advanced-testing.md
+        - 3. Dynamic data masking: group3/2.3-dynamic-data-masking.md
+        - 4. Unit testing: group3/2.4-unit-testing.md
   - "Group 4 - Power Users":
       - Overview: group4/overview.md
       - Checklists:
