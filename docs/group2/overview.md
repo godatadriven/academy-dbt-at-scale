@@ -2,7 +2,9 @@
 
 ## Your slice of MediaPulse
 
-You start where Group 1 finished: comfortable navigating and testing a single dbt project. Today that project splits in two. `mediapulse_analytics` is a second dbt project that doesn't own a staging layer of its own for news, podcasts, or ads - it reaches into `mediapulse_platform` for that data via **dbt Mesh**, a real cross-project dependency declared in `dependencies.yml`. You'll spend Part 1 getting comfortable with that boundary, and Part 2 putting real governance, monitoring, and deployment practices around both projects.
+The project you have seen before now splits in two. `mediapulse_analytics` is a second dbt project that doesn't own a staging layer of its own for `news`, `podcasts`, or `ads` - it reaches into `mediapulse_platform` for that data via **dbt Mesh** using a cross-project dependency declared in `dependencies.yml`. 
+
+Your team owns the `Streaming` and `Podcasts` section of MediaPulse. You will work within that area to develop your project and your dbt skills.
 
 ---
 

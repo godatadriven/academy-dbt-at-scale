@@ -77,7 +77,7 @@ nav:
   - MediaPulse Project:
       - Overview: mediapulse/overview.md
       - Data ERD: mediapulse/data-erd.md
-  - "Group 1 - Intermediate":
+  - "Group 1 - Next level dbt":
       - Overview: group1/overview.md
       - Part 1:
         - 1. dbt Catalog: group1/1.1-dbt-catalog.md
@@ -90,7 +90,7 @@ nav:
         - 2. Snapshots: group1/2.2-snapshots.md
         - 3. Model governance: group1/2.3-model-governance.md
         - 4. Incremental modeling: group1/2.4-incremental-modeling.md
-  - "Group 2 - Advanced I":
+  - "Group 2 - Best practices and multi-project dbt":
       - Overview: group2/overview.md
       - Part 1:
         - 1. dbt Catalog & review: group2/1.1-dbt-catalog-and-review.md
@@ -102,7 +102,7 @@ nav:
         - 2. dbt Mesh: group2/2.2-dbt-mesh.md
         - 3. Dynamic data masking: group2/2.3-dynamic-data-masking.md
         - 4. Deployment & CI/CD: group2/2.4-deployment-and-cicd.md
-  - "Group 3 - Advanced II":
+  - "Group 3 - Power Users":
       - Overview: group3/overview.md
       - Part 1:
         - 1. dbt Catalog & review: group3/1.1-dbt-catalog-and-review.md
@@ -114,12 +114,12 @@ nav:
         - 2. Advanced Testing: group3/2.2-advanced-testing.md
         - 3. Dynamic data masking: group3/2.3-dynamic-data-masking.md
         - 4. Unit testing: group3/2.4-unit-testing.md
-  - "Group 4 - Power Users":
-      - Overview: group4/overview.md
-      - Checklists:
-        - Group 4 - Level 1: group4/level1/checklist.md
-        - Group 4 - Level 2: group4/level2/checklist.md
-        - Group 4 - Level 3 - Bonus: group4/level3/checklist.md
+  # - "Group 4 - Power Users":
+  #     - Overview: group4/overview.md
+  #     - Checklists:
+  #       - Group 4 - Level 1: group4/level1/checklist.md
+  #       - Group 4 - Level 2: group4/level2/checklist.md
+  #       - Group 4 - Level 3 - Bonus: group4/level3/checklist.md
 
 extra_javascript:
   - javascripts/checklist.js
