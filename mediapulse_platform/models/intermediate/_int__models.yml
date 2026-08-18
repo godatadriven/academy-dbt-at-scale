@@ -78,3 +78,38 @@ models:
         description: >
           Categorical engagement label derived from avg_completion_rate:
           'completed' (>= 75%), 'partial' (25-74%), 'dropped' (< 25%), 'no_listens'.
+
+
+  - name: int_dedupe_subscribers
+    description: >
+      The most recent subscription event for each user. Events are ordered by updated_at,
+      with the subscription start timestamp and subscription_id used as deterministic
+      fallbacks when updated_at is null or tied.
+    config:
+      materialized: view
+    columns:
+      - name: subscription_id
+        description: Identifier for the user's most recent subscription event.
+        data_tests:
+          - not_null
+      - name: user_id
+        description: Primary key - one row per subscriber.
+        data_tests:
+          - not_null
+          - unique
+      - name: plan_type
+        description: Plan associated with the most recent subscription event.
+      - name: status
+        description: Status from the most recent subscription event.
+      - name: start_date
+        description: Raw start date for the subscription.
+      - name: start_time
+        description: Raw start time for the subscription.
+      - name: end_date
+        description: Raw end date for the subscription, when present.
+      - name: end_time
+        description: Raw end time for the subscription, when present.
+      - name: monthly_fee_cents
+        description: Monthly subscription fee in cents.
+      - name: updated_at
+        description: Timestamp used to identify the latest subscription event.

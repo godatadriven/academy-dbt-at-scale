@@ -13,16 +13,14 @@ select
     user_id,
     lower(plan_type)          as plan_type,
     lower(status)             as status,
-    try_to_timestamp_ntz(
-        start_date || ' ' || coalesce(nullif(start_time, ''), '00:00:00')
-    )                         as subscription_started_at,
+    
+    subscription_started_at,
     case
         when end_date is not null then
             try_to_timestamp_ntz(
                 end_date || ' ' || coalesce(nullif(end_time, ''), '23:59:59')
             )
     end                       as subscription_ended_at,
-    monthly_fee_cents / 100.0    as monthly_fee_dollars,
-    end_date is null             as is_current
+    monthly_fee_cents / 100.0    as monthly_fee_dollars
 
 from subscriptions

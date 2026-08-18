@@ -36,6 +36,8 @@ sources:
           - name: user_id
             data_type: varchar
             description: ""
+            data_tests:
+              - not_null
           - name: plan_type
             data_type: varchar
             description: ""
@@ -57,6 +59,10 @@ sources:
           - name: monthly_fee_cents
             data_type: number
             description: ""
+          - name: updated_at
+            data_type: varchar
+            description: Raw timestamp when the subscription event was last updated.
+
 
       - name: usr_watch_events_log
         description: ""

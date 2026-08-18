@@ -14,9 +14,6 @@ subscriptions as (
 
     select
         *,
-        try_to_timestamp_ntz(
-            start_date || ' ' || coalesce(nullif(start_time, ''), '00:00:00')
-        ) as subscription_started_at,
         case
             when end_date is not null then
                 try_to_timestamp_ntz(
