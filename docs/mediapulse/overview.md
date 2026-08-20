@@ -59,22 +59,50 @@ There are four schemas which hold key data for the company:
 
 ## dbt project structure
 
-The workshop now runs on two dbt projects connected by **dbt Mesh**, rather than the single `mediapulse/` project used in earlier versions of this workshop. If you see references to a single `mediapulse/` project elsewhere (older material, recordings, etc.), treat this page as the current source of truth.
-
-- **`mediapulse_base`** - owns the staging → intermediate → marts layering for news, podcasts, streaming, and ads. This is the producer project: most of the raw-data modelling work lives here, and it already has a working (if imperfect) layer for every domain.
-- **`mediapulse_analytics`** - a second, smaller project. It declares `mediapulse_base` as a project dependency (`dependencies.yml`) and consumes its `public`-access models via cross-project `ref()` for two of its marts (`fct_content_performance`, `fct_ad_revenue`). It also owns two fully self-contained domains of its own - an advertiser CRM domain and a StreamView legacy-migration domain - that read directly from raw sources and don't depend on `mediapulse_base` at all.
-
-Both projects already have working models end to end - nobody is starting from an empty folder. Some models carry deliberate, documented gaps and rough edges (missing tests, a known join bug in `fct_content_performance`, an access-level inconsistency on `dim_campaigns`, and so on) for you to find and reason about as part of your group's exercises. See `mediapulse_base/README.md` and `mediapulse_analytics/README.md` for each project's own structure, and your group's overview page for what you'll specifically be doing with them.
+```
+mediapulse/
+├── dbt_project.yml
+├── packages.yml
+├── models/
+│   ├── staging/
+│   │   ├── news/
+│   │   │   ├── _news__sources.yml          ✅  defined
+│   │   │   ├── _news__models.yml           ✅  defined
+│   │   │   ├── stg_news__articles.sql      ⚠️  has a bug
+│   │   │   └── stg_news__authors.sql       ✅  complete
+│   │   ├── podcasts/
+│   │   │   ├── _podcasts__sources.yml      ✅  defined
+│   │   │   ├── _podcasts__models.yml       ✅  defined
+│   │   │   ├── stg_podcasts__episodes.sql  ⚠️  has a bug
+│   │   │   └── stg_podcasts__shows.sql     ✅  complete
+│   │   ├── streaming/
+│   │   │   └── (empty)                     🔲  Group 1's job
+│   │   └── ads/
+│   │       └── (empty)                     🔲  Group 3's job
+│   └── marts/
+│       ├── content/
+│       │   └── content_performance.sql     ⚠️  incomplete model
+│       └── revenue/
+│           └── revenue_by_content.sql      ⚠️  incomplete model
+├── seeds/
+│   └── (empty)                             🔲  Groups 2 & 3
+├── snapshots/
+│   └── (empty)                             🔲  Groups 2 & 3
+├── macros/
+│   └── (empty)                             🔲  Group 1
+└── tests/
+    └── (empty)                             🔲  Group 3
+```
 
 ---
 
 ## Getting started
 
-To get started, access the projects on dbt Cloud:
-- Accept the invite received from your trainer/host to access the Training Account on dbt Cloud.
-- Then login to dbt Cloud - you'll see both `mediapulse_base` and `mediapulse_analytics` listed as projects.
-- Go to the Studio on each project and fill in the username and password credentials.
-- Run the below command in each project to make sure it runs as expected.
+To get started, access the project on dbt Cloud:
+- Accept the invite received from your trainer/host to access the Training Account on dbt Cloud. 
+- Then login to dbt Cloud and access the project: `MediaPulse - dbt@scale`
+- Go to the studio on this project and fill in the username and password credentials.
+- Run the below command to make sure your project runs as expected.
 
 ```bash
 dbt build         # see what breaks (expected at the start!)

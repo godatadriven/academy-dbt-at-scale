@@ -1,9 +1,0 @@
-advertiser_id,advertiser_name,industry,sales_rep_id,contract_tier,account_status,signed_at
-adv_a,TechNova,Technology,rep_01,gold,active,2023-11-01
-adv_b,SportsBet,Gambling & Sports Media,rep_02,platinum,active,2023-09-15
-adv_c,GreenGrow,Consumer Goods,rep_01,silver,active,2023-12-01
-adv_d,FinanceHub,Financial Services,rep_03,gold,active,2023-10-20
-adv_e,AutoPrime,Automotive,rep_02,gold,active,2023-11-10
-adv_f,FoodieBox,Food & Beverage,rep_04,silver,active,2024-01-05
-adv_g,TravelEase,Travel,rep_03,silver,active,2023-12-15
-adv_h,HealthPlus,Healthcare,rep_04,bronze,at_risk,2024-01-10

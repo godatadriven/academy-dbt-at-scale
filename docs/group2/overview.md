@@ -1,52 +1,70 @@
-# Group 2 - Advanced I
+# Group 2 - Advanced I: Seeds, Snapshots & Test Review
 
 ## Your slice of MediaPulse
 
-The project you have seen before now splits in two. `mediapulse_analytics` is a second dbt project that doesn't own a staging layer of its own for `news`, `podcasts`, or `ads` - it reaches into `mediapulse_base` for that data via **dbt Mesh** using a cross-project dependency declared in `dependencies.yml`. 
-
-Your team owns the `Streaming` and `Podcasts` section of MediaPulse. You will work within that area to develop your project and your dbt skills.
-
----
-
-## What gets covered
-
-### Part 1
-
-1. [dbt Catalog & review](1.1-dbt-catalog-and-review.md) - a brisk recap of Catalog on `mediapulse_base`, then a full mesh-diagnosis exercise using Catalog's cross-project lineage view
-2. [Advanced testing](1.2-advanced-testing.md) - singular tests and test configuration for business-logic invariants, pitched above Group 1's introductory testing pass
-3. [Jinja/Macros & Custom schema logic](1.3-jinja-macros-and-custom-schema-logic.md) - unpack the project's real custom `generate_schema_name` macro and bring equivalent behaviour to `mediapulse_analytics`
-4. [dbt Mesh](1.4-dbt-mesh.md) - what a project dependency actually is, how access levels gate what can cross the project boundary, and what's really being referenced today
-
-### Part 2
-
-1. [Project evaluation & further tests](2.1-project-evaluation-and-further-tests.md) - run `dbt-project-evaluator` against both projects and triage what it finds
-2. [dbt Mesh](2.2-dbt-mesh.md) - continue into the mechanics of *when* a cross-project change actually becomes visible downstream
-3. [Dynamic data masking](2.3-dynamic-data-masking.md) - a real, sensitive column in the project, and how Snowflake and dbt divide responsibility for protecting it
-4. [Deployment & CI/CD](2.4-deployment-and-cicd.md) - design a CI/CD pipeline that accounts for two projects depending on each other
-
-Each topic has an **Exercise** (apply the skill directly) and an **Extension** (apply it at a noticeably higher level of difficulty) - do the Extension if you finish the Exercise with time to spare.
+You own the **content performance** story - how MediaPulse's editorial products (**NewsNow** articles and **PodcastHub** episodes) are performing together. The staging layer for both domains exists, but it has bugs. Your mart needs to join both, enriched with a category mapping seed, and you need to track how article metadata changes over time using a snapshot.
 
 ---
 
 ## Learning objectives
 
-By the end of today you will be able to:
+By the end of the hackathon you will be able to:
 
-- Use dbt Catalog's multi-project view to diagnose a bug that spans a project boundary, without reading the SQL first
-- Write singular tests and configure **severity**/thresholds for situations that shouldn't hard-fail a build
-- Explain what a custom `generate_schema_name` macro controls, and implement equivalent logic in a second project
-- Explain the difference between a **package** dependency and a **project** dependency, and what `access: public` actually permits
-- Run and interpret **`dbt-project-evaluator`** output across a single-project and a mesh-consuming project
-- Explain where Snowflake's **dynamic data masking** and dbt's role in applying it begin and end
-- Design a CI/CD approach (Slim CI, deferral) that accounts for a producer/consumer project relationship
+- Read existing dbt models critically and **identify bugs**
+- Create and load **seeds** - static reference data managed in version control
+- Build a **mart** that joins across staging domains
+- Create a **snapshot** to track slowly-changing dimensions (SCD Type 2)
+- Write thorough **relationship tests** and document columns in YAML
 
 ---
 
-## Relevant projects
+## Key concepts
 
-You'll work across both:
+### Seeds
 
-- `mediapulse_base` - the producer project; note its `access` settings in `dbt_project.yml` and its `stg_news__authors.email` column
-- `mediapulse_analytics` - the consumer project; its `dependencies.yml`, and its `fct_content_performance`/`fct_ad_revenue` marts that `ref()` across the mesh boundary
+Seeds are CSV files in your `seeds/` directory. Use them for small, slow-changing reference data that belongs in version control (lookup tables, category maps, region codes).
 
-See the [MediaPulse overview](../mediapulse/overview.md) for the underlying business context, and each project's own `README.md` for how they're structured and how they relate to each other.
+```bash
+dbt seed              # loads all seeds
+dbt seed --select category_mapping  # loads one
+```
+
+### Snapshots
+
+Snapshots implement SCD Type 2 - they track how a row changes over time by appending new versions rather than overwriting.
+
+Every time you run `dbt snapshot`, dbt compares the current source to the last snapshot and inserts a new row for any changed record, populating `dbt_valid_from` and `dbt_valid_to`.
+
+### Reviewing existing models
+
+Before building, always audit what's already there:
+
+1. Read the model SQL - does it do what the filename implies?
+2. Check column names against the raw source
+3. Look for missing deduplication on high-volume sources
+4. Run the model; do the row counts look right?
+
+---
+
+## Relevant tables & existing models
+
+| Asset | Location | Status |
+|-------|----------|--------|
+| `news.articles` | Source | Has duplicates |
+| `news.authors` | Source | Clean |
+| `podcasts.episodes` | Source | Column name quirk |
+| `podcasts.shows` | Source | Clean |
+| `stg_news__articles.sql` | `models/staging/news/` | ❓ unknown status |
+| `stg_news__authors.sql` | `models/staging/news/` | ✅ complete |
+| `stg_podcasts__episodes.sql` | `models/staging/podcasts/` | ❓ unknown status |
+| `stg_podcasts__shows.sql` | `models/staging/podcasts/` | ✅ complete |
+| `content_performance.sql` | `models/marts/content/` | ❓ unknown status |
+
+See the [MediaPulse overview](../mediapulse/overview.md) for the raw column details and the documented known bugs.
+
+---
+
+## Begin 
+
+Head to the [Checklist](level1/checklist.md) when you're ready to start.
+
