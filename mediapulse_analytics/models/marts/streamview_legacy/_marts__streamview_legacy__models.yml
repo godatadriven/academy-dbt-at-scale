@@ -1,0 +1,111 @@
+version: 2
+
+models:
+  - name: dim_legacy_content
+    description: >
+      One row per StreamView (legacy) catalog item, resolved to a current
+      MediaPulse content_id where available.
+    columns:
+      - name: legacy_content_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: content_title
+        description: Content title as recorded in StreamView.
+      - name: category
+      - name: content_format
+        description: "Legacy content format. Expected: tv_series, movie, live_event."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["tv_series", "movie", "live_event"]
+      - name: release_date
+        description: Date the content item was released.
+      - name: duration_minutes
+      - name: mapped_content_id
+        description: Current MediaPulse content_id, from map_streaming_legacy_fields. Null if not yet migrated.
+      - name: is_mapped
+        description: True when a mapping to a current content_id exists.
+        data_tests:
+          - not_null
+
+  - name: dim_legacy_subscribers
+    description: >
+      One row per StreamView (legacy) subscriber account, resolved to a current
+      MediaPulse user_id where available.
+    columns:
+      - name: legacy_subscriber_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: tier
+        description: "Legacy subscription tier, lowercased. Expected: bronze, silver, gold."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["bronze", "silver", "gold"]
+      - name: account_status
+        description: Legacy account status, lowercased.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["active", "terminated"]
+      - name: subscription_started_at
+      - name: subscription_ended_at
+        description: Timestamp the legacy subscription ended. Null if never ended.
+      - name: mapped_user_id
+      - name: is_mapped
+        description: True when a mapping to a current user_id exists.
+        data_tests:
+          - not_null
+
+  - name: fct_legacy_subscription_lifecycle_events
+    description: >
+      One row per lifecycle event for a StreamView (legacy) subscriber. Each
+      subscriber contributes a subscription_started row, and a
+      subscription_ended row if their subscription has ended.
+    columns:
+      - name: legacy_subscriber_id
+        description: Foreign key to dim_legacy_subscribers.
+        data_tests:
+          - not_null
+      - name: mapped_user_id
+      - name: event_type
+        description: "Lifecycle event type. One of: subscription_started, subscription_ended."
+        data_tests:
+          - not_null
+      - name: event_at
+        description: Timestamp the event occurred.
+        data_tests:
+          - not_null
+      - name: tier
+        description: Legacy subscription tier at the time of the event.
+
+  - name: fct_legacy_watch_events
+    description: >
+      One row per StreamView (legacy) playback heartbeat ping, enriched with
+      mapped MediaPulse ids where the subscriber and content have been migrated.
+    columns:
+      - name: ping_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: legacy_subscriber_id
+        description: Foreign key to dim_legacy_subscribers.
+        data_tests:
+          - not_null
+      - name: mapped_user_id
+      - name: legacy_content_id
+        description: Foreign key to dim_legacy_content.
+        data_tests:
+          - not_null
+      - name: mapped_content_id
+      - name: pinged_at
+        description: Timestamp the heartbeat ping was recorded.
+      - name: playback_position_seconds
+        description: Playback position, in seconds, at the time of the ping.
+      - name: device_code
+        description: Legacy device identifier code.

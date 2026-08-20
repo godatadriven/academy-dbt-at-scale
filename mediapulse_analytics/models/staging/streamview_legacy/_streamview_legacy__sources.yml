@@ -1,0 +1,71 @@
+version: 2
+
+sources:
+  - name: streamview_legacy
+    database: mediapulse_raw
+    schema: streamview_legacy
+    description: >
+      Archive tables from StreamView, the legacy streaming platform MediaPulse
+      is migrating subscribers and catalog content off of. Loaded here as seeds
+      until the migration's real ingestion pipeline exists.
+
+    tables:
+      - name: media_catalog_archive
+        description: >
+          One row per legacy content item. Some items have since been re-catalogued
+          under a new content_id in the current streaming catalog - see
+          map_streaming_legacy_fields for the mapping.
+        columns:
+          - name: media_id
+            description: Legacy content identifier.
+          - name: media_title
+            description: Content title as recorded in StreamView.
+          - name: category
+            description: Legacy content category.
+          - name: media_format
+            description: "Legacy content format. Expected: tv_series, movie, live_event."
+          - name: release_dt
+            description: Date the content item was released.
+          - name: duration_min
+            description: Runtime in minutes.
+
+      - name: acct_subs_archive
+        description: >
+          One row per legacy subscriber account. Some subscribers have since been
+          migrated to a new user_id in the current platform - see
+          map_streaming_legacy_fields for the mapping.
+        columns:
+          - name: subscriber_ref
+            description: Legacy subscriber identifier.
+          - name: tier
+            description: "Legacy subscription tier. Expected: bronze, silver, gold."
+          - name: account_status
+            description: Legacy account status.
+          - name: start_dt
+            description: Date the legacy subscription began.
+          - name: start_tm
+            description: Time of day the legacy subscription began.
+          - name: end_dt
+            description: Date the legacy subscription ended. Null if never ended.
+          - name: end_tm
+            description: Time of day the legacy subscription ended.
+
+      - name: playback_heartbeats
+        description: >
+          One row per playback heartbeat ping recorded by the legacy StreamView
+          player, roughly one per minute of playback.
+        columns:
+          - name: ping_id
+            description: Primary key.
+          - name: subscriber_ref
+            description: Foreign key to acct_subs_archive.
+          - name: media_id
+            description: Foreign key to media_catalog_archive.
+          - name: ping_date
+            description: Date the ping was recorded.
+          - name: ping_time
+            description: Time of day the ping was recorded.
+          - name: playback_position_seconds
+            description: Playback position, in seconds, at the time of the ping.
+          - name: device_code
+            description: Legacy device identifier code.

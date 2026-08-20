@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: dim_authors
+    description: >
+      One row per NewsNow author, enriched with article output stats. Authors
+      with no articles still appear, with total_articles at zero.
+    columns:
+      - name: author_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: author_name
+        description: Author's full name.
+        data_tests:
+          - not_null
+      - name: email
+        data_tests:
+          - not_null
+      - name: joined_at
+        data_tests:
+          - not_null
+      - name: total_articles
+        description: Count of articles attributed to this author. Zero if none.
+        data_tests:
+          - not_null
+      - name: first_published_at
+      - name: most_recent_published_at
+
+  - name: fct_news_page_views
+    description: >
+      One row per article page view event, enriched with the article's category
+      and author. Article attributes are taken from the article's most recently
+      updated version.
+    columns:
+      - name: view_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: article_id
+        description: Foreign key to dim_authors via author_id, and to the article catalogue.
+        data_tests:
+          - not_null
+      - name: category
+      - name: author_id
+        description: Foreign key to dim_authors.
+        data_tests:
+          - not_null
+      - name: user_id
+      - name: viewed_at
+        description: Timestamp of the page view event.
+        data_tests:
+          - not_null
+      - name: referrer_source
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["search", "social", "direct", "email"]

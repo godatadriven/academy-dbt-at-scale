@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: int_adv_rep_touchpoint_cumcounts
+    description: >
+      One row per CRM touchpoint, preserving the staging grain and adding comment-quality
+      classification plus cumulative touchpoint counts for each advertiser and sales rep.
+      All-time counts include every prior touchpoint for the pair, while year-to-date counts
+      reset each calendar year. Every cumulative count includes the current touchpoint.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          name: touchpoint_cumulative_counts_are_consistent
+          arguments:
+            expression: >
+              running_with_comments_alltime + running_no_real_text_alltime
+              = running_total_touchpoints_alltime
+              and running_with_comments_ytd + running_no_real_text_ytd
+              = running_total_touchpoints_ytd
+              and running_total_touchpoints_ytd <= running_total_touchpoints_alltime
+          description: >
+            Each touchpoint must be classified into exactly one comment-quality bucket,
+            and its year-to-date position cannot exceed its all-time position.
+    columns:
+      - name: touchpoint_id
+        description: Primary key inherited from the CRM touchpoint record.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: advertiser_id
+        description: Advertiser account associated with the touchpoint.
+
+      - name: rep_id
+        description: Sales rep who logged the touchpoint.
+
+      - name: touchpoint_type
+        description: CRM activity type, such as a call, email, meeting, or demo.
+
+      - name: occurred_at
+        description: Timestamp used to chronologically order cumulative counts.
+
+      - name: touchpoint_year
+        description: Calendar year derived from occurred_at and used to reset year-to-date counts.
+
+      - name: notes
+        description: Original free-text notes recorded for the touchpoint.
+
+      - name: has_real_text
+        description: >
+          True when trimmed notes contain at least three characters and are not only punctuation
+          or a known placeholder such as n/a, none, test, tbd, or pending.
+        data_tests:
+          - not_null
+
+      - name: running_with_comments_alltime
+        description: >
+          Inclusive cumulative count of touchpoints with meaningful notes for the advertiser-rep
+          pair, ordered by occurred_at and touchpoint_id without a calendar reset.
+
+      - name: running_no_real_text_alltime
+        description: >
+          Inclusive cumulative count of touchpoints without meaningful notes for the
+          advertiser-rep pair, ordered by occurred_at and touchpoint_id without a calendar reset.
+
+      - name: running_total_touchpoints_alltime
+        description: >
+          Inclusive ordinal position of the touchpoint across all activity for the advertiser-rep
+          pair, ordered by occurred_at and touchpoint_id.
+
+      - name: running_with_comments_ytd
+        description: >
+          Inclusive cumulative count of touchpoints with meaningful notes for the advertiser-rep
+          pair within touchpoint_year.
+
+      - name: running_no_real_text_ytd
+        description: >
+          Inclusive cumulative count of touchpoints without meaningful notes for the
+          advertiser-rep pair within touchpoint_year.
+
+      - name: running_total_touchpoints_ytd
+        description: >
+          Inclusive ordinal position of the touchpoint for the advertiser-rep pair within
+          touchpoint_year, ordered by occurred_at and touchpoint_id.
