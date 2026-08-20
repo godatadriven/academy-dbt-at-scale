@@ -1,0 +1,27 @@
+# Copy this file to ~/.dbt/profiles.yml (do NOT commit real credentials).
+# Ask your facilitator for the connection details.
+
+mediapulse_platform:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake             # or bigquery / databricks - ask your facilitator
+      account: "your-account"
+      user: "your-user"
+      password: "your-password"
+      role: "TRANSFORMER"
+      database: "MEDIAPULSE_DEV"  # your personal dev database
+      warehouse: "COMPUTE_WH"
+      schema: "dbt_yourname"      # personalise this - e.g. dbt_lucy
+      threads: 4
+
+    prod:
+      type: snowflake
+      account: "your-account"
+      user: "svc_dbt"
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      role: "TRANSFORMER"
+      database: "MEDIAPULSE"
+      warehouse: "COMPUTE_WH"
+      schema: "prod"
+      threads: 8
