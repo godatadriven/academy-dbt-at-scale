@@ -1,7 +1,7 @@
 # Copy this file to ~/.dbt/profiles.yml (do NOT commit real credentials).
 # Ask your facilitator for the connection details.
 
-mediapulse_platform:
+set_up:
   target: dev
   outputs:
     dev:

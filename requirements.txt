@@ -3,6 +3,6 @@ mkdocs>=1.5,<2.0
 mkdocs-material>=9.0,<10.0
 mkdocs-encryptcontent-plugin
 
-# dbt (for running mediapulse_platform / mediapulse_analytics locally)
+# dbt (for running mediapulse_base / mediapulse_analytics locally)
 # Installing the adapter pulls in the matching dbt-core automatically.
 dbt-snowflake>=1.11.0,<2.0.0

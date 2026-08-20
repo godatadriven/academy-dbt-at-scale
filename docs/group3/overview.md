@@ -44,7 +44,7 @@ By the end of today you will be able to:
 
 You'll work across both, more deeply than Group 2:
 
-- `mediapulse_platform` - specifically `dim_campaigns` (check its documentation against its actual access config) and the intermediate models' conditional business logic
+- `mediapulse_base` - specifically `dim_campaigns` (check its documentation against its actual access config) and the intermediate models' conditional business logic
 - `mediapulse_analytics` - specifically the `crm` and `streamview_legacy` domains (fully self-contained, no mesh dependency) versus `fct_content_performance`/`fct_ad_revenue` (mesh-consuming)
 
 See the [MediaPulse overview](../mediapulse/overview.md) for the underlying business context, and each project's own `README.md` for how they're structured.
