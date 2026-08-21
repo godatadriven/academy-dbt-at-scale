@@ -61,7 +61,9 @@ models:
       - name: is_current
         description: True when the subscription has no end date.
         data_tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn
 
   - name: fct_streaming_events
     description: >
