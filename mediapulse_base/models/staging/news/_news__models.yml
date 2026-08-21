@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: stg_news__articles
+    description: >
+      Staged articles from NewsNow, cleaned and renamed from news.articles.
+      Review the source definition for important notes about article_id uniqueness.
+    columns:
+      - name: article_id
+        description: >
+          Article identifier from the source system.
+        data_tests:
+          - not_null
+      - name: article_title
+        description: Article headline.
+        data_tests:
+          - not_null
+      - name: author_id
+        description: Foreign key to stg_news__authors.
+        data_tests:
+          - not_null
+      - name: category
+        description: Editorial category.
+      - name: published_at
+        description: Timestamp when the article first went live. There are no unpublished articles.
+      - name: updated_at
+        description: Timestamp of the most recent edit or republication.
+      - name: status
+        description: Current article lifecycle status.
+      - name: word_count
+        description: Number of words in the article body.
+
+  - name: stg_news__authors
+    description: >
+      Staged author records from NewsNow. One row per author.
+    columns:
+      - name: author_id
+        description: Primary key.
+      - name: author_name
+        description: Author's full name, should always be populated.
+      - name: email
+        description: Work email address.
+      - name: joined_at
+        description: Date the author joined the NewsNow team.
+
+  - name: stg_news__page_views
+    description: >
+      Staged page view events from NewsNow. One row per article view.
+    columns:
+      - name: view_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: article_id
+        description: Foreign key to stg_news__articles.
+        data_tests:
+          - not_null
+      - name: user_id
+        description: The user who viewed the article. Null for anonymous sessions.
+      - name: viewed_at
+        description: Timestamp of the page view event.
+        data_tests:
+          - not_null
+      - name: referrer_source
+        description: "Traffic source. Examples: search, social, direct, email."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["search", "social", "direct", "email"]

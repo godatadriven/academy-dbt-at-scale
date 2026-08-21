@@ -1,0 +1,37 @@
+version: 2
+
+seeds:
+  # CRM seeds simulate the advertiser sales/account-management system.
+  # They land in mediapulse_raw.crm so the project works without a real CRM integration.
+  - name: raw_crm__sales_reps
+    config:
+      database: mediapulse_raw
+      schema: crm
+      alias: sales_reps
+      column_types:
+        hire_date: varchar
+
+  - name: raw_crm__advertiser_accounts
+    config:
+      database: mediapulse_raw
+      schema: crm
+      alias: advertiser_accounts
+      column_types:
+        signed_at: varchar
+
+  - name: raw_crm__contracts
+    config:
+      database: mediapulse_raw
+      schema: crm
+      alias: contracts
+      column_types:
+        start_date: varchar
+        end_date: varchar
+
+  - name: raw_crm__touchpoints
+    config:
+      database: mediapulse_raw
+      schema: crm
+      alias: touchpoints
+      column_types:
+        occurred_at: varchar
