@@ -1,0 +1,23 @@
+touchpoint_id,advertiser_id,rep_id,touchpoint_type,occurred_at,notes
+tp_001,adv_a,rep_01,call,2024-01-03 09:00:00,Kickoff call for Q1 awareness campaign
+tp_002,adv_a,rep_01,email,2024-01-18 14:30:00,Sent mid-flight performance summary
+tp_003,adv_a,rep_01,meeting,2024-02-20 11:00:00,Renewal discussion for Q2
+tp_004,adv_b,rep_02,call,2024-01-08 10:15:00,Discussed Champions League placement
+tp_005,adv_b,rep_02,demo,2024-01-25 13:00:00,Walked through impression dashboard
+tp_006,adv_b,rep_02,email,2024-02-05 09:45:00,Sent renewal proposal
+tp_007,adv_c,rep_01,call,2024-01-12 15:00:00,Brand values campaign brief
+tp_008,adv_c,rep_01,meeting,2024-02-10 10:00:00,Reviewed podcast stories results
+tp_009,adv_d,rep_03,email,2024-01-02 08:30:00,Sent newsletter placement options
+tp_010,adv_d,rep_03,call,2024-02-01 11:30:00,Podcast series onboarding call
+tp_011,adv_e,rep_02,call,2024-01-18 09:00:00,Video series kickoff
+tp_012,adv_e,rep_02,meeting,2024-02-15 14:00:00,Mid-campaign check-in
+tp_013,adv_f,rep_04,email,2024-01-10 09:20:00,Recipe series sponsorship pitch
+tp_014,adv_f,rep_04,call,2024-01-30 16:00:00,Podcast spots follow-up
+tp_015,adv_g,rep_03,demo,2024-01-25 10:00:00,Discovery placement walkthrough
+tp_016,adv_g,rep_03,call,2024-02-10 13:15:00,Newsletter renewal discussion
+tp_017,adv_h,rep_04,call,2024-01-15 09:00:00,Awareness campaign kickoff
+tp_018,adv_h,rep_04,email,2024-02-08 10:00:00,Flagged underperformance vs. target
+tp_019,adv_h,rep_04,meeting,2024-02-19 15:30:00,At-risk account review
+tp_020,adv_a,rep_01,call,2024-03-01 09:30:00,Spring push planning
+tp_021,adv_c,rep_01,email,2024-02-25 08:00:00,Video campaign brief sent
+tp_022,adv_g,rep_03,email,2024-01-05 09:10:00,Discovery campaign proposal

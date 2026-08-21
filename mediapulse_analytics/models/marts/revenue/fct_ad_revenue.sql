@@ -6,13 +6,13 @@
 
 with spend as (
 
-    select * from {{ ref('stg_ads__spend') }}
+    select * from {{ ref('mediapulse_base', 'stg_ads__spend') }}
 
 ),
 
 campaigns as (
 
-    select * from {{ ref('stg_ads__campaigns') }}
+    select * from {{ ref('mediapulse_base', 'stg_ads__campaigns') }}
 
 ),
 
