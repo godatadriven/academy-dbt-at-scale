@@ -165,7 +165,7 @@ Paste the output into the appropriate YAML files, then fill in the descriptions.
 
 ## Step 6 - elementary
 
-[Elementary](https://docs.elementary-data.com/data-tests/dbt/dbt-package) is an open-source dbt package for data observability: anomaly detection tests, a run history dashboard, and alerting — without leaving dbt.
+[Elementary](https://docs.elementary-data.com/data-tests/dbt/dbt-package) is an open-source dbt package for data observability: anomaly detection tests, a run history dashboard, and alerting - without leaving dbt.
 
 Your goal is to install this package, run its models and apply some of its tests.
 

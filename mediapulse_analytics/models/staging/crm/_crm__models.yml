@@ -1,0 +1,96 @@
+version: 2
+
+models:
+  - name: stg_crm__sales_reps
+    description: >
+      Staged sales rep records from the CRM. One row per rep.
+    columns:
+      - name: rep_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: rep_name
+        description: Rep's full name.
+        data_tests:
+          - not_null
+      - name: region
+      - name: hire_date
+
+  - name: stg_crm__advertiser_accounts
+    description: >
+      Staged advertiser account records from the CRM. One row per advertiser.
+    columns:
+      - name: advertiser_id
+        description: Primary key. Matches advertiser_id in stg_ads__campaigns.
+        data_tests:
+          - not_null
+          - unique
+      - name: advertiser_name
+        description: Advertiser's company name.
+        data_tests:
+          - not_null
+      - name: industry
+      - name: sales_rep_id
+        description: Foreign key to stg_crm__sales_reps.
+        data_tests:
+          - not_null
+      - name: contract_tier
+        description: "Account tier. Expected: bronze, silver, gold, platinum."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["bronze", "silver", "gold", "platinum"]
+      - name: account_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["active", "at_risk", "churned"]
+      - name: signed_at
+
+  - name: stg_crm__contracts
+    description: >
+      Staged contract records from the CRM. One row per contract term.
+    columns:
+      - name: contract_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: advertiser_id
+        description: Foreign key to stg_crm__advertiser_accounts.
+        data_tests:
+          - not_null
+      - name: contract_value_cents
+      - name: start_date
+      - name: end_date
+      - name: renewal_status
+        description: "Contract status. Expected: active, renewed, churned."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["active", "renewed", "churned"]
+
+  - name: stg_crm__touchpoints
+    description: >
+      Staged sales activity records from the CRM. One row per touchpoint.
+    columns:
+      - name: touchpoint_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: advertiser_id
+        description: Foreign key to stg_crm__advertiser_accounts.
+        data_tests:
+          - not_null
+      - name: rep_id
+        description: Foreign key to stg_crm__sales_reps.
+      - name: touchpoint_type
+        description: "Activity type. Expected: call, email, meeting, demo."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["call", "email", "meeting", "demo"]
+      - name: occurred_at
+      - name: notes
