@@ -1,5 +1,6 @@
 {{
     config(
+        database='mediapulse_raw',
         schema='crm'
     )
 }}
