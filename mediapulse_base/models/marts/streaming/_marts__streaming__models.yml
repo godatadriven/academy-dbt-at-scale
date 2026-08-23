@@ -36,7 +36,6 @@ models:
         description: Primary key.
         data_tests:
           - not_null
-          - unique
       - name: user_id
         description: The subscriber.
         data_tests:
