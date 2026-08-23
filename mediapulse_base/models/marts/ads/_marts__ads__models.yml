@@ -2,7 +2,7 @@ models:
   - name: dim_campaigns
     description: >
       One row per AdConnect campaign. The conformed campaign dimension - both
-      fct_ad_impressions (mediapulse_platform) and the revenue marts in
+      fct_ad_impressions (mediapulse_base) and the revenue marts in
       mediapulse_analytics join to this for campaign attributes.
     columns:
       - name: campaign_id

@@ -1,6 +1,6 @@
 # mediapulse_analytics
 
-A dbt project that builds cross-domain analytics marts for MediaPulse: content performance across news and podcasts, ad revenue by campaign, a StreamView legacy-migration domain, and an advertiser CRM domain. The content and revenue marts have no staging layer or sources of their own; they consume staging models owned by `mediapulse_platform` through a dbt Mesh dependency. The legacy and CRM domains are fully self-contained, with their own sources, seeds, staging, and marts local to this project.
+A dbt project that builds cross-domain analytics marts for MediaPulse: content performance across news and podcasts, ad revenue by campaign, a StreamView legacy-migration domain, and an advertiser CRM domain. The content and revenue marts have no staging layer or sources of their own; they consume staging models owned by `mediapulse_base` through a dbt Mesh dependency. The legacy and CRM domains are fully self-contained, with their own sources, seeds, staging, and marts local to this project.
 
 ## Structure
 
@@ -33,14 +33,14 @@ The legacy domain reads from the `streamview_legacy` schema in `mediapulse_raw` 
 
 ## Cross-project dependency
 
-`dependencies.yml` declares `mediapulse_platform` as a dbt Mesh project dependency:
+`dependencies.yml` declares `mediapulse_base` as a dbt Mesh project dependency:
 
 ```yaml
 projects:
-  - name: mediapulse_platform
+  - name: mediapulse_base
 ```
 
-This lets `ref()` calls in `fct_content_performance` and `fct_ad_revenue` resolve to staging models defined in `mediapulse_platform` rather than requiring their own copies. The `streamview_legacy` and `crm` domains don't use this dependency at all - they only read from their own sources and seeds.
+This lets `ref()` calls in `fct_content_performance` and `fct_ad_revenue` resolve to staging models defined in `mediapulse_base` rather than requiring their own copies. The `streamview_legacy` and `crm` domains don't use this dependency at all - they only read from their own sources and seeds.
 
 ## Setup
 

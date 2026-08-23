@@ -58,10 +58,6 @@ models:
       - name: subscription_ended_at
         description: Timestamp the subscription ended. Null while still active.
       - name: monthly_fee_dollars
-      - name: is_current
-        description: True when the subscription has no end date.
-        data_tests:
-          - not_null
 
   - name: fct_streaming_events
     description: >

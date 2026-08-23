@@ -3,7 +3,7 @@
 
 with touchpoints as (
 
-    select * from {{ ref('stg_crm__touchpoints') }}
+    select * from {{ ref("int_adv_rep_touchpoint_cumcounts") }}
 
 ),
 

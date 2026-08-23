@@ -1,4 +1,4 @@
-# mediapulse_platform
+# mediapulse_base
 
 A dbt project that models MediaPulse's core content and advertising domains: news, podcasts, streaming, and ads. It owns the staging, intermediate, and marts layers for these domains and exposes shared dimensions and building blocks that other dbt projects can build on.
 
@@ -30,7 +30,7 @@ Materialization defaults, set in `dbt_project.yml`:
 | intermediate | view | protected |
 | marts | table | protected (streaming marts: public) |
 
-`protected` is the dbt default and means these models can be referenced anywhere within `mediapulse_platform`, but not from another dbt project unless a model overrides its access to `public`.
+`protected` is the dbt default and means these models can be referenced anywhere within `mediapulse_base`, but not from another dbt project unless a model overrides its access to `public`.
 
 ## Marts
 
@@ -46,7 +46,7 @@ Ten marts across four domains:
 
 ## How this relates to mediapulse_analytics
 
-`mediapulse_analytics` is a separate dbt project that declares this project as a dbt Mesh dependency (see its `dependencies.yml`). It resolves `ref()` calls to models such as `stg_news__articles`, `stg_podcasts__episodes`, `stg_ads__campaigns`, and `stg_ads__spend` against this project instead of defining its own staging layer for those domains. `mediapulse_platform` has no dependency in the other direction and does not reference anything from `mediapulse_analytics`.
+`mediapulse_analytics` is a separate dbt project that declares this project as a dbt Mesh dependency (see its `dependencies.yml`). It resolves `ref()` calls to models such as `stg_news__articles`, `stg_podcasts__episodes`, `stg_ads__campaigns`, and `stg_ads__spend` against this project instead of defining its own staging layer for those domains. `mediapulse_base` has no dependency in the other direction and does not reference anything from `mediapulse_analytics`.
 
 ## Setup
 

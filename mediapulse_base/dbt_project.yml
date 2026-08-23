@@ -1,8 +1,8 @@
-name: "mediapulse_platform"
+name: "mediapulse_base"
 version: "1.0.0"
 config-version: 2
 
-profile: "mediapulse_platform"
+profile: "mediapulse_base"
 
 model-paths:    ["models"]
 analysis-paths: ["analyses"]
@@ -20,7 +20,7 @@ clean-targets:
 # Model materialisation and access defaults
 # ---------------------------------------------------------------------------
 models:
-  mediapulse_platform:
+  mediapulse_base:
     staging:
       +materialized: view
       +access: public

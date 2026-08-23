@@ -2,9 +2,9 @@
 
 ## Your slice of MediaPulse
 
-The `mediapulse_platform` project already exists, with a working `staging → intermediate → marts` layering across news, podcasts, streaming, and ads. Your job across today is to work *with* that project the way a new hire would: understand it via tooling before touching code, refresh your modeling fundamentals against real models, close real test gaps, eliminate real repetition with macros, and try dbt's AI assistant on real work.
+The `mediapulse_base` project already exists, with a working `staging → intermediate → marts` layering across news, podcasts, streaming, and ads. Your job across today is to work *with* that project the way a new hire would: understand it via tooling before touching code, refresh your modeling fundamentals against real models, close real test gaps, eliminate real repetition with macros, and try dbt's AI assistant on real work.
 
-Everything in Part 1 and Part 2 lives in `mediapulse_platform`. You won't need `mediapulse_analytics` today - that's Group 2 and Group 3's territory once dbt Mesh enters the picture.
+Everything in Part 1 and Part 2 lives in `mediapulse_base`. You won't need `mediapulse_analytics` today - that's Group 2 and Group 3's territory once dbt Mesh enters the picture.
 
 ---
 
@@ -46,10 +46,10 @@ By the end of today you will be able to:
 
 ## Relevant project
 
-You'll work exclusively in `mediapulse_platform`:
+You'll work exclusively in `mediapulse_base`:
 
 - `models/staging/` - news, podcasts, streaming, ads
 - `models/intermediate/` - campaign spend allocation, episode listen completion
 - `models/marts/` - campaigns, dates, and (by the end of today) your own snapshot and incremental additions
 
-See the [MediaPulse overview](../mediapulse/overview.md) for the underlying business context and raw table details, and `mediapulse_platform/README.md` for the project's own structure notes.
+See the [MediaPulse overview](../mediapulse/overview.md) for the underlying business context and raw table details, and `mediapulse_base/README.md` for the project's own structure notes.
