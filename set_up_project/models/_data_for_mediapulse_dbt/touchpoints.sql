@@ -5,7 +5,7 @@
     )
 }}
 
-{% set spike_date = '2026-08-27' %}
+{% set spike_date = '2026-09-20' %}
 
 /* =====================================================================
    preview_touchpoints_with_fraud_spike.sql
