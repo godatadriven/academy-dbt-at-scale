@@ -105,15 +105,17 @@ nav:
   - "Group 3 - Power Users":
       - Overview: group3/overview.md
       - Part 1:
-        - 1. dbt Catalog & review: group3/1.1-dbt-catalog-and-review.md
+        - 1. dbt Catalog & onboarding: group3/1.1-dbt-catalog-and-review.md
         - 2. Testing coverage: group3/1.2-testing-coverage.md
-        - 3. Deployment & CI/CD: group3/1.3-deployment-and-cicd.md
-        - 4. dbt Mesh: group3/1.4-dbt-mesh.md
+        - 3. dbt Mesh: group3/1.3-dbt-mesh.md
+        - 4. Model governance with dbt Mesh: group3/1.4-dbt-mesh-part-2.md
+        - 5. Homework & wrap-up: group3/1.5-homework-and-wrap.md
       - Part 2:
         - 1. dbt Mesh review: group3/2.1-dbt-mesh-review.md
-        - 2. Advanced Testing: group3/2.2-advanced-testing.md
+        - 2. Deployment & CI/CD: group3/2.2-deployment-and-cicd.md
         - 3. Dynamic data masking: group3/2.3-dynamic-data-masking.md
-        - 4. Unit testing: group3/2.4-unit-testing.md
+        - 4. Advanced testing: group3/2.4-advanced-testing.md
+        - 5. Unit testing: group3/2.5-unit-testing.md
   # - "Group 4 - Power Users":
   #     - Overview: group4/overview.md
   #     - Checklists:
