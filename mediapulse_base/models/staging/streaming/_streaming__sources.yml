@@ -4,7 +4,7 @@ sources:
   - name: streaming
     description: >
       Tables from PulseStream, MediaPulse's in-house streaming platform. PulseStream
-      replaced the third-party StreamView platform in 2023 after StreamView's fixed
+      replaced the third-party StreamView platform in 2025 after StreamView's fixed
       batch-ingestion pipeline couldn't support real-time playback analytics -
       see the streamview_legacy source (mediapulse_analytics) for the archived data.
     database: mediapulse_raw
