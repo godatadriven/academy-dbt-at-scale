@@ -30,5 +30,3 @@ models:
     marts:
       +materialized: table
       +access: protected
-      streaming:
-        +access: public

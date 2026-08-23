@@ -48,6 +48,12 @@ Ten marts across four domains:
 
 `mediapulse_analytics` is a separate dbt project that declares this project as a dbt Mesh dependency (see its `dependencies.yml`). It resolves `ref()` calls to models such as `stg_news__articles`, `stg_podcasts__episodes`, `stg_ads__campaigns`, and `stg_ads__spend` against this project instead of defining its own staging layer for those domains. `mediapulse_base` has no dependency in the other direction and does not reference anything from `mediapulse_analytics`.
 
+## Streaming domain availability
+
+The `streaming` marts (`dim_content_catalog`, `dim_subscriptions`, `fct_streaming_events`) are already `access: public`, so `mediapulse_analytics` is *allowed* to `ref()` them today. We wouldn't recommend actually building on `fct_streaming_events` yet: its description documents a known, unresolved join fan-out (subscriptions are joined on `user_id` with no date-range filter), and we haven't shipped a fix.
+
+The plan is to fix the fan-out, let a couple of clean production runs land, and formally announce the streaming marts - `fct_streaming_events` in particular - as ready for cross-project consumption by the start of Q3 2027. If another project wants to build on the current streaming platform's data before then, talk to us first.
+
 ## Setup
 
 1. Open the Studio in dbt Platform
