@@ -24,3 +24,6 @@ encryptcontent.cache
 
 # Environment
 .venv
+
+# analysis
+set_up_project/analyses/
