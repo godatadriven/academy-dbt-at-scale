@@ -5,6 +5,8 @@
     )
 }}
 
+{% set spike_date = '2026-08-27' %}
+
 /* =====================================================================
    preview_touchpoints_with_fraud_spike.sql
 
@@ -175,7 +177,7 @@ spike_candidates AS (
  
 spike_rows AS (
     SELECT
-        '2026-08-27'::DATE AS touch_date,
+        {{ spike_date }}::DATE AS touch_date,
         c.rn AS daily_seq,
         -- bounds are hardcoded literals (UNIFORM requires constants) --
         -- they match the fixed array sizes defined in `spike_pools` above:
@@ -186,7 +188,7 @@ spike_rows AS (
         DATEADD(
             second,
             UNIFORM(21600, 72000, RANDOM()),  -- spread ~06:00 to ~20:00
-            '2026-08-27'::TIMESTAMP
+            {{ spike_date }}::TIMESTAMP
         ) AS occurred_at,
         p.notes_pool[UNIFORM(0, 13, RANDOM())]::STRING AS notes
     FROM spike_candidates c
