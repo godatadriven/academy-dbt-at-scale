@@ -1,6 +1,6 @@
 -- =========================================================================
 -- int_advertiser_rep_touchpoint_running_counts.sql
--- Snowflake SQL — intermediate model
+-- Snowflake SQL - intermediate model
 --
 -- Purpose:
 -- Row-level model. For every touchpoint, add a running (cumulative)
@@ -16,7 +16,7 @@
 -- - _ytd       : resets to 0 at the start of each calendar year
 --
 -- Source grain: one row per touchpoint (call/email/meeting/demo log entry)
--- Output grain: SAME as source — one row per touchpoint, just with
+-- Output grain: SAME as source - one row per touchpoint, just with
 -- extra running-count columns appended.
 -- =========================================================================
 with
