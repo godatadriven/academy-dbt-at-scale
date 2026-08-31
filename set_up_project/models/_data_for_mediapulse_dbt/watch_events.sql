@@ -14,7 +14,7 @@
 --      last date in the source data and yesterday (current_date - 1).
 --   2. Injects an anomaly on (spike_date - 1 day): ~120x the normal daily
 --      volume, all against "live" content, with much longer watch durations
---      than usual — simulating a live-event traffic spike.
+--      than usual - simulating a live-event traffic spike.
 --
 -- Edit before running:
 --   - spike_date          : the date you're targeting (spike lands the day before it)

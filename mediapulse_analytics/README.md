@@ -48,7 +48,7 @@ This lets `ref()` calls in `fct_content_performance` and `fct_ad_revenue` resolv
 
 Our CRM data is sourced from **SignalDesk**, the ad sales org's system of record since the 2021 migration off the legacy **PipelinePro** platform. 
 SignalDesk exports advertiser accounts, contracts, sales rep records, and sales touchpoints (calls, emails, meetings, demos) nightly via a vendor-managed extract. 
-We do not own this system — **RevOps** and the **SignalDesk** vendor team do — which means schema changes reach us as a heads-up in a Slack channel. 
+We do not own this system - **RevOps** and the **SignalDesk** vendor team do - which means schema changes reach us as a heads-up in a Slack channel. 
 The staging models in this project - `stg_crm__*` - absorb that unpredictability before it reaches anything downstream.
 
 #### Known Caveats and upcoming changes in source
@@ -56,7 +56,7 @@ The staging models in this project - `stg_crm__*` - absorb that unpredictability
 This is a note from **SignalDesk** team that ingests the source data:
 
 > Hey team - heads up on a few fields, since we have some caveats and want to inform you of some known some changes are coming.
-> - `contract_value_cents` is stored in cents, not dollars, a holdover from PipelinePro's original schema that SignalDesk never converted during migration. Divide by 100 downstream — don't assume the column name lies.
+> - `contract_value_cents` is stored in cents, not dollars, a holdover from PipelinePro's original schema that SignalDesk never converted during migration. Divide by 100 downstream - don't assume the column name lies.
 > - **Timestamp fields** (`hire_date`, `signed_at`, `start_date`, `end_date`, `occurred_at`) are exported in the CRM's local server time and not UTC. 
 > - `account_status` currently sends `active`, `at_risk`, `churned`. We're rolling out a **dunning-workflow feature** in two stages over the next two quarters. Naming conventions are locked in, just not live yet.
 >   - **Stage 1**: Includes the value `paused`, 
@@ -67,10 +67,10 @@ This is a note from **SignalDesk** team that ingests the source data:
 > - `touchpoint_type` is changing too, but the taxonomy review is still under discussion, so we can't hand you a list of new values just yet. Just keep in mind that new values will show up at some point, probably a couple at a time rather than all at once. If you see anything new, you can run it by us to confirm it was intentional on our end or an error.
 > - `contract_tier` will be affected by the migration of our ingestion engine this year. Tier values aren't changing, we can't currently guarantee consistent casing through the transition. You might see `Gold` from some pipelines and `gold` from others for a while.
 >
-> Last thing — if you ever spot bad data from us (a stray value, something that looks like a bug rather than a planned change, etc.), please document this - in SQL table(s) is fine. 
+> Last thing - if you ever spot bad data from us (a stray value, something that looks like a bug rather than a planned change, etc.), please document this - in SQL table(s) is fine. 
 > We want to align with any errors caught on either side (with us and within your dbt projects) so we can keep improving what we hand off to you.
 >
-> — RevOps / SignalDesk data team
+> - RevOps / SignalDesk data team
 
 
 ## Setup
