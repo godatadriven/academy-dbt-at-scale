@@ -107,6 +107,7 @@ sources:
             description: Date the author joined the platform.
 
       - name: page_views
+        identifier: views
         description: >
           One row per page view event. `user_id` may be null for
           anonymous/unauthenticated views.
