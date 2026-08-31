@@ -1,62 +1,128 @@
+# models/staging/_news__sources.yml
+
 version: 2
 
 sources:
   - name: news
+    description: >
+      Raw news platform data, loaded from the source system with no
+      transformation applied. Includes articles, authors, and page view
+      events. Known data quality issues in this layer: inconsistent
+      casing/synonyms in `category`, `status`, and `referrer_source`;
+      duplicate rows per natural key representing edits over time
+      (articles, authors); missing/sentinel values in survey score
+      columns (blank strings, `-1`, `"N/A"`).
     database: mediapulse_raw
     schema: news
-    description: >
-      Raw data from NewsNow, MediaPulse's digital news outlet.
-      Loaded by the upstream ingestion pipeline.
 
     tables:
       - name: articles
         description: >
-          All articles ever published on NewsNow, including subsequent versions.
-          A single article_id may appear more than once when an article is updated
-          or republished - each version gets its own row with a new updated_at timestamp.
+          One row per article version. An article may appear more than
+          once if it was edited after publishing (see `updated_at`) -
+          downstream models must deduplicate to the latest version per
+          `article_id`.
         columns:
           - name: article_id
-            description: Article identifier. See updated_at to identify the most recent version of each article.
+            description: >
+              Natural key for an article. Not unique in this raw table -
+              an article can have multiple rows representing edits over
+              time. Uniqueness only holds after deduplication downstream.
           - name: title
-            description: Article headline.
+            description: Headline of the article at the time of this row's version.
           - name: author_id
-            description: Foreign key to the authors table.
+            description: Foreign key to `raw_news__authors.author_id`.
           - name: category
-            description: Editorial category assigned at publication time.
+            description: >
+              Raw category label. Contains casing inconsistencies and
+              synonyms (e.g. "tech", "Tech", "technology" all represent
+              the same category) - not yet normalized.
           - name: published_at
-            description: Timestamp when the article first went live.
+            description: Timestamp the article was originally published.
           - name: updated_at
-            description: Timestamp of the most recent edit or republication.
+            description: >
+              Timestamp this specific row/version was last modified. Used
+              to determine the most recent version of an article when
+              deduplicating.
           - name: status
-            description: "Current article status. Expected values: draft, published, archived."
+            description: >
+              Raw publication status. Contains synonyms (e.g. "live" and
+              "published" mean the same thing) - not yet normalized.
           - name: word_count
-            description: Number of words in the article body.
+            description: Word count of the article at the time of this row's version.
+          - name: score_relevance
+            description: >
+              Average reader-survey relevance score, 0-10 scale. May be
+              blank or `-1` (sentinel for "not enough responses").
+          - name: score_clarity
+            description: >
+              Average reader-survey clarity score, 0-10 scale. May be
+              blank.
+          - name: score_bias
+            description: >
+              Average reader-survey perceived-bias score, on a 1-5 scale
+              (note: different scale from the other score columns). May
+              be blank.
+          - name: score_trust
+            description: >
+              Average reader-survey trust score, on a 0-100 scale (note:
+              different scale from the other score columns). May be
+              blank or the string `"N/A"`.
+          - name: score_engagement
+            description: >
+              Average reader-survey engagement score, 0-10 scale. This
+              survey dimension was only introduced partway through 2024 -
+              articles published before that date will always have this
+              blank, not just occasionally missing.
+          - name: num_responses_relevance
+            description: >
+              Number of survey responses backing `score_relevance`. May
+              be `0` or blank, including cases where a score value is
+              present but the response count wasn't recorded correctly.
+          - name: num_responses_clarity
+            description: Number of survey responses backing `score_clarity`.
+          - name: num_responses_bias
+            description: Number of survey responses backing `score_bias`.
+          - name: num_responses_trust
+            description: Number of survey responses backing `score_trust`.
+          - name: num_responses_engagement
+            description: >
+              Number of survey responses backing `score_engagement`. Will
+              be blank/zero for any article published before the
+              engagement dimension was introduced.
 
       - name: authors
-        description: NewsNow editorial staff and contributors.
+        description: One row per author.
         columns:
           - name: author_id
-            description: Primary key.
+            description: Primary key for an author.
+            tests:
+              - unique
+              - not_null
           - name: name
-            description: Author's full name.
+            description: Author's display name.
           - name: email
-            description: Author's work email address.
+            description: Author's email address.
           - name: joined_at
-            description: Date the author joined the NewsNow team.
+            description: Date the author joined the platform.
 
       - name: page_views
-        identifier: views
         description: >
-          Individual page view events recorded when a user loads an article page.
-          One row per view event.
+          One row per page view event. `user_id` may be null for
+          anonymous/unauthenticated views.
         columns:
           - name: view_id
-            description: Primary key.
+            description: Primary key for a page view event.
           - name: article_id
-            description: The article that was viewed.
+            description: Foreign key to `raw_news__articles.article_id`.
           - name: user_id
-            description: The user who viewed the article (nullable for anonymous sessions).
+            description: >
+              Foreign key to the user who viewed the article. Null for
+              anonymous views - do not assume this is always populated.
           - name: viewed_at
-            description: Timestamp of the page view event.
+            description: Timestamp the page view occurred.
           - name: referrer_source
-            description: "Traffic source. Examples: search, social, direct, email."
+            description: >
+              Raw referrer channel. Contains casing inconsistencies and
+              synonyms (e.g. "organic" and "search" mean the same thing) -
+              not yet normalized.
