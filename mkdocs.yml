@@ -84,7 +84,7 @@ nav:
         - 2. Modeling refresh: group1/1.2-modeling-refresh.md
         - 3. Testing: group1/1.3-testing.md
         - 4. Jinja & Macros: group1/1.4-jinja-and-macros.md
-        - 5. dbt Wizard: group1/1.5-dbt-wizard.md
+        - 5. Homework & wrap-up: group1/1.5-homework-and-wrap.md
       - Part 2:
         - 1. Advanced testing: group1/2.1-advanced-testing.md
         - 2. Snapshots: group1/2.2-snapshots.md
