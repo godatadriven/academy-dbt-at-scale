@@ -75,4 +75,4 @@ sources:
           - name: listen_duration_seconds
             description: How long the user actually listened.
           - name: platform
-            description: "Platform used. Expected: ios, android, web, alexa, other."
+            description: "Platform used. Expected: 1(ios), 2(web), 3(android), 4(other), 5(alexa)"

@@ -3,7 +3,7 @@ with episodes as (
     select
         episode_id,
         show_id,
-        published_at,
+        cast(published_at as timestamp) as published_at,
         duration_seconds
     from {{ ref('stg_podcasts__episodes') }}
 

@@ -10,7 +10,7 @@ renamed as (
         episode_id,
         show_id,
         title as episode_title,
-        cast(published_at as timestamp) as published_at,
+        published_at,
         duration_seconds,
         episode_season,
         category
@@ -20,3 +20,4 @@ renamed as (
 )
 
 select * from renamed
+

@@ -1,32 +1,18 @@
 -- fct_podcast_listens: one row per podcast listen session.
-
-with listens as (
-
-    select * from {{ ref('stg_podcasts__listens') }}
-
-),
-
-episodes as (
-
-    select
-        episode_id,
-        show_id,
-        duration_seconds
-
-    from {{ ref('stg_podcasts__episodes') }}
-
-)
+with listens as (select * from {{ ref("stg_podcasts__listens") }})
 
 select
-    listens.listen_id,
-    listens.episode_id,
-    episodes.show_id,
-    listens.user_id,
-    listens.listened_at,
-    listens.listen_duration_seconds,
-    least(1.0 * listens.listen_duration_seconds / nullif(episodes.duration_seconds, 0), 1.0)    as completion_rate,
-    listens.platform
+    listen_id,
+    episode_id,
+    show_id,
+    user_id,
+    listened_at,
+    listen_duration_seconds,
+    case
+        when total_length_seconds = 0
+        then 0
+        else round(1.0 * listen_duration_seconds / total_length_seconds, 4)
+    end as completion_rate,
+    platform
 
 from listens
-left join episodes
-    on listens.episode_id = episodes.episode_id
