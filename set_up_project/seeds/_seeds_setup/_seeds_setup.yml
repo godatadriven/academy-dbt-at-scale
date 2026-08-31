@@ -153,7 +153,7 @@ seeds:
         ping_date: varchar
         ping_time: varchar
 
-- name: raw_crm__sales_reps
+  - name: raw_crm__sales_reps
     config:
       database: mediapulse_raw
       schema: crm

@@ -2,89 +2,93 @@ version: 2
 
 sources:
   - name: streaming
-    description: ""
+    description: >
+      Tables from PulseStream, MediaPulse's in-house streaming platform. PulseStream
+      replaced the third-party StreamView platform in 2025 after StreamView's fixed
+      batch-ingestion pipeline couldn't support real-time playback analytics -
+      see the streamview_legacy source (mediapulse_analytics) for the archived data.
     database: mediapulse_raw
     tables:
       - name: content_ctlg
-        description: ""
+        description: One row per content item in the current PulseStream catalog.
         columns:
           - name: content_id
             data_type: varchar
-            description: ""
+            description: Primary key. Current PulseStream content identifier.
           - name: title
             data_type: varchar
-            description: ""
+            description: Content title as displayed in PulseStream.
           - name: genre
             data_type: varchar
-            description: ""
+            description: Content genre, e.g. drama, comedy, documentary.
           - name: ctnt_type
             data_type: varchar
-            description: ""
+            description: "Content format. Expected: tv_series, movie, live_event."
           - name: release_date
             data_type: varchar
-            description: ""
+            description: Date the content item was released.
           - name: runtime_minutes
             data_type: number
-            description: ""
+            description: Runtime in minutes.
 
       - name: subscriptions_lifecycle_rec
-        description: ""
+        description: One row per subscription lifecycle event (e.g. start, plan change, cancellation) for a PulseStream subscriber.
         columns:
           - name: subscription_id
             data_type: varchar
-            description: ""
+            description: Primary key. Identifier for the subscription record.
           - name: user_id
             data_type: varchar
-            description: ""
+            description: Current PulseStream subscriber identifier.
             data_tests:
               - not_null
           - name: plan_type
             data_type: varchar
-            description: ""
+            description: "Subscription plan. Expected: basic, standard, premium."
           - name: status
             data_type: varchar
-            description: ""
+            description: "Current subscription status. Expected: active, cancelled, expired."
           - name: start_date
             data_type: varchar
-            description: ""
+            description: Date the subscription began.
           - name: start_time
             data_type: varchar
-            description: ""
+            description: Time of day the subscription began.
           - name: end_date
             data_type: varchar
-            description: ""
+            description: Date the subscription ended. Null if still active.
           - name: end_time
             data_type: varchar
-            description: ""
+            description: Time of day the subscription ended. Null if still active.
           - name: monthly_fee_cents
             data_type: number
-            description: ""
+            description: Monthly subscription fee, in cents.
           - name: updated_at
             data_type: varchar
             description: Raw timestamp when the subscription event was last updated.
 
 
       - name: usr_watch_events_log
-        description: ""
+        description: One row per playback event logged by the PulseStream player.
         columns:
           - name: event_id
             data_type: varchar
-            description: ""
+            description: Primary key. Identifier for the watch event.
           - name: user_id
             data_type: varchar
-            description: ""
+            description: Foreign key to subscriptions_lifecycle_rec. Current PulseStream subscriber identifier.
           - name: content_id
             data_type: varchar
-            description: ""
+            description: Foreign key to content_ctlg. Current PulseStream content identifier.
           - name: watched_at
             data_type: varchar
-            description: ""
+            description: Timestamp when the watch event occurred.
           - name: watch_duration_seconds
             data_type: number
-            description: ""
+            description: Duration watched, in seconds.
           - name: device_type
             data_type: varchar
-            description: ""
+            description: Device the content was streamed on, e.g. mobile, tv, web.
           - name: batched_at
             data_type: timestamp_ntz
-            description: ""
+            description: Timestamp when this event was batched and loaded into the raw table.

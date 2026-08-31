@@ -1,0 +1,1327 @@
+touchpoint_id,advertiser_id,rep_id,touchpoint_type,occurred_at,notes
+tp_0001,adv_c,rep_02,email,2024-01-02 17:50:00,XXX
+tp_0002,adv_c,rep_02,meeting,2024-01-03 11:20:00,Client's marketing director joined call to discuss co-op marketing funds
+tp_0003,adv_k,rep_07,meeting,2024-01-03 12:30:00,Rescheduled brand values campaign brief meeting due to client conflict
+tp_0004,adv_c,rep_02,email,2024-01-03 13:50:00,"Client requested changes to Q2 renewal, will revise and resend"
+tp_0005,adv_p,rep_05,call,2024-01-04 13:50:00,Client pushed back on pricing during recipe series sponsorship discussion
+tp_0006,adv_o,rep_02,call,2024-01-04 16:20:00,Rescheduled holiday campaign brief meeting due to client conflict
+tp_0007,adv_o,rep_02,call,2024-01-07 08:30:00,Kickoff call for audience segment review
+tp_0008,adv_h,rep_06,call,2024-01-07 11:45:00,Great meeting - advertiser committed to renewing after mid-flight performance summary review
+tp_0009,adv_t,rep_06,call,2024-01-07 12:00:00,
+tp_0010,adv_l,rep_05,email,2024-01-07 15:10:00,"Flagged concerns about programmatic pilot discussion performance, escalating internally"
+tp_0011,adv_p,rep_07,meeting,2024-01-08 09:05:00,Advertiser asked for case studies related to brand values campaign brief
+tp_0012,adv_h,rep_04,call,2024-01-09 08:45:00,Sent updated deck covering recipe series sponsorship to stakeholders
+tp_0013,adv_n,rep_02,email,2024-01-09 08:45:00,Scheduled follow-up meeting to continue co-op marketing funds conversation
+tp_0014,adv_k,rep_07,call,2024-01-10 09:10:00,"Flagged concerns about audience segment review performance, escalating internally"
+tp_0015,adv_q,rep_08,demo,2024-01-11 08:05:00,no comment.
+tp_0016,adv_t,rep_05,meeting,2024-01-11 11:05:00,Y.
+tp_0017,adv_l,rep_05,call,2024-01-12 15:10:00,Sure
+tp_0018,adv_c,rep_02,email,2024-01-15 11:05:00,"Flagged concerns about co-op marketing funds performance, escalating internally"
+tp_0019,adv_t,rep_05,email,2024-01-15 12:15:00,<p>Called client re: renewal</p>
+tp_0020,adv_h,rep_07,demo,2024-01-16 10:15:00,Discussed —important— deadline for co-op funds
+tp_0021,adv_h,rep_07,call,2024-01-17 07:45:00,Rescheduled discovery placement walkthrough meeting due to client conflict
+tp_0022,adv_d,rep_02,call,2024-01-17 09:20:00,Walked client through programmatic pilot discussion
+tp_0023,adv_h,rep_07,call,2024-01-17 11:45:00,	
+tp_0024,adv_h,rep_07,meeting,2024-01-18 15:45:00,Walked client through Q4 upsell conversation
+tp_0025,adv_s,rep_06,call,2024-01-19 12:20:00,"Notes: n/a for this call, but discussed Q3 pricing at length"
+tp_0026,adv_n,rep_02,call,2024-01-19 12:30:00,"Flagged concerns about programmatic pilot discussion performance, escalating internally"
+tp_0027,adv_o,rep_03,meeting,2024-01-20 10:30:00,Discussed recipe series sponsorship with client
+tp_0028,adv_e,rep_01,meeting,2024-01-20 11:15:00,"Reviewed contract terms tied to pricing negotiation, legal reviewing redlines"
+tp_0029,adv_n,rep_02,call,2024-01-20 11:45:00,Walked client through contract renewal terms
+tp_0030,adv_b,rep_04,email,2024-01-21 16:45:00,Sent updated deck covering brand values campaign brief to stakeholders
+tp_0031,adv_t,rep_06,call,2024-01-22 17:10:00,Client pushed back on pricing during Q4 upsell conversation discussion
+tp_0032,adv_n,rep_02,demo,2024-01-23 07:15:00,Sent updated deck covering holiday campaign brief to stakeholders
+tp_0033,adv_i,rep_07,email,2024-01-24 12:05:00,Réunion avec le client à propos du renouvellement
+tp_0034,adv_s,rep_05,demo,2024-01-24 15:15:00,"Flagged concerns about newsletter renewal performance, escalating internally"
+tp_0035,adv_t,rep_06,email,2024-01-24 18:20:00,Advertiser asked for case studies related to Q1 awareness campaign
+tp_0036,adv_a,rep_01,meeting,2024-01-26 09:30:00,"Client requested changes to co-op marketing funds, will revise and resend"
+tp_0037,adv_t,rep_05,call,2024-01-26 09:50:00,Discussed recipe series sponsorship with client
+tp_0038,adv_o,rep_02,email,2024-01-27 12:05:00,"Reviewed contract terms tied to programmatic pilot discussion, legal reviewing redlines"
+tp_0039,adv_o,rep_02,email,2024-01-27 16:20:00,"Client requested changes to audience segment review, will revise and resend"
+tp_0040,adv_s,rep_05,email,2024-01-29 07:10:00,Kickoff call for Champions League placement
+tp_0041,adv_r,rep_01,email,2024-01-29 10:20:00,Advertiser asked for case studies related to at-risk account review
+tp_0042,adv_j,rep_07,demo,2024-01-29 18:30:00,"Reviewed CTV inventory pitch results, positive feedback from advertiser"
+tp_0043,adv_o,rep_03,call,2024-01-31 08:50:00,"quarterly business review - client is interested, sending proposal next week"
+tp_0044,adv_o,rep_02,demo,2024-02-03 13:00:00,"Reviewed video series kickoff results, positive feedback from advertiser"
+tp_0045,adv_i,rep_07,call,2024-02-03 14:20:00,Walked client through spring push planning
+tp_0046,adv_q,rep_08,email,2024-02-03 17:00:00,Discussed Q2 renewal with client
+tp_0047,adv_t,rep_06,meeting,2024-02-04 13:30:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_0048,adv_p,rep_07,email,2024-02-04 13:45:00,Walked client through social media bundle upsell
+tp_0049,adv_l,rep_02,email,2024-02-04 16:15:00,"Client requested changes to recipe series sponsorship, will revise and resend"
+tp_0050,adv_c,rep_02,meeting,2024-02-07 09:30:00,Walked client through spring push planning
+tp_0051,adv_r,rep_01,call,2024-02-07 10:10:00,"TBD on renewal date, but client confirmed budget for next year"
+tp_0052,adv_s,rep_06,demo,2024-02-07 17:10:00,K
+tp_0053,adv_f,rep_04,call,2024-02-07 17:15:00,Client pushed back on pricing during Q2 renewal discussion
+tp_0054,adv_o,rep_03,meeting,2024-02-08 16:50:00,..
+tp_0055,adv_m,rep_06,email,2024-02-10 14:50:00,"Reviewed holiday campaign brief results, positive feedback from advertiser"
+tp_0056,adv_q,rep_08,call,2024-02-11 12:30:00,Rescheduled Q3 budget planning meeting due to client conflict
+tp_0057,adv_m,rep_06,meeting,2024-02-11 18:05:00,   
+tp_0058,adv_s,rep_06,call,2024-02-12 15:05:00,"  
+  "
+tp_0059,adv_i,rep_07,email,2024-02-12 18:50:00,"Client requested changes to Q4 upsell conversation, will revise and resend"
+tp_0060,adv_d,rep_05,email,2024-02-13 13:00:00,Test
+tp_0061,adv_f,rep_04,call,2024-02-14 10:00:00,Rescheduled impression dashboard walkthrough meeting due to client conflict
+tp_0062,adv_e,rep_01,email,2024-02-14 13:30:00,"Reviewed contract terms tied to spring push planning, legal reviewing redlines"
+tp_0063,adv_s,rep_07,call,2024-02-14 17:50:00,Status update call
+tp_0064,adv_d,rep_02,email,2024-02-14 18:20:00,Client's marketing director joined call to discuss Q2 renewal
+tp_0065,adv_h,rep_07,call,2024-02-15 13:50:00,no notes
+tp_0066,adv_r,rep_04,call,2024-02-16 09:30:00,Client pushed back on pricing during Q1 awareness campaign discussion
+tp_0067,adv_h,rep_07,meeting,2024-02-17 08:20:00,"Q2 renewal - client is interested, sending proposal next week"
+tp_0068,adv_l,rep_05,meeting,2024-02-17 17:05:00,Advertiser expanded scope of co-op marketing funds to include additional markets
+tp_0069,adv_t,rep_05,call,2024-02-18 17:05:00,"Reviewed contract terms tied to Q2 renewal, legal reviewing redlines
+
+Best,
+J."
+tp_0070,adv_j,rep_01,meeting,2024-02-19 13:50:00,Client's marketing director joined call to discuss at-risk account review
+tp_0071,adv_s,rep_07,call,2024-02-19 17:20:00,
+tp_0072,adv_a,rep_01,demo,2024-02-21 15:15:00,
+tp_0073,adv_d,rep_04,call,2024-02-23 17:30:00,Hi
+tp_0074,adv_r,rep_01,email,2024-02-26 08:30:00,Scheduled follow-up meeting to continue at-risk account review conversation
+tp_0075,adv_t,rep_06,call,2024-02-26 11:45:00,Sent creative refresh request details via email
+tp_0076,adv_c,rep_02,call,2024-02-27 11:30:00,999999
+tp_0077,adv_q,rep_08,email,2024-02-29 09:30:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_0078,adv_h,rep_06,email,2024-03-01 08:15:00,"Q2 renewal - client is interested, sending proposal next week"
+tp_0079,adv_k,rep_07,email,2024-03-01 09:05:00,Advertiser expanded scope of influencer partnership pitch to include additional markets
+tp_0080,adv_h,rep_07,meeting,2024-03-01 15:00:00,"Notes: n/a for this call, but discussed Q3 pricing at length"
+tp_0081,adv_n,rep_02,meeting,2024-03-02 11:15:00,"Discussed Q2 renewal - no major concerns, moving forward as planned"
+tp_0082,adv_a,rep_01,call,2024-03-03 18:30:00,"Left voicemail regarding programmatic pilot discussion, awaiting callback"
+tp_0083,adv_q,rep_08,meeting,2024-03-05 07:15:00,Advertiser asked for case studies related to mid-flight performance summary
+tp_0084,adv_l,rep_05,meeting,2024-03-05 18:00:00,nothing much
+tp_0085,adv_h,rep_06,demo,2024-03-06 15:00:00,no notes
+tp_0086,adv_o,rep_02,meeting,2024-03-08 09:50:00,"Discussed mid-flight performance summary - no major concerns, moving forward as planned"
+tp_0087,adv_a,rep_01,call,2024-03-08 10:30:00,"Discussed attribution report walkthrough - no major concerns, moving forward as planned"
+tp_0088,adv_t,rep_06,email,2024-03-08 14:00:00,"Flagged concerns about Q1 awareness campaign performance, escalating internally"
+tp_0089,adv_h,rep_07,email,2024-03-09 08:00:00,Sent quarterly business review details via email
+tp_0090,adv_s,rep_06,email,2024-03-10 07:45:00,Client pushed back on pricing during spring push planning discussion
+tp_0091,adv_t,rep_05,call,2024-03-12 13:20:00,Discussed programmatic pilot discussion with client
+tp_0092,adv_c,rep_02,meeting,2024-03-14 07:10:00,Advertiser expanded scope of social media bundle upsell to include additional markets
+tp_0093,adv_l,rep_05,call,2024-03-15 11:05:00,Done
+tp_0094,adv_t,rep_05,call,2024-03-15 17:50:00,"Reviewed quarterly business review results, positive feedback from advertiser"
+tp_0095,adv_j,rep_05,meeting,2024-03-17 10:10:00,Walked client through Champions League placement
+tp_0096,adv_i,rep_07,email,2024-03-18 17:05:00,Scheduled follow-up meeting to continue contract renewal terms conversation
+tp_0097,adv_d,rep_05,email,2024-03-19 15:05:00,"TBD on renewal date, but client confirmed budget for next year"
+tp_0098,adv_d,rep_04,email,2024-03-19 17:05:00,Advertiser expanded scope of spring push planning to include additional markets
+tp_0099,adv_a,rep_01,call,2024-03-20 18:20:00,follow up call
+tp_0100,adv_f,rep_04,email,2024-03-21 13:10:00,Client pushed back on pricing during Q3 budget planning discussion
+tp_0101,adv_k,rep_07,meeting,2024-03-21 14:50:00,Client's marketing director joined call to discuss quarterly business review
+tp_0102,adv_s,rep_07,meeting,2024-03-21 18:20:00,12345
+tp_0103,adv_s,rep_07,email,2024-03-24 14:50:00,Kickoff call for audience segment review
+tp_0104,adv_i,rep_07,meeting,2024-03-25 16:00:00,"Flagged concerns about Q2 renewal performance, escalating internally"
+tp_0105,adv_i,rep_04,meeting,2024-03-27 10:20:00,Great meeting - advertiser committed to renewing after quarterly business review review
+tp_0106,adv_s,rep_06,email,2024-03-27 12:30:00,Sent at-risk account review details via email
+tp_0107,adv_d,rep_04,call,2024-03-27 15:10:00,"Left voicemail regarding spring push planning, awaiting callback"
+tp_0108,adv_b,rep_02,email,2024-03-28 10:45:00,Client's marketing director joined call to discuss contract renewal terms
+tp_0109,adv_h,rep_06,call,2024-03-29 13:05:00,Null
+tp_0110,adv_s,rep_07,call,2024-04-01 07:15:00,check in
+tp_0111,adv_c,rep_02,meeting,2024-04-02 11:30:00,
+tp_0112,adv_s,rep_07,email,2024-04-02 13:30:00,"Discussed at-risk account review with client
+
+Thanks,
+Alex"
+tp_0113,adv_i,rep_02,call,2024-04-03 18:05:00,Advertiser expanded scope of Champions League placement to include additional markets
+tp_0114,adv_p,rep_05,demo,2024-04-04 07:15:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0115,adv_q,rep_08,email,2024-04-04 12:00:00,0
+tp_0116,adv_k,rep_07,call,2024-04-05 12:30:00,"Flagged concerns about spring push planning performance, escalating internally"
+tp_0117,adv_l,rep_02,call,2024-04-05 13:30:00,Client pushed back on pricing during holiday campaign brief discussion
+tp_0118,adv_p,rep_07,meeting,2024-04-07 16:30:00,"Client requested changes to programmatic pilot discussion, will revise and resend"
+tp_0119,adv_h,rep_04,demo,2024-04-09 07:20:00,"Client requested changes to at-risk account review, will revise and resend"
+tp_0120,adv_j,rep_01,meeting,2024-04-09 14:10:00,"creative refresh request - client is interested, sending proposal next week"
+tp_0121,adv_j,rep_01,meeting,2024-04-12 08:05:00,Advertiser asked for case studies related to recipe series sponsorship
+tp_0122,adv_h,rep_06,call,2024-04-12 17:10:00,Advertiser asked for case studies related to podcast series onboarding
+tp_0123,adv_s,rep_06,call,2024-04-13 13:50:00,
+tp_0124,adv_k,rep_07,email,2024-04-13 17:20:00,Walked client through at-risk account review
+tp_0125,adv_m,rep_06,email,2024-04-13 18:15:00,123
+tp_0126,adv_l,rep_02,demo,2024-04-15 08:05:00,Kickoff call for Q2 renewal
+tp_0127,adv_j,rep_05,email,2024-04-16 10:15:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0128,adv_d,rep_05,call,2024-04-16 16:15:00,Walked client through quarterly business review
+tp_0129,adv_j,rep_01,call,2024-04-17 08:30:00,Discussed pricing negotiation with client
+tp_0130,adv_t,rep_02,call,2024-04-18 12:30:00,Kickoff call for mid-flight performance summary
+tp_0131,adv_m,rep_06,call,2024-04-19 14:15:00,Sent updated deck covering social media bundle upsell to stakeholders
+tp_0132,adv_l,rep_05,meeting,2024-04-21 09:05:00,Rescheduled Champions League placement meeting due to client conflict
+tp_0133,adv_o,rep_02,email,2024-04-21 16:05:00,Great meeting - advertiser committed to renewing after influencer partnership pitch review
+tp_0134,adv_p,rep_07,call,2024-04-22 12:15:00,"Reviewed quarterly business review results, positive feedback from advertiser"
+tp_0135,adv_t,rep_05,email,2024-04-23 09:45:00,Discussed pricing &amp; timeline with client
+tp_0136,adv_e,rep_01,call,2024-04-23 11:15:00, NA 
+tp_0137,adv_s,rep_06,meeting,2024-04-23 18:00:00,Status update call
+tp_0138,adv_a,rep_01,email,2024-04-24 08:10:00,Rescheduled CTV inventory pitch meeting due to client conflict
+tp_0139,adv_q,rep_08,email,2024-04-24 18:10:00,Kickoff call for programmatic pilot discussion
+tp_0140,adv_i,rep_04,email,2024-04-25 10:50:00,No notes
+tp_0141,adv_i,rep_07,email,2024-04-26 11:50:00,Sent updated deck covering audience segment review to stakeholders
+tp_0142,adv_o,rep_03,call,2024-04-27 07:05:00,"Flagged concerns about mid-flight performance summary performance, escalating internally"
+tp_0143,adv_s,rep_06,call,2024-04-27 08:10:00,N/A - see CRM attachment for full call summary and next steps
+tp_0144,adv_i,rep_04,call,2024-04-28 10:00:00,Sent video series kickoff details via email
+tp_0145,adv_c,rep_02,demo,2024-04-29 09:00:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0146,adv_l,rep_02,meeting,2024-04-29 15:20:00,"Flagged concerns about CTV inventory pitch performance, escalating internally"
+tp_0147,adv_i,rep_04,meeting,2024-04-30 07:30:00,"Flagged concerns about Q3 budget planning performance, escalating internally"
+tp_0148,adv_k,rep_07,call,2024-05-01 14:00:00,"Rescheduled creative refresh request meeting due to client conflict
+
+Sent from my iPhone"
+tp_0149,adv_a,rep_01,email,2024-05-02 16:15:00,
+tp_0150,adv_m,rep_06,call,2024-05-04 18:15:00,Sent video series kickoff details via email
+tp_0151,adv_o,rep_02,call,2024-05-04 18:20:00,"Reviewed newsletter renewal results, positive feedback from advertiser"
+tp_0152,adv_j,rep_05,call,2024-05-05 07:50:00,Sent updated deck covering at-risk account review to stakeholders
+tp_0153,adv_r,rep_02,meeting,2024-05-05 10:45:00,Advertiser expanded scope of contract renewal terms to include additional markets
+tp_0154,adv_s,rep_05,call,2024-05-06 12:05:00,"social media bundle upsell - client is interested, sending proposal next week"
+tp_0155,adv_s,rep_06,call,2024-05-06 17:05:00,Sent CTV inventory pitch details via email
+tp_0156,adv_c,rep_02,call,2024-05-09 17:50:00,tbd
+tp_0157,adv_i,rep_07,call,2024-05-09 18:10:00,"Client requested changes to social media bundle upsell, will revise and resend"
+tp_0158,adv_a,rep_01,call,2024-05-10 07:20:00,Sent quarterly business review details via email
+tp_0159,adv_t,rep_06,email,2024-05-10 11:45:00,Great meeting - advertiser committed to renewing after recipe series sponsorship review
+tp_0160,adv_h,rep_06,meeting,2024-05-10 18:15:00,"Discussed brand values campaign brief - no major concerns, moving forward as planned"
+tp_0161,adv_t,rep_05,email,2024-05-11 11:00:00,Client pushed back on pricing during recipe series sponsorship discussion
+tp_0162,adv_q,rep_08,email,2024-05-11 18:10:00,"Follow-up on newsletter renewal, client had questions about timeline"
+tp_0163,adv_o,rep_03,demo,2024-05-13 07:50:00,  n/a  
+tp_0164,adv_t,rep_05,email,2024-05-13 10:20:00,"holiday campaign brief - client is interested, sending proposal next week"
+tp_0165,adv_a,rep_01,call,2024-05-13 17:20:00,Advertiser asked for case studies related to contract renewal terms
+tp_0166,adv_s,rep_05,email,2024-05-16 12:45:00,Advertiser asked for case studies related to contract renewal terms
+tp_0167,adv_t,rep_06,email,2024-05-16 17:00:00,
+tp_0168,adv_a,rep_01,meeting,2024-05-17 11:05:00,"Flagged concerns about Champions League placement performance, escalating internally"
+tp_0169,adv_l,rep_05,email,2024-05-17 14:00:00,meeting occurred
+tp_0170,adv_h,rep_07,demo,2024-05-18 11:00:00,Sent updated deck covering audience segment review to stakeholders
+tp_0171,adv_i,rep_04,call,2024-05-20 18:00:00,"Left voicemail regarding programmatic pilot discussion, awaiting callback"
+tp_0172,adv_a,rep_01,call,2024-05-21 15:50:00,
+tp_0173,adv_a,rep_01,meeting,2024-05-22 10:20:00,Sent updated deck covering CTV inventory pitch to stakeholders
+tp_0174,adv_q,rep_08,call,2024-05-22 17:05:00,"Client requested changes to social media bundle upsell, will revise and resend"
+tp_0175,adv_h,rep_07,call,2024-05-23 15:20:00,Client pushed back on pricing during CTV inventory pitch discussion
+tp_0176,adv_i,rep_07,email,2024-05-24 15:45:00, None 
+tp_0177,adv_o,rep_03,email,2024-05-25 18:20:00,Nothing to report
+tp_0178,adv_q,rep_08,email,2024-05-27 10:20:00,Discussed mid-flight performance summary with client
+tp_0179,adv_e,rep_01,demo,2024-05-30 13:05:00,Scheduled follow-up meeting to continue spring push planning conversation
+tp_0180,adv_r,rep_02,call,2024-05-30 14:05:00,"Follow-up on video series kickoff, client had questions about timeline
+
+Sent from my iPhone"
+tp_0181,adv_s,rep_06,meeting,2024-05-30 18:45:00,
+tp_0182,adv_d,rep_02,call,2024-05-31 08:10:00,Client pushed back on pricing during creative refresh request discussion
+tp_0183,adv_j,rep_05,demo,2024-05-31 08:15:00,Great meeting - advertiser committed to renewing after Q2 renewal review
+tp_0184,adv_q,rep_08,email,2024-05-31 12:50:00,n/a
+tp_0185,adv_s,rep_07,meeting,2024-06-01 09:20:00,"Advertiser expanded scope of brand values campaign brief to include additional markets
+
+Sent from my iPhone"
+tp_0186,adv_s,rep_06,call,2024-06-01 18:30:00,Advertiser asked for case studies related to audience segment review
+tp_0187,adv_h,rep_07,email,2024-06-03 12:00:00,Walked client through Q3 budget planning
+tp_0188,adv_j,rep_01,call,2024-06-03 18:05:00,Advertiser asked for case studies related to creative refresh request
+tp_0189,adv_r,rep_02,meeting,2024-06-05 11:05:00,Client's marketing director joined call to discuss programmatic pilot discussion
+tp_0190,adv_s,rep_06,demo,2024-06-05 18:50:00,"Discussed quarterly business review - no major concerns, moving forward as planned"
+tp_0191,adv_e,rep_01,meeting,2024-06-06 09:10:00,"influencer partnership pitch - client is interested, sending proposal next week"
+tp_0192,adv_q,rep_08,demo,2024-06-06 11:20:00,Walked client through holiday campaign brief
+tp_0193,adv_m,rep_06,call,2024-06-06 18:05:00,Scheduled follow-up meeting to continue creative refresh request conversation
+tp_0194,adv_h,rep_07,call,2024-06-06 18:45:00,
+tp_0195,adv_l,rep_02,call,2024-06-07 13:20:00,Scheduled follow-up meeting to continue CTV inventory pitch conversation
+tp_0196,adv_i,rep_04,call,2024-06-08 15:30:00,Discussed social media bundle upsell with client
+tp_0197,adv_m,rep_06,call,2024-06-08 18:05:00,Discussed pricing &amp; timeline with client
+tp_0198,adv_s,rep_06,meeting,2024-06-09 18:20:00,Walked client through holiday campaign brief
+tp_0199,adv_l,rep_02,meeting,2024-06-10 08:20:00,Sent updated deck covering impression dashboard walkthrough to stakeholders
+tp_0200,adv_a,rep_01,demo,2024-06-10 14:00:00,"Left voicemail regarding discovery placement walkthrough, awaiting callback"
+tp_0201,adv_m,rep_06,email,2024-06-10 14:05:00,IMPORTANT: BUDGET APPROVED FOR Q4 CAMPAIGN
+tp_0202,adv_d,rep_04,demo,2024-06-11 12:30:00,Client pushed back on pricing during new product launch tie-in discussion
+tp_0203,adv_h,rep_06,email,2024-06-12 13:20:00,Scheduled follow-up meeting to continue brand values campaign brief conversation
+tp_0204,adv_o,rep_02,call,2024-06-12 13:45:00,N
+tp_0205,adv_q,rep_08,email,2024-06-13 15:15:00,"Notes: n/a for this call, but discussed Q3 pricing at length"
+tp_0206,adv_e,rep_01,meeting,2024-06-14 10:10:00,---
+tp_0207,adv_a,rep_01,email,2024-06-14 15:00:00,Scheduled follow-up meeting to continue Q4 upsell conversation conversation
+tp_0208,adv_j,rep_01,call,2024-06-16 11:05:00,Advertiser expanded scope of podcast series onboarding to include additional markets
+tp_0209,adv_r,rep_04,call,2024-06-17 14:45:00,Walked client through holiday campaign brief
+tp_0210,adv_i,rep_04,call,2024-06-19 12:10:00,Nope
+tp_0211,adv_j,rep_01,call,2024-06-20 08:00:00,"Left voicemail regarding pricing negotiation, awaiting callback"
+tp_0212,adv_l,rep_05,email,2024-06-20 15:00:00,yes
+tp_0213,adv_j,rep_07,meeting,2024-06-20 17:05:00,Client pushed back on pricing during pricing negotiation discussion
+tp_0214,adv_s,rep_05,email,2024-06-21 07:45:00,Discussed Champions League placement with client
+tp_0215,adv_t,rep_06,demo,2024-06-21 10:45:00,Kickoff call for Q2 renewal
+tp_0216,adv_i,rep_07,call,2024-06-21 12:20:00,"Left voicemail regarding quarterly business review, awaiting callback"
+tp_0217,adv_r,rep_04,call,2024-06-22 07:30:00,Advertiser expanded scope of at-risk account review to include additional markets
+tp_0218,adv_l,rep_02,email,2024-06-23 07:00:00,Client's marketing director joined call to discuss mid-flight performance summary
+tp_0219,adv_s,rep_05,call,2024-06-23 16:05:00,"Discussed new product launch tie-in - no major concerns, moving forward as planned"
+tp_0220,adv_t,rep_02,email,2024-06-24 11:05:00,Sent updated deck covering contract renewal terms to stakeholders
+tp_0221,adv_g,rep_01,meeting,2024-06-24 17:30:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0222,adv_i,rep_04,call,2024-06-25 14:05:00,N/A
+tp_0223,adv_t,rep_06,meeting,2024-06-26 13:50:00,Discussed influencer partnership pitch with client
+tp_0224,adv_o,rep_03,call,2024-06-26 14:10:00,Advertiser asked for case studies related to recipe series sponsorship
+tp_0225,adv_j,rep_05,meeting,2024-06-27 07:45:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0226,adv_d,rep_02,call,2024-06-27 08:00:00,"Client requested changes to influencer partnership pitch, will revise and resend"
+tp_0227,adv_d,rep_05,email,2024-06-28 09:45:00,IMPORTANT: BUDGET APPROVED FOR Q4 CAMPAIGN
+tp_0228,adv_o,rep_03,call,2024-06-29 11:45:00,No notes field filled originally; adding context now: client is happy
+tp_0229,adv_o,rep_02,demo,2024-06-30 14:30:00,Nil
+tp_0230,adv_o,rep_02,email,2024-07-01 09:20:00,Advertiser expanded scope of audience segment review to include additional markets
+tp_0231,adv_s,rep_07,call,2024-07-02 09:45:00,Great meeting - advertiser committed to renewing after contract renewal terms review
+tp_0232,adv_s,rep_06,meeting,2024-07-03 07:20:00,Advertiser expanded scope of contract renewal terms to include additional markets
+tp_0233,adv_o,rep_02,call,2024-07-03 16:10:00,"Q1 awareness campaign - client is interested, sending proposal next week"
+tp_0234,adv_k,rep_07,meeting,2024-07-04 16:45:00,"Follow-up on quarterly business review, client had questions about timeline"
+tp_0235,adv_l,rep_05,meeting,2024-07-04 17:00:00,"Discussed creative refresh request - no major concerns, moving forward as planned"
+tp_0236,adv_g,rep_01,email,2024-07-05 09:45:00,Walked client through social media bundle upsell
+tp_0237,adv_l,rep_02,call,2024-07-07 14:45:00,Scheduled follow-up meeting to continue recipe series sponsorship conversation
+tp_0238,adv_q,rep_08,call,2024-07-08 14:05:00,Advertiser asked for case studies related to impression dashboard walkthrough
+tp_0239,adv_l,rep_05,email,2024-07-10 09:30:00,"Client requested changes to co-op marketing funds, will revise and resend"
+tp_0240,adv_l,rep_05,call,2024-07-11 08:45:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0241,adv_o,rep_02,call,2024-07-13 11:50:00,Great meeting - advertiser committed to renewing after social media bundle upsell review
+tp_0242,adv_c,rep_02,email,2024-07-13 16:20:00,"Follow-up on co-op marketing funds, client had questions about timeline"
+tp_0243,adv_h,rep_07,call,2024-07-14 07:20:00,Discussed Q2 renewal with client
+tp_0244,adv_s,rep_07,email,2024-07-14 08:00:00,
+tp_0245,adv_d,rep_04,call,2024-07-15 10:10:00,Walked client through influencer partnership pitch
+tp_0246,adv_h,rep_06,call,2024-07-16 08:30:00,"discovery placement walkthrough - client is interested, sending proposal next week
+
+Thanks,
+Alex"
+tp_0247,adv_o,rep_02,demo,2024-07-17 12:30:00,Sent holiday campaign brief details via email
+tp_0248,adv_e,rep_01,email,2024-07-17 12:50:00,"Left voicemail regarding impression dashboard walkthrough, awaiting callback"
+tp_0249,adv_t,rep_06,call,2024-07-17 17:10:00,
+tp_0250,adv_q,rep_08,email,2024-07-19 07:05:00,Discussed co-op marketing funds with client
+tp_0251,adv_m,rep_06,call,2024-07-19 15:15:00,Client pushed back on pricing during at-risk account review discussion
+tp_0252,adv_t,rep_06,call,2024-07-19 17:45:00,Client's marketing director joined call to discuss programmatic pilot discussion
+tp_0253,adv_j,rep_05,meeting,2024-07-21 17:50:00,no update
+tp_0254,adv_s,rep_05,call,2024-07-22 08:45:00,Advertiser expanded scope of impression dashboard walkthrough to include additional markets
+tp_0255,adv_a,rep_01,call,2024-07-22 09:00:00,Discussed audience segment review with client
+tp_0256,adv_t,rep_06,call,2024-07-22 10:20:00,"pricing negotiation - client is interested, sending proposal next week"
+tp_0257,adv_b,rep_04,call,2024-07-23 07:10:00,Advertiser expanded scope of Q4 upsell conversation to include additional markets
+tp_0258,adv_s,rep_06,call,2024-07-25 11:45:00,Y.
+tp_0259,adv_r,rep_02,email,2024-07-25 11:50:00,Rescheduled mid-flight performance summary meeting due to client conflict
+tp_0260,adv_h,rep_06,call,2024-07-26 16:10:00,Walked client through spring push planning
+tp_0261,adv_q,rep_08,call,2024-07-28 09:30:00,*
+tp_0262,adv_o,rep_02,call,2024-07-31 07:10:00,"Follow-up on Q2 renewal, client had questions about timeline"
+tp_0263,adv_t,rep_06,email,2024-07-31 10:15:00,Great meeting - advertiser committed to renewing after newsletter renewal review
+tp_0264,adv_o,rep_02,email,2024-07-31 16:45:00,"Reviewed creative refresh request results, positive feedback from advertiser
+
+Get Outlook for iOS"
+tp_0265,adv_p,rep_07,call,2024-08-02 13:20:00,"Discussed new product launch tie-in - no major concerns, moving forward as planned
+
+Sent from my iPhone"
+tp_0266,adv_a,rep_01,email,2024-08-03 17:15:00,Advertiser asked for case studies related to creative refresh request
+tp_0267,adv_a,rep_01,call,2024-08-03 18:30:00,"Left voicemail regarding discovery placement walkthrough, awaiting callback"
+tp_0268,adv_d,rep_05,call,2024-08-04 09:20:00,?
+tp_0269,adv_t,rep_06,call,2024-08-05 16:20:00,Discussed CTV inventory pitch with client
+tp_0270,adv_a,rep_01,call,2024-08-06 13:00:00,  test  
+tp_0271,adv_l,rep_05,call,2024-08-06 17:30:00,"Reviewed contract terms tied to new product launch tie-in, legal reviewing redlines"
+tp_0272,adv_r,rep_01,call,2024-08-06 17:50:00,"Reviewed contract terms tied to influencer partnership pitch, legal reviewing redlines"
+tp_0273,adv_j,rep_01,email,2024-08-07 10:15:00,"Left voicemail regarding at-risk account review, awaiting callback
+
+Sent from my iPhone"
+tp_0274,adv_a,rep_01,meeting,2024-08-07 15:10:00,Client's marketing director joined call to discuss CTV inventory pitch
+tp_0275,adv_g,rep_01,email,2024-08-07 16:20:00,Follow up call
+tp_0276,adv_d,rep_05,email,2024-08-08 13:45:00,nil
+tp_0277,adv_d,rep_05,call,2024-08-08 15:05:00,K
+tp_0278,adv_l,rep_02,meeting,2024-08-09 14:50:00,N/A - see CRM attachment for full call summary and next steps
+tp_0279,adv_r,rep_01,call,2024-08-11 09:05:00,Advertiser asked for case studies related to spring push planning
+tp_0280,adv_h,rep_06,call,2024-08-12 09:50:00,Scheduled follow-up meeting to continue audience segment review conversation
+tp_0281,adv_p,rep_07,email,2024-08-13 08:50:00, None 
+tp_0282,adv_m,rep_06,call,2024-08-15 10:30:00,"Flagged concerns about contract renewal terms performance, escalating internally"
+tp_0283,adv_b,rep_04,meeting,2024-08-17 17:05:00,Kickoff call for new product launch tie-in
+tp_0284,adv_n,rep_02,meeting,2024-08-18 09:30:00,Sent updated deck covering Q3 budget planning to stakeholders
+tp_0285,adv_c,rep_02,email,2024-08-19 15:45:00,Advertiser expanded scope of quarterly business review to include additional markets
+tp_0286,adv_c,rep_02,demo,2024-08-19 17:45:00,Discussed recipe series sponsorship with client
+tp_0287,adv_m,rep_06,email,2024-08-20 18:00:00,Great meeting - advertiser committed to renewing after Q2 renewal review
+tp_0288,adv_s,rep_06,email,2024-08-21 09:45:00,"Left voicemail regarding spring push planning, awaiting callback"
+tp_0289,adv_t,rep_05,email,2024-08-21 10:15:00,Rescheduled influencer partnership pitch meeting due to client conflict
+tp_0290,adv_l,rep_02,email,2024-08-21 12:30:00,Sent updated deck covering audience segment review to stakeholders
+tp_0291,adv_q,rep_08,meeting,2024-08-21 13:05:00,Walked client through spring push planning
+tp_0292,adv_a,rep_01,meeting,2024-08-22 08:00:00, 
+tp_0293,adv_l,rep_02,demo,2024-08-23 12:45:00,"Flagged concerns about Q1 awareness campaign performance, escalating internally"
+tp_0294,adv_m,rep_06,call,2024-08-26 08:10:00,  test  
+tp_0295,adv_l,rep_02,meeting,2024-08-28 18:15:00,	
+tp_0296,adv_o,rep_03,meeting,2024-08-29 14:10:00,Discussed mid-flight performance summary with client
+tp_0297,adv_i,rep_07,meeting,2024-08-30 10:30:00,"at-risk account review - client is interested, sending proposal next week"
+tp_0298,adv_m,rep_06,email,2024-09-01 12:05:00,"Reviewed impression dashboard walkthrough results, positive feedback from advertiser"
+tp_0299,adv_p,rep_07,call,2024-09-01 17:05:00,"Discussed podcast series onboarding - no major concerns, moving forward as planned"
+tp_0300,adv_t,rep_05,meeting,2024-09-02 09:20:00,Discussed co-op marketing funds with client
+tp_0301,adv_p,rep_07,email,2024-09-03 08:00:00,"Follow-up on newsletter renewal, client had questions about timeline"
+tp_0302,adv_h,rep_07,meeting,2024-09-03 10:20:00,Discussed impression dashboard walkthrough with client
+tp_0303,adv_h,rep_04,call,2024-09-03 10:30:00,Client's marketing director joined call to discuss audience segment review
+tp_0304,adv_h,rep_07,meeting,2024-09-04 11:10:00,"Discussed Q3 budget planning - no major concerns, moving forward as planned"
+tp_0305,adv_l,rep_05,call,2024-09-06 07:30:00,Sent updated deck covering Q4 upsell conversation to stakeholders
+tp_0306,adv_b,rep_02,meeting,2024-09-08 08:20:00,Advertiser expanded scope of spring push planning to include additional markets
+tp_0307,adv_o,rep_03,email,2024-09-08 14:05:00,Great meeting - advertiser committed to renewing after CTV inventory pitch review
+tp_0308,adv_s,rep_06,call,2024-09-08 14:30:00,xx
+tp_0309,adv_o,rep_02,demo,2024-09-08 15:45:00,  n/a  
+tp_0310,adv_a,rep_01,meeting,2024-09-10 17:20:00,"Client requested changes to attribution report walkthrough, will revise and resend"
+tp_0311,adv_i,rep_04,call,2024-09-11 13:30:00,TBD
+tp_0312,adv_o,rep_03,call,2024-09-15 09:20:00,Walked client through pricing negotiation
+tp_0313,adv_d,rep_04,call,2024-09-15 18:10:00,Scheduled follow-up meeting to continue Champions League placement conversation
+tp_0314,adv_f,rep_04,call,2024-09-16 18:00:00,x
+tp_0315,adv_l,rep_02,demo,2024-09-17 14:15:00,Sure
+tp_0316,adv_s,rep_05,email,2024-09-19 08:05:00,meeting occurred
+tp_0317,adv_h,rep_07,email,2024-09-21 10:15:00,Advertiser expanded scope of new product launch tie-in to include additional markets
+tp_0318,adv_b,rep_02,meeting,2024-09-21 12:20:00,"Rescheduled discovery placement walkthrough meeting due to client conflict
+
+Get Outlook for iOS"
+tp_0319,adv_s,rep_06,meeting,2024-09-21 12:30:00,"Flagged concerns about creative refresh request performance, escalating internally"
+tp_0320,adv_t,rep_06,meeting,2024-09-22 16:15:00,"Reviewed discovery placement walkthrough results, positive feedback from advertiser"
+tp_0321,adv_b,rep_04,call,2024-09-23 13:30:00,Sent updated deck covering new product launch tie-in to stakeholders
+tp_0322,adv_l,rep_05,email,2024-09-23 15:50:00, NA 
+tp_0323,adv_l,rep_02,email,2024-09-24 09:45:00,Great meeting - advertiser committed to renewing after programmatic pilot discussion review
+tp_0324,adv_j,rep_05,meeting,2024-09-24 12:45:00,"Discussed mid-flight performance summary - no major concerns, moving forward as planned"
+tp_0325,adv_s,rep_05,demo,2024-09-25 10:50:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0326,adv_c,rep_02,call,2024-09-27 17:05:00,
+tp_0327,adv_j,rep_01,email,2024-09-28 10:15:00,Walked client through influencer partnership pitch
+tp_0328,adv_c,rep_02,email,2024-09-28 12:45:00,Rescheduled quarterly business review meeting due to client conflict
+tp_0329,adv_a,rep_01,email,2024-09-28 13:10:00,"Discussed mid-flight performance summary with client
+
+--
+Sent via mobile"
+tp_0330,adv_h,rep_04,meeting,2024-09-28 17:15:00,"Left voicemail regarding podcast series onboarding, awaiting callback"
+tp_0331,adv_l,rep_05,email,2024-09-30 09:20:00,
+tp_0332,adv_r,rep_01,call,2024-09-30 11:10:00,follow up call
+tp_0333,adv_p,rep_07,call,2024-10-03 10:30:00,Status update call
+tp_0334,adv_o,rep_03,email,2024-10-05 13:05:00,Great meeting - advertiser committed to renewing after spring push planning review
+tp_0335,adv_m,rep_06,call,2024-10-05 18:50:00,
+tp_0336,adv_j,rep_01,meeting,2024-10-10 17:30:00,Great meeting - advertiser committed to renewing after contract renewal terms review
+tp_0337,adv_t,rep_06,call,2024-10-11 13:50:00,Discussed mid-flight performance summary with client
+tp_0338,adv_c,rep_02,call,2024-10-13 07:30:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0339,adv_l,rep_02,email,2024-10-13 14:10:00,"Client requested changes to co-op marketing funds, will revise and resend"
+tp_0340,adv_o,rep_03,demo,2024-10-14 07:30:00,"social media bundle upsell - client is interested, sending proposal next week"
+tp_0341,adv_s,rep_06,email,2024-10-16 18:05:00, 
+tp_0342,adv_c,rep_02,call,2024-10-16 18:50:00,Advertiser expanded scope of discovery placement walkthrough to include additional markets
+tp_0343,adv_a,rep_01,call,2024-10-17 15:30:00,Great meeting - advertiser committed to renewing after video series kickoff review
+tp_0344,adv_m,rep_06,email,2024-10-18 16:00:00,Kickoff call for brand values campaign brief
+tp_0345,adv_a,rep_01,call,2024-10-19 13:50:00,Advertiser expanded scope of Q2 renewal to include additional markets
+tp_0346,adv_o,rep_03,meeting,2024-10-20 11:30:00,"Follow-up on discovery placement walkthrough, client had questions about timeline"
+tp_0347,adv_h,rep_06,meeting,2024-10-20 13:10:00,Advertiser asked for case studies related to pricing negotiation
+tp_0348,adv_s,rep_05,call,2024-10-21 18:50:00,"Reviewed contract terms tied to newsletter renewal, legal reviewing redlines"
+tp_0349,adv_q,rep_08,meeting,2024-10-22 09:45:00,Advertiser expanded scope of social media bundle upsell to include additional markets
+tp_0350,adv_i,rep_07,email,2024-10-22 09:50:00,Rescheduled holiday campaign brief meeting due to client conflict
+tp_0351,adv_l,rep_05,email,2024-10-23 17:20:00,Sent updated deck covering spring push planning to stakeholders
+tp_0352,adv_o,rep_02,call,2024-10-24 10:00:00,Walked client through influencer partnership pitch
+tp_0353,adv_t,rep_06,email,2024-10-24 14:15:00,Sent recipe series sponsorship details via email
+tp_0354,adv_j,rep_01,meeting,2024-10-25 08:50:00,Client's marketing director joined call to discuss impression dashboard walkthrough
+tp_0355,adv_h,rep_07,meeting,2024-10-25 18:05:00,Check-in call
+tp_0356,adv_h,rep_07,demo,2024-10-25 18:50:00,Sent updated deck covering mid-flight performance summary to stakeholders
+tp_0357,adv_t,rep_05,call,2024-10-28 08:45:00,"Flagged concerns about Q1 awareness campaign performance, escalating internally"
+tp_0358,adv_c,rep_02,call,2024-10-29 07:45:00,Sent co-op marketing funds details via email
+tp_0359,adv_h,rep_07,call,2024-10-29 10:05:00,none!
+tp_0360,adv_s,rep_06,meeting,2024-10-29 13:45:00,Great meeting - advertiser committed to renewing after quarterly business review review
+tp_0361,adv_t,rep_06,call,2024-10-29 14:30:00,0
+tp_0362,adv_l,rep_05,call,2024-10-29 17:10:00,Scheduled follow-up meeting to continue influencer partnership pitch conversation
+tp_0363,adv_c,rep_02,meeting,2024-10-29 18:30:00,"Follow-up on Q3 budget planning, client had questions about timeline"
+tp_0364,adv_t,rep_02,call,2024-10-30 10:10:00,"Reviewed contract terms tied to video series kickoff, legal reviewing redlines"
+tp_0365,adv_h,rep_04,meeting,2024-11-01 10:20:00,Client's marketing director joined call to discuss contract renewal terms
+tp_0366,adv_s,rep_06,call,2024-11-01 13:05:00,"Flagged concerns about mid-flight performance summary performance, escalating internally"
+tp_0367,adv_h,rep_07,email,2024-11-02 09:15:00,Rescheduled co-op marketing funds meeting due to client conflict
+tp_0368,adv_p,rep_07,meeting,2024-11-02 18:45:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0369,adv_h,rep_07,email,2024-11-03 11:00:00,"pricing negotiation - client is interested, sending proposal next week"
+tp_0370,adv_r,rep_01,call,2024-11-03 13:30:00,"Left voicemail regarding audience segment review, awaiting callback"
+tp_0371,adv_a,rep_01,call,2024-11-04 13:00:00,"TBD on renewal date, but client confirmed budget for next year"
+tp_0372,adv_s,rep_06,email,2024-11-04 14:10:00,
+tp_0373,adv_l,rep_05,call,2024-11-04 14:30:00,"Client requested changes to programmatic pilot discussion, will revise and resend"
+tp_0374,adv_c,rep_02,call,2024-11-05 07:10:00,Great meeting - advertiser committed to renewing after creative refresh request review
+tp_0375,adv_o,rep_03,call,2024-11-05 09:05:00,   
+tp_0376,adv_i,rep_02,call,2024-11-05 09:20:00,Scheduled follow-up meeting to continue Q3 budget planning conversation
+tp_0377,adv_c,rep_02,call,2024-11-07 08:15:00,"Reviewed contract terms tied to audience segment review, legal reviewing redlines"
+tp_0378,adv_g,rep_01,call,2024-11-07 09:10:00,"Left voicemail regarding recipe series sponsorship, awaiting callback"
+tp_0379,adv_q,rep_08,meeting,2024-11-07 16:10:00,"Flagged concerns about influencer partnership pitch performance, escalating internally"
+tp_0380,adv_t,rep_06,call,2024-11-08 14:15:00,"Left voicemail regarding podcast series onboarding, awaiting callback"
+tp_0381,adv_c,rep_02,email,2024-11-08 16:00:00,"Reviewed new product launch tie-in results, positive feedback from advertiser"
+tp_0382,adv_j,rep_01,email,2024-11-08 18:20:00,"Discussed recipe series sponsorship - no major concerns, moving forward as planned"
+tp_0383,adv_g,rep_01,call,2024-11-09 14:45:00,Sent spring push planning details via email
+tp_0384,adv_s,rep_06,call,2024-11-10 13:10:00,Kickoff call for podcast series onboarding
+tp_0385,adv_o,rep_02,call,2024-11-11 11:50:00,Not applicable
+tp_0386,adv_h,rep_07,meeting,2024-11-11 14:30:00,
+tp_0387,adv_l,rep_02,meeting,2024-11-12 10:15:00,"Follow-up on Champions League placement, client had questions about timeline"
+tp_0388,adv_t,rep_02,meeting,2024-11-12 10:45:00,"Follow-up on Q2 renewal, client had questions about timeline"
+tp_0389,adv_c,rep_02,email,2024-11-14 15:00:00,Client café meeting — discussed résumé of campaign performance
+tp_0390,adv_o,rep_03,meeting,2024-11-15 12:15:00,Discussed creative refresh request with client
+tp_0391,adv_s,rep_06,meeting,2024-11-15 15:30:00,
+tp_0392,adv_b,rep_04,call,2024-11-15 16:45:00,Advertiser expanded scope of Q3 budget planning to include additional markets
+tp_0393,adv_g,rep_01,meeting,2024-11-16 18:30:00,"Follow-up on impression dashboard walkthrough, client had questions about timeline"
+tp_0394,adv_s,rep_06,meeting,2024-11-17 12:00:00,"Follow-up on audience segment review, client had questions about timeline"
+tp_0395,adv_h,rep_07,email,2024-11-18 07:15:00,Sent updated deck covering contract renewal terms to stakeholders
+tp_0396,adv_c,rep_02,call,2024-11-18 11:30:00,"Left voicemail regarding quarterly business review, awaiting callback"
+tp_0397,adv_q,rep_08,call,2024-11-19 17:20:00,Walked client through recipe series sponsorship
+tp_0398,adv_c,rep_02,meeting,2024-11-20 17:50:00,
+tp_0399,adv_e,rep_01,meeting,2024-11-22 08:30:00,y
+tp_0400,adv_m,rep_06,call,2024-11-22 15:10:00,Sent Champions League placement details via email
+tp_0401,adv_h,rep_07,email,2024-11-22 18:45:00,Rescheduled podcast series onboarding meeting due to client conflict
+tp_0402,adv_j,rep_01,email,2024-11-24 11:45:00,?
+tp_0403,adv_c,rep_02,email,2024-11-25 10:15:00,"Advertiser asked for case studies related to new product launch tie-in
+
+Best,
+J."
+tp_0404,adv_i,rep_02,email,2024-11-26 11:30:00,no update
+tp_0405,adv_t,rep_02,email,2024-11-26 15:15:00,follow up call
+tp_0406,adv_r,rep_04,meeting,2024-11-26 16:05:00,Hi
+tp_0407,adv_l,rep_05,meeting,2024-11-27 08:20:00,Advertiser expanded scope of creative refresh request to include additional markets
+tp_0408,adv_m,rep_06,email,2024-11-27 16:15:00,"TBD on renewal date, but client confirmed budget for next year"
+tp_0409,adv_o,rep_03,call,2024-12-01 14:00:00,Kickoff call for CTV inventory pitch
+tp_0410,adv_h,rep_04,call,2024-12-01 16:30:00,Great meeting - advertiser committed to renewing after pricing negotiation review
+tp_0411,adv_l,rep_05,email,2024-12-02 16:20:00,👍👍
+tp_0412,adv_t,rep_06,email,2024-12-03 11:05:00,.
+tp_0413,adv_c,rep_02,call,2024-12-03 13:50:00,"Rescheduled social media bundle upsell meeting due to client conflict
+
+Sent from my iPhone"
+tp_0414,adv_n,rep_02,call,2024-12-03 14:10:00,😊
+tp_0415,adv_h,rep_07,email,2024-12-03 14:30:00,Check-in call
+tp_0416,adv_k,rep_07,email,2024-12-04 11:00:00,Sent updated deck covering impression dashboard walkthrough to stakeholders
+tp_0417,adv_h,rep_07,demo,2024-12-04 17:05:00,Rescheduled Q3 budget planning meeting due to client conflict
+tp_0418,adv_l,rep_02,email,2024-12-04 18:05:00,Advertiser expanded scope of newsletter renewal to include additional markets
+tp_0419,adv_m,rep_06,call,2024-12-05 10:15:00,Rescheduled discovery placement walkthrough meeting due to client conflict
+tp_0420,adv_l,rep_02,call,2024-12-08 11:30:00,"Flagged concerns about influencer partnership pitch performance, escalating internally"
+tp_0421,adv_j,rep_01,call,2024-12-11 13:10:00,"Reviewed recipe series sponsorship results, positive feedback from advertiser"
+tp_0422,adv_a,rep_01,email,2024-12-12 07:15:00,n/a.
+tp_0423,adv_a,rep_01,call,2024-12-13 08:15:00,Advertiser asked for case studies related to Champions League placement
+tp_0424,adv_s,rep_06,email,2024-12-14 13:10:00,Sent updated deck covering mid-flight performance summary to stakeholders
+tp_0425,adv_b,rep_02,meeting,2024-12-15 07:45:00,"Notes from meeting:
+Client happy with results.
+Wants to expand campaign."
+tp_0426,adv_j,rep_01,call,2024-12-16 13:50:00,Discussed podcast series onboarding with client
+tp_0427,adv_l,rep_05,meeting,2024-12-17 11:50:00,Nope
+tp_0428,adv_m,rep_06,email,2024-12-18 11:50:00,Client's marketing director joined call to discuss holiday campaign brief
+tp_0429,adv_h,rep_07,email,2024-12-20 07:05:00,"Reviewed contract terms tied to mid-flight performance summary, legal reviewing redlines"
+tp_0430,adv_l,rep_02,call,2024-12-22 12:20:00,Sent updated deck covering spring push planning to stakeholders
+tp_0431,adv_o,rep_03,email,2024-12-22 16:10:00,Walked client through contract renewal terms
+tp_0432,adv_h,rep_04,call,2024-12-23 15:20:00,Sent updated deck covering creative refresh request to stakeholders
+tp_0433,adv_j,rep_01,call,2024-12-25 15:45:00,Advertiser expanded scope of quarterly business review to include additional markets
+tp_0434,adv_i,rep_04,email,2024-12-25 18:15:00,  test  
+tp_0435,adv_q,rep_08,call,2024-12-26 09:00:00,Client's marketing director joined call to discuss new product launch tie-in
+tp_0436,adv_s,rep_07,meeting,2024-12-29 11:05:00,test.
+tp_0437,adv_l,rep_05,call,2024-12-31 09:15:00,Client pushed back on pricing during newsletter renewal discussion
+tp_0438,adv_t,rep_05,meeting,2025-01-01 09:15:00,"Reviewed creative refresh request results, positive feedback from advertiser"
+tp_0439,adv_t,rep_06,meeting,2025-01-01 13:10:00,Walked client through Q1 awareness campaign
+tp_0440,adv_l,rep_05,meeting,2025-01-03 09:30:00,Great meeting - advertiser committed to renewing after recipe series sponsorship review
+tp_0441,adv_m,rep_06,demo,2025-01-03 14:50:00,
+tp_0442,adv_h,rep_07,meeting,2025-01-04 11:15:00,"Reviewed audience segment review results, positive feedback from advertiser"
+tp_0443,adv_i,rep_04,call,2025-01-04 12:10:00,Scheduled follow-up meeting to continue at-risk account review conversation
+tp_0444,adv_s,rep_06,call,2025-01-05 07:50:00,"Notes: n/a for this call, but discussed Q3 pricing at length"
+tp_0445,adv_k,rep_07,meeting,2025-01-07 07:15:00,"Reviewed contract terms tied to new product launch tie-in, legal reviewing redlines"
+tp_0446,adv_s,rep_06,call,2025-01-07 12:10:00,"Call summary:
+- Discussed renewal
+- Client wants discount
+- Follow up next week"
+tp_0447,adv_o,rep_03,email,2025-01-07 13:10:00,Client pushed back on pricing during influencer partnership pitch discussion
+tp_0448,adv_m,rep_06,call,2025-01-09 13:20:00,123
+tp_0449,adv_r,rep_01,email,2025-01-11 11:00:00,Sent Q2 renewal details via email
+tp_0450,adv_t,rep_05,call,2025-01-12 15:00:00,Sent updated deck covering at-risk account review to stakeholders
+tp_0451,adv_q,rep_08,call,2025-01-15 11:00:00,"Reviewed contract terms tied to podcast series onboarding, legal reviewing redlines"
+tp_0452,adv_m,rep_06,call,2025-01-15 14:00:00,Sent Champions League placement details via email
+tp_0453,adv_j,rep_01,call,2025-01-16 14:50:00,Rescheduled CTV inventory pitch meeting due to client conflict
+tp_0454,adv_j,rep_07,email,2025-01-17 18:45:00,"Follow-up on mid-flight performance summary, client had questions about timeline"
+tp_0455,adv_s,rep_06,email,2025-01-18 11:20:00,Advertiser expanded scope of Champions League placement to include additional markets
+tp_0456,adv_p,rep_05,meeting,2025-01-19 17:10:00,Great meeting - advertiser committed to renewing after discovery placement walkthrough review
+tp_0457,adv_t,rep_06,demo,2025-01-21 16:10:00,Follow up call
+tp_0458,adv_l,rep_02,meeting,2025-01-21 16:50:00,"Discussed new product launch tie-in - no major concerns, moving forward as planned"
+tp_0459,adv_t,rep_06,call,2025-01-22 18:30:00,"Client requested changes to attribution report walkthrough, will revise and resend"
+tp_0460,adv_b,rep_02,email,2025-01-23 12:00:00,"Reviewed holiday campaign brief results, positive feedback from advertiser"
+tp_0461,adv_t,rep_06,email,2025-01-25 13:05:00,"Reviewed contract terms tied to quarterly business review, legal reviewing redlines"
+tp_0462,adv_j,rep_05,call,2025-01-26 17:45:00,"  
+  "
+tp_0463,adv_i,rep_04,demo,2025-01-27 09:10:00,Advertiser asked for case studies related to creative refresh request
+tp_0464,adv_a,rep_01,meeting,2025-01-27 18:10:00, NA 
+tp_0465,adv_i,rep_07,email,2025-01-28 15:50:00,"Discussed contract renewal terms - no major concerns, moving forward as planned"
+tp_0466,adv_q,rep_08,email,2025-01-29 11:50:00,"Discussed social media bundle upsell - no major concerns, moving forward as planned"
+tp_0467,adv_t,rep_05,call,2025-01-30 10:50:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0468,adv_l,rep_05,email,2025-01-31 17:30:00,"Client requested changes to audience segment review, will revise and resend"
+tp_0469,adv_j,rep_05,call,2025-02-01 11:10:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_0470,adv_c,rep_02,email,2025-02-01 14:30:00,Advertiser asked for case studies related to creative refresh request
+tp_0471,adv_o,rep_03,meeting,2025-02-02 09:05:00,Client pushed back on pricing during contract renewal terms discussion
+tp_0472,adv_s,rep_06,email,2025-02-03 18:10:00,Discussed newsletter renewal with client
+tp_0473,adv_j,rep_07,call,2025-02-04 16:00:00,"Reviewed contract terms tied to influencer partnership pitch, legal reviewing redlines"
+tp_0474,adv_m,rep_06,call,2025-02-05 08:50:00,Sent updated deck covering discovery placement walkthrough to stakeholders
+tp_0475,adv_m,rep_06,call,2025-02-06 14:05:00,Follow up call
+tp_0476,adv_q,rep_08,call,2025-02-07 10:50:00,Scheduled follow-up meeting to continue Q2 renewal conversation
+tp_0477,adv_l,rep_02,email,2025-02-07 17:10:00,0
+tp_0478,adv_o,rep_03,meeting,2025-02-07 17:30:00,Rescheduled at-risk account review meeting due to client conflict
+tp_0479,adv_s,rep_07,call,2025-02-08 08:00:00,Sent updated deck covering contract renewal terms to stakeholders
+tp_0480,adv_h,rep_04,call,2025-02-08 12:10:00,Discussed contract renewal terms with client
+tp_0481,adv_t,rep_06,meeting,2025-02-08 18:05:00,Advertiser asked for case studies related to discovery placement walkthrough
+tp_0482,adv_h,rep_06,meeting,2025-02-09 11:00:00,Advertiser asked for case studies related to Q2 renewal
+tp_0483,adv_a,rep_01,meeting,2025-02-12 12:20:00,Scheduled follow-up meeting to continue discovery placement walkthrough conversation
+tp_0484,adv_d,rep_02,call,2025-02-12 13:05:00,Scheduled follow-up meeting to continue discovery placement walkthrough conversation
+tp_0485,adv_a,rep_01,email,2025-02-12 17:30:00,"Client requested changes to Q4 upsell conversation, will revise and resend"
+tp_0486,adv_a,rep_01,demo,2025-02-13 17:30:00,"Call summary:
+- Discussed renewal
+- Client wants discount
+- Follow up next week"
+tp_0487,adv_p,rep_05,call,2025-02-14 07:05:00,Discussed mid-flight performance summary with client
+tp_0488,adv_h,rep_04,call,2025-02-14 07:15:00,"Left voicemail regarding impression dashboard walkthrough, awaiting callback"
+tp_0489,adv_j,rep_05,email,2025-02-14 12:05:00,"Discussed social media bundle upsell with client
+
+Sent from my iPhone"
+tp_0490,adv_c,rep_02,email,2025-02-14 14:05:00,"Follow-up on Champions League placement, client had questions about timeline"
+tp_0491,adv_i,rep_04,call,2025-02-15 08:10:00,"Reviewed programmatic pilot discussion results, positive feedback from advertiser"
+tp_0492,adv_t,rep_05,email,2025-02-17 13:00:00,"Follow-up on new product launch tie-in, client had questions about timeline"
+tp_0493,adv_q,rep_08,demo,2025-02-18 14:10:00,Kickoff call for Champions League placement
+tp_0494,adv_p,rep_07,meeting,2025-02-19 08:15:00,Rescheduled spring push planning meeting due to client conflict
+tp_0495,adv_g,rep_01,demo,2025-02-19 12:10:00,Yep
+tp_0496,adv_h,rep_07,demo,2025-02-19 14:15:00,Discussed co-op marketing funds with client
+tp_0497,adv_t,rep_06,meeting,2025-02-20 14:05:00,"Follow-up on influencer partnership pitch, client had questions about timeline"
+tp_0498,adv_r,rep_02,call,2025-02-21 11:45:00,meeting occurred
+tp_0499,adv_s,rep_06,call,2025-02-22 08:05:00,Check-in call
+tp_0500,adv_l,rep_02,call,2025-02-22 11:15:00,Advertiser expanded scope of Q1 awareness campaign to include additional markets
+tp_0501,adv_j,rep_01,email,2025-02-23 18:20:00,Sent Q4 upsell conversation details via email
+tp_0502,adv_t,rep_02,demo,2025-02-24 11:50:00,999999
+tp_0503,adv_l,rep_02,meeting,2025-02-25 08:30:00,Advertiser expanded scope of newsletter renewal to include additional markets
+tp_0504,adv_r,rep_01,meeting,2025-02-26 12:45:00,"social media bundle upsell - client is interested, sending proposal next week"
+tp_0505,adv_o,rep_03,meeting,2025-02-27 18:00:00,Client pushed back on pricing during pricing negotiation discussion
+tp_0506,adv_e,rep_01,email,2025-02-28 07:45:00,Scheduled follow-up meeting to continue Q3 budget planning conversation
+tp_0507,adv_t,rep_02,meeting,2025-02-28 17:20:00,Client pushed back on pricing during pricing negotiation discussion
+tp_0508,adv_p,rep_07,email,2025-03-01 09:30:00,Status update call
+tp_0509,adv_s,rep_06,call,2025-03-01 14:20:00,Advertiser expanded scope of programmatic pilot discussion to include additional markets
+tp_0510,adv_f,rep_04,email,2025-03-02 09:05:00,Rescheduled programmatic pilot discussion meeting due to client conflict
+tp_0511,adv_q,rep_08,call,2025-03-05 17:30:00,Discussed attribution report walkthrough with client
+tp_0512,adv_r,rep_04,email,2025-03-07 11:00:00,Sent updated deck covering mid-flight performance summary to stakeholders
+tp_0513,adv_o,rep_03,call,2025-03-07 12:20:00,No update
+tp_0514,adv_t,rep_06,call,2025-03-07 14:50:00,
+tp_0515,adv_l,rep_05,call,2025-03-08 07:05:00,ok
+tp_0516,adv_o,rep_02,email,2025-03-08 11:00:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0517,adv_t,rep_06,demo,2025-03-08 12:15:00,Discussed newsletter renewal with client
+tp_0518,adv_t,rep_05,meeting,2025-03-11 17:45:00,Client pushed back on pricing during brand values campaign brief discussion
+tp_0519,adv_q,rep_08,call,2025-03-11 18:05:00,"Advertiser asked for case studies related to new product launch tie-in
+
+Sent from my iPhone"
+tp_0520,adv_p,rep_07,call,2025-03-12 12:45:00,Status update call
+tp_0521,adv_o,rep_03,meeting,2025-03-12 13:10:00,"Discussed attribution report walkthrough - no major concerns, moving forward as planned"
+tp_0522,adv_t,rep_06,email,2025-03-12 14:50:00,Client pushed back on pricing during holiday campaign brief discussion
+tp_0523,adv_d,rep_02,email,2025-03-12 17:05:00,Discussed Q3 budget planning with client
+tp_0524,adv_o,rep_02,email,2025-03-13 13:00:00,Client pushed back on pricing during pricing negotiation discussion
+tp_0525,adv_h,rep_07,call,2025-03-13 15:50:00,Sent updated deck covering attribution report walkthrough to stakeholders
+tp_0526,adv_l,rep_05,call,2025-03-14 09:00:00,Advertiser asked for case studies related to contract renewal terms
+tp_0527,adv_r,rep_04,email,2025-03-14 12:30:00,Null
+tp_0528,adv_h,rep_07,call,2025-03-17 14:45:00,✅
+tp_0529,adv_s,rep_05,call,2025-03-19 09:20:00,
+tp_0530,adv_o,rep_03,email,2025-03-21 16:30:00,Discussed co-op marketing funds with client
+tp_0531,adv_a,rep_01,call,2025-03-22 07:15:00,Hi
+tp_0532,adv_i,rep_04,call,2025-03-23 18:15:00,  test  
+tp_0533,adv_g,rep_01,call,2025-03-24 07:10:00,Scheduled follow-up meeting to continue recipe series sponsorship conversation
+tp_0534,adv_c,rep_02,meeting,2025-03-24 08:00:00,"Flagged concerns about audience segment review performance, escalating internally
+
+Get Outlook for iOS"
+tp_0535,adv_c,rep_02,call,2025-03-24 18:50:00,"Client requested changes to audience segment review, will revise and resend"
+tp_0536,adv_c,rep_02,email,2025-03-25 08:50:00,"Left voicemail regarding discovery placement walkthrough, awaiting callback"
+tp_0537,adv_m,rep_06,call,2025-03-25 18:15:00,"Follow-up on pricing negotiation, client had questions about timeline"
+tp_0538,adv_q,rep_08,call,2025-03-27 11:30:00,Client pushed back on pricing during Q2 renewal discussion
+tp_0539,adv_c,rep_02,demo,2025-03-27 12:10:00,Follow up call
+tp_0540,adv_h,rep_04,call,2025-03-27 12:45:00,"Left voicemail regarding at-risk account review, awaiting callback"
+tp_0541,adv_i,rep_02,demo,2025-03-27 14:00:00,"Follow-up on contract renewal terms, client had questions about timeline"
+tp_0542,adv_h,rep_04,meeting,2025-03-28 17:20:00,"TBD on renewal date, but client confirmed budget for next year"
+tp_0543,adv_r,rep_02,call,2025-03-29 14:00:00,Great meeting - advertiser committed to renewing after quarterly business review review
+tp_0544,adv_o,rep_03,meeting,2025-03-30 15:00:00,"Reviewed Champions League placement results, positive feedback from advertiser"
+tp_0545,adv_t,rep_02,call,2025-03-30 18:30:00,Sent influencer partnership pitch details via email
+tp_0546,adv_l,rep_02,email,2025-03-31 12:50:00,
+tp_0547,adv_j,rep_01,email,2025-04-01 07:20:00,"Flagged concerns about social media bundle upsell performance, escalating internally"
+tp_0548,adv_t,rep_05,email,2025-04-01 08:45:00,Advertiser expanded scope of mid-flight performance summary to include additional markets
+tp_0549,adv_j,rep_05,email,2025-04-01 09:00:00,Great meeting - advertiser committed to renewing after attribution report walkthrough review
+tp_0550,adv_l,rep_05,call,2025-04-01 14:00:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0551,adv_q,rep_08,call,2025-04-01 15:05:00,Advertiser asked for case studies related to pricing negotiation
+tp_0552,adv_s,rep_06,meeting,2025-04-01 17:15:00,"Discussed audience segment review - no major concerns, moving forward as planned"
+tp_0553,adv_c,rep_02,call,2025-04-02 15:50:00,Sent updated deck covering creative refresh request to stakeholders
+tp_0554,adv_i,rep_07,call,2025-04-05 16:45:00,"Flagged concerns about newsletter renewal performance, escalating internally"
+tp_0555,adv_o,rep_02,call,2025-04-05 17:30:00,"Left voicemail regarding pricing negotiation, awaiting callback"
+tp_0556,adv_i,rep_07,meeting,2025-04-06 16:00:00,"Follow-up on holiday campaign brief, client had questions about timeline"
+tp_0557,adv_g,rep_01,demo,2025-04-07 09:50:00,Client pushed back on pricing during quarterly business review discussion
+tp_0558,adv_q,rep_08,meeting,2025-04-07 16:30:00,Discussed influencer partnership pitch with client
+tp_0559,adv_m,rep_06,meeting,2025-04-09 07:45:00,Scheduled follow-up meeting to continue audience segment review conversation
+tp_0560,adv_t,rep_06,email,2025-04-09 15:30:00,
+tp_0561,adv_h,rep_07,email,2025-04-11 12:00:00,Client's marketing director joined call to discuss audience segment review
+tp_0562,adv_s,rep_06,meeting,2025-04-11 14:00:00,Walked client through recipe series sponsorship
+tp_0563,adv_c,rep_02,email,2025-04-12 07:10:00,Discussed Champions League placement with client
+tp_0564,adv_f,rep_04,meeting,2025-04-13 08:05:00,Kickoff call for creative refresh request
+tp_0565,adv_t,rep_02,email,2025-04-14 10:05:00,"Scheduled follow-up meeting to continue audience segment review conversation
+
+Get Outlook for iOS"
+tp_0566,adv_t,rep_05,meeting,2025-04-16 14:00:00,Scheduled follow-up meeting to continue spring push planning conversation
+tp_0567,adv_c,rep_02,email,2025-04-17 08:10:00,"Flagged concerns about programmatic pilot discussion performance, escalating internally"
+tp_0568,adv_a,rep_01,email,2025-04-18 10:05:00,IMPORTANT: BUDGET APPROVED FOR Q4 CAMPAIGN
+tp_0569,adv_q,rep_08,call,2025-04-18 18:10:00,Rescheduled brand values campaign brief meeting due to client conflict
+tp_0570,adv_j,rep_05,call,2025-04-19 11:05:00,"Reviewed contract terms tied to brand values campaign brief, legal reviewing redlines
+
+Thanks,
+Alex"
+tp_0571,adv_s,rep_07,email,2025-04-19 17:15:00,"Left voicemail regarding holiday campaign brief, awaiting callback"
+tp_0572,adv_a,rep_01,demo,2025-04-20 17:30:00,"Left voicemail regarding audience segment review, awaiting callback"
+tp_0573,adv_p,rep_07,call,2025-04-21 14:45:00,"Reviewed contract terms tied to brand values campaign brief, legal reviewing redlines"
+tp_0574,adv_a,rep_01,email,2025-04-21 14:50:00,"influencer partnership pitch - client is interested, sending proposal next week"
+tp_0575,adv_b,rep_04,meeting,2025-04-21 18:20:00,Nope
+tp_0576,adv_j,rep_01,email,2025-04-22 11:45:00,Client's HQ in Zürich requested naïve forecast for Q4
+tp_0577,adv_j,rep_05,call,2025-04-22 12:45:00,"Reviewed new product launch tie-in results, positive feedback from advertiser"
+tp_0578,adv_b,rep_04,call,2025-04-22 13:00:00,Advertiser expanded scope of new product launch tie-in to include additional markets
+tp_0579,adv_t,rep_06,email,2025-04-22 14:30:00,n/a.
+tp_0580,adv_s,rep_06,call,2025-04-25 12:50:00,no update
+tp_0581,adv_s,rep_05,meeting,2025-04-26 11:10:00,Sent holiday campaign brief details via email
+tp_0582,adv_c,rep_02,demo,2025-04-26 15:50:00,Nope
+tp_0583,adv_l,rep_02,call,2025-04-27 16:45:00,Discussed recipe series sponsorship with client
+tp_0584,adv_e,rep_01,meeting,2025-04-28 18:10:00,Kickoff call for audience segment review
+tp_0585,adv_a,rep_01,call,2025-04-29 13:15:00,Advertiser asked for case studies related to recipe series sponsorship
+tp_0586,adv_j,rep_01,email,2025-04-30 09:10:00,n
+tp_0587,adv_j,rep_01,call,2025-04-30 18:10:00,Great meeting - advertiser committed to renewing after Q1 awareness campaign review
+tp_0588,adv_r,rep_01,demo,2025-05-01 17:15:00,Scheduled follow-up meeting to continue Champions League placement conversation
+tp_0589,adv_s,rep_06,meeting,2025-05-01 18:10:00,"Discussed spring push planning - no major concerns, moving forward as planned"
+tp_0590,adv_h,rep_07,meeting,2025-05-02 08:50:00,"Great meeting - advertiser committed to renewing after Q3 budget planning review
+
+Sent from my iPhone"
+tp_0591,adv_d,rep_02,email,2025-05-02 14:30:00,999999
+tp_0592,adv_d,rep_04,demo,2025-05-02 15:10:00,Client pushed back on pricing during influencer partnership pitch discussion
+tp_0593,adv_m,rep_06,email,2025-05-02 16:00:00,"Left voicemail regarding impression dashboard walkthrough, awaiting callback"
+tp_0594,adv_j,rep_01,email,2025-05-02 17:30:00,Rescheduled social media bundle upsell meeting due to client conflict
+tp_0595,adv_q,rep_08,call,2025-05-02 18:05:00,"Flagged concerns about Q1 awareness campaign performance, escalating internally"
+tp_0596,adv_i,rep_02,call,2025-05-04 08:15:00,Walked client through Q4 upsell conversation
+tp_0597,adv_p,rep_05,meeting,2025-05-04 13:45:00,Discussed influencer partnership pitch with client
+tp_0598,adv_h,rep_04,call,2025-05-04 15:45:00,no update
+tp_0599,adv_h,rep_07,email,2025-05-05 16:45:00,Advertiser asked for case studies related to quarterly business review
+tp_0600,adv_q,rep_08,email,2025-05-06 12:20:00,*
+tp_0601,adv_s,rep_07,email,2025-05-07 17:10:00,Rescheduled attribution report walkthrough meeting due to client conflict
+tp_0602,adv_t,rep_06,meeting,2025-05-07 18:30:00,"impression dashboard walkthrough - client is interested, sending proposal next week"
+tp_0603,adv_o,rep_03,meeting,2025-05-08 09:50:00,"Discussed mid-flight performance summary - no major concerns, moving forward as planned"
+tp_0604,adv_c,rep_02,email,2025-05-09 14:15:00,	
+tp_0605,adv_o,rep_03,meeting,2025-05-10 18:20:00,-- --
+tp_0606,adv_t,rep_05,call,2025-05-11 14:05:00,"Discussed contract renewal terms - no major concerns, moving forward as planned"
+tp_0607,adv_n,rep_02,call,2025-05-11 16:05:00,Rescheduled spring push planning meeting due to client conflict
+tp_0608,adv_d,rep_05,call,2025-05-13 15:20:00,"Sent audience segment review details via email
+
+Thanks,
+Alex"
+tp_0609,adv_i,rep_07,email,2025-05-13 17:10:00,"Champions League placement - client is interested, sending proposal next week"
+tp_0610,adv_k,rep_07,email,2025-05-14 08:45:00,No
+tp_0611,adv_l,rep_05,call,2025-05-14 10:05:00,"Reviewed co-op marketing funds results, positive feedback from advertiser"
+tp_0612,adv_i,rep_02,meeting,2025-05-14 12:00:00,"Discussed Q3 budget planning - no major concerns, moving forward as planned"
+tp_0613,adv_p,rep_07,meeting,2025-05-15 13:05:00,Rescheduled holiday campaign brief meeting due to client conflict
+tp_0614,adv_b,rep_02,call,2025-05-17 14:00:00,"Client requested changes to contract renewal terms, will revise and resend"
+tp_0615,adv_r,rep_04,email,2025-05-17 17:50:00,Sent programmatic pilot discussion details via email
+tp_0616,adv_j,rep_01,demo,2025-05-18 18:05:00,"Discussed brand values campaign brief - no major concerns, moving forward as planned"
+tp_0617,adv_q,rep_08,email,2025-05-19 08:30:00,"Flagged concerns about quarterly business review performance, escalating internally"
+tp_0618,adv_h,rep_07,call,2025-05-19 09:05:00,Client's marketing director joined call to discuss brand values campaign brief
+tp_0619,adv_t,rep_06,call,2025-05-20 12:00:00,"Reviewed contract terms tied to contract renewal terms, legal reviewing redlines"
+tp_0620,adv_s,rep_05,meeting,2025-05-21 08:15:00,N.A.
+tp_0621,adv_t,rep_06,email,2025-05-21 14:20:00,Advertiser expanded scope of influencer partnership pitch to include additional markets
+tp_0622,adv_r,rep_04,email,2025-05-21 16:45:00,IMPORTANT: BUDGET APPROVED FOR Q4 CAMPAIGN
+tp_0623,adv_t,rep_06,email,2025-05-22 10:00:00,"Reviewed contract terms tied to spring push planning, legal reviewing redlines"
+tp_0624,adv_q,rep_08,email,2025-05-22 12:20:00,na
+tp_0625,adv_r,rep_04,call,2025-05-23 15:30:00,"Reviewed at-risk account review results, positive feedback from advertiser"
+tp_0626,adv_o,rep_02,email,2025-05-23 15:50:00,Nope
+tp_0627,adv_f,rep_04,call,2025-05-23 18:50:00,Discussed discovery placement walkthrough with client
+tp_0628,adv_p,rep_07,email,2025-05-24 09:10:00,Hi
+tp_0629,adv_m,rep_06,email,2025-05-24 15:10:00,Touched base
+tp_0630,adv_c,rep_02,call,2025-05-24 16:10:00,"Flagged concerns about spring push planning performance, escalating internally"
+tp_0631,adv_c,rep_02,meeting,2025-05-25 17:50:00,👍👍
+tp_0632,adv_h,rep_07,call,2025-05-26 15:30:00,Client's marketing director joined call to discuss pricing negotiation
+tp_0633,adv_g,rep_01,demo,2025-05-26 15:45:00,No notes field filled originally; adding context now: client is happy
+tp_0634,adv_r,rep_01,email,2025-05-27 08:20:00,Yep
+tp_0635,adv_t,rep_05,meeting,2025-05-28 15:05:00,URGENT: CLIENT WANTS TO CANCEL CONTRACT IMMEDIATELY
+tp_0636,adv_q,rep_08,email,2025-05-28 15:05:00,Rescheduled social media bundle upsell meeting due to client conflict
+tp_0637,adv_j,rep_01,call,2025-05-29 16:10:00,"podcast series onboarding - client is interested, sending proposal next week"
+tp_0638,adv_s,rep_05,meeting,2025-05-30 14:30:00,TBD
+tp_0639,adv_q,rep_08,call,2025-05-30 17:45:00,tbd
+tp_0640,adv_t,rep_06,email,2025-05-31 12:30:00,"Discussed contract renewal terms - no major concerns, moving forward as planned"
+tp_0641,adv_t,rep_05,email,2025-05-31 12:45:00,Sent programmatic pilot discussion details via email
+tp_0642,adv_j,rep_05,call,2025-06-01 09:45:00,"Follow-up on at-risk account review, client had questions about timeline"
+tp_0643,adv_k,rep_07,meeting,2025-06-01 14:50:00,-
+tp_0644,adv_r,rep_01,email,2025-06-02 08:30:00,Client pushed back on pricing during creative refresh request discussion
+tp_0645,adv_j,rep_01,meeting,2025-06-02 13:10:00,Kickoff call for CTV inventory pitch
+tp_0646,adv_a,rep_01,meeting,2025-06-03 08:20:00,"Follow-up on newsletter renewal, client had questions about timeline"
+tp_0647,adv_f,rep_04,call,2025-06-03 15:00:00,Sent updated deck covering attribution report walkthrough to stakeholders
+tp_0648,adv_h,rep_04,meeting,2025-06-03 15:50:00,Kickoff call for social media bundle upsell
+tp_0649,adv_a,rep_01,call,2025-06-04 08:10:00,same as before
+tp_0650,adv_g,rep_01,demo,2025-06-04 10:05:00,"Client's marketing director joined call to discuss video series kickoff
+
+--
+Sent via mobile"
+tp_0651,adv_d,rep_04,call,2025-06-04 12:00:00, 
+tp_0652,adv_o,rep_03,call,2025-06-05 13:50:00,"Reviewed contract terms tied to at-risk account review, legal reviewing redlines
+
+Best,
+J."
+tp_0653,adv_a,rep_01,meeting,2025-06-07 08:45:00,
+tp_0654,adv_m,rep_06,call,2025-06-07 15:10:00,"Follow-up on Champions League placement, client had questions about timeline"
+tp_0655,adv_s,rep_07,email,2025-06-08 10:50:00,Advertiser expanded scope of discovery placement walkthrough to include additional markets
+tp_0656,adv_l,rep_05,meeting,2025-06-08 11:30:00,"Reviewed attribution report walkthrough results, positive feedback from advertiser"
+tp_0657,adv_h,rep_06,email,2025-06-09 13:50:00,Great meeting - advertiser committed to renewing after co-op marketing funds review
+tp_0658,adv_h,rep_04,meeting,2025-06-11 14:50:00,Sent updated deck covering Q3 budget planning to stakeholders
+tp_0659,adv_g,rep_01,call,2025-06-11 15:05:00,"Discussed discovery placement walkthrough - no major concerns, moving forward as planned"
+tp_0660,adv_q,rep_08,meeting,2025-06-11 17:30:00,pending
+tp_0661,adv_i,rep_07,call,2025-06-12 09:10:00,"Client requested changes to spring push planning, will revise and resend"
+tp_0662,adv_j,rep_01,meeting,2025-06-13 10:00:00,Sent updated deck covering audience segment review to stakeholders
+tp_0663,adv_l,rep_02,meeting,2025-06-13 15:30:00,"Advertiser expanded scope of creative refresh request to include additional markets
+
+Sent from my iPhone"
+tp_0664,adv_l,rep_02,demo,2025-06-14 07:05:00,Rescheduled pricing negotiation meeting due to client conflict
+tp_0665,adv_t,rep_06,call,2025-06-14 16:10:00,Rescheduled social media bundle upsell meeting due to client conflict
+tp_0666,adv_t,rep_06,call,2025-06-15 14:10:00,Client's marketing director joined call to discuss contract renewal terms
+tp_0667,adv_l,rep_02,email,2025-06-16 07:45:00,Advertiser asked for case studies related to mid-flight performance summary
+tp_0668,adv_l,rep_05,email,2025-06-17 08:10:00,Scheduled follow-up meeting to continue Q3 budget planning conversation
+tp_0669,adv_s,rep_06,email,2025-06-18 10:50:00,K
+tp_0670,adv_p,rep_07,email,2025-06-18 14:15:00,Kickoff call for discovery placement walkthrough
+tp_0671,adv_q,rep_08,meeting,2025-06-19 12:10:00,N/A - see CRM attachment for full call summary and next steps
+tp_0672,adv_r,rep_02,call,2025-06-19 17:05:00,Advertiser expanded scope of contract renewal terms to include additional markets
+tp_0673,adv_l,rep_02,call,2025-06-20 08:05:00,Y.
+tp_0674,adv_d,rep_05,meeting,2025-06-20 08:45:00,Client pushed back on pricing during video series kickoff discussion
+tp_0675,adv_s,rep_07,email,2025-06-21 08:20:00,"TBD on renewal date, but client confirmed budget for next year"
+tp_0676,adv_o,rep_03,call,2025-06-21 08:50:00,"Reviewed discovery placement walkthrough results, positive feedback from advertiser
+
+--
+Sent via mobile"
+tp_0677,adv_c,rep_02,demo,2025-06-21 16:20:00,"Client requested changes to brand values campaign brief, will revise and resend"
+tp_0678,adv_m,rep_06,call,2025-06-22 16:20:00,"Discussed contract renewal terms with client
+
+Get Outlook for iOS"
+tp_0679,adv_h,rep_06,call,2025-06-24 18:30:00,Rescheduled Q2 renewal meeting due to client conflict
+tp_0680,adv_q,rep_08,demo,2025-06-25 10:15:00,n/a.
+tp_0681,adv_j,rep_05,demo,2025-06-26 12:15:00,Hi
+tp_0682,adv_h,rep_07,call,2025-06-30 17:30:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0683,adv_j,rep_05,meeting,2025-06-30 18:00:00,Sent updated deck covering CTV inventory pitch to stakeholders
+tp_0684,adv_m,rep_06,demo,2025-07-01 07:10:00,"Discussed Champions League placement - no major concerns, moving forward as planned"
+tp_0685,adv_c,rep_02,meeting,2025-07-06 12:20:00,Client's marketing director joined call to discuss social media bundle upsell
+tp_0686,adv_d,rep_04,email,2025-07-06 18:00:00,"Follow-up on audience segment review, client had questions about timeline"
+tp_0687,adv_t,rep_06,email,2025-07-08 09:10:00,Scheduled follow-up meeting to continue brand values campaign brief conversation
+tp_0688,adv_m,rep_06,meeting,2025-07-10 12:30:00,"Reviewed contract terms tied to social media bundle upsell, legal reviewing redlines"
+tp_0689,adv_h,rep_07,meeting,2025-07-11 13:45:00,"Follow-up on recipe series sponsorship, client had questions about timeline"
+tp_0690,adv_c,rep_02,call,2025-07-11 17:30:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0691,adv_j,rep_05,call,2025-07-13 10:10:00,Rescheduled video series kickoff meeting due to client conflict
+tp_0692,adv_t,rep_05,call,2025-07-13 10:30:00,"Flagged concerns about brand values campaign brief performance, escalating internally"
+tp_0693,adv_h,rep_04,email,2025-07-13 12:20:00,todo
+tp_0694,adv_q,rep_08,email,2025-07-13 15:30:00,Advertiser expanded scope of brand values campaign brief to include additional markets
+tp_0695,adv_l,rep_05,meeting,2025-07-13 18:15:00,"Discussed brand values campaign brief - no major concerns, moving forward as planned"
+tp_0696,adv_l,rep_05,call,2025-07-14 08:20:00,Scheduled follow-up meeting to continue pricing negotiation conversation
+tp_0697,adv_o,rep_03,call,2025-07-15 09:50:00,Advertiser expanded scope of social media bundle upsell to include additional markets
+tp_0698,adv_j,rep_01,call,2025-07-16 14:10:00,
+tp_0699,adv_h,rep_06,meeting,2025-07-16 14:15:00,Discussed audience segment review with client
+tp_0700,adv_h,rep_04,call,2025-07-17 11:05:00,nil
+tp_0701,adv_m,rep_06,email,2025-07-17 13:30:00,"Discussed audience segment review - no major concerns, moving forward as planned"
+tp_0702,adv_j,rep_01,email,2025-07-19 12:20:00,"Reviewed contract terms tied to Q1 awareness campaign, legal reviewing redlines"
+tp_0703,adv_a,rep_01,email,2025-07-20 07:05:00,check in
+tp_0704,adv_h,rep_07,call,2025-07-20 13:45:00,Discussed impression dashboard walkthrough with client
+tp_0705,adv_e,rep_01,call,2025-07-21 08:05:00,"Discussed discovery placement walkthrough - no major concerns, moving forward as planned"
+tp_0706,adv_m,rep_06,email,2025-07-21 09:05:00,"Flagged concerns about social media bundle upsell performance, escalating internally"
+tp_0707,adv_t,rep_06,call,2025-07-21 10:10:00,na
+tp_0708,adv_l,rep_02,demo,2025-07-22 14:20:00,Sent updated deck covering new product launch tie-in to stakeholders
+tp_0709,adv_l,rep_05,call,2025-07-23 11:10:00,Client pushed back on pricing during Q1 awareness campaign discussion
+tp_0710,adv_d,rep_05,meeting,2025-07-23 12:05:00,Advertiser asked for case studies related to influencer partnership pitch
+tp_0711,adv_h,rep_04,call,2025-07-25 12:10:00,"Sent programmatic pilot discussion details via email
+
+Get Outlook for iOS"
+tp_0712,adv_h,rep_07,email,2025-07-26 10:10:00,null
+tp_0713,adv_q,rep_08,email,2025-07-26 16:05:00,"Follow-up on Q4 upsell conversation, client had questions about timeline"
+tp_0714,adv_c,rep_02,email,2025-07-28 12:15:00,Great meeting - advertiser committed to renewing after spring push planning review
+tp_0715,adv_l,rep_05,call,2025-07-28 17:00:00,"Reviewed contract terms tied to video series kickoff, legal reviewing redlines"
+tp_0716,adv_j,rep_01,call,2025-07-28 17:20:00,
+tp_0717,adv_h,rep_07,email,2025-07-29 13:45:00,NONE
+tp_0718,adv_a,rep_01,email,2025-07-30 08:05:00,Scheduled follow-up meeting to continue Champions League placement conversation
+tp_0719,adv_i,rep_04,email,2025-07-31 11:15:00,"Reviewed holiday campaign brief results, positive feedback from advertiser"
+tp_0720,adv_j,rep_07,call,2025-08-02 08:50:00,Scheduled follow-up meeting to continue video series kickoff conversation
+tp_0721,adv_l,rep_05,meeting,2025-08-02 16:10:00,Sent recipe series sponsorship details via email
+tp_0722,adv_g,rep_01,email,2025-08-03 07:10:00,"Discussed recipe series sponsorship - no major concerns, moving forward as planned"
+tp_0723,adv_r,rep_01,email,2025-08-03 15:50:00,Great meeting - advertiser committed to renewing after Q3 budget planning review
+tp_0724,adv_t,rep_05,call,2025-08-04 07:10:00,Advertiser expanded scope of mid-flight performance summary to include additional markets
+tp_0725,adv_m,rep_06,email,2025-08-06 17:10:00,Walked client through pricing negotiation
+tp_0726,adv_h,rep_06,email,2025-08-09 07:20:00,Walked client through Q2 renewal
+tp_0727,adv_i,rep_07,meeting,2025-08-09 08:20:00,Rescheduled recipe series sponsorship meeting due to client conflict
+tp_0728,adv_g,rep_01,meeting,2025-08-09 12:50:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_0729,adv_g,rep_01,call,2025-08-10 09:30:00,"Walked client through video series kickoff
+
+Get Outlook for iOS"
+tp_0730,adv_d,rep_05,call,2025-08-10 13:45:00,"mid-flight performance summary - client is interested, sending proposal next week"
+tp_0731,adv_f,rep_04,call,2025-08-11 10:10:00,TODO
+tp_0732,adv_m,rep_06,email,2025-08-12 08:05:00,"Reviewed recipe series sponsorship results, positive feedback from advertiser"
+tp_0733,adv_s,rep_06,call,2025-08-13 12:05:00,Walked client through holiday campaign brief
+tp_0734,adv_m,rep_06,meeting,2025-08-13 12:50:00,"Q4 upsell conversation - client is interested, sending proposal next week"
+tp_0735,adv_i,rep_04,email,2025-08-13 17:05:00,Client's marketing director joined call to discuss Q2 renewal
+tp_0736,adv_p,rep_07,call,2025-08-16 10:05:00,Y.
+tp_0737,adv_a,rep_01,call,2025-08-17 11:00:00,Client pushed back on pricing during pricing negotiation discussion
+tp_0738,adv_b,rep_02,email,2025-08-18 12:50:00,Rescheduled pricing negotiation meeting due to client conflict
+tp_0739,adv_m,rep_06,meeting,2025-08-21 08:45:00,
+tp_0740,adv_t,rep_06,call,2025-08-23 17:05:00,"Follow-up on influencer partnership pitch, client had questions about timeline"
+tp_0741,adv_j,rep_07,meeting,2025-08-23 18:10:00,Scheduled follow-up meeting to continue quarterly business review conversation
+tp_0742,adv_i,rep_07,call,2025-08-24 08:30:00,Great meeting - advertiser committed to renewing after podcast series onboarding review
+tp_0743,adv_c,rep_02,email,2025-08-24 11:45:00,"Reviewed brand values campaign brief results, positive feedback from advertiser"
+tp_0744,adv_s,rep_06,meeting,2025-08-25 15:45:00,Advertiser asked for case studies related to attribution report walkthrough
+tp_0745,adv_r,rep_01,email,2025-08-26 07:50:00,Client pushed back on pricing during Q4 upsell conversation discussion
+tp_0746,adv_j,rep_01,meeting,2025-08-26 10:00:00,Rescheduled at-risk account review meeting due to client conflict
+tp_0747,adv_j,rep_01,call,2025-08-26 15:10:00,Sent influencer partnership pitch details via email
+tp_0748,adv_i,rep_07,call,2025-08-27 08:10:00,"Q4 upsell conversation - client is interested, sending proposal next week"
+tp_0749,adv_q,rep_08,call,2025-08-27 13:05:00,Advertiser asked for case studies related to discovery placement walkthrough
+tp_0750,adv_d,rep_05,email,2025-08-28 07:30:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_0751,adv_l,rep_02,email,2025-08-28 16:50:00,Advertiser asked for case studies related to CTV inventory pitch
+tp_0752,adv_t,rep_06,meeting,2025-08-29 17:30:00,"Client requested changes to holiday campaign brief, will revise and resend"
+tp_0753,adv_m,rep_06,meeting,2025-08-31 17:00:00,y
+tp_0754,adv_o,rep_03,meeting,2025-09-01 09:50:00,"Client requested changes to impression dashboard walkthrough, will revise and resend"
+tp_0755,adv_h,rep_07,call,2025-09-01 13:30:00,Client's marketing director joined call to discuss spring push planning
+tp_0756,adv_l,rep_02,call,2025-09-02 16:05:00,Kickoff call for Q4 upsell conversation
+tp_0757,adv_d,rep_02,email,2025-09-03 15:20:00,Walked client through Q4 upsell conversation
+tp_0758,adv_h,rep_07,call,2025-09-04 12:45:00,Discussed new product launch tie-in with client
+tp_0759,adv_l,rep_02,call,2025-09-06 07:05:00,Rescheduled audience segment review meeting due to client conflict
+tp_0760,adv_o,rep_02,call,2025-09-07 16:00:00,Rescheduled audience segment review meeting due to client conflict
+tp_0761,adv_j,rep_07,email,2025-09-08 10:00:00,Not applicable
+tp_0762,adv_s,rep_07,call,2025-09-08 13:05:00,"Agenda:
+1. Performance review
+2. Budget for Q3
+3. Next steps"
+tp_0763,adv_t,rep_05,demo,2025-09-09 16:45:00, NA 
+tp_0764,adv_h,rep_07,email,2025-09-09 18:15:00,	TBD	
+tp_0765,adv_t,rep_05,call,2025-09-10 09:20:00,Scheduled follow-up meeting to continue social media bundle upsell conversation
+tp_0766,adv_i,rep_04,meeting,2025-09-13 15:15:00,"Client requested changes to Q2 renewal, will revise and resend"
+tp_0767,adv_o,rep_02,call,2025-09-14 14:15:00,Advertiser asked for case studies related to spring push planning
+tp_0768,adv_i,rep_04,call,2025-09-18 16:00:00,Quick sync
+tp_0769,adv_h,rep_07,demo,2025-09-19 07:45:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0770,adv_q,rep_08,meeting,2025-09-19 15:15:00,no notes
+tp_0771,adv_l,rep_02,meeting,2025-09-20 07:00:00,Client's marketing director joined call to discuss mid-flight performance summary
+tp_0772,adv_g,rep_01,email,2025-09-21 15:05:00,Discussed pricing &amp; timeline with client
+tp_0773,adv_t,rep_06,call,2025-09-22 11:45:00,no notes
+tp_0774,adv_l,rep_05,meeting,2025-09-22 17:15:00,"Left voicemail regarding video series kickoff, awaiting callback"
+tp_0775,adv_k,rep_07,call,2025-09-24 08:20:00,	
+tp_0776,adv_d,rep_05,call,2025-09-24 14:30:00,Advertiser asked for case studies related to video series kickoff
+tp_0777,adv_h,rep_04,meeting,2025-09-26 13:10:00,Walked client through CTV inventory pitch
+tp_0778,adv_l,rep_05,demo,2025-09-27 14:15:00,Scheduled follow-up meeting to continue attribution report walkthrough conversation
+tp_0779,adv_t,rep_06,call,2025-09-30 07:50:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0780,adv_a,rep_01,meeting,2025-09-30 12:05:00,Advertiser asked for case studies related to brand values campaign brief
+tp_0781,adv_t,rep_06,call,2025-09-30 13:05:00,"Reviewed Champions League placement results, positive feedback from advertiser"
+tp_0782,adv_l,rep_05,email,2025-10-01 18:20:00,"Champions League placement - client is interested, sending proposal next week"
+tp_0783,adv_n,rep_02,meeting,2025-10-02 11:45:00,Rescheduled Q1 awareness campaign meeting due to client conflict
+tp_0784,adv_p,rep_07,call,2025-10-03 17:15:00,No notes field filled originally; adding context now: client is happy
+tp_0785,adv_j,rep_01,call,2025-10-03 18:15:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0786,adv_a,rep_01,email,2025-10-04 09:45:00,"Discussed audience segment review - no major concerns, moving forward as planned"
+tp_0787,adv_b,rep_02,email,2025-10-04 10:05:00,"Reviewed contract terms tied to co-op marketing funds, legal reviewing redlines"
+tp_0788,adv_d,rep_05,email,2025-10-04 12:10:00,Great meeting - advertiser committed to renewing after attribution report walkthrough review
+tp_0789,adv_f,rep_04,call,2025-10-05 08:30:00,"mid-flight performance summary - client is interested, sending proposal next week"
+tp_0790,adv_s,rep_05,email,2025-10-05 11:30:00,xx
+tp_0791,adv_i,rep_07,email,2025-10-06 09:10:00,"Reviewed contract terms tied to Q1 awareness campaign, legal reviewing redlines"
+tp_0792,adv_t,rep_06,meeting,2025-10-06 11:10:00,"Reviewed holiday campaign brief results, positive feedback from advertiser"
+tp_0793,adv_l,rep_02,meeting,2025-10-06 15:00:00,
+tp_0794,adv_l,rep_05,call,2025-10-07 13:45:00,"Rescheduled Q4 upsell conversation meeting due to client conflict
+
+--
+Sent via mobile"
+tp_0795,adv_j,rep_01,email,2025-10-08 09:30:00,XXX
+tp_0796,adv_c,rep_02,demo,2025-10-08 17:20:00,Walked client through at-risk account review
+tp_0797,adv_j,rep_01,email,2025-10-10 13:45:00,Sent Q1 awareness campaign details via email
+tp_0798,adv_m,rep_06,demo,2025-10-16 15:20:00,Discussed video series kickoff with client
+tp_0799,adv_j,rep_01,email,2025-10-17 11:00:00,
+tp_0800,adv_l,rep_02,email,2025-10-17 12:45:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_0801,adv_l,rep_02,call,2025-10-17 14:50:00,"Left voicemail regarding influencer partnership pitch, awaiting callback"
+tp_0802,adv_t,rep_02,email,2025-10-17 18:15:00,"Client requested changes to Q1 awareness campaign, will revise and resend
+
+Sent from my iPhone"
+tp_0803,adv_k,rep_07,meeting,2025-10-18 13:10:00,"Sent audience segment review details via email
+
+Get Outlook for iOS"
+tp_0804,adv_h,rep_06,meeting,2025-10-18 15:50:00,0
+tp_0805,adv_g,rep_01,email,2025-10-19 08:50:00,Rescheduled Champions League placement meeting due to client conflict
+tp_0806,adv_g,rep_01,call,2025-10-19 11:50:00,Great meeting - advertiser committed to renewing after impression dashboard walkthrough review
+tp_0807,adv_c,rep_02,call,2025-10-19 17:00:00,Advertiser expanded scope of Champions League placement to include additional markets
+tp_0808,adv_d,rep_04,email,2025-10-20 12:10:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0809,adv_p,rep_05,call,2025-10-22 14:05:00,"Reviewed contract terms tied to newsletter renewal, legal reviewing redlines"
+tp_0810,adv_l,rep_05,call,2025-10-24 08:10:00,URGENT: CLIENT WANTS TO CANCEL CONTRACT IMMEDIATELY
+tp_0811,adv_r,rep_04,demo,2025-10-25 11:05:00,nil
+tp_0812,adv_i,rep_02,call,2025-10-26 09:00:00,"Client requested changes to contract renewal terms, will revise and resend"
+tp_0813,adv_l,rep_02,demo,2025-10-26 15:10:00,"Left voicemail regarding mid-flight performance summary, awaiting callback"
+tp_0814,adv_t,rep_06,email,2025-10-27 07:30:00,Walked client through discovery placement walkthrough
+tp_0815,adv_o,rep_03,email,2025-10-27 08:20:00,"Client requested changes to at-risk account review, will revise and resend"
+tp_0816,adv_o,rep_02,meeting,2025-10-27 12:10:00,"Champions League placement - client is interested, sending proposal next week"
+tp_0817,adv_s,rep_06,call,2025-10-28 08:50:00,Client pushed back on pricing during spring push planning discussion
+tp_0818,adv_g,rep_01,email,2025-10-28 10:45:00,No update
+tp_0819,adv_d,rep_02,email,2025-10-28 15:15:00,Client pushed back on pricing during at-risk account review discussion
+tp_0820,adv_o,rep_03,call,2025-10-29 11:30:00,Advertiser expanded scope of discovery placement walkthrough to include additional markets
+tp_0821,adv_j,rep_01,call,2025-10-31 09:45:00,	
+tp_0822,adv_l,rep_05,email,2025-10-31 13:30:00,"Left voicemail regarding Q3 budget planning, awaiting callback"
+tp_0823,adv_j,rep_01,call,2025-11-01 14:50:00,"Reviewed contract terms tied to Champions League placement, legal reviewing redlines"
+tp_0824,adv_m,rep_06,email,2025-11-02 14:05:00,Rescheduled recipe series sponsorship meeting due to client conflict
+tp_0825,adv_q,rep_08,email,2025-11-02 17:30:00,Rescheduled programmatic pilot discussion meeting due to client conflict
+tp_0826,adv_d,rep_04,call,2025-11-02 18:45:00,Great meeting - advertiser committed to renewing after Q3 budget planning review
+tp_0827,adv_d,rep_05,call,2025-11-04 13:05:00,Discussed Q1 awareness campaign with client
+tp_0828,adv_a,rep_01,demo,2025-11-04 16:30:00,None.
+tp_0829,adv_m,rep_06,meeting,2025-11-05 08:00:00,Not applicable
+tp_0830,adv_r,rep_01,email,2025-11-05 15:10:00,n/a.
+tp_0831,adv_o,rep_02,meeting,2025-11-06 09:10:00,test.
+tp_0832,adv_l,rep_05,call,2025-11-07 07:50:00,tbd.
+tp_0833,adv_o,rep_03,email,2025-11-07 09:50:00,"Discussed CTV inventory pitch - no major concerns, moving forward as planned"
+tp_0834,adv_j,rep_01,email,2025-11-07 11:05:00,Sent updated deck covering recipe series sponsorship to stakeholders
+tp_0835,adv_h,rep_06,email,2025-11-08 15:10:00,Rescheduled podcast series onboarding meeting due to client conflict
+tp_0836,adv_l,rep_05,meeting,2025-11-09 10:10:00,
+tp_0837,adv_t,rep_06,call,2025-11-09 12:30:00,Kickoff call for mid-flight performance summary
+tp_0838,adv_p,rep_05,call,2025-11-11 13:20:00,"Advertiser expanded scope of impression dashboard walkthrough to include additional markets
+
+Best,
+J."
+tp_0839,adv_t,rep_02,call,2025-11-13 14:05:00,"Discussed CTV inventory pitch - no major concerns, moving forward as planned"
+tp_0840,adv_t,rep_06,email,2025-11-14 14:50:00,Advertiser expanded scope of CTV inventory pitch to include additional markets
+tp_0841,adv_o,rep_02,call,2025-11-14 16:20:00,
+tp_0842,adv_l,rep_05,email,2025-11-14 18:45:00,Great meeting - advertiser committed to renewing after creative refresh request review
+tp_0843,adv_b,rep_04,meeting,2025-11-15 17:45:00,"Reviewed contract terms tied to Champions League placement, legal reviewing redlines"
+tp_0844,adv_h,rep_04,email,2025-11-16 15:15:00,  test  
+tp_0845,adv_q,rep_08,call,2025-11-17 12:00:00,Advertiser expanded scope of discovery placement walkthrough to include additional markets
+tp_0846,adv_s,rep_05,demo,2025-11-18 12:10:00,"CTV inventory pitch - client is interested, sending proposal next week"
+tp_0847,adv_i,rep_04,call,2025-11-20 07:10:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_0848,adv_h,rep_04,email,2025-11-20 08:45:00,Kickoff call for pricing negotiation
+tp_0849,adv_d,rep_05,email,2025-11-21 08:20:00,"Discussed audience segment review - no major concerns, moving forward as planned"
+tp_0850,adv_c,rep_02,demo,2025-11-21 16:00:00,"Advertiser expanded scope of discovery placement walkthrough to include additional markets
+
+Get Outlook for iOS"
+tp_0851,adv_t,rep_05,call,2025-11-22 15:10:00,Kickoff call for holiday campaign brief
+tp_0852,adv_o,rep_03,meeting,2025-11-23 09:15:00,Check-in call
+tp_0853,adv_i,rep_07,call,2025-11-23 13:50:00,Advertiser asked for case studies related to attribution report walkthrough
+tp_0854,adv_i,rep_02,email,2025-11-24 09:05:00,Y.
+tp_0855,adv_n,rep_02,email,2025-11-25 16:15:00,Great meeting - advertiser committed to renewing after at-risk account review review
+tp_0856,adv_i,rep_07,demo,2025-11-26 08:10:00,"Flagged concerns about Q2 renewal performance, escalating internally"
+tp_0857,adv_s,rep_07,call,2025-11-27 08:45:00,Client pushed back on pricing during Q4 upsell conversation discussion
+tp_0858,adv_l,rep_02,email,2025-11-27 13:15:00,"holiday campaign brief - client is interested, sending proposal next week"
+tp_0859,adv_i,rep_02,call,2025-11-27 14:00:00,Advertiser asked for case studies related to Q4 upsell conversation
+tp_0860,adv_j,rep_01,email,2025-11-28 09:00:00,Advertiser asked for case studies related to discovery placement walkthrough
+tp_0861,adv_o,rep_03,email,2025-11-28 12:20:00,Advertiser asked for case studies related to brand values campaign brief
+tp_0862,adv_j,rep_01,email,2025-11-28 13:20:00,"Follow-up on Champions League placement, client had questions about timeline"
+tp_0863,adv_c,rep_02,call,2025-11-29 09:10:00,"Reviewed contract terms tied to impression dashboard walkthrough, legal reviewing redlines"
+tp_0864,adv_q,rep_08,email,2025-11-29 15:10:00,Kickoff call for pricing negotiation
+tp_0865,adv_o,rep_03,demo,2025-11-30 07:05:00,Advertiser asked for case studies related to quarterly business review
+tp_0866,adv_l,rep_05,demo,2025-11-30 08:10:00,"Sent updated deck covering Q4 upsell conversation to stakeholders
+
+Thanks,
+Alex"
+tp_0867,adv_o,rep_03,email,2025-12-01 17:50:00,"Reviewed contract terms tied to Champions League placement, legal reviewing redlines"
+tp_0868,adv_r,rep_01,meeting,2025-12-02 08:15:00,"Flagged concerns about impression dashboard walkthrough performance, escalating internally"
+tp_0869,adv_r,rep_01,email,2025-12-02 11:45:00,"Reviewed Q3 budget planning results, positive feedback from advertiser"
+tp_0870,adv_a,rep_01,call,2025-12-02 12:00:00,null
+tp_0871,adv_f,rep_04,email,2025-12-02 14:50:00,"Discussed Q3 budget planning - no major concerns, moving forward as planned
+
+Get Outlook for iOS"
+tp_0872,adv_j,rep_01,email,2025-12-04 10:10:00,"Great meeting - advertiser committed to renewing after Q2 renewal review
+
+Thanks,
+Alex"
+tp_0873,adv_d,rep_02,call,2025-12-04 14:05:00,	TBD	
+tp_0874,adv_a,rep_01,meeting,2025-12-05 07:05:00,No notes field filled originally; adding context now: client is happy
+tp_0875,adv_l,rep_02,email,2025-12-06 07:00:00,Client pushed back on pricing during Q4 upsell conversation discussion
+tp_0876,adv_g,rep_01,email,2025-12-06 07:10:00,Client pushed back on pricing during newsletter renewal discussion
+tp_0877,adv_j,rep_07,call,2025-12-06 11:10:00,tbd.
+tp_0878,adv_s,rep_06,meeting,2025-12-06 14:45:00,
+tp_0879,adv_o,rep_03,email,2025-12-07 09:30:00,"Discussed social media bundle upsell with client
+
+Sent from my iPhone"
+tp_0880,adv_o,rep_02,meeting,2025-12-07 11:20:00,Rescheduled programmatic pilot discussion meeting due to client conflict
+tp_0881,adv_k,rep_07,email,2025-12-07 14:45:00,"Follow-up on Q4 upsell conversation, client had questions about timeline"
+tp_0882,adv_s,rep_07,meeting,2025-12-07 17:45:00,
+tp_0883,adv_m,rep_06,email,2025-12-07 18:05:00,Advertiser expanded scope of pricing negotiation to include additional markets
+tp_0884,adv_l,rep_02,call,2025-12-08 09:00:00,Walked client through social media bundle upsell
+tp_0885,adv_j,rep_01,call,2025-12-11 13:00:00,"Client requested changes to contract renewal terms, will revise and resend
+
+Best,
+J."
+tp_0886,adv_l,rep_05,meeting,2025-12-11 17:30:00,Client's marketing director joined call to discuss creative refresh request
+tp_0887,adv_a,rep_01,call,2025-12-14 11:10:00,"impression dashboard walkthrough - client is interested, sending proposal next week"
+tp_0888,adv_m,rep_06,email,2025-12-15 09:10:00, NA 
+tp_0889,adv_i,rep_02,meeting,2025-12-15 12:05:00,"Reviewed at-risk account review results, positive feedback from advertiser"
+tp_0890,adv_t,rep_05,email,2025-12-15 13:15:00,Status update call
+tp_0891,adv_k,rep_07,email,2025-12-18 16:05:00,Scheduled follow-up meeting to continue holiday campaign brief conversation
+tp_0892,adv_l,rep_05,meeting,2025-12-19 08:00:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_0893,adv_h,rep_07,email,2025-12-20 09:05:00,Client pushed back on pricing during influencer partnership pitch discussion
+tp_0894,adv_d,rep_05,call,2025-12-20 11:30:00,
+tp_0895,adv_b,rep_02,call,2025-12-20 14:20:00,"Reviewed pricing negotiation results, positive feedback from advertiser"
+tp_0896,adv_c,rep_02,call,2025-12-21 08:50:00,Sent Q1 awareness campaign details via email
+tp_0897,adv_o,rep_03,call,2025-12-22 11:15:00,Rescheduled mid-flight performance summary meeting due to client conflict
+tp_0898,adv_k,rep_07,demo,2025-12-22 17:15:00,"Left voicemail regarding mid-flight performance summary, awaiting callback"
+tp_0899,adv_c,rep_02,demo,2025-12-23 13:45:00,"Follow-up on attribution report walkthrough, client had questions about timeline"
+tp_0900,adv_g,rep_01,meeting,2025-12-27 08:20:00,"contract renewal terms - client is interested, sending proposal next week"
+tp_0901,adv_t,rep_06,call,2025-12-27 12:15:00,"Client requested changes to brand values campaign brief, will revise and resend"
+tp_0902,adv_s,rep_05,email,2025-12-27 15:50:00,None.
+tp_0903,adv_t,rep_05,email,2025-12-29 11:45:00,Advertiser asked for case studies related to podcast series onboarding
+tp_0904,adv_s,rep_06,demo,2025-12-29 14:10:00,Walked client through programmatic pilot discussion
+tp_0905,adv_q,rep_08,call,2025-12-29 15:20:00,none!
+tp_0906,adv_o,rep_03,call,2025-12-29 16:50:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0907,adv_t,rep_06,demo,2025-12-31 08:15:00,0
+tp_0908,adv_h,rep_04,email,2025-12-31 12:50:00,No comment
+tp_0909,adv_s,rep_06,call,2026-01-01 13:15:00,Scheduled follow-up meeting to continue newsletter renewal conversation
+tp_0910,adv_q,rep_08,call,2026-01-03 13:30:00,NULL
+tp_0911,adv_k,rep_07,meeting,2026-01-03 17:30:00,None.
+tp_0912,adv_h,rep_06,call,2026-01-04 16:50:00,Sent influencer partnership pitch details via email
+tp_0913,adv_g,rep_01,email,2026-01-04 18:50:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_0914,adv_b,rep_04,demo,2026-01-05 08:10:00,
+tp_0915,adv_i,rep_04,call,2026-01-08 11:10:00,"Flagged concerns about quarterly business review performance, escalating internally"
+tp_0916,adv_l,rep_02,email,2026-01-08 11:15:00,"Follow-up on newsletter renewal, client had questions about timeline"
+tp_0917,adv_o,rep_03,demo,2026-01-08 14:45:00,
+tp_0918,adv_t,rep_05,email,2026-01-09 10:50:00,URGENT: CLIENT WANTS TO CANCEL CONTRACT IMMEDIATELY
+tp_0919,adv_t,rep_05,meeting,2026-01-09 14:30:00,Advertiser asked for case studies related to newsletter renewal
+tp_0920,adv_l,rep_05,demo,2026-01-11 11:00:00,"Left voicemail regarding recipe series sponsorship, awaiting callback"
+tp_0921,adv_l,rep_02,email,2026-01-11 13:45:00,URGENT: CLIENT WANTS TO CANCEL CONTRACT IMMEDIATELY
+tp_0922,adv_s,rep_07,email,2026-01-11 14:50:00,"quarterly business review - client is interested, sending proposal next week"
+tp_0923,adv_q,rep_08,demo,2026-01-12 08:15:00,Scheduled follow-up meeting to continue holiday campaign brief conversation
+tp_0924,adv_o,rep_03,call,2026-01-13 17:10:00,Sent recipe series sponsorship details via email
+tp_0925,adv_c,rep_02,email,2026-01-14 09:45:00,Advertiser asked for case studies related to audience segment review
+tp_0926,adv_o,rep_03,call,2026-01-14 16:20:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_0927,adv_d,rep_05,call,2026-01-14 17:10:00,	
+tp_0928,adv_m,rep_06,call,2026-01-15 07:05:00,Scheduled follow-up meeting to continue newsletter renewal conversation
+tp_0929,adv_l,rep_02,demo,2026-01-15 10:20:00,"Reviewed Q3 budget planning results, positive feedback from advertiser"
+tp_0930,adv_m,rep_06,call,2026-01-17 09:00:00,Sent programmatic pilot discussion details via email
+tp_0931,adv_h,rep_07,call,2026-01-17 09:30:00,"Left voicemail regarding newsletter renewal, awaiting callback"
+tp_0932,adv_i,rep_04,demo,2026-01-17 13:30:00,"Client requested changes to Champions League placement, will revise and resend"
+tp_0933,adv_j,rep_01,meeting,2026-01-18 12:00:00,"Reviewed programmatic pilot discussion results, positive feedback from advertiser
+
+Sent from my iPhone"
+tp_0934,adv_j,rep_07,email,2026-01-19 13:50:00,"Notes from meeting:
+Client happy with results.
+Wants to expand campaign."
+tp_0935,adv_l,rep_05,email,2026-01-20 11:10:00,Scheduled follow-up meeting to continue impression dashboard walkthrough conversation
+tp_0936,adv_h,rep_07,call,2026-01-20 12:10:00,Rescheduled podcast series onboarding meeting due to client conflict
+tp_0937,adv_l,rep_05,meeting,2026-01-21 17:05:00,"Left voicemail regarding quarterly business review, awaiting callback"
+tp_0938,adv_m,rep_06,email,2026-01-22 08:15:00,Client pushed back on pricing during brand values campaign brief discussion
+tp_0939,adv_p,rep_07,call,2026-01-22 10:10:00,Réunion avec le client à propos du renouvellement
+tp_0940,adv_p,rep_07,call,2026-01-23 10:15:00,"Follow-up on CTV inventory pitch, client had questions about timeline"
+tp_0941,adv_j,rep_01,call,2026-01-24 07:15:00,Rescheduled co-op marketing funds meeting due to client conflict
+tp_0942,adv_l,rep_02,call,2026-01-24 14:05:00,"Follow-up on attribution report walkthrough, client had questions about timeline"
+tp_0943,adv_l,rep_02,meeting,2026-01-26 09:50:00,.
+tp_0944,adv_j,rep_01,meeting,2026-01-28 14:30:00,Discussed podcast series onboarding with client
+tp_0945,adv_r,rep_02,call,2026-01-29 09:05:00, 
+tp_0946,adv_c,rep_02,call,2026-01-30 15:10:00,Advertiser expanded scope of discovery placement walkthrough to include additional markets
+tp_0947,adv_s,rep_07,call,2026-02-01 16:50:00,Scheduled follow-up meeting to continue audience segment review conversation
+tp_0948,adv_o,rep_03,email,2026-02-02 11:00:00,Client pushed back on pricing during newsletter renewal discussion
+tp_0949,adv_c,rep_02,meeting,2026-02-02 14:20:00,Scheduled follow-up meeting to continue influencer partnership pitch conversation
+tp_0950,adv_o,rep_02,call,2026-02-02 17:20:00,
+tp_0951,adv_q,rep_08,demo,2026-02-04 16:00:00,Sent updated deck covering Champions League placement to stakeholders
+tp_0952,adv_e,rep_01,email,2026-02-05 14:15:00,Client's marketing director joined call to discuss influencer partnership pitch
+tp_0953,adv_a,rep_01,meeting,2026-02-06 09:15:00,"influencer partnership pitch - client is interested, sending proposal next week"
+tp_0954,adv_l,rep_02,call,2026-02-07 16:10:00,"Rescheduled holiday campaign brief meeting due to client conflict
+
+Thanks,
+Alex"
+tp_0955,adv_o,rep_03,call,2026-02-09 15:15:00,"Flagged concerns about holiday campaign brief performance, escalating internally"
+tp_0956,adv_s,rep_06,demo,2026-02-09 15:45:00,"Discussed mid-flight performance summary - no major concerns, moving forward as planned"
+tp_0957,adv_s,rep_06,email,2026-02-11 13:30:00,"Left voicemail regarding new product launch tie-in, awaiting callback"
+tp_0958,adv_o,rep_03,call,2026-02-12 08:00:00,Client's marketing director joined call to discuss brand values campaign brief
+tp_0959,adv_s,rep_06,meeting,2026-02-12 08:05:00,Walked client through quarterly business review
+tp_0960,adv_o,rep_03,call,2026-02-12 14:10:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_0961,adv_h,rep_07,meeting,2026-02-12 18:10:00,"Left voicemail regarding Q3 budget planning, awaiting callback"
+tp_0962,adv_r,rep_02,call,2026-02-13 17:45:00,Client's marketing director joined call to discuss impression dashboard walkthrough
+tp_0963,adv_p,rep_07,call,2026-02-17 11:15:00, None 
+tp_0964,adv_d,rep_05,email,2026-02-17 16:50:00,"Reviewed contract terms tied to attribution report walkthrough, legal reviewing redlines"
+tp_0965,adv_d,rep_05,call,2026-02-17 17:05:00,"Discussed holiday campaign brief - no major concerns, moving forward as planned"
+tp_0966,adv_h,rep_07,call,2026-02-18 12:15:00,"Client requested changes to CTV inventory pitch, will revise and resend"
+tp_0967,adv_h,rep_07,email,2026-02-18 16:15:00,Great meeting - advertiser committed to renewing after mid-flight performance summary review
+tp_0968,adv_r,rep_01,meeting,2026-02-20 15:10:00,"programmatic pilot discussion - client is interested, sending proposal next week"
+tp_0969,adv_t,rep_06,meeting,2026-02-20 16:15:00,Client pushed back on pricing during Champions League placement discussion
+tp_0970,adv_r,rep_02,meeting,2026-02-21 07:45:00,?
+tp_0971,adv_h,rep_07,call,2026-02-21 07:45:00,"Follow-up on Q3 budget planning, client had questions about timeline
+
+--
+Sent via mobile"
+tp_0972,adv_t,rep_06,email,2026-02-21 08:50:00,
+tp_0973,adv_s,rep_05,call,2026-02-21 09:50:00,   
+tp_0974,adv_m,rep_06,email,2026-02-23 13:20:00,Scheduled follow-up meeting to continue creative refresh request conversation
+tp_0975,adv_q,rep_08,meeting,2026-02-23 17:10:00,Rescheduled podcast series onboarding meeting due to client conflict
+tp_0976,adv_t,rep_05,call,2026-02-24 10:15:00,Kickoff call for Q3 budget planning
+tp_0977,adv_d,rep_05,email,2026-02-24 16:00:00,"Flagged concerns about contract renewal terms performance, escalating internally
+
+Thanks,
+Alex"
+tp_0978,adv_r,rep_01,meeting,2026-02-24 17:45:00,Client's marketing director joined call to discuss Q3 budget planning
+tp_0979,adv_h,rep_07,demo,2026-02-25 15:00:00,"Reviewed contract renewal terms results, positive feedback from advertiser"
+tp_0980,adv_s,rep_05,meeting,2026-02-25 17:10:00,Client pushed back on pricing during influencer partnership pitch discussion
+tp_0981,adv_n,rep_02,call,2026-02-27 09:10:00,Walked client through pricing negotiation
+tp_0982,adv_t,rep_02,call,2026-02-28 18:10:00,Client pushed back on pricing during contract renewal terms discussion
+tp_0983,adv_o,rep_03,meeting,2026-03-02 17:15:00,"Left voicemail regarding newsletter renewal, awaiting callback"
+tp_0984,adv_h,rep_07,call,2026-03-02 17:30:00,"Left voicemail regarding co-op marketing funds, awaiting callback"
+tp_0985,adv_j,rep_01,email,2026-03-03 09:10:00,"Follow-up on Q3 budget planning, client had questions about timeline"
+tp_0986,adv_p,rep_05,meeting,2026-03-06 14:00:00,No
+tp_0987,adv_d,rep_05,meeting,2026-03-06 16:05:00,n/a.
+tp_0988,adv_k,rep_07,call,2026-03-07 11:15:00,Sent podcast series onboarding details via email
+tp_0989,adv_m,rep_06,call,2026-03-09 07:30:00,Walked client through at-risk account review
+tp_0990,adv_p,rep_05,meeting,2026-03-10 08:20:00,Sent mid-flight performance summary details via email
+tp_0991,adv_j,rep_01,email,2026-03-11 13:05:00,Yep
+tp_0992,adv_j,rep_05,email,2026-03-11 18:30:00,Advertiser expanded scope of recipe series sponsorship to include additional markets
+tp_0993,adv_p,rep_07,email,2026-03-12 11:30:00,Walked client through newsletter renewal
+tp_0994,adv_m,rep_06,email,2026-03-13 18:50:00,N/A - see CRM attachment for full call summary and next steps
+tp_0995,adv_i,rep_07,meeting,2026-03-14 10:15:00,"Flagged concerns about creative refresh request performance, escalating internally"
+tp_0996,adv_l,rep_05,meeting,2026-03-14 11:15:00,"Notes: n/a for this call, but discussed Q3 pricing at length"
+tp_0997,adv_t,rep_06,call,2026-03-14 14:05:00,"Left voicemail regarding attribution report walkthrough, awaiting callback"
+tp_0998,adv_l,rep_02,call,2026-03-15 12:00:00,Discussed Q1 awareness campaign with client
+tp_0999,adv_h,rep_07,call,2026-03-15 13:30:00,Rescheduled CTV inventory pitch meeting due to client conflict
+tp_1000,adv_a,rep_01,call,2026-03-17 18:05:00,-
+tp_1001,adv_d,rep_02,call,2026-03-18 16:00:00,Rescheduled Champions League placement meeting due to client conflict
+tp_1002,adv_r,rep_01,call,2026-03-18 17:15:00,Scheduled follow-up meeting to continue attribution report walkthrough conversation
+tp_1003,adv_l,rep_05,demo,2026-03-18 17:30:00,None.
+tp_1004,adv_h,rep_06,call,2026-03-20 11:15:00,Advertiser asked for case studies related to impression dashboard walkthrough
+tp_1005,adv_h,rep_07,call,2026-03-20 12:05:00,Scheduled follow-up meeting to continue co-op marketing funds conversation
+tp_1006,adv_l,rep_05,email,2026-03-21 12:45:00,Sent Q2 renewal details via email
+tp_1007,adv_k,rep_07,meeting,2026-03-21 16:20:00,"Discussed attribution report walkthrough - no major concerns, moving forward as planned"
+tp_1008,adv_d,rep_04,email,2026-03-21 18:00:00,"Reviewed attribution report walkthrough results, positive feedback from advertiser"
+tp_1009,adv_p,rep_07,call,2026-03-22 14:10:00,"Discussed programmatic pilot discussion - no major concerns, moving forward as planned"
+tp_1010,adv_p,rep_07,email,2026-03-23 10:00:00,"Flagged concerns about Q4 upsell conversation performance, escalating internally"
+tp_1011,adv_q,rep_08,call,2026-03-24 09:10:00,None
+tp_1012,adv_l,rep_05,email,2026-03-24 11:05:00,Advertiser asked for case studies related to discovery placement walkthrough
+tp_1013,adv_l,rep_02,email,2026-03-24 16:10:00,Client pushed back on pricing during podcast series onboarding discussion
+tp_1014,adv_p,rep_07,email,2026-03-24 17:10:00,Discussed video series kickoff with client
+tp_1015,adv_s,rep_06,call,2026-03-26 15:20:00,Advertiser asked for case studies related to pricing negotiation
+tp_1016,adv_b,rep_02,call,2026-03-26 16:00:00,Discussed recipe series sponsorship with client
+tp_1017,adv_t,rep_05,meeting,2026-03-27 17:10:00,0
+tp_1018,adv_l,rep_05,email,2026-03-28 18:20:00,  test  
+tp_1019,adv_f,rep_04,meeting,2026-03-29 12:45:00,Client pushed back on pricing during impression dashboard walkthrough discussion
+tp_1020,adv_q,rep_08,call,2026-03-29 16:50:00,.
+tp_1021,adv_s,rep_07,demo,2026-03-31 13:20:00,Walked client through recipe series sponsorship
+tp_1022,adv_m,rep_06,email,2026-04-02 14:10:00,"Reviewed video series kickoff results, positive feedback from advertiser"
+tp_1023,adv_j,rep_05,call,2026-04-03 09:05:00,"Follow-up on video series kickoff, client had questions about timeline"
+tp_1024,adv_r,rep_04,meeting,2026-04-03 10:05:00,Client pushed back on pricing during CTV inventory pitch discussion
+tp_1025,adv_s,rep_06,call,2026-04-04 18:15:00,Advertiser expanded scope of influencer partnership pitch to include additional markets
+tp_1026,adv_j,rep_07,meeting,2026-04-05 09:30:00,URGENT: CLIENT WANTS TO CANCEL CONTRACT IMMEDIATELY
+tp_1027,adv_o,rep_03,meeting,2026-04-05 13:50:00,"Reviewed contract terms tied to at-risk account review, legal reviewing redlines"
+tp_1028,adv_s,rep_06,email,2026-04-06 08:30:00,Rescheduled Q4 upsell conversation meeting due to client conflict
+tp_1029,adv_r,rep_01,meeting,2026-04-06 12:30:00,"Client requested changes to influencer partnership pitch, will revise and resend"
+tp_1030,adv_s,rep_06,email,2026-04-06 15:30:00,No notes
+tp_1031,adv_a,rep_01,email,2026-04-06 17:00:00,Walked client through co-op marketing funds
+tp_1032,adv_t,rep_06,demo,2026-04-07 07:15:00,"Client requested changes to Q3 budget planning, will revise and resend"
+tp_1033,adv_j,rep_01,call,2026-04-07 10:10:00,None.
+tp_1034,adv_i,rep_07,meeting,2026-04-08 08:05:00,Client pushed back on pricing during recipe series sponsorship discussion
+tp_1035,adv_o,rep_03,call,2026-04-08 18:00:00,0
+tp_1036,adv_j,rep_07,call,2026-04-09 14:20:00,
+tp_1037,adv_d,rep_05,email,2026-04-11 09:00:00,Walked client through mid-flight performance summary
+tp_1038,adv_p,rep_07,call,2026-04-11 14:00:00,"Notes: n/a for this call, but discussed Q3 pricing at length"
+tp_1039,adv_p,rep_05,email,2026-04-12 11:10:00,"Reviewed contract terms tied to newsletter renewal, legal reviewing redlines"
+tp_1040,adv_l,rep_05,meeting,2026-04-12 16:45:00,
+tp_1041,adv_c,rep_02,email,2026-04-13 14:05:00,Walked client through mid-flight performance summary
+tp_1042,adv_a,rep_01,call,2026-04-15 08:10:00,"creative refresh request - client is interested, sending proposal next week"
+tp_1043,adv_a,rep_01,call,2026-04-16 14:30:00,"Client requested changes to video series kickoff, will revise and resend
+
+Get Outlook for iOS"
+tp_1044,adv_p,rep_07,email,2026-04-17 08:05:00,Discussed video series kickoff with client
+tp_1045,adv_t,rep_05,call,2026-04-20 11:10:00,
+tp_1046,adv_o,rep_03,meeting,2026-04-20 12:05:00,Advertiser asked for case studies related to video series kickoff
+tp_1047,adv_s,rep_07,email,2026-04-22 11:15:00,Advertiser expanded scope of programmatic pilot discussion to include additional markets
+tp_1048,adv_q,rep_08,email,2026-04-22 11:20:00,Kickoff call for video series kickoff
+tp_1049,adv_j,rep_01,meeting,2026-04-22 17:10:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_1050,adv_c,rep_02,call,2026-04-22 17:30:00,"Reviewed contract terms tied to Q1 awareness campaign, legal reviewing redlines"
+tp_1051,adv_s,rep_05,email,2026-04-23 11:15:00,Kickoff call for Champions League placement
+tp_1052,adv_j,rep_01,email,2026-04-23 14:45:00,
+tp_1053,adv_j,rep_01,call,2026-04-23 17:50:00,
+tp_1054,adv_s,rep_06,call,2026-04-27 08:00:00,"Client requested changes to CTV inventory pitch, will revise and resend"
+tp_1055,adv_m,rep_06,call,2026-04-28 13:15:00,"Left voicemail regarding video series kickoff, awaiting callback"
+tp_1056,adv_d,rep_02,email,2026-04-29 15:15:00,Client pushed back on pricing during video series kickoff discussion
+tp_1057,adv_t,rep_06,email,2026-04-29 16:20:00,
+tp_1058,adv_r,rep_02,email,2026-04-30 08:50:00,"Reviewed contract terms tied to impression dashboard walkthrough, legal reviewing redlines"
+tp_1059,adv_a,rep_01,call,2026-05-01 11:15:00,Discussed Q3 budget planning with client
+tp_1060,adv_b,rep_04,meeting,2026-05-01 13:20:00,FOLLOW UP ASAP - CLIENT ESCALATED TO VP LEVEL
+tp_1061,adv_t,rep_06,email,2026-05-02 07:30:00,"Reviewed contract terms tied to Q3 budget planning, legal reviewing redlines"
+tp_1062,adv_l,rep_02,call,2026-05-03 13:00:00,yes
+tp_1063,adv_s,rep_06,meeting,2026-05-03 17:30:00,"quarterly business review - client is interested, sending proposal next week"
+tp_1064,adv_b,rep_04,email,2026-05-05 13:15:00,Kickoff call for holiday campaign brief
+tp_1065,adv_k,rep_07,call,2026-05-05 16:50:00,12345
+tp_1066,adv_j,rep_01,email,2026-05-06 07:00:00,Walked client through impression dashboard walkthrough
+tp_1067,adv_a,rep_01,demo,2026-05-06 07:05:00,Advertiser asked for case studies related to podcast series onboarding
+tp_1068,adv_l,rep_02,call,2026-05-06 16:30:00,meeting occurred
+tp_1069,adv_h,rep_06,demo,2026-05-07 09:00:00,"holiday campaign brief - client is interested, sending proposal next week"
+tp_1070,adv_o,rep_02,meeting,2026-05-09 09:00:00,Advertiser asked for case studies related to at-risk account review
+tp_1071,adv_j,rep_05,call,2026-05-09 09:10:00,Scheduled follow-up meeting to continue pricing negotiation conversation
+tp_1072,adv_j,rep_05,demo,2026-05-09 18:00:00,Hi
+tp_1073,adv_g,rep_01,call,2026-05-16 08:20:00,"Follow-up on discovery placement walkthrough, client had questions about timeline"
+tp_1074,adv_r,rep_04,call,2026-05-17 08:15:00,Discussed —important— deadline for co-op funds
+tp_1075,adv_p,rep_07,meeting,2026-05-17 17:45:00,.
+tp_1076,adv_o,rep_03,meeting,2026-05-17 18:15:00,Advertiser expanded scope of creative refresh request to include additional markets
+tp_1077,adv_o,rep_02,email,2026-05-18 12:20:00,"Follow-up on recipe series sponsorship, client had questions about timeline"
+tp_1078,adv_h,rep_07,meeting,2026-05-19 10:20:00,.
+tp_1079,adv_o,rep_03,call,2026-05-22 11:00:00,Kickoff call for Q2 renewal
+tp_1080,adv_m,rep_06,call,2026-05-23 08:10:00,??
+tp_1081,adv_c,rep_02,call,2026-05-23 14:05:00,Great meeting - advertiser committed to renewing after CTV inventory pitch review
+tp_1082,adv_s,rep_06,meeting,2026-05-23 18:05:00,"Discussed spring push planning - no major concerns, moving forward as planned"
+tp_1083,adv_l,rep_02,meeting,2026-05-25 17:05:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_1084,adv_h,rep_07,call,2026-05-28 08:00:00,Advertiser expanded scope of contract renewal terms to include additional markets
+tp_1085,adv_h,rep_07,call,2026-05-28 17:00:00,URGENT: CLIENT WANTS TO CANCEL CONTRACT IMMEDIATELY
+tp_1086,adv_i,rep_04,meeting,2026-05-30 10:05:00,
+tp_1087,adv_l,rep_02,meeting,2026-05-30 15:45:00,Client's marketing director joined call to discuss podcast series onboarding
+tp_1088,adv_l,rep_02,email,2026-06-01 11:10:00,"Reviewed contract terms tied to holiday campaign brief, legal reviewing redlines"
+tp_1089,adv_n,rep_02,email,2026-06-02 09:20:00,Advertiser asked for case studies related to Champions League placement
+tp_1090,adv_c,rep_02,meeting,2026-06-03 08:20:00,"Left voicemail regarding mid-flight performance summary, awaiting callback"
+tp_1091,adv_m,rep_06,demo,2026-06-03 17:15:00,"Client pushed back on pricing during at-risk account review discussion
+
+Thanks,
+Alex"
+tp_1092,adv_a,rep_01,email,2026-06-03 18:00:00,Sent Q4 upsell conversation details via email
+tp_1093,adv_l,rep_05,meeting,2026-06-04 17:45:00,No notes field filled originally; adding context now: client is happy
+tp_1094,adv_s,rep_06,email,2026-06-05 09:00:00,Great meeting - advertiser committed to renewing after contract renewal terms review
+tp_1095,adv_i,rep_04,call,2026-06-05 11:20:00,Scheduled follow-up meeting to continue Q1 awareness campaign conversation
+tp_1096,adv_j,rep_01,email,2026-06-06 17:05:00,
+tp_1097,adv_m,rep_06,call,2026-06-08 11:00:00,"Discussed brand values campaign brief - no major concerns, moving forward as planned"
+tp_1098,adv_o,rep_03,call,2026-06-10 13:00:00,Client pushed back on pricing during impression dashboard walkthrough discussion
+tp_1099,adv_l,rep_02,email,2026-06-10 15:20:00,Discussed pricing &amp; timeline with client
+tp_1100,adv_s,rep_05,demo,2026-06-11 11:30:00,"Reviewed contract terms tied to discovery placement walkthrough, legal reviewing redlines"
+tp_1101,adv_q,rep_08,meeting,2026-06-11 12:50:00,OK.
+tp_1102,adv_q,rep_08,meeting,2026-06-11 18:15:00,Scheduled follow-up meeting to continue mid-flight performance summary conversation
+tp_1103,adv_h,rep_06,call,2026-06-12 11:00:00,Client pushed back on pricing during Q4 upsell conversation discussion
+tp_1104,adv_a,rep_01,demo,2026-06-12 16:45:00,"Reviewed new product launch tie-in results, positive feedback from advertiser"
+tp_1105,adv_o,rep_03,call,2026-06-12 17:10:00,
+tp_1106,adv_d,rep_05,meeting,2026-06-13 17:45:00,"Reviewed contract terms tied to brand values campaign brief, legal reviewing redlines"
+tp_1107,adv_s,rep_05,call,2026-06-13 18:10:00,Client pushed back on pricing during social media bundle upsell discussion
+tp_1108,adv_k,rep_07,call,2026-06-14 07:20:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_1109,adv_j,rep_01,call,2026-06-15 10:00:00,"Reviewed recipe series sponsorship results, positive feedback from advertiser"
+tp_1110,adv_a,rep_01,call,2026-06-19 10:30:00,Great meeting - advertiser committed to renewing after creative refresh request review
+tp_1111,adv_h,rep_06,email,2026-06-20 14:50:00,Client pushed back on pricing during brand values campaign brief discussion
+tp_1112,adv_i,rep_02,call,2026-06-21 11:10:00,"Follow-up on quarterly business review, client had questions about timeline"
+tp_1113,adv_l,rep_02,email,2026-06-21 16:20:00,"Flagged concerns about programmatic pilot discussion performance, escalating internally"
+tp_1114,adv_m,rep_06,call,2026-06-22 15:45:00,test.
+tp_1115,adv_j,rep_05,call,2026-06-22 15:50:00,Advertiser asked for case studies related to Champions League placement
+tp_1116,adv_q,rep_08,call,2026-06-24 14:05:00,"Covered pricing, placement options, flight dates, and reporting cadence"
+tp_1117,adv_j,rep_05,email,2026-06-24 15:15:00,Kickoff call for influencer partnership pitch
+tp_1118,adv_r,rep_01,demo,2026-06-25 08:45:00,Quick sync
+tp_1119,adv_a,rep_01,meeting,2026-06-26 17:15:00,"Client requested changes to impression dashboard walkthrough, will revise and resend"
+tp_1120,adv_j,rep_01,call,2026-06-27 12:30:00,Walked client through quarterly business review
+tp_1121,adv_s,rep_06,meeting,2026-06-27 17:45:00,Sent Q3 budget planning details via email
+tp_1122,adv_s,rep_06,call,2026-06-28 09:50:00,Y.
+tp_1123,adv_m,rep_06,call,2026-06-29 16:15:00,Advertiser expanded scope of Q3 budget planning to include additional markets
+tp_1124,adv_j,rep_07,call,2026-06-29 16:30:00,Sent updated deck covering podcast series onboarding to stakeholders
+tp_1125,adv_m,rep_06,meeting,2026-06-30 13:30:00,Sure
+tp_1126,adv_h,rep_06,meeting,2026-07-01 13:50:00,Discussed impression dashboard walkthrough with client
+tp_1127,adv_b,rep_02,email,2026-07-01 14:10:00,"Flagged concerns about attribution report walkthrough performance, escalating internally"
+tp_1128,adv_t,rep_06,email,2026-07-02 17:50:00,Sent updated deck covering social media bundle upsell to stakeholders
+tp_1129,adv_q,rep_08,call,2026-07-03 11:45:00,"Client requested changes to attribution report walkthrough, will revise and resend
+
+Thanks,
+Alex"
+tp_1130,adv_q,rep_08,email,2026-07-03 18:30:00,"Flagged concerns about new product launch tie-in performance, escalating internally"
+tp_1131,adv_l,rep_02,call,2026-07-04 16:20:00,Client's marketing director joined call to discuss newsletter renewal
+tp_1132,adv_i,rep_02,call,2026-07-04 17:00:00,"Discussed social media bundle upsell - no major concerns, moving forward as planned
+
+Get Outlook for iOS"
+tp_1133,adv_p,rep_07,email,2026-07-05 10:50:00,Client pushed back on pricing during newsletter renewal discussion
+tp_1134,adv_j,rep_05,meeting,2026-07-07 15:45:00,Discussed pricing negotiation with client
+tp_1135,adv_l,rep_02,email,2026-07-07 16:00:00,"Client requested changes to impression dashboard walkthrough, will revise and resend"
+tp_1136,adv_l,rep_02,email,2026-07-07 17:45:00,"Left voicemail regarding Q2 renewal, awaiting callback"
+tp_1137,adv_o,rep_02,meeting,2026-07-07 18:15:00,Pending
+tp_1138,adv_p,rep_07,demo,2026-07-08 07:45:00,!!!
+tp_1139,adv_j,rep_01,email,2026-07-08 08:30:00,Kickoff call for holiday campaign brief
+tp_1140,adv_o,rep_02,meeting,2026-07-08 13:05:00,Great meeting - advertiser committed to renewing after Q3 budget planning review
+tp_1141,adv_c,rep_02,email,2026-07-09 14:20:00,---
+tp_1142,adv_j,rep_01,call,2026-07-10 12:05:00,Great meeting - advertiser committed to renewing after quarterly business review review
+tp_1143,adv_s,rep_06,email,2026-07-10 13:30:00,"Flagged concerns about spring push planning performance, escalating internally"
+tp_1144,adv_t,rep_05,email,2026-07-10 16:45:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_1145,adv_h,rep_04,demo,2026-07-12 09:30:00,"newsletter renewal - client is interested, sending proposal next week"
+tp_1146,adv_m,rep_06,meeting,2026-07-13 12:30:00,Advertiser asked for case studies related to attribution report walkthrough
+tp_1147,adv_o,rep_03,email,2026-07-14 12:00:00,Advertiser expanded scope of holiday campaign brief to include additional markets
+tp_1148,adv_c,rep_02,call,2026-07-14 17:00:00,Scheduled follow-up meeting to continue CTV inventory pitch conversation
+tp_1149,adv_p,rep_07,email,2026-07-15 11:05:00,Yep
+tp_1150,adv_k,rep_07,email,2026-07-15 11:15:00,URGENT: CLIENT WANTS TO CANCEL CONTRACT IMMEDIATELY
+tp_1151,adv_a,rep_01,email,2026-07-16 07:05:00,Kickoff call for Q2 renewal
+tp_1152,adv_l,rep_05,call,2026-07-16 17:10:00,"Flagged concerns about social media bundle upsell performance, escalating internally"
+tp_1153,adv_j,rep_01,call,2026-07-17 13:00:00,"Reviewed Champions League placement results, positive feedback from advertiser"
+tp_1154,adv_b,rep_04,call,2026-07-17 13:00:00,"Discussed quarterly business review - no major concerns, moving forward as planned"
+tp_1155,adv_r,rep_01,email,2026-07-17 13:00:00,"Client requested changes to Champions League placement, will revise and resend"
+tp_1156,adv_a,rep_01,meeting,2026-07-17 15:50:00,"Discussed holiday campaign brief - no major concerns, moving forward as planned"
+tp_1157,adv_p,rep_07,call,2026-07-17 16:00:00,"Q1 awareness campaign - client is interested, sending proposal next week"
+tp_1158,adv_o,rep_02,meeting,2026-07-17 18:10:00,
+tp_1159,adv_l,rep_05,call,2026-07-18 10:45:00,Client's marketing director joined call to discuss holiday campaign brief
+tp_1160,adv_s,rep_05,call,2026-07-19 12:00:00,Great meeting - advertiser committed to renewing after impression dashboard walkthrough review
+tp_1161,adv_o,rep_03,email,2026-07-20 16:10:00,"Flagged concerns about podcast series onboarding performance, escalating internally"
+tp_1162,adv_m,rep_06,call,2026-07-20 16:20:00,"Flagged concerns about influencer partnership pitch performance, escalating internally"
+tp_1163,adv_k,rep_07,call,2026-07-21 10:50:00,No
+tp_1164,adv_g,rep_01,call,2026-07-22 12:45:00,Discussed Q2 renewal with client
+tp_1165,adv_p,rep_05,call,2026-07-23 14:20:00,Done
+tp_1166,adv_h,rep_07,call,2026-07-25 10:15:00,Great meeting - advertiser committed to renewing after mid-flight performance summary review
+tp_1167,adv_o,rep_03,email,2026-07-26 12:05:00,Sent updated deck covering programmatic pilot discussion to stakeholders
+tp_1168,adv_s,rep_07,email,2026-07-28 07:05:00,Advertiser expanded scope of spring push planning to include additional markets
+tp_1169,adv_m,rep_06,meeting,2026-07-28 10:05:00,Client's marketing director joined call to discuss podcast series onboarding
+tp_1170,adv_b,rep_02,email,2026-07-30 15:50:00,"Flagged concerns about CTV inventory pitch performance, escalating internally"
+tp_1171,adv_s,rep_07,meeting,2026-07-31 08:15:00,Kickoff call for mid-flight performance summary
+tp_1172,adv_j,rep_01,call,2026-07-31 11:30:00,Great meeting - advertiser committed to renewing after brand values campaign brief review
+tp_1173,adv_h,rep_04,meeting,2026-07-31 14:00:00,Client pushed back on pricing during creative refresh request discussion
+tp_1174,adv_q,rep_08,call,2026-08-01 09:05:00,"Reviewed social media bundle upsell results, positive feedback from advertiser"
+tp_1175,adv_t,rep_06,email,2026-08-01 14:20:00,Scheduled follow-up meeting to continue impression dashboard walkthrough conversation
+tp_1176,adv_s,rep_06,call,2026-08-01 16:50:00,Sent updated deck covering contract renewal terms to stakeholders
+tp_1177,adv_i,rep_04,email,2026-08-02 07:45:00,Advertiser asked for case studies related to programmatic pilot discussion
+tp_1178,adv_l,rep_02,email,2026-08-02 09:45:00,Great meeting - advertiser committed to renewing after Q1 awareness campaign review
+tp_1179,adv_l,rep_05,email,2026-08-04 15:10:00,"Notes: n/a for this call, but discussed Q3 pricing at length"
+tp_1180,adv_p,rep_07,call,2026-08-05 15:10:00,12345
+tp_1181,adv_s,rep_05,email,2026-08-06 11:30:00,test.
+tp_1182,adv_p,rep_07,call,2026-08-08 16:50:00,"Reviewed spring push planning results, positive feedback from advertiser"
+tp_1183,adv_o,rep_03,call,2026-08-12 07:05:00,"Left voicemail regarding Q4 upsell conversation, awaiting callback"
+tp_1184,adv_h,rep_04,call,2026-08-13 15:20:00,"Client requested changes to CTV inventory pitch, will revise and resend"
+tp_1185,adv_c,rep_02,call,2026-08-14 10:45:00,"Flagged concerns about Champions League placement performance, escalating internally"
+tp_1186,adv_s,rep_06,call,2026-08-15 17:50:00,
+tp_1187,adv_p,rep_05,demo,2026-08-16 08:50:00,Client pushed back on pricing during at-risk account review discussion
+tp_1188,adv_r,rep_01,call,2026-08-16 10:20:00,Client pushed back on pricing during spring push planning discussion
+tp_1189,adv_t,rep_06,call,2026-08-16 10:50:00,"Flagged concerns about new product launch tie-in performance, escalating internally"
+tp_1190,adv_j,rep_01,email,2026-08-16 14:15:00,no notes
+tp_1191,adv_l,rep_05,call,2026-08-17 09:00:00,"Reviewed contract terms tied to Q2 renewal, legal reviewing redlines"
+tp_1192,adv_s,rep_06,call,2026-08-17 11:20:00,Check-in call
+tp_1193,adv_h,rep_07,call,2026-08-17 18:05:00,Kickoff call for audience segment review
+tp_1194,adv_p,rep_07,email,2026-08-18 09:00:00,Discussed audience segment review with client
+tp_1195,adv_l,rep_02,call,2026-08-18 14:45:00,"Discussed budget, timeline, creative assets, and renewal terms with client"
+tp_1196,adv_t,rep_05,email,2026-08-19 11:15:00,"Reviewed discovery placement walkthrough results, positive feedback from advertiser
+
+Get Outlook for iOS"
+tp_1197,adv_s,rep_06,email,2026-08-19 17:30:00,Great meeting - advertiser committed to renewing after podcast series onboarding review
+tp_1198,adv_r,rep_02,call,2026-08-19 17:30:00,Walked client through holiday campaign brief
+tp_1199,adv_o,rep_02,email,2026-08-19 18:00:00,Sent social media bundle upsell details via email
