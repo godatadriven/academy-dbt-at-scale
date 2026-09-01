@@ -1,59 +1,77 @@
 # MediaPulse - Project Overview
 
-**MediaPulse** is a fictional media company that manages four distinct platforms. Each platform generates its own data, and all four feed into a shared dbt project that your group will work on today.
+**MediaPulse** is a fictional media company that manages four core platforms, plus data from a third-party CRM vendor and an archived legacy platform it migrated off of. All of it lands in two connected dbt projects - `mediapulse_base` and `mediapulse_analytics` - that your group will work on today.
 
 ---
 
 ## The business
 
-| Platform | What it does | Raw schema |
-|----------|-------------|------------|
-| **StreamVault** | Subscription streaming service - films, series, live sport | `streaming` |
-| **NewsNow** | Digital news outlet - articles, authors, page views | `news` |
-| **PodcastHub** | Podcast network - shows, episodes, listener events | `podcasts` |
-| **AdConnect** | Programmatic ad platform - campaigns, impressions, spend | `ads` |
+| Platform | What it does | Raw schema | Owning project |
+|----------|-------------|------------|----------------|
+| **StreamVault** | Subscription streaming service - films, series, live sport. Internally called PulseStream. | `streaming` | `mediapulse_base` |
+| **NewsNow** | Digital news outlet - articles, authors, page views | `news` | `mediapulse_base` |
+| **PodcastHub** | Podcast network - shows, episodes, listener events | `podcasts` | `mediapulse_base` |
+| **AdConnect** | Programmatic ad platform - campaigns, impressions, spend | `ads` | `mediapulse_base` |
+| **SignalDesk** | Third-party CRM used by AdConnect's ad sales org - advertiser accounts, contracts, sales touchpoints | `crm` | `mediapulse_analytics` |
+| **StreamView** | StreamVault's predecessor, decommissioned in 2025 - archived catalog, subscriber, and playback data | `streamview_legacy` | `mediapulse_analytics` |
 
 ---
 
 ## Raw source tables
 
-There are four schemas which hold key data for the company:
-- `streaming`
-- `news`
-- `podcasts`
-- `ads`
+Six raw schemas hold key data for the company, split across the two projects:
 
-- `streaming`
+- Read by `mediapulse_base`: `streaming`, `news`, `podcasts`, `ads`
+- Read by `mediapulse_analytics` (self-contained, no dependency on `mediapulse_base` for these): `crm`, `streamview_legacy`
 
-    | Table | Key columns |
-    |-------|-------------|
-    | `watch_events` | `event_id`, `user_id`, `content_id`, `watched_at`, `watch_duration_seconds`, `device_type` |
-    | `subscriptions` | `subscription_id`, `user_id`, `plan_type`, `status`, `started_at`, `ended_at`, `monthly_fee_cents` |
-    | `content_catalog` | `content_id`, `title`, `genre`, `content_type`, `release_date`, `runtime_minutes` |
-
-- `news`
+- `streaming` (PulseStream, the current platform - table names don't match the schema name, that's intentional, not a typo)
 
     | Table | Key columns |
     |-------|-------------|
-    | `articles` | `article_id`, `title`, `author_id`, `category`, `published_at`, `updated_at`, `status`, `word_count` |
+    | `content_ctlg` | `content_id`, `title`, `genre`, `ctnt_type`, `release_date`, `runtime_minutes` |
+    | `subscriptions_lifecycle_rec` | `subscription_id`, `user_id`, `plan_type`, `status`, `start_date`, `start_time`, `end_date`, `end_time`, `monthly_fee_cents`, `updated_at` |
+    | `usr_watch_events_log` | `event_id`, `user_id`, `content_id`, `watched_at`, `watch_duration_seconds`, `device_type`, `batched_at` |
+
+- `news`
+
+    | Table | Key columns |
+    |-------|-------------|
+    | `articles` | `article_id`, `title`, `author_id`, `category`, `published_at`, `updated_at`, `status`, `word_count`, plus five `score_*` reader-survey columns (`score_relevance`, `score_clarity`, `score_bias`, `score_trust`, `score_engagement`), each with a matching `num_responses_*` count |
     | `authors` | `author_id`, `name`, `email`, `joined_at` |
-    | `page_views` | `view_id`, `article_id`, `user_id`, `viewed_at`, `referrer_source` |
+    | `page_views` (physical table is `views`) | `view_id`, `article_id`, `user_id`, `viewed_at`, `referrer_source` |
 
 - `podcasts`
 
     | Table | Key columns |
     |-------|-------------|
     | `shows` | `show_id`, `show_name`, `host_name`, `category`, `launched_at` |
-    | `episodes` | `episode_id`, `show_id`, `title`, `published_at`, `duration_seconds`, `season`, `episode_number` |
-    | `listens` | `listen_id`, `episode_id`, `user_id`, `listened_at`, `listen_duration_seconds`, `platform` |
+    | `episodes` | `episode_id`, `show_id`, `title`, `published_at`, `duration_seconds`, `episode_season`, `category` |
+    | `listens` | `listen_id`, `episode_id`, `user_id`, `listened_at`, `listen_duration_seconds`, `platform_id` |
 
-- `ads`
+- `ads` (staged by reading the raw table names directly, not through a `source()` block)
 
     | Table | Key columns |
     |-------|-------------|
     | `campaigns` | `campaign_id`, `advertiser_id`, `campaign_name`, `campaign_type`, `start_date`, `end_date`, `budget_cents` |
     | `impressions` | `impression_id`, `campaign_id`, `content_id`, `impression_date`, `impressions_count`, `clicks` |
     | `spend` | `spend_id`, `campaign_id`, `spend_date`, `spend_cents`, `platform_fee_cents` |
+
+- `crm` (SignalDesk export, `mediapulse_analytics`)
+
+    | Table | Key columns |
+    |-------|-------------|
+    | `sales_reps` | `rep_id`, `rep_name`, `region`, `hire_date` |
+    | `advertiser_accounts` | `advertiser_id`, `advertiser_name`, `industry`, `sales_rep_id`, `contract_tier`, `account_status`, `signed_at` |
+    | `contracts` | `contract_id`, `advertiser_id`, `contract_value_cents`, `start_date`, `end_date`, `renewal_status` |
+    | `touchpoints` | `touchpoint_id`, `advertiser_id`, `rep_id`, `touchpoint_type`, `occurred_at`, `notes` |
+
+- `streamview_legacy` (archived StreamView data, `mediapulse_analytics`)
+
+    | Table | Key columns |
+    |-------|-------------|
+    | `media_catalog_archive` | `media_id`, `media_title`, `category`, `media_format`, `release_dt`, `duration_min` |
+    | `acct_subs_archive` | `subscriber_ref`, `tier`, `account_status`, `start_dt`, `start_tm`, `end_dt`, `end_tm` |
+    | `playback_heartbeats` | `ping_id`, `subscriber_ref`, `media_id`, `ping_date`, `ping_time`, `playback_position_seconds`, `device_code` |
 
 ---
 
