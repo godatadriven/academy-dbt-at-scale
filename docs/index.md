@@ -20,10 +20,9 @@ You'll work in one of four groups, each with a dedicated slice of the MediaPulse
 
 | Group | Level | Theme |
 |-------|-------|-------|
-| [Group 1](group1/overview.md) | Intermediate | Testing · Sources · Jinja & Macros |
-| [Group 2](group2/overview.md) | Advanced I | Seeds · Snapshots · Test review |
-| [Group 3](group3/overview.md) | Advanced II | Incremental models · Singular tests · Revenue analytics |
-| [Group 4](group4/overview.md) | Power Users | dbt-project-evaluator · dbt-expectations · CI/CD |
+| [Group 1](group1/overview.md) | Next level dbt | modeling · testing · jinja/macros |
+| [Group 2](group2/overview.md) | Best practices and Multi-project dbt | testing · jinja/macros · dbt mesh |
+| [Group 3](group3/overview.md) | Power Users | testing · dbt mesh · model governance |
 
 ---
 
@@ -33,6 +32,16 @@ You'll work in one of four groups, each with a dedicated slice of the MediaPulse
 - Each group has an **Overview** (context + learning objectives) and a **Checklist** (step-by-step tasks).
 - Checklist steps include collapsible **hints** - try the task first, then expand the hint if you're stuck.
 - The [MediaPulse Project](mediapulse/overview.md) page documents the shared codebase: schemas, known bugs, and the overall structure.
+
+---
+
+
+## Group assignments
+
+Your group will correspond to the invite you received for this event. If you are unsure of your group you can see the groups listed here: [What group am I in?](https://docs.google.com/spreadsheets/d/15n12iQNUGiYKxePDcK04DcUu7FdJJLCIYNiOQSYni3A/edit?usp=sharing)
+
+!!! info "Discover what you're group is doing!"
+    Use the top navigation tabs to jump directly to your group's **Overview** and **Checklist** pages.
 
 ---
 
