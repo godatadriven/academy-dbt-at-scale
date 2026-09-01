@@ -58,3 +58,55 @@ models:
           - accepted_values:
               arguments:
                 values: ["search", "social", "direct", "email"]
+
+  - name: fct_article_scores
+    description: >
+      Fact table containing one row per news article, with author and
+      category attributes plus aggregated reader-response scores
+      (weighted totals and averages).
+    columns:
+      - name: article_id
+        description: Primary key. Unique identifier for the article.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: title
+        description: Headline/title of the article.
+        data_tests:
+          - not_null
+
+      - name: author_id
+        description: Foreign key to the author who wrote the article.
+        data_tests:
+          - not_null
+
+      - name: category
+        description: Editorial category the article was published under.
+        data_tests:
+          - not_null
+
+      - name: status
+        description: Current publication status of the article.
+        data_tests:
+          - not_null
+
+      - name: published_at
+        description: Timestamp when the article was (or would be) published.
+        data_tests:
+          - not_null
+
+      - name: total_weighted_score
+        description: Sum of all reader response scores, weighted, for the article.
+        data_tests:
+          - not_null
+
+      - name: total_responses
+        description: Count of reader responses used to compute the scores.
+        data_tests:
+          - not_null
+
+      - name: weighted_avg_score
+        description: Weighted average reader response score for the article (total_weighted_score / total_responses).
+        data_tests:
+          - not_null
