@@ -2,7 +2,7 @@
 
 ## Your slice of MediaPulse
 
-The `mediapulse_base` project already exists, with a working `staging → intermediate → marts` layering across podcasts and news. Your job across today is to work *with* that project the way a new hire would: understand it via tooling before touching code, refresh your modeling fundamentals against real models, close real test gaps, eliminate real repetition with macros, and try dbt's AI assistant on real work.
+The `mediapulse_base` project already exists, with a working `staging → intermediate → marts` layering across `podcasts` and `news`. Your job across today is to work *with* that project the way a new hire would: understand it via tooling before touching code, refresh your modeling fundamentals against real models, close real test gaps, eliminate real repetition with macros, and try dbt's AI assistant on real work.
 
 Everything in Part 1 and Part 2 lives in `mediapulse_base`. You won't need `mediapulse_analytics` today - that's Group 2 and Group 3's territory once dbt Mesh enters the picture.
 
@@ -20,7 +20,7 @@ By the end of today you will be able to:
 - Build a **snapshot** with the correct change-detection strategy for a given column
 - Explain what `access`, `group`, `contract`, and model **version** each do, and when to reach for each one
 - Convert a model to **incremental**, justify a strategy choice, and know when a full-refresh is unavoidable
-- Use **dbt Wizard** productively on a real task, and identify where its output needs your judgement
+- Write clear YAML documentation and test suggestions by hand for unfamiliar code, and know where an AI assistant like dbt Wizard would help in the real world
 
 ---
 
