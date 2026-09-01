@@ -8,26 +8,6 @@ Your team owns the `Streaming` and `Podcasts` section of MediaPulse. You will wo
 
 ---
 
-## What gets covered
-
-### Part 1
-
-1. [dbt Catalog & review](1.1-dbt-catalog-and-review.md) - a brisk recap of Catalog on `mediapulse_base`, then a full mesh-diagnosis exercise using Catalog's cross-project lineage view
-2. [Advanced testing](1.2-advanced-testing.md) - singular tests and test configuration for business-logic invariants, pitched above Group 1's introductory testing pass
-3. [Jinja/Macros & Custom schema logic](1.3-jinja-macros-and-custom-schema-logic.md) - unpack the project's real custom `generate_schema_name` macro and bring equivalent behaviour to `mediapulse_analytics`
-4. [dbt Mesh](1.4-dbt-mesh.md) - what a project dependency actually is, how access levels gate what can cross the project boundary, and what's really being referenced today
-
-### Part 2
-
-1. [Project evaluation & further tests](2.1-project-evaluation-and-further-tests.md) - run `dbt-project-evaluator` against both projects and triage what it finds
-2. [dbt Mesh](2.2-dbt-mesh.md) - continue into the mechanics of *when* a cross-project change actually becomes visible downstream
-3. [Dynamic data masking](2.3-dynamic-data-masking.md) - a real, sensitive column in the project, and how Snowflake and dbt divide responsibility for protecting it
-4. [Deployment & CI/CD](2.4-deployment-and-cicd.md) - design a CI/CD pipeline that accounts for two projects depending on each other
-
-Each topic has an **Exercise** (apply the skill directly) and an **Extension** (apply it at a noticeably higher level of difficulty) - do the Extension if you finish the Exercise with time to spare.
-
----
-
 ## Learning objectives
 
 By the end of today you will be able to:

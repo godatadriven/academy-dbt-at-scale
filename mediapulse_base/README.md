@@ -50,9 +50,9 @@ Ten marts across four domains:
 
 ## Streaming domain availability
 
-The `streaming` marts (`dim_content_catalog`, `dim_subscriptions`, `fct_streaming_events`) are already `access: public`, so `mediapulse_analytics` is *allowed* to `ref()` them today. We wouldn't recommend actually building on `fct_streaming_events` yet: its description documents a known, unresolved join fan-out (subscriptions are joined on `user_id` with no date-range filter), and we haven't shipped a fix.
+The `streaming` marts (`dim_content_catalog`, `dim_subscriptions`, `fct_streaming_events`) are currently `access: protected`, like every other mart in this project - `mediapulse_analytics` can't `ref()` them at all yet. That's deliberate, not an oversight: `fct_streaming_events`'s description documents a known, unresolved join fan-out (subscriptions are joined on `user_id` with no date-range filter), and we haven't shipped a fix.
 
-The plan is to fix the fan-out, let a couple of clean production runs land, and formally announce the streaming marts - `fct_streaming_events` in particular - as ready for cross-project consumption by the start of Q3 2027. If another project wants to build on the current streaming platform's data before then, talk to us first.
+The plan is to fix the fan-out, let a couple of clean production runs land, then flip the streaming marts - `fct_streaming_events` in particular - to `access: public` and formally announce them as ready for cross-project consumption by the start of Q3 2027. If another project wants to build on the current streaming platform's data before then, talk to us first.
 
 ## Setup
 

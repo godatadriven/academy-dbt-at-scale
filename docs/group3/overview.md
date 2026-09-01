@@ -6,26 +6,6 @@ This is the deepest track in the workshop. You're assumed comfortable with gener
 
 ---
 
-## What gets covered
-
-### Part 1
-
-1. [dbt Catalog & review](1.1-dbt-catalog-and-review.md) - a fast checkpoint, then straight into using Catalog's project recommendations across both projects to prioritise real coverage gaps
-2. [Testing coverage](1.2-testing-coverage.md) - a systematic audit of the newer `mediapulse_analytics` domains, and the limits of `relationships` tests across a project boundary
-3. [Deployment & CI/CD](1.3-deployment-and-cicd.md) - design a pipeline for a producer/consumer project pair
-4. [dbt Mesh](1.4-dbt-mesh.md) - the mesh boundary from the producer project's side
-
-### Part 2
-
-1. [dbt Mesh review](2.1-dbt-mesh-review.md) - find and fix a real mismatch between a model's documented intent and its actual access configuration, then design a genuinely new cross-project model end to end
-2. [Advanced Testing](2.2-advanced-testing.md) - the most advanced testing content in the workshop: cross-column consistency checks and how tests interact with model contracts
-3. [Dynamic data masking](2.3-dynamic-data-masking.md) - masking a column that's already crossing the mesh boundary, and the governance gap access levels alone don't close
-4. [Unit testing](2.4-unit-testing.md) - dbt's native unit-testing framework, applied to real conditional business logic, and where mesh boundaries limit what you can unit test
-
-Each topic has an **Exercise** (apply the skill directly) and an **Extension** (apply it at a noticeably higher level of difficulty) - do the Extension if you finish the Exercise with time to spare.
-
----
-
 ## Learning objectives
 
 By the end of today you will be able to:
