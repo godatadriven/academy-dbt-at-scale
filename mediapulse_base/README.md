@@ -28,7 +28,7 @@ Materialization defaults, set in `dbt_project.yml`:
 |---|---|---|
 | staging | view | public |
 | intermediate | view | protected |
-| marts | table | protected (streaming marts: public) |
+| marts | table | protected |
 
 `protected` is the dbt default and means these models can be referenced anywhere within `mediapulse_base`, but not from another dbt project unless a model overrides its access to `public`.
 
@@ -59,5 +59,5 @@ The plan is to fix the fan-out, let a couple of clean production runs land, then
 1. Open the Studio in dbt Platform
 2. Click on status in the bottom right - it should say error
 3. Click on view credentials, make sure Snowflake SSO is selected, then sign in to Snowflake.
-2. Run `dbt deps` to install `dbt_utils` and `codegen`.
-4. Run `dbt build` to ensure the project can be executed (there may be failures in the models)
+4. Run `dbt deps` to install `dbt_utils` and `codegen`.
+5. Run `dbt build` to ensure the project can be executed (there may be failures in the models)

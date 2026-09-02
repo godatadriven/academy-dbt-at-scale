@@ -26,7 +26,7 @@
 
 ### 1.3 - Jinja/Macros & Custom Schema Logic
 - `safe_divide(numerator, denominator, precision=4)` → 0 on zero denominator, else rounded division. Swap into `fct_ad_impressions.sql`'s `click_through_rate`.
-- `generate_schema_name.sql`'s real branches: seeds under `_seeds_setup` land in a **fixed** schema (no target prefix); everything else gets dbt's normal `{{ target.schema }}_{{ custom_schema }}`.
+- `generate_schema_name.sql` is currently **identical to dbt's default** (`{{ target.schema }}` with no custom schema, else `{{ target.schema }}_{{ custom_schema }}`) - the override does nothing until Step 3 adds the dev/prod branch keyed on `target.name`.
 - **Answer key:** a project dependency exposes only *public models*, never code - there's no mesh mechanism to share this macro with `mediapulse_analytics`. Correct answer is "duplicate, by convention," not "share via mesh."
 
 ### 1.4 - dbt Mesh
