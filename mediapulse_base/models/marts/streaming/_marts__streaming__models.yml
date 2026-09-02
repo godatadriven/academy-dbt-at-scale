@@ -20,7 +20,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ["series", "film", "live"]
+                values: ["series", "film", "live", "shorts", "interactive"]
       - name: release_date
         data_tests:
           - not_null
@@ -36,6 +36,7 @@ models:
         description: Primary key.
         data_tests:
           - not_null
+          - unique
       - name: user_id
         description: The subscriber.
         data_tests:
@@ -69,6 +70,7 @@ models:
         description: Primary key on the source watch event.
         data_tests:
           - not_null
+          - unique
       - name: user_id
         description: The viewer.
         data_tests:
@@ -91,6 +93,10 @@ models:
       - name: genre
       - name: ctnt_type
       - name: release_date
+        data_tests:
+          - not_null:
+              config: 
+                where: ctnt_type is not null
       - name: runtime_minutes
       - name: subscription_id
         description: Foreign key to dim_subscriptions.

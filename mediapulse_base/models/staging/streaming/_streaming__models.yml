@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: stg_streaming__content_ctlg
+    description: >
+      ""
+    columns:
+      - name: content_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+  - name: stg_streaming__subscriptions_lifecycle_rec
+    description: >
+      ""
+    columns:
+      - name: subscription_id
+        description: Primary key.
+        data_tests:
+          - not_null
+      - name: plan_type
+        description: Type of plan
+        data_tests:
+          - dbt_utils.not_empty_string
+  - name: stg_streaming__usr_watch_events_log
+    description: >
+      ""
+    columns:
+      - name: event_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique

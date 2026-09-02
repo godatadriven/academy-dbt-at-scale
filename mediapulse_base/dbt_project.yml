@@ -24,6 +24,10 @@ models:
     staging:
       +materialized: view
       +access: public
+      streaming:
+        +schema: streaming
+      ads:
+        +schema: ads
     intermediate:
       +materialized: view
       +access: protected

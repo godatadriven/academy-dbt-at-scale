@@ -21,7 +21,7 @@ subscriptions as (
                 )
         end as subscription_ended_at
 
-    from {{ ref('stg_streaming__subscriptions_lifecycle_rec') }}
+    from {{ ref('int_dedupe_subscribers') }}
 
 ),
 
@@ -43,13 +43,13 @@ joined as (
         subscriptions.subscription_id,
         subscriptions.plan_type,
         subscriptions.status,
-        subscriptions.start_date,
-        subscriptions.start_time,
+        subscriptions.subscription_started_at,
+        -- subscriptions.start_time,
         subscriptions.end_date,
         subscriptions.end_time,
-        subscriptions.monthly_fee_cents,
-        subscriptions.subscription_started_at,
-        subscriptions.subscription_ended_at
+        subscriptions.monthly_fee_cents
+        -- subscriptions.subscription_started_at,
+        -- subscriptions.subscription_ended_at
 
     from events
     left join content_catalog

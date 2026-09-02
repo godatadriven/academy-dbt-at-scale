@@ -24,10 +24,11 @@ select
     impressions.impression_date,
     impressions.impressions_count,
     impressions.clicks,
-    case
-        when impressions.impressions_count = 0 then 0
-        else round(1.0 * impressions.clicks / impressions.impressions_count, 4)
-    end    as click_through_rate
+    -- case
+    --     when impressions.impressions_count = 0 then 0
+    --     else round(1.0 * impressions.clicks / impressions.impressions_count, 4)
+    -- end    as click_through_rate
+    {{safe_divide('impressions.clicks', 'impressions.impressions_count')}} as click_through_rate
 
 from impressions
 left join campaigns

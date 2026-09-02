@@ -85,6 +85,10 @@ models:
       The most recent subscription event for each user. Events are ordered by updated_at,
       with the subscription start timestamp and subscription_id used as deterministic
       fallbacks when updated_at is null or tied.
+    data_tests:
+      - dbt_utils.fewer_rows_than:
+          arguments:
+            compare_model: ref('stg_streaming__subscriptions_lifecycle_rec')
     config:
       materialized: view
     columns:
