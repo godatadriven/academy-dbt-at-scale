@@ -6,7 +6,7 @@ with articles as (
 
     select
         article_id          as content_id,
-        article_title       as content_title,
+        title       as content_title,
         category,
         published_at,
         'news'              as platform,
