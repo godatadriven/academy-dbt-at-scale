@@ -81,3 +81,50 @@ models:
         description: >
           Inclusive ordinal position of the touchpoint for the advertiser-rep pair within
           touchpoint_year, ordered by occurred_at and touchpoint_id.
+
+
+  - name: int_streaming__legacy_watch_events_reshaped
+    description: >
+      One row per completed watch event across the current PulseStream platform and the legacy
+      StreamView platform. Current-platform events retain their source grain. Legacy heartbeat
+      pings are collapsed to one event per subscriber, content item, and day using the latest
+      ping time and maximum playback position as the event timestamp and watch duration.
+    columns:
+      - name: event_id
+        description: >
+          Identifier for the watch event. Current events retain their source event ID; legacy
+          events use the maximum heartbeat ping ID in the collapsed event.
+        data_tests:
+          - not_null
+
+      - name: user_id
+        description: Current-platform user ID or legacy subscriber ID associated with the event.
+        data_tests:
+          - not_null
+
+      - name: content_id
+        description: Current-platform content ID or legacy media ID for the watched content.
+        data_tests:
+          - not_null
+
+      - name: watched_at
+        description: >
+          Timestamp when the watch event occurred. For legacy events, this combines the ping date
+          with the latest ping time in the collapsed event.
+        data_tests:
+          - not_null
+
+      - name: watch_duration_seconds
+        description: >
+          Duration watched in seconds. For legacy events, this is the maximum playback position
+          recorded by the event's heartbeat pings.
+        data_tests:
+          - not_null
+
+      - name: device_type
+        description: Current-platform device type or legacy device code associated with the event.
+
+      - name: batched_at
+        description: >
+          Timestamp when a current-platform event was loaded. Legacy events use the heartbeat
+          ping date because the legacy source does not provide a batch timestamp.
