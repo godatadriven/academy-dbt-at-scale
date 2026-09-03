@@ -66,11 +66,18 @@ models:
       One row per lifecycle event for a StreamView (legacy) subscriber. Each
       subscriber contributes a subscription_started row, and a
       subscription_ended row if their subscription has ended.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - legacy_subscriber_id
+              - event_type
     columns:
       - name: legacy_subscriber_id
         description: Foreign key to dim_legacy_subscribers.
         data_tests:
           - not_null
+
       - name: mapped_user_id
       - name: event_type
         description: "Lifecycle event type. One of: subscription_started, subscription_ended."

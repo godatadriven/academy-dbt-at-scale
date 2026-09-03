@@ -35,18 +35,28 @@ episodes as (
 combined as (
 
     select
-        a.content_id,
-        a.content_title,
-        a.category,
-        a.published_at,
-        a.platform,
-        a.content_length_units,
-        a.duration_seconds
+        content_id,
+        content_title,
+        category,
+        published_at,
+        platform,
+        content_length_units,
+        duration_seconds
+    from articles
 
-    from articles a
-    inner join episodes e
-        on a.category = e.category
+    union all
+
+    select
+        content_id,
+        content_title,
+        category,
+        published_at,
+        platform,
+        content_length_units,
+        duration_seconds
+    from episodes
 
 )
+
 
 select * from combined

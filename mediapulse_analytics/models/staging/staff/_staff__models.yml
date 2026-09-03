@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_staff__members
+    description: Staged staff directory records. One row per staff member.
+    columns:
+      - name: user_id
+        description: Primary key for the staff member.
+        data_tests:
+          - not_null
+          - unique
+      - name: start_date
+        description: Date the staff member joined MediaPulse.
+      - name: name
+        description: Staff member's full name.
+      - name: email
+        description: Staff member's MediaPulse email address.
+      - name: phone_number
+        description: Staff member's phone number.
+      - name: role
+        description: Staff member's role at MediaPulse.

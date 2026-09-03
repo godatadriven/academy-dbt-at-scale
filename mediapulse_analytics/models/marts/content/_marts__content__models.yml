@@ -4,17 +4,23 @@ models:
   - name: fct_content_performance
     description: >
       MediaPulse unified content performance fact, combining NewsNow articles
-      and PodcastHub episodes into a single content catalogue. Work in
-      progress - see the model's header comment for the known join issue.
+      and PodcastHub episodes into a single content catalogue.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - platform
+              - content_id
     columns:
       - name: content_id
         description: Article or episode identifier, depending on platform.
         data_tests:
           - not_null
+
       - name: content_title
         description: Article headline or episode title, depending on platform.
       - name: category
-        description: Editorial category. Only populated for the news platform today.
+        description: Editorial category for the content item.
       - name: published_at
         description: Timestamp the content first went live.
         data_tests:
