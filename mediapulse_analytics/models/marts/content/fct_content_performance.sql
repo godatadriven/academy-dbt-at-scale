@@ -10,10 +10,11 @@ with articles as (
         category,
         published_at,
         'news'              as platform,
-        word_count          as content_length_units,
+        max(word_count)          as content_length_units,
         null::int           as duration_seconds
 
     from {{ ref('mediapulse_base', 'stg_news__articles') }}
+    group by 1,2,3,4,5,7
 
 ),
 
@@ -29,23 +30,35 @@ episodes as (
         category
 
     from {{ ref('mediapulse_base', 'stg_podcasts__episodes') }}
+    group by 1,2,3,4,6,7
 
 ),
 
 combined as (
 
     select
-        a.content_id,
-        a.content_title,
-        a.category,
-        a.published_at,
-        a.platform,
-        a.content_length_units,
-        a.duration_seconds
+        content_id,
+        content_title,
+        category,
+        published_at,
+        platform,
+        content_length_units,
+        duration_seconds
 
-    from articles a
-    inner join episodes e
-        on a.category = e.category
+    from articles
+
+    union all
+
+    select
+        content_id,
+        content_title,
+        category,
+        published_at,
+        platform,
+        content_length_units,
+        duration_seconds
+
+    from episodes
 
 )
 
