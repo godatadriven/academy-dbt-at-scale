@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: stg_streaming__content_ctlg
+
+    columns:
+      - name: content_ctlg
+        description: One row per content item in the current PulseStream catalog.
+        tests:
+          - not_null
+          - unique

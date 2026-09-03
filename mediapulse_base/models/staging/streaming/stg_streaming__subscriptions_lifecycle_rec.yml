@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: stg_streaming__subscriptions_lifecycle_rec
+
+    columns:
+      - name: subscription_id
+        description: Unique identifier for the subscriptions.
+        tests:
+          - not_null
+          - unique
