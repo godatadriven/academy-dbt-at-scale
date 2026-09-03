@@ -1,2 +1,0 @@
-select *
-from {{ ref('mediapulse_base','dim_content_catalog')}}
