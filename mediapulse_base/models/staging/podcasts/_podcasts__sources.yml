@@ -2,7 +2,9 @@ version: 2
 
 sources:
   - name: podcasts
-    database: mediapulse_raw
+    # database: omitted for BigQuery - `database` maps to the GCP project ID
+    # and "mediapulse_raw" is not a valid project ID. Resolves to the target
+    # project + the `podcasts` dataset, where set_up_project's seeds land.
     schema: podcasts
     description: >
       Raw data from PodcastHub, MediaPulse's podcast network.

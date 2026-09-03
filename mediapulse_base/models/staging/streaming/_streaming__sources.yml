@@ -7,7 +7,10 @@ sources:
       replaced the third-party StreamView platform in 2025 after StreamView's fixed
       batch-ingestion pipeline couldn't support real-time playback analytics -
       see the streamview_legacy source (mediapulse_analytics) for the archived data.
-    database: mediapulse_raw
+    # database: omitted for BigQuery - `database` maps to the GCP project ID
+    # and "mediapulse_raw" is not a valid project ID. Resolves to the target
+    # project + the `streaming` dataset, where set_up_project's seeds land.
+    schema: streaming
     tables:
       - name: content_ctlg
         description: One row per content item in the current PulseStream catalog.

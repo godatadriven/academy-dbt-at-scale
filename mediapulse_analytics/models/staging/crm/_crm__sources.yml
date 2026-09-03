@@ -2,7 +2,9 @@ version: 2
 
 sources:
   - name: crm
-    database: mediapulse_raw
+    # database: omitted for BigQuery - `database` maps to the GCP project ID
+    # and "mediapulse_raw" is not a valid project ID. Resolves to the target
+    # project + the `crm` dataset, where set_up_project's seeds land.
     schema: crm
     description: >
       Raw data from the advertiser sales/account-management CRM.

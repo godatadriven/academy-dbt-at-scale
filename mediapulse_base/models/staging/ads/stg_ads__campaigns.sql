@@ -1,1 +1,1 @@
-select * from mediapulse_raw.ads.campaigns
+select * from ads.campaigns

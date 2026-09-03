@@ -12,7 +12,9 @@ sources:
       duplicate rows per natural key representing edits over time
       (articles, authors); missing/sentinel values in survey score
       columns (blank strings, `-1`, `"N/A"`).
-    database: mediapulse_raw
+    # database: omitted for BigQuery - `database` maps to the GCP project ID
+    # and "mediapulse_raw" is not a valid project ID. Resolves to the target
+    # project + the `news` dataset, where set_up_project's seeds land.
     schema: news
 
     tables:

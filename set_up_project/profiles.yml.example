@@ -15,6 +15,21 @@ set_up:
       schema: "dbt_yourname"      # personalise this - e.g. dbt_lucy
       threads: 4
 
+    # --- BigQuery alternative (bigquery-compat branch) -------------------
+    # Replace the `dev` block above with this if your facilitator put you
+    # on BigQuery. Do NOT set a project called "mediapulse_raw" anywhere -
+    # GCP project IDs cannot contain underscores. The raw seeds land in
+    # THIS project, in datasets named news/podcasts/streaming/ads/crm/
+    # streamview_legacy (see set_up_project/seeds/_seeds_setup.yml).
+    #
+    # dev:
+    #   type: bigquery
+    #   method: oauth            # or service-account (+ keyfile:)
+    #   project: "your-gcp-project-id"
+    #   dataset: "dbt_yourname"  # personalise this - e.g. dbt_lucy
+    #   location: "EU"           # or US - match your facilitator's setup
+    #   threads: 4
+
     prod:
       type: snowflake
       account: "your-account"

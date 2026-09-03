@@ -27,3 +27,9 @@ encryptcontent.cache
 
 # analysis
 set_up_project/analyses/
+
+# dbt artifacts
+dbt_packages/
+logs/
+target/
+.user.yml

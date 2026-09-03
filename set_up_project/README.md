@@ -32,3 +32,21 @@ seeds/
 4. Run `dbt deps` to install `dbt_utils` and `codegen`.
 5. Run `dbt seed` to load the raw CSVs into `mediapulse_raw`.
 6. Only once this succeeds, move on to setting up `mediapulse_base` and `mediapulse_analytics` - their models will fail to find source data until these seeds exist.
+
+## Running on BigQuery
+
+This project is built for Snowflake. On the `bigquery-compat` branch the
+`database: mediapulse_raw` config has been removed from every seed and every
+`source()` definition, because on BigQuery `database` maps to the **GCP project
+ID** and `mediapulse_raw` is not a valid one (underscores are not allowed).
+
+With that removed, `dbt seed` here loads the raw CSVs into **your own BigQuery
+project**, in datasets named `news`, `podcasts`, `streaming`, `ads`, `crm` and
+`streamview_legacy` - which is exactly where `mediapulse_base` and
+`mediapulse_analytics` now look. Set up `dev` in your `profiles.yml` per the
+BigQuery block in `profiles.yml.example`.
+
+Still Snowflake-only on this branch (not needed for the core staging work, only
+the Group 2 snapshot/anomaly exercises): the two models in
+`models/_data_for_mediapulse_dbt/` (`watch_events.sql`, `touchpoints.sql`) use
+Snowflake-specific SQL and need a rewrite before they will run on BigQuery.

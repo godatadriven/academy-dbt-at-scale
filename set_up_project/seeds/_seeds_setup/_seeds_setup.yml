@@ -4,184 +4,171 @@ seeds:
   # Raw source seeds simulate the upstream data pipelines.
   # They land in the same schemas the source definitions point at,
   # so the project works without an external ingestion layer.
+  #
+  # BigQuery note: `database:` is intentionally omitted. On BigQuery
+  # `database` maps to the GCP project ID, and "mediapulse_raw" is not a
+  # valid project ID (underscores are not allowed). With no `database`,
+  # the seeds land in the target project and in datasets named by
+  # `schema` below - which is exactly where the source() definitions
+  # look once their `database:` lines are removed too. Column types use
+  # `string`/`timestamp` (BigQuery has no `varchar`).
   - name: raw_news__authors
     config:
-      database: mediapulse_raw
       schema: news
       alias: authors
       column_types:
-        joined_at: varchar
+        joined_at: string
 
   - name: raw_news__articles
     config:
-      database: mediapulse_raw
       schema: news
       alias: articles
       column_types:
-        published_at: varchar
-        updated_at: varchar
+        published_at: string
+        updated_at: string
 
   - name: raw_news__articles_updated
     config:
-      database: mediapulse_raw
       schema: news
       alias: articles_updated
       column_types:
-        published_at: varchar
-        updated_at: varchar
+        published_at: string
+        updated_at: string
 
   - name: raw_news__page_views
     config:
-      database: mediapulse_raw
       schema: news
       alias: views
       column_types:
-        viewed_at: varchar
+        viewed_at: string
 
   - name: raw_podcasts__shows
     config:
-      database: mediapulse_raw
       schema: podcasts
       alias: shows
       column_types:
-        launched_at: varchar
+        launched_at: string
 
   - name: raw_podcasts__episodes
     config:
-      database: mediapulse_raw
       schema: podcasts
       alias: episodes
       column_types:
-        published_at: varchar
+        published_at: string
 
   - name: raw_podcasts__episodes_updated
     config:
-      database: mediapulse_raw
       schema: podcasts
       alias: episodes_updated
       column_types:
-        published_at: varchar
+        published_at: string
 
   - name: raw_podcasts__listens
     config:
-      database: mediapulse_raw
       schema: podcasts
       alias: listens
       column_types:
-        listened_at: varchar
+        listened_at: string
 
   - name: raw_streaming__content_catalog
     config:
-      database: mediapulse_raw
       schema: streaming
       alias: content_ctlg
       column_types:
-        release_date: varchar
+        release_date: string
 
   - name: raw_streaming__subscriptions
     config:
-      database: mediapulse_raw
       schema: streaming
       alias: subscriptions_lifecycle_rec
       column_types:
-        start_date: varchar
-        start_time: varchar
-        end_date: varchar
-        end_time: varchar
+        start_date: string
+        start_time: string
+        end_date: string
+        end_time: string
 
   - name: raw_streaming__watch_events
     config:
-      database: mediapulse_raw
       schema: streaming
       alias: usr_watch_events_log
       column_types:
-        watched_at: varchar
+        watched_at: string
         batched_at: timestamp
 
   - name: raw_ads__campaigns
     config:
-      database: mediapulse_raw
       schema: ads
       alias: campaigns
       column_types:
-        start_date: varchar
-        end_date: varchar
+        start_date: string
+        end_date: string
 
   - name: raw_ads__impressions
     config:
-      database: mediapulse_raw
       schema: ads
       alias: impressions
       column_types:
-        impression_date: varchar
+        impression_date: string
 
   - name: raw_ads__spend
     config:
-      database: mediapulse_raw
       schema: ads
       alias: spend
       column_types:
-        spend_date: varchar
+        spend_date: string
 
-## Legacy data 
+## Legacy data
 
   - name: raw_legacy_streaming__content_catalog
     config:
-      database: mediapulse_raw
       schema: streamview_legacy
       alias: media_catalog_archive
       column_types:
-        release_dt: varchar
+        release_dt: string
 
   - name: raw_legacy_streaming__subscriptions
     config:
-      database: mediapulse_raw
       schema: streamview_legacy
       alias: acct_subs_archive
       column_types:
-        start_dt: varchar
-        start_tm: varchar
-        end_dt: varchar
-        end_tm: varchar
+        start_dt: string
+        start_tm: string
+        end_dt: string
+        end_tm: string
 
   - name: raw_legacy_streaming__watch_pings
     config:
-      database: mediapulse_raw
       schema: streamview_legacy
       alias: playback_heartbeats
       column_types:
-        ping_date: varchar
-        ping_time: varchar
+        ping_date: string
+        ping_time: string
 
   - name: raw_crm__sales_reps
     config:
-      database: mediapulse_raw
       schema: crm
       alias: sales_reps
       column_types:
-        hire_date: varchar
+        hire_date: string
 
   - name: raw_crm__advertiser_accounts
     config:
-      database: mediapulse_raw
       schema: crm
       alias: advertiser_accounts
       column_types:
-        signed_at: varchar
+        signed_at: string
 
   - name: raw_crm__contracts
     config:
-      database: mediapulse_raw
       schema: crm
       alias: contracts
       column_types:
-        start_date: varchar
-        end_date: varchar
+        start_date: string
+        end_date: string
 
   - name: raw_crm__touchpoints
     config:
-      database: mediapulse_raw
       schema: crm
       alias: touchpoints
       column_types:
-        occurred_at: varchar
+        occurred_at: string

@@ -1,9 +1,17 @@
 {{
     config(
-        database='mediapulse_raw',
         schema='streaming'
     )
 }}
+
+-- BigQuery note: `database='mediapulse_raw'` removed - `database` maps to the
+-- GCP project ID, which cannot contain underscores. This model lands in the
+-- target project + `streaming` dataset instead.
+--
+-- The SQL below is still Snowflake-specific (generator(), seq4(), uniform(),
+-- array_agg indexing, table(flatten(...)), dateadd, ::date casts) and will not
+-- run on BigQuery without a rewrite. It is only used in the Group 2
+-- snapshot/anomaly exercises - skip it for the core staging work.
 
 
 -- =====================================================================
