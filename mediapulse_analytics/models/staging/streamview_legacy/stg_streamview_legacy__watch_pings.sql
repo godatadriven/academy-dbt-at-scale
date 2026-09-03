@@ -12,6 +12,10 @@ renamed as (
         media_id          as legacy_content_id,
         ping_date,
         ping_time,
+        try_to_timestamp_ntz(
+            ping_date || ' ' || coalesce(nullif(ping_time, ''), '00:00:00'),
+            'YYYY-MM-DD HH24:MI:SS'
+        ) as watched_at,
         playback_position_seconds,
         device_code
 
