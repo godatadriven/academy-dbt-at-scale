@@ -7,11 +7,11 @@ with articles as (
     select
         article_id          as content_id,
         title       as content_title,
-        category,
         published_at,
         'news'              as platform,
         word_count          as content_length_units,
-        null::int           as duration_seconds
+        null::int           as duration_seconds,
+        category
 
     from {{ ref('mediapulse_base', 'stg_news__articles') }}
 
@@ -34,18 +34,10 @@ episodes as (
 
 combined as (
 
-    select
-        a.content_id,
-        a.content_title,
-        a.category,
-        a.published_at,
-        a.platform,
-        a.content_length_units,
-        a.duration_seconds
+    select * from articles
+    union all
+    select * from episodes    
 
-    from articles a
-    inner join episodes e
-        on a.category = e.category
 
 )
 
