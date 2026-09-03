@@ -40,6 +40,7 @@ models:
         description: The subscriber.
         data_tests:
           - not_null
+          - unique
       - name: plan_type
         description: "Subscription tier, lowercased. Expected: basic, standard, premium."
         data_tests:
@@ -61,14 +62,17 @@ models:
   - name: fct_streaming_events
     description: >
       One row per watch event, enriched with the viewed content's catalog
-      attributes and the viewer's subscription details at the time of the join.
-      Subscriptions are joined on user_id without a date-range filter, so a
-      user with multiple historical subscriptions will fan out here.
+      attributes and the viewer's latest subscription details. The subscription
+      join uses one deduplicated record per user, selected by the most recent
+      lifecycle update; it is current-state enrichment rather than a point-in-time join.
+
     columns:
       - name: event_id
         description: Primary key on the source watch event.
         data_tests:
           - not_null
+          - unique
+          
       - name: user_id
         description: The viewer.
         data_tests:

@@ -21,7 +21,7 @@ subscriptions as (
                 )
         end as subscription_ended_at
 
-    from {{ ref('stg_streaming__subscriptions_lifecycle_rec') }}
+    from {{ ref('int_dedupe_subscribers') }}
 
 ),
 

@@ -1,0 +1,88 @@
+version: 2
+
+models:
+  - name: stg_streaming__content_ctlg
+    description: >
+      Staged content records from the current PulseStream catalog. One row per
+      content item.
+    columns:
+      - name: content_id
+        description: Primary key. Current PulseStream content identifier.
+        data_tests:
+          - not_null
+          - unique
+      - name: title
+        description: Content title as displayed in PulseStream.
+      - name: genre
+        description: Content genre, such as drama, comedy, or documentary.
+      - name: ctnt_type
+        description: Content format, such as tv_series, movie, or live_event.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['film','series','live','shorts','interactive']
+      - name: release_date
+        description: Date the content item was released.
+        data_tests:
+          - not_null:
+              config: 
+                where: "ctnt_type is not null"
+      - name: runtime_minutes
+        description: Runtime in minutes.
+
+  - name: stg_streaming__subscriptions_lifecycle_rec
+    description: >
+      Staged PulseStream subscription lifecycle events. A subscription can have
+      multiple rows as its plan or status changes over time.
+    columns:
+      - name: subscription_id
+        description: Identifier for the subscription associated with the lifecycle event.
+        data_tests:
+          - not_null
+      - name: user_id
+        description: Current PulseStream subscriber identifier.
+        data_tests:
+          - not_null
+      - name: plan_type
+        description: Subscription plan, such as basic, standard, or premium.
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: status
+        description: Subscription status for this lifecycle event.
+      - name: start_date
+        description: Raw date on which the subscription began.
+      - name: start_time
+        description: Raw time of day at which the subscription began.
+      - name: subscription_started_at
+        description: Parsed timestamp at which the subscription began.
+      - name: end_date
+        description: Raw date on which the subscription ended; null while active.
+      - name: end_time
+        description: Raw time of day at which the subscription ended; null while active.
+      - name: monthly_fee_cents
+        description: Monthly subscription fee in cents, cast to an integer.
+      - name: updated_at
+        description: Parsed timestamp at which the lifecycle event was last updated.
+
+  - name: stg_streaming__usr_watch_events_log
+    description: >
+      Staged playback events logged by the PulseStream player. One row per watch
+      event.
+    columns:
+      - name: event_id
+        description: Primary key. Identifier for the watch event.
+        data_tests:
+          - not_null
+          - unique
+      - name: user_id
+        description: PulseStream subscriber who generated the watch event.
+      - name: content_id
+        description: PulseStream content item associated with the watch event.
+      - name: watched_at
+        description: Timestamp at which the watch event occurred.
+      - name: watch_duration_seconds
+        description: Duration watched in seconds.
+      - name: device_type
+        description: Device used to stream the content, such as mobile, tv, or web.
+      - name: batched_at
+        description: Timestamp at which the event was batched and loaded.

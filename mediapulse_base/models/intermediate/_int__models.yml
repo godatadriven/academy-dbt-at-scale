@@ -15,6 +15,10 @@ models:
       depending on campaign_type.
     config:
       materialized: view
+    data_tests:
+      - dbt_utils.fewer_rows_than:
+          arguments:
+            compare_model: ref('stg_streaming__subscriptions_lifecycle_rec')
     columns:
       - name: campaign_id
         description: Foreign key to stg_ads__campaigns.

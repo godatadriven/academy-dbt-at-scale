@@ -4,7 +4,7 @@
 
 with subscriptions as (
 
-    select * from {{ ref('stg_streaming__subscriptions_lifecycle_rec') }}
+    select * from {{ ref('int_dedupe_subscribers') }}
 
 )
 

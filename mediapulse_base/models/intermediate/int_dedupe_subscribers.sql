@@ -20,14 +20,5 @@ ranked_subscription_events as (
 )
 
 select
-    subscription_id,
-    user_id,
-    plan_type,
-    status,
-    subscription_started_at,
-    end_date,
-    end_time,
-    monthly_fee_cents,
-    updated_at
-
+    *
 from ranked_subscription_events
