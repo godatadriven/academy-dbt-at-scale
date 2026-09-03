@@ -5,6 +5,12 @@ models:
     description: >
       Staged articles from NewsNow, cleaned and renamed from news.articles.
       Review the source definition for important notes about article_id uniqueness.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - article_id
+              - updated_at
     columns:
       - name: article_id
         description: >
@@ -23,6 +29,8 @@ models:
         description: Timestamp when the article first went live. There are no unpublished articles.
       - name: updated_at
         description: Timestamp of the most recent edit or republication.
+        data_tests:
+          - not_null
       - name: status
         description: Current article lifecycle status.
       - name: word_count
@@ -34,12 +42,16 @@ models:
     columns:
       - name: author_id
         description: Primary key.
+        data_tests:
+          - not_null
+          - unique
       - name: author_name
         description: Author's full name, should always be populated.
       - name: email
         description: Work email address.
       - name: joined_at
         description: Date the author joined the NewsNow team.
+
 
   - name: stg_news__page_views
     description: >
