@@ -67,6 +67,9 @@ models:
     columns:
       - name: article_id
         description: Primary key. Unique identifier for the article.
+        data_tests:
+          - unique
+          - not_null
 
       - name: title
         description: Headline/title of the article.

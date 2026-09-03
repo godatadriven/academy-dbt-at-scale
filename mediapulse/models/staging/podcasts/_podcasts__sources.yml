@@ -77,3 +77,7 @@ sources:
             description: How long the user actually listened.
           - name: platform
             description: "Platform used. Expected: ios, android, web, alexa, other."
+            data_tests:
+              - accepted_values:
+                  arguments: 
+                    values: ['ios', 'android', 'web', 'alexa', 'other']

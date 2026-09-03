@@ -8,11 +8,13 @@ select
     user_id,
     listened_at,
     listen_duration_seconds,
-    case
+    {{safe_divide('listen_duration_seconds', 'total_length_seconds')}}
+    {# case
         when total_length_seconds = 0
         then 0
         else round(1.0 * listen_duration_seconds / total_length_seconds, 4)
-    end as completion_rate,
+    end,#}
+    as completion_rate,
     platform
 
 from listens

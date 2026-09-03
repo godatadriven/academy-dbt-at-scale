@@ -61,6 +61,11 @@ models:
         description: >
           Fraction of the episode listened to in this session, capped at 1.0 so a
           listen longer than the episode duration counts as fully completed.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments: 
+                - min_value: 0
+                - max_value: 1
       - name: platform
         data_tests:
           - accepted_values:
