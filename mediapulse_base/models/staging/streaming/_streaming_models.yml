@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: stg_streaming__content_ctlg
+    description: >
+      Staged shows records on content catalog
+    columns:
+      - name: content_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: title
+      - name: ctnt_type
+      - name: release_date
+      - name: runtime_minutes
