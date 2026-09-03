@@ -15,6 +15,9 @@ sources:
           - name: content_id
             data_type: varchar
             description: Primary key. Current PulseStream content identifier.
+            data_tests:
+              - unique
+              - not_null
           - name: title
             data_type: varchar
             description: Content title as displayed in PulseStream.

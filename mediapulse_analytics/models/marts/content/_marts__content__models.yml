@@ -10,7 +10,8 @@ models:
       - name: content_id
         description: Article or episode identifier, depending on platform.
         data_tests:
-          - not_null
+          - not_null:
+              config
       - name: content_title
         description: Article headline or episode title, depending on platform.
       - name: category
