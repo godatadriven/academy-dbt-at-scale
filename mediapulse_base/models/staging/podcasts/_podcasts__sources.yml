@@ -74,5 +74,9 @@ sources:
             description: Timestamp when the listen session started.
           - name: listen_duration_seconds
             description: How long the user actually listened.
-          - name: platform
+          - name: platform_id
             description: "Platform used. Expected: 1(ios), 2(web), 3(android), 4(other), 5(alexa)"
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ["ios", "android", "web", "alexa", "other"]

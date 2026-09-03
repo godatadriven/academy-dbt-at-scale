@@ -8,11 +8,7 @@ select
     user_id,
     listened_at,
     listen_duration_seconds,
-    case
-        when total_length_seconds = 0
-        then 0
-        else round(1.0 * listen_duration_seconds / total_length_seconds, 4)
-    end as completion_rate,
+    {{ calculate_completion_rate("listen_duration_seconds", "total_length_seconds") }} as completion_rate,
     platform
 
 from listens
