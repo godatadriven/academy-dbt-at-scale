@@ -5,7 +5,7 @@ Welcome to dbt@scale! A 2-day Hackathon event organized by Xebia.
 ## Day 1
 
 | Time | Session | Where | Who |
-|------|---------|-----|-----|
+|------|---------|-------|-----|
 | 09:00 | Arrival, coffee, setup checks | Welcome hall | All |
 | 09:30 | Overview of the day + settle | Main room | Host company / Xebia |
 | 10:00 | dbt breakouts session 1 | Breakout rooms | In groups |
@@ -18,7 +18,7 @@ Welcome to dbt@scale! A 2-day Hackathon event organized by Xebia.
 ## Day 2
 
 | Time | Session | Where | Who |
-|------|---------|-----|-----|
+|------|---------|-------|-----|
 | 09:30 | **Talk 3** - dbt Today | Main room | dbt Labs |
 | 10:00 | dbt breakouts session 3 | Breakout rooms | All groups |
 | 12:00 | Lunch | Lunch hall | All |
