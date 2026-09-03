@@ -74,3 +74,46 @@ models:
         description: Monthly subscription fee in cents.
       - name: updated_at
         description: Timestamp used to identify the latest subscription event.
+
+
+  - name: int__podcasts_listens_enriched
+    description: >
+      One row per podcast listen session, enriched with the episode's show and
+      runtime plus the platform label from platform_mapping.
+    columns:
+      - name: listen_id
+        description: Primary key for the listen session.
+        data_tests:
+          - not_null
+          - unique
+      - name: episode_id
+        description: Foreign key to stg_podcasts__episodes.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_podcasts__episodes')
+                field: episode_id
+      - name: show_id
+        description: Show identifier inherited from the episode.
+        data_tests:
+          - not_null
+      - name: user_id
+        description: The listener. Null for anonymous sessions.
+      - name: listened_at
+        description: Timestamp when the listen session started.
+        data_tests:
+          - not_null
+      - name: listen_duration_seconds
+        description: Duration of the listen session in seconds.
+      - name: total_length_seconds
+        description: Total runtime of the listened-to episode in seconds.
+        data_tests:
+          - not_null
+      - name: platform
+        description: Platform label mapped from platform_id.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["ios", "android", "web", "alexa", "other"]

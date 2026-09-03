@@ -1,5 +1,6 @@
 -- fct_podcast_listens: one row per podcast listen session.
-with listens as (select * from {{ ref("stg_podcasts__listens") }})
+with listens as (select * from {{ ref('int__podcasts_listens_enriched') }})
+
 
 select
     listen_id,
