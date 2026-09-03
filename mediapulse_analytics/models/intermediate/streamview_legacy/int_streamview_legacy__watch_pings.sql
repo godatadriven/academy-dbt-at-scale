@@ -21,7 +21,6 @@ select
     , mode(device_code) as device_type
     , null as batched_at
 from {{ ref('stg_streamview_legacy__watch_pings')}}
-where user_id = 'SV100011'
 group by legacy_subscriber_id, legacy_content_id, ping_date
 
 
