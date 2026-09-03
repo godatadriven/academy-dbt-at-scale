@@ -9,7 +9,7 @@ renamed as (
     select distinct
         subscription_id,
         user_id,
-        plan_type,
+        lower(plan_type) as plan_type,
         status,
         start_date,
         start_time,

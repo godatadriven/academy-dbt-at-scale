@@ -14,11 +14,11 @@ select
         ) as full_price
     , floor(full_price) as full_price_round
     , case
-        when lower(subs.plan_type) = 'basic' and abs(full_price_round - 599) <= 1
+        when subs.plan_type = 'basic' and abs(full_price_round - 599) <= 1
         then true
-        when lower(subs.plan_type) = 'standard' and abs(full_price_round - 999) <= 1
+        when subs.plan_type = 'standard' and abs(full_price_round - 999) <= 1
         then true
-        when lower(subs.plan_type) = 'premium' and abs(full_price_round - 1499) <= 1
+        when subs.plan_type = 'premium' and abs(full_price_round - 1499) <= 1
         then true
         else false
         end as check_bool
