@@ -101,6 +101,8 @@ models:
           - accepted_values:
               arguments:
                 values: ["call", "email", "meeting", "demo"]
+              config:
+                severity: warn
       - name: occurred_at
         description: Timestamp the activity occurred.
       - name: notes
