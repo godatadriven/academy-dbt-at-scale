@@ -2,7 +2,7 @@
 
 with shows as (
 
-    select * from {{ ref('stg_podcasts__shows') }}
+    select * from {{ ref('int_shows_clean_string_columns') }}
 
 ),
 

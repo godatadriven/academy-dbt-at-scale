@@ -1,3 +1,6 @@
+-- complex clean up of strings
+-- too complex to have in the stg
+
 with
     base as (
         select show_id, show_name, host_name, category, launched_at

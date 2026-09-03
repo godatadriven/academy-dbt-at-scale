@@ -74,3 +74,31 @@ models:
         description: Monthly subscription fee in cents.
       - name: updated_at
         description: Timestamp used to identify the latest subscription event.
+
+  - name: int_shows_clean_string_columns
+    description: >
+      One row per PodcastHub show with display strings standardized for downstream use.
+      Decodes ampersand HTML entities, normalizes whitespace, removes decorative and
+      marketing text from show names, strips credential and role suffixes from host names,
+      and converts both names to title case. Category and launch timestamp are passed
+      through unchanged.
+    config:
+      materialized: view
+    columns:
+      - name: show_id
+        description: Primary key passed through unchanged from stg_podcasts__shows.
+        data_tests:
+          - not_null
+          - unique
+      - name: show_name
+        description: >
+          Cleaned display name with ampersand HTML entities decoded, whitespace normalized,
+          decorative and marketing text removed, and casing standardized to title case.
+      - name: host_name
+        description: >
+          Cleaned primary host name with whitespace normalized, trailing credentials and
+          role labels removed, and casing standardized to title case.
+      - name: category
+        description: Show genre/category passed through unchanged from stg_podcasts__shows.
+      - name: launched_at
+        description: Show launch timestamp passed through unchanged from stg_podcasts__shows.
