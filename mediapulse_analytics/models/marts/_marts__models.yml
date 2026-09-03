@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: fct_all_streaming_events
+    columns:
+      - name: event_id
+        data_tests:
+          - not_null
+          - unique
+      - name: batched_at
+        data_tests:
+          - not_null:
+              config:
+                where: "is_legacy = false"
