@@ -41,13 +41,15 @@ models:
           - accepted_values:
               arguments:
                 values: ["bronze", "silver", "gold", "platinum"]
-              severity: warn
+              config: 
+                severity: warn
       - name: account_status
         data_tests:
           - accepted_values:
               arguments:
                 values: ["active", "at_risk", "churned"]
-              severity: warn
+              config: 
+                severity: warn
       - name: signed_at
 
   - name: stg_crm__contracts
@@ -72,7 +74,8 @@ models:
           - accepted_values:
               arguments:
                 values: ["active", "renewed", "churned"]
-              severity: warn
+              config: 
+                severity: warn
 
   - name: stg_crm__touchpoints
     description: >
@@ -94,7 +97,8 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ["call", "email", "meeting", "demo"]
-              severity: warn
+                values: ["call"]
+              config: 
+                severity: warn
       - name: occurred_at
       - name: notes
