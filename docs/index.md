@@ -2,6 +2,8 @@
 
 A two-day hands-on workshop where you tackle a real-world dbt project under the hood of **MediaPulse**.
 
+Link to the dbt Project(s): [https://ca598.us1.dbt.com/studio](https://ca598.us1.dbt.com/studio)
+
 ---
 
 ## Who's in the room
