@@ -15,6 +15,12 @@ models:
       depending on campaign_type.
     config:
       materialized: view
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - campaign_id
+              - content_id
     columns:
       - name: campaign_id
         description: Foreign key to stg_ads__campaigns.
@@ -41,6 +47,7 @@ models:
         description: >
           Spend attributed to this content item, rounded to the nearest cent.
           Equals total_spend_cents * (impressions_count / total_eligible_impressions).
+
   - name: int_dedupe_subscribers
     description: >
       The most recent subscription event for each user. Events are ordered by updated_at,
@@ -75,6 +82,27 @@ models:
       - name: updated_at
         description: Timestamp used to identify the latest subscription event.
 
+  - name: int_news__articles_deduped
+    description: >
+      The latest version of each NewsNow article, selected by updated_at for
+      downstream article dimensions and scoring models.
+    columns:
+      - name: article_id
+        description: Primary key - one row per article.
+        data_tests:
+          - not_null
+          - unique
+
+  - name: int_shows_clean_string_columns
+    description: >
+      One row per PodcastHub show with display and host names normalized for
+      whitespace, markup, decorative suffixes, and casing.
+    columns:
+      - name: show_id
+        description: Primary key - one row per show.
+        data_tests:
+          - not_null
+          - unique
 
   - name: int__podcasts_listens_enriched
     description: >

@@ -22,11 +22,15 @@ impressions as (
     select
         campaign_id,
         content_id,
-        impressions_count,
-        clicks
+        sum(impressions_count) as impressions_count,
+        sum(clicks) as clicks
     from {{ ref('stg_ads__impressions') }}
+    group by
+        campaign_id,
+        content_id
 
 ),
+
 
 -- Performance campaign types (sponsored_content, podcast_ad) only attribute spend
 -- to content that drove at least one click. Brand/awareness types attribute to all
