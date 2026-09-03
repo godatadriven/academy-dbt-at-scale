@@ -67,11 +67,15 @@ models:
       subscriber contributes a subscription_started row, and a
       subscription_ended row if their subscription has ended.
     columns:
+      - name: lifecycle_event_id
+        description: Primary key for the subscriber lifecycle event.
+        data_tests:
+          - not_null
+          - unique
       - name: legacy_subscriber_id
         description: Foreign key to dim_legacy_subscribers.
         data_tests:
           - not_null
-          - unique
       - name: mapped_user_id
       - name: event_type
         description: "Lifecycle event type. One of: subscription_started, subscription_ended."

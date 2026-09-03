@@ -34,8 +34,25 @@ ended as (
     from subscribers
     where subscription_ended_at is not null
 
+),
+
+events as (
+
+    select * from started
+    union all
+    select * from ended
+
 )
 
-select * from started
-union all
-select * from ended
+select
+    {{ dbt_utils.generate_surrogate_key([
+        'legacy_subscriber_id',
+        'event_type'
+    ]) }} as lifecycle_event_id,
+    legacy_subscriber_id,
+    mapped_user_id,
+    event_type,
+    event_at,
+    tier
+
+from events
