@@ -1,23 +1,24 @@
 with source as (
 
+with source as (
     select * from {{ source('news', 'articles') }}
-
 ),
 
-renamed as (
-
+deduplicated as (
     select
-        article_id,
-        title                                as article_title,
-        author_id,
-        category,
-        cast(published_at as timestamp)      as published_at,
-        cast(updated_at   as timestamp)      as updated_at,
-        status,
-        word_count
-
+        *,
+        row_number() over (
+            partition by article_id 
+            order by updated_at desc
+        ) as rn
     from source
-
 )
 
-select * from renamed
+select
+    article_id,
+    title,
+    author_id,
+    created_at,
+    updated_at
+from deduplicated
+where rn = 1

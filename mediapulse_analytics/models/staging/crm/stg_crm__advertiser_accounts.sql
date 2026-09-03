@@ -8,11 +8,11 @@ renamed as (
 
     select
         advertiser_id,
-        advertiser_name,
-        industry,
+        lower(advertiser_name),
+        lower(industry),
         sales_rep_id,
-        contract_tier,
-        account_status,
+        lower(contract_tier),
+        lower(account_status),
         cast(signed_at as date)    as signed_at
 
     from source

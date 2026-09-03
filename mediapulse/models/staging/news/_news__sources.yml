@@ -40,6 +40,9 @@ sources:
         columns:
           - name: author_id
             description: Primary key.
+            data_tests:
+              - unique
+              - not_null
           - name: name
             description: Author's full name.
           - name: email
@@ -55,6 +58,10 @@ sources:
         columns:
           - name: view_id
             description: Primary key.
+            data_tests:
+              - unique
+              - not_null
+              
           - name: article_id
             description: The article that was viewed.
           - name: user_id

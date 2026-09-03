@@ -15,6 +15,9 @@ sources:
           - name: content_id
             data_type: varchar
             description: Primary key. Current PulseStream content identifier.
+            tests:
+              - unique
+              
           - name: title
             data_type: varchar
             description: Content title as displayed in PulseStream.
@@ -37,6 +40,8 @@ sources:
           - name: subscription_id
             data_type: varchar
             description: Primary key. Identifier for the subscription record.
+            tests:
+              - unique
           - name: user_id
             data_type: varchar
             description: Current PulseStream subscriber identifier.
@@ -74,6 +79,8 @@ sources:
           - name: event_id
             data_type: varchar
             description: Primary key. Identifier for the watch event.
+            data_tests:
+              - unique
           - name: user_id
             data_type: varchar
             description: Foreign key to subscriptions_lifecycle_rec. Current PulseStream subscriber identifier.
