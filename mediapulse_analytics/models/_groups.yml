@@ -1,0 +1,12 @@
+groups:
+  - name: crm
+    description: Models for advertiser CRM activity, contracts, accounts, and sales representatives.
+    owner:
+      name: CRM Analytics
+      email: johan.van.eycken@persgroep.net
+
+  - name: streaming
+    description: Models for StreamView legacy migration and consolidated streaming events.
+    owner:
+      name: Streaming Analytics
+      email: johan.van.eycken@persgroep.net

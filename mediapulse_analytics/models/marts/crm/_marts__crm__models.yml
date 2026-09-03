@@ -4,6 +4,8 @@ models:
   - name: dim_sales_reps
     description: >
       One row per AdConnect sales rep, with advertiser coverage stats.
+    config:
+      access: private
     columns:
       - name: rep_id
         description: Primary key.
@@ -24,6 +26,8 @@ models:
     description: >
       One row per advertiser account, enriched with the owning sales rep.
       advertiser_id matches the advertiser_id used in the ads domain.
+    config:
+      access: private
     columns:
       - name: advertiser_id
         description: Primary key.
@@ -54,6 +58,8 @@ models:
   - name: fct_advertiser_contracts
     description: >
       One row per advertiser contract term.
+    config:
+      access: private
     columns:
       - name: contract_id
         description: Primary key.
@@ -81,26 +87,52 @@ models:
     description: >
       One row per sales touchpoint (call, email, meeting, demo) with an
       advertiser, enriched with the rep's name.
+    config:
+      contract: {enforced: true}
+      access: public
+    latest_version: 1
+    versions:
+      - v: 1
+      - v: 2
+        columns:
+          - include: all
+            exclude:
+              - occurred_at
+          - name: occurred_at_date
+            data_type: date
+            description: Calendar date when the activity occurred.
+          - name: occurred_at_time
+            data_type: time
+            description: Local time when the activity occurred.
+
+
     columns:
       - name: touchpoint_id
+        data_type: varchar
         description: Primary key.
         data_tests:
           - not_null
           - unique
       - name: advertiser_id
+        data_type: varchar
         description: Foreign key to dim_advertisers.
         data_tests:
           - not_null
       - name: rep_id
+        data_type: varchar
         description: Foreign key to dim_sales_reps.
       - name: rep_name
+        data_type: varchar
         description: Name of the rep who logged this touchpoint.
       - name: touchpoint_type
+        data_type: varchar
         description: "Activity type. Expected: call, email, meeting, demo."
         data_tests:
           - accepted_values:
               arguments:
                 values: ["call", "email", "meeting", "demo"]
       - name: occurred_at
+        data_type: timestamp_ntz
         description: Timestamp the activity occurred.
       - name: notes
+        data_type: varchar

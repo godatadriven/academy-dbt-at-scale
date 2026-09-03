@@ -26,8 +26,22 @@ models:
   mediapulse_analytics:
     staging:
       +materialized: view
+      crm:
+        +group: crm
+      streamview_legacy:
+        +group: streaming
+    intermediate:
+      int_adv_rep_touchpoint_cumcounts:
+        +group: crm
+      int_streamview_legacy__watch_events:
+        +group: streaming
     marts:
       +materialized: table
+      crm:
+        +group: crm
+      streamview_legacy:
+        +group: streaming
+
 
 snapshots:
   mediapulse_analytics:
