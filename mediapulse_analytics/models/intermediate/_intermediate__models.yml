@@ -81,3 +81,48 @@ models:
         description: >
           Inclusive ordinal position of the touchpoint for the advertiser-rep pair within
           touchpoint_year, ordered by occurred_at and touchpoint_id.
+
+  - name: int_streamview_legacy__watch_events
+    description: >
+      One row per reconstructed StreamView playback event. Legacy heartbeat pings
+      are grouped when playback position resets, then reshaped to the current
+      streaming watch-event contract. Legacy IDs are retained when no current
+      MediaPulse ID mapping exists.
+    columns:
+      - name: event_id
+        description: Identifier from the first heartbeat ping in the reconstructed playback event.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: Current MediaPulse user ID when the legacy subscriber has been mapped; otherwise null.
+
+      - name: legacy_subscriber_id
+        description: StreamView subscriber identifier retained for every legacy event.
+        data_tests:
+          - not_null
+
+      - name: content_id
+        description: Current MediaPulse content ID when the legacy content has been mapped; otherwise null.
+
+      - name: legacy_content_id
+        description: StreamView content identifier retained for every legacy event.
+        data_tests:
+          - not_null
+
+      - name: watched_at
+        description: Timestamp of the first heartbeat in the reconstructed playback event.
+        data_tests:
+          - not_null
+
+      - name: watch_duration_seconds
+        description: Maximum playback position recorded during the event, used as legacy watch duration.
+        data_tests:
+          - not_null
+
+      - name: device_type
+        description: Legacy device code recorded on the first heartbeat in the event.
+
+      - name: batched_at
+        description: Always null because StreamView did not record a batch-load timestamp.

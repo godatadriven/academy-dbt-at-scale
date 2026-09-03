@@ -109,3 +109,29 @@ models:
         description: Playback position, in seconds, at the time of the ping.
       - name: device_code
         description: Legacy device identifier code.
+  
+  - name: fct_all_streaming_events
+    description: Legacy and new streaming events combined
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+          - unique
+      - name: user_id
+      - name: legacy_subscriber_id
+        tests:
+          - not_null:
+              config:
+                where: "is_legacy = true"
+      - name: content_id
+      - name: legacy_content_id
+        tests:
+          - not_null:
+              config:
+                where: "is_legacy = true"
+      - name: watched_at
+      - name: watch_duration_seconds
+      - name: device_type
+
+      - name: batched_at
+      - name: is_legacy
