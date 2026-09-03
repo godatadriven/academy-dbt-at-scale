@@ -1,0 +1,117 @@
+version: 2
+
+models:
+  - name: stg_streaming__usr_watch_events_log
+    description: >
+      Staged playback events from PulseStream. One row per watch event, preserving
+      the source values and grain for downstream streaming analytics.
+    columns:
+      - name: event_id
+        description: Primary key for the watch event.
+        data_tests:
+          - not_null
+          - unique
+      - name: user_id
+        description: Identifier for the PulseStream subscriber who generated the event.
+        data_tests:
+          - not_null
+      - name: content_id
+        description: Foreign key to stg_streaming__content_ctlg.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_streaming__content_ctlg')
+                field: content_id
+      - name: watched_at
+        description: Source timestamp when playback began.
+        data_tests:
+          - not_null
+      - name: watch_duration_seconds
+        description: Duration watched during the playback event, in seconds.
+        data_tests:
+          - not_null
+      - name: device_type
+        description: >
+          Source device category used for playback. Values retain their original
+          casing from PulseStream.
+      - name: batched_at
+        description: Timestamp when the event was batched and loaded into the raw table.
+
+
+  - name: stg_streaming__content_ctlg
+    description: >
+      Staged PulseStream catalog records. One row per content item, preserving
+      source attributes for downstream catalog dimensions and event enrichment.
+    columns:
+      - name: content_id
+        description: Primary key for the PulseStream content item.
+        data_tests:
+          - not_null
+          - unique
+      - name: title
+        description: Display title of the content item.
+        data_tests:
+          - not_null
+      - name: genre
+        description: Source genre assigned to the content item.
+      - name: ctnt_type
+        description: >
+          Source content format. Expected non-null values are film, live, and
+          series; the source also contains records where this value is null.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["film", "live", "series"]
+      - name: release_date
+        description: Source release date, retained as a string in staging.
+        data_tests:
+          - not_null
+      - name: runtime_minutes
+        description: Runtime of the content item in minutes.
+
+  - name: stg_streaming__subscriptions_lifecycle_rec
+    description: >
+      Staged PulseStream subscription lifecycle records. One row per distinct
+      source record; a subscription_id can appear more than once as its lifecycle
+      changes. Source date strings and fee values are safely parsed for downstream
+      subscription modeling.
+    columns:
+      - name: subscription_id
+        description: >
+          Source subscription identifier. This is not unique because some
+          subscriptions have multiple lifecycle records.
+        data_tests:
+          - not_null
+      - name: user_id
+        description: Identifier for the PulseStream subscriber.
+        data_tests:
+          - not_null
+      - name: plan_type
+        description: >
+          Source subscription tier. Values retain the inconsistent casing present
+          in PulseStream and can be null on incomplete records.
+      - name: status
+        description: >
+          Source lifecycle status. Values retain source casing and spelling,
+          including both canceled and cancelled variants.
+      - name: start_date
+        description: Source subscription start date retained as a string.
+      - name: start_time
+        description: Source subscription start time retained as a string; can be null.
+      - name: subscription_started_at
+        description: >
+          Parsed subscription start timestamp supporting YYYY-MM-DD and YYYY-DD-MM
+          source dates. Null when the source value is missing or cannot be parsed.
+      - name: end_date
+        description: Source subscription end date; null for subscriptions without an end date.
+      - name: end_time
+        description: Source subscription end time; null when no end date is recorded.
+      - name: monthly_fee_cents
+        description: >
+          Monthly subscription fee in cents, cast to an integer. Source N/A values
+          are converted to null.
+      - name: updated_at
+        description: >
+          Parsed source update timestamp. Null when the source value is missing or
+          cannot be parsed.
