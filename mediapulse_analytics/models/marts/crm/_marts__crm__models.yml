@@ -81,26 +81,36 @@ models:
     description: >
       One row per sales touchpoint (call, email, meeting, demo) with an
       advertiser, enriched with the rep's name.
+    config:
+      contract:
+        enforced: true
     columns:
       - name: touchpoint_id
+        data_type: text
         description: Primary key.
         data_tests:
           - not_null
           - unique
       - name: advertiser_id
+        data_type: text
         description: Foreign key to dim_advertisers.
         data_tests:
           - not_null
       - name: rep_id
+        data_type: text
         description: Foreign key to dim_sales_reps.
       - name: rep_name
+        data_type: text
         description: Name of the rep who logged this touchpoint.
       - name: touchpoint_type
+        data_type: text
         description: "Activity type. Expected: call, email, meeting, demo."
         data_tests:
           - accepted_values:
               arguments:
                 values: ["call", "email", "meeting", "demo"]
       - name: occurred_at
+        data_type: timestamp_ntz
         description: Timestamp the activity occurred.
       - name: notes
+        data_type: text
