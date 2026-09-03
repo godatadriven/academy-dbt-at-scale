@@ -1,5 +1,7 @@
 # Welcome to dbt@scale
 
+Give us feedback from day 1: [PollEv.com​/lucys123](PollEv.com​/lucys123)
+
 A two-day hands-on workshop where you tackle a real-world dbt project under the hood of **MediaPulse**.
 
 Link to the dbt Project(s): [https://ca598.us1.dbt.com](https://ca598.us1.dbt.com)
