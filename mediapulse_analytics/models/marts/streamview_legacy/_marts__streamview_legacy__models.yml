@@ -71,6 +71,7 @@ models:
         description: Foreign key to dim_legacy_subscribers.
         data_tests:
           - not_null
+          - unique
       - name: mapped_user_id
       - name: event_type
         description: "Lifecycle event type. One of: subscription_started, subscription_ended."
