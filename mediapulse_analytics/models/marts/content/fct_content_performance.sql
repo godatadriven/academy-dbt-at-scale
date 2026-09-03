@@ -34,8 +34,18 @@ episodes as (
 
 combined as (
 
-    select * from articles
+    select 
+        content_id,
+        content_title,
+        published_at,
+        platform,
+        MAX(content_length_units) AS content_length_units,
+        duration_seconds,
+        category
+    from articles
+    group by all
     union all
+
     select * from episodes    
 
 
