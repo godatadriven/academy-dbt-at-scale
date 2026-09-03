@@ -17,6 +17,20 @@ ranked_subscription_events as (
                 subscription_id desc
         ) = 1
 
+Save
+
+12345678910111213141516171819202122232425262728293031
+
+
+
+
+
+dbt Wizard
+Commands
+Results
+Code quality
+Co$0
+
 )
 
 select
