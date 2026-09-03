@@ -11,6 +11,9 @@ models:
         description: Article or episode identifier, depending on platform.
         data_tests:
           - not_null
+          - unique:
+              config:
+                  store_failures: true
       - name: content_title
         description: Article headline or episode title, depending on platform.
       - name: category
