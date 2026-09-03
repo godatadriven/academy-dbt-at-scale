@@ -1,6 +1,15 @@
 # Data Model
 
-This page documents the raw data model across the platform's source domains: **Ads**, **News**, **Podcasts**, **Streaming**, and **Streamview Legacy** - the archived data from StreamView, the platform MediaPulse migrated off of. Streamview Legacy is owned by `mediapulse_analytics`, not `mediapulse_base` - included here for the full picture, not because both projects read from it.
+## MediaPulse - Base
+- **ads** is AdConnect's programmatic ad platform: campaigns, their impressions/clicks, and daily spend.
+- **news** is NewsNow's digital news outlet: articles (versioned per edit), authors, and page-view events.
+- **streaming** is `StreamVault` (internally PulseStream), MediaPulse's current streaming platform: catalog, subscriptions, and watch events.
+- **podcasts** is the PodcastHub's podcast network: shows, episodes, and listen sessions.
+
+## MediaPulse - Analytics
+
+- **Streamview Legacy** is the archived data from `StreamView`, the platform MediaPulse migrated off of.
+- The **crm** domain is from `SignalDesk`, the third-party CRM AdConnect's ad sales org uses (system of record since a 2021 migration off a legacy platform called PipelinePro).
 
 ## Entity Relationship Diagram
 
@@ -149,7 +158,47 @@ erDiagram
         string device_code
     }
 
+    crm.sales_reps {
+        string rep_id      PK
+        string rep_name
+        string region
+        date   hire_date
+    }
+
+    crm.advertiser_accounts {
+        string advertiser_id  PK
+        string advertiser_name
+        string industry
+        string sales_rep_id   FK
+        string contract_tier
+        string account_status
+        date   signed_at
+    }
+
+    crm.contracts {
+        string contract_id           PK
+        string advertiser_id         FK
+        int    contract_value_cents
+        date   start_date
+        date   end_date
+        string renewal_status
+    }
+
+    crm.touchpoints {
+        string touchpoint_id  PK
+        string advertiser_id  FK
+        string rep_id         FK
+        string touchpoint_type
+        date   occurred_at
+        string notes
+    }
+
     streaming.content_catalog ||--o{ streaming.watch_events : "watched as"
+    crm.sales_reps            ||--o{ crm.advertiser_accounts : "manages"
+    crm.advertiser_accounts   ||--o{ crm.contracts            : "signs"
+    crm.advertiser_accounts   ||--o{ crm.touchpoints          : "receives"
+    crm.sales_reps            ||--o{ crm.touchpoints          : "logs"
+    crm.advertiser_accounts   ||--o{ ads.campaigns            : "runs"
     streamview_legacy.media_catalog_archive ||--o{ streamview_legacy.playback_heartbeats : "pinged as"
     streamview_legacy.acct_subs_archive      ||--o{ streamview_legacy.playback_heartbeats : "pinged by"
     ads.campaigns        ||--o{ ads.impressions           : "generates"
@@ -198,9 +247,19 @@ erDiagram
 | `streamview_legacy.acct_subs_archive` | Legacy subscriber accounts, some migrated to a new `user_id` |
 | `streamview_legacy.playback_heartbeats` | Playback heartbeat pings, roughly one per minute of playback (not one row per completed watch, unlike `streaming.watch_events`) |
 
+### CRM
+| Table | Description |
+|---|---|
+| `crm.sales_reps` | AdConnect sales rep profiles |
+| `crm.advertiser_accounts` | Advertiser accounts, tier, and status, one row per advertiser |
+| `crm.contracts` | Advertiser contract terms and value |
+| `crm.touchpoints` | Sales activity (calls, emails, meetings, demos) per advertiser and rep |
+
 ## Cross-domain Relationships
 
 `ads.impressions` links to `streaming.content_catalog` via `content_id`, meaning ad impressions are served against streaming content items.
+
+`crm.advertiser_accounts` links to `ads.campaigns` via `advertiser_id` - the same advertiser identifier is shared across the CRM and ads domains, even though the two are otherwise unconnected.
 
 !!! note "Streamview Legacy migration"
     `streamview_legacy` has no direct FK into `streaming` - the two are reconciled through a separate mapping seed (`map_streaming_legacy_fields`) that isn't raw source data, so it isn't drawn here. Not every legacy subscriber or content item has been migrated yet.
