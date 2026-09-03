@@ -70,6 +70,7 @@ models:
       - name: legacy_subscriber_id
         description: Foreign key to dim_legacy_subscribers.
         data_tests:
+          - unique
           - not_null
       - name: mapped_user_id
       - name: event_type
