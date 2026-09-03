@@ -1,6 +1,11 @@
 # MediaPulse - Project Overview
 
-**MediaPulse** is a fictional media company that manages four core platforms, plus data from a third-party CRM vendor and an archived legacy platform it migrated off of. All of it lands in two connected dbt projects - `mediapulse_base` and `mediapulse_analytics` - that your group will work on today.
+**MediaPulse** is a fictional media company that manages four core platforms, plus data from a third-party CRM vendor and an archived legacy platform it migrated off of. All of it lands in two connected dbt projects:
+
+- **`mediapulse_base`** owns the `staging → intermediate → marts` layering for `news`, `podcasts`, `streaming`, and `ads`. This is the **producer project**: most of the raw-data modelling work lives here, and it already has a working (albeit imperfect) layer for every domain.
+- **`mediapulse_analytics`** is a second project. It declares `mediapulse_base` as a project dependency and consumes its `public`-access models. It also owns two fully self-contained domains of its own - an advertiser **CRM** domain and a **StreamView legacy-migration** domain - that read directly from raw sources and don't depend on `mediapulse_base` at all.
+
+Both projects already have working models end to end. Some models carry deliberate gaps and rough edges for you to find and reason about as part of your group's exercises. See `mediapulse_base/README.md` and `mediapulse_analytics/README.md` for each project's own structure, and your group's overview page for what you'll specifically be doing with them.
 
 ---
 
@@ -73,16 +78,6 @@ Six raw schemas hold key data for the company, split across the two projects:
     | `acct_subs_archive` | `subscriber_ref`, `tier`, `account_status`, `start_dt`, `start_tm`, `end_dt`, `end_tm` |
     | `playback_heartbeats` | `ping_id`, `subscriber_ref`, `media_id`, `ping_date`, `ping_time`, `playback_position_seconds`, `device_code` |
 
----
-
-## dbt project structure
-
-The workshop now runs on two dbt projects connected by **dbt Mesh**, rather than the single `mediapulse/` project used in earlier versions of this workshop. If you see references to a single `mediapulse/` project elsewhere (older material, recordings, etc.), treat this page as the current source of truth.
-
-- **`mediapulse_base`** - owns the staging → intermediate → marts layering for news, podcasts, streaming, and ads. This is the producer project: most of the raw-data modelling work lives here, and it already has a working (if imperfect) layer for every domain.
-- **`mediapulse_analytics`** - a second, smaller project. It declares `mediapulse_base` as a project dependency (`dependencies.yml`) and consumes its `public`-access models via cross-project `ref()` for two of its marts (`fct_content_performance`, `fct_ad_revenue`). It also owns two fully self-contained domains of its own - an advertiser CRM domain and a StreamView legacy-migration domain - that read directly from raw sources and don't depend on `mediapulse_base` at all.
-
-Both projects already have working models end to end - nobody is starting from an empty folder. Some models carry deliberate, documented gaps and rough edges (missing tests, a known join bug in `fct_content_performance`, an access-level inconsistency on `dim_campaigns`, and so on) for you to find and reason about as part of your group's exercises. See `mediapulse_base/README.md` and `mediapulse_analytics/README.md` for each project's own structure, and your group's overview page for what you'll specifically be doing with them.
 
 ---
 
