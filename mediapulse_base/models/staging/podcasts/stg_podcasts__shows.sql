@@ -1,3 +1,5 @@
+-- stages all podcast shows. One row per podcast
+
 with source as (
 
     select * from {{ source('podcasts', 'shows') }}
