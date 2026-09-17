@@ -26,6 +26,10 @@ models:
         data_tests:
           - not_null
       - name: first_published_at
+        data_tests:
+          - not_null:
+              config:
+                where: "total_articles > 0"
       - name: most_recent_published_at
 
   - name: fct_news_page_views
@@ -67,6 +71,9 @@ models:
     columns:
       - name: article_id
         description: Primary key. Unique identifier for the article.
+        data_tests:
+          - unique
+          - not_null          
 
       - name: title
         description: Headline/title of the article.

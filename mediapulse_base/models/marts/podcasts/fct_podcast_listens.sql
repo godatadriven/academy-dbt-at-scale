@@ -11,7 +11,7 @@ select
     case
         when total_length_seconds = 0
         then 0
-        else round(1.0 * listen_duration_seconds / total_length_seconds, 4)
+        else least(round(1.0 * listen_duration_seconds / total_length_seconds, 4), 1)
     end as completion_rate,
     platform
 

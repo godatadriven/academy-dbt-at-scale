@@ -1,5 +1,5 @@
 with
-    articles as (select * from {{ ref("stg_news__articles") }}),
+    articles as (select * from {{ ref("int_news__articles_deduped") }}),
 
     -- Each score dimension needs three things before it can be summed:
     -- 1. rescale onto a common 0-10 basis (score_bias is 1-5, score_trust is 0-100)
