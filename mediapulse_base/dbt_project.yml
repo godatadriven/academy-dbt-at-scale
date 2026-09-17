@@ -24,9 +24,18 @@ models:
     staging:
       +materialized: view
       +access: public
+      streaming:
+        +schema: streaming
+      podcasts:
+        +schema: podcasts
     intermediate:
       +materialized: view
       +access: protected
     marts:
       +materialized: table
       +access: protected
+      streaming:
+        +schema: streaming
+      podcasts:
+        +schema: podcasts
+
