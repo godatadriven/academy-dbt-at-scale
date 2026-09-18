@@ -3,7 +3,7 @@ version: 2
 models:
   - name: stg_podcasts__shows
     description: >
-      Staged show records from PodcastHub. One row per show.
+      Records from source Podcast shows, one record per showId.
     columns:
       - name: show_id
         description: Primary key.
@@ -23,7 +23,7 @@ models:
 
   - name: stg_podcasts__episodes
     description: >
-      Staged episode records from PodcastHub. One row per episode.
+      Records from source Podcast episodes, one record per episode per show_id and its duration in seconds.
     columns:
       - name: episode_id
         description: Primary key.
