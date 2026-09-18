@@ -1,3 +1,5 @@
+--the purpose of this model is to clean the show names and the host names
+
 with
     base as (
         select show_id, show_name, host_name, category, launched_at

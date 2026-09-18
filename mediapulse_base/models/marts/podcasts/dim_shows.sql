@@ -1,4 +1,4 @@
--- dim_shows: one row per PodcastHub show, with episode output stats.
+-- dim_shows references the intermediate model
 
 with shows as (
 
