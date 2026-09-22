@@ -33,43 +33,44 @@ models:
 
   - name: fct_podcast_listens
     description: >
-      One row per podcast listen session, enriched with the episode's show and
-      a per-session completion rate.
+      One row per episode/show/platform combination, aggregating listen
+      sessions from PodcastHub.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - episode_id
+              - show_id
+              - platform
     columns:
-      - name: listen_id
-        description: Primary key.
-        data_tests:
-          - not_null
-          - unique
       - name: episode_id
-        description: Foreign key to the episode catalogue.
+        description: Foreign key to the episode.
         data_tests:
           - not_null
       - name: show_id
-        description: Foreign key to dim_shows.
+        description: Foreign key to the show.
         data_tests:
           - not_null
-      - name: user_id
-      - name: listened_at
-        description: Timestamp when the listen session started.
-        data_tests:
-          - not_null
-      - name: listen_duration_seconds
-        data_tests:
-          - not_null
-      - name: completion_rate
-        description: >
-          Fraction of the episode listened to in this session, capped at 1.0 so a
-          listen longer than the episode duration counts as fully completed.
-        data_tests:
-          - dbt_utils.accepted_range:
-              arguments:
-                min_value: 0
-                max_value: 1
       - name: platform
+        description: Platform the listens occurred on.
+        data_tests:
+          - not_null:
+              config:
+                where: "number_of_listens > 0"
+      - name: number_of_listens
+        description: Count of listen sessions for this episode/show/platform.
+      - name: average_listen_seconds
+        description: Average listen duration, in seconds.
+      - name: average_completion_rate
+        description: Average completion rate across listens.
+      - name: completion_bucket
+        description: >
+          Bucketed completion status based on average_completion_rate:
+          completed (>90%), dropped_before_content (<10%), partial
+          (otherwise), or no_listens when there are no listens.
         data_tests:
           - accepted_values:
-              arguments:
-                values: ["ios", "android", "web", "alexa", "other"]
               config:
-                severity: warn
+                where: "number_of_listens > 0"
+              arguments: 
+                values: ['completed', 'dropped_before_content', 'partial', 'no_listens']

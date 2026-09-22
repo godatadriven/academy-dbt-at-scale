@@ -101,3 +101,47 @@ models:
         description: Show genre/category, passed through unchanged from stg_podcasts__shows.
       - name: launched_at
         description: Show launch timestamp, passed through unchanged from stg_podcasts__shows.
+
+  - name: int_podcasts_listens_completion_rates
+    description: >
+      One row per podcast listen session, enriched with the episode's show and
+      a per-session completion rate.
+    columns:
+      - name: listen_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: episode_id
+        description: Foreign key to the episode catalogue.
+        data_tests:
+          - not_null
+      - name: show_id
+        description: Foreign key to dim_shows.
+        data_tests:
+          - not_null
+      - name: user_id
+      - name: listened_at
+        description: Timestamp when the listen session started.
+        data_tests:
+          - not_null
+      - name: listen_duration_seconds
+        data_tests:
+          - not_null
+      - name: completion_rate
+        description: >
+          Fraction of the episode listened to in this session, capped at 1.0 so a
+          listen longer than the episode duration counts as fully completed.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+      - name: platform
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["ios", "android", "web", "alexa", "other"]
+              config:
+                severity: warn
+

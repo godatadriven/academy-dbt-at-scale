@@ -1,15 +1,38 @@
 -- fct_podcast_listens: one row per podcast listen session.
-with listens as (select * from {{ ref("stg_podcasts__listens") }})
+-- to do: put model in yaml file
+with listens as (select * from {{ ref("int_podcasts_listens_completion_rates") }})
+
+, episodes as (select * from {{ ref('stg_podcasts__episodes') }})
 
 select
-    listen_id,
     episode_id,
     show_id,
-    user_id,
-    listened_at,
-    listen_duration_seconds,
-    {{ safe_divide('listen_duration_seconds', 'total_length_seconds') }} as completion_rate,
-
-    platform
-
+    platform,
+    count(listen_id) as number_of_listens,  -- will never be 0 atm
+    avg(listen_duration_seconds) as average_listen_seconds,
+    avg(completion_rate) as average_completion_rate,
+    case 
+        when average_completion_rate = 0 then 'no_listens'
+        when average_completion_rate > .90 then 'completed'
+        when average_completion_rate < .10 then 'dropped_before_content'
+        else 'partial'
+    end as completion_bucket
 from listens
+group by all
+
+union all
+
+select
+    episode_id,
+    show_id,
+    null as platform,
+    0 as number_of_listens,
+    null as average_listen_seconds,
+    null as average_completion_rate,
+    'no listens' as completion_bucket
+from 
+    episodes
+where
+    episode_id not in (select distinct episode_id from listens)
+
+

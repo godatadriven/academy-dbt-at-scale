@@ -1,3 +1,5 @@
+-- clean and normalize podcast shows
+
 with
     base as (
         select show_id, show_name, host_name, category, launched_at

@@ -70,9 +70,9 @@ models:
           - not_null
       - name: listen_duration_seconds
         description: How long the user actually listened, in seconds.
-      - name: platform
-        description: "Platform used. Expected: ios, android, web, alexa, other."
+      - name: platform_id
+        description: "Platform used. Expected: 1, 2, 3, 4, 5"
         data_tests:
           - accepted_values:
               arguments:
-                values: ["ios", "android", "web", "alexa", "other"]
+                values: [1, 2, 3, 4, 5]
