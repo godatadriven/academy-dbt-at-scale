@@ -1,0 +1,107 @@
+version: 2
+
+sources:
+  - name: ads
+    database: mediapulse_raw
+    schema: ads
+    description: >
+      Raw data from PodcastHub, MediaPulse's advertising network.
+
+    tables:
+      - name: campaigns
+        description: >
+          One row per ad campaign.
+        columns:
+          - name: campaign_id
+            description: Primary key.
+            data_tests:
+              - not_null
+              - unique
+          - name: advertiser_id
+            description: The advertiser who owns this campaign.
+            data_tests:
+            - not_null
+          - name: campaign_name
+            description: name of the campaign
+            data_tests:
+              - not_null
+          - name: campaign_type
+            description: "Campaign type. Expected values: display, video, sponsored_content, podcast_ad, newsletter."
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ["display", "video", "sponsored_content", "podcast_ad", "newsletter"]
+          - name: start_date
+            data_tests:
+              - not_null
+          - name: end_date
+            data_tests:
+              - not_null
+          - name: budget_cents
+            data_tests:
+              - not_null
+
+      - name: impressions
+        description: >
+          One row per impression of an ad.
+        columns:
+          - name: impression_id
+            description: Primary key.
+            data_tests:
+              - not_null
+              - unique
+          - name: campaign_id
+            description: Foreign key to stg_ads__campaigns.
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments: 
+                    to: ref('stg_ads__campaigns')
+                    field: campaign_id
+          - name: content_id
+            description: id of the content
+            data_tests:
+              - not_null
+          - name: impression_date
+            description: date of the impression
+            data_tests:
+              - not_null
+          - name: impressions_count
+            description: number of impressions
+            data_tests:
+              - not_null
+          - name: clicks
+            description: number of clicks
+            data_tests:
+              - not_null
+
+      - name: spend
+        description: >
+          Individual listen events - one row per user/episode listening session.
+        columns:
+          - name: spend_id
+            description: Primary key.
+            data_tests:
+              - not_null
+              - unique
+          - name: campaign_id
+            description: Foreign key to stg_ads__campaigns.
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments: 
+                    to: ref('stg_ads__campaigns')
+                    field: campaign_id
+          - name: spend_date
+            description: date of the spending
+            data_tests:
+              - not_null
+          - name: spend_cents
+            description: amount spent in cents
+            data_tests:
+              - not_null
+          - name: platform_fee_cents
+            description: platform fee in cents
+            data_tests:
+              - not_null
