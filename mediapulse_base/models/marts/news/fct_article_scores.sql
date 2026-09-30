@@ -17,27 +17,37 @@ with
             status,
             published_at,
 
-            -- relevance: already 0-10, no rescale needed
-            coalesce(score_relevance, 0)
-            * coalesce(num_responses_relevance, 0) as weighted_relevance,
+            -- -- relevance: already 0-10, no rescale needed
+            -- coalesce(score_relevance, 0)
+            -- * coalesce(num_responses_relevance, 0) as weighted_relevance,
 
-            -- clarity: already 0-10, no rescale needed
-            coalesce(score_clarity, 0)
-            * coalesce(num_responses_clarity, 0) as weighted_clarity,
+            -- -- clarity: already 0-10, no rescale needed
+            -- coalesce(score_clarity, 0)
+            -- * coalesce(num_responses_clarity, 0) as weighted_clarity,
 
-            -- bias: scale is 1-5, rescale to 0-10 by multiplying by 2
-            coalesce(score_bias, 0)
-            * 2
-            * coalesce(num_responses_bias, 0) as weighted_bias,
+            -- -- bias: scale is 1-5, rescale to 0-10 by multiplying by 2
+            -- coalesce(score_bias, 0)
+            -- * 2
+            -- * coalesce(num_responses_bias, 0) as weighted_bias,
 
-            -- trust: scale is 0-100, rescale to 0-10 by dividing by 10
-            (coalesce(score_trust, 0) / 10.0)
-            * coalesce(num_responses_trust, 0) as weighted_trust,
+            -- -- trust: scale is 0-100, rescale to 0-10 by dividing by 10
+            -- (coalesce(score_trust, 0) / 10.0)
+            -- * coalesce(num_responses_trust, 0) as weighted_trust,
 
-            -- engagement: already 0-10, but may not exist for older articles
-            -- (survey dimension added mid-year) - coalesce handles that gracefully
-            coalesce(score_engagement, 0)
-            * coalesce(num_responses_engagement, 0) as weighted_engagement,
+            -- -- engagement: already 0-10, but may not exist for older articles
+            -- -- (survey dimension added mid-year) - coalesce handles that gracefully
+            -- coalesce(score_engagement, 0)
+            -- * coalesce(num_responses_engagement, 0) as weighted_engagement,
+
+            {{weighted_score(
+                [
+                    ('score_relevance', 'num_responses_relevance', 1, 'weighted_relevance'),
+                    ('score_clarity', 'num_responses_clarity', 1, 'weighted_clarity'),
+                    ('score_bias', 'num_responses_bias', 2, 'weighted_bias'),
+                    ('score_trust', 'num_responses_trust', 0.1, 'weighted_trust'),
+                    ('score_engagement', 'num_responses_engagement', 1, 'weighted_engagement'),
+                ]
+            )}},
 
             coalesce(num_responses_relevance, 0)
             + coalesce(num_responses_clarity, 0)

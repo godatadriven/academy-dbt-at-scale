@@ -68,17 +68,8 @@ normalized as (
             else 'unknown'
         end as status,
 
-        case when trim(score_relevance) in ('', 'N/A', '-1') then NULL else cast(score_relevance as float) end as score_relevance,
-        case when trim(score_clarity) in ('', 'N/A', '-1') then NULL else cast(score_clarity as float) end as score_clarity,
-        case when trim(score_bias) in ('', 'N/A', '-1') then NULL else cast(score_bias as float) end as score_bias,
-        case when trim(score_trust) in ('', 'N/A', '-1') then NULL else cast(score_trust as float) end as score_trust,
-        case when trim(score_engagement) in ('', 'N/A', '-1') then NULL else cast(score_engagement as float) end as score_engagement,
-
-        case when trim(num_responses_relevance) in ('', 'N/A', '-1') then NULL else cast(num_responses_relevance as float) end as num_responses_relevance,
-        case when trim(num_responses_clarity) in ('', 'N/A', '-1') then NULL else cast(num_responses_clarity as float) end as num_responses_clarity,
-        case when trim(num_responses_bias) in ('', 'N/A', '-1') then NULL else cast(num_responses_bias as float) end as num_responses_bias,
-        case when trim(num_responses_trust) in ('', 'N/A', '-1') then NULL else cast(num_responses_trust as float) end as num_responses_trust,
-        case when trim(num_responses_engagement) in ('', 'N/A', '-1') then NULL else cast(num_responses_engagement as float) end as num_responses_engagement
+        {{normalize_score_columns(zip(['score_relevance', 'score_clarity', 'score_bias', 'score_trust', 'score_engagement'], 
+                                      ['num_responses_relevance', 'num_responses_clarity', 'num_responses_bias', 'num_responses_trust', 'num_responses_engagement']))}}
 
     from renamed
 
