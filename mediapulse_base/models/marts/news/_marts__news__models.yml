@@ -16,9 +16,11 @@ models:
         data_tests:
           - not_null
       - name: email
+        description: email address of the author
         data_tests:
           - not_null
       - name: joined_at
+        description: date the author joined the company
         data_tests:
           - not_null
       - name: total_articles
@@ -26,11 +28,13 @@ models:
         data_tests:
           - not_null
       - name: first_published_at
+        description: first date this author published an article
         data_tests:
           - not_null:
               config:
                 where: "total_articles > 0"
       - name: most_recent_published_at
+        description: most recent date this author published an article
 
   - name: fct_news_page_views
     description: >
@@ -48,16 +52,19 @@ models:
         data_tests:
           - not_null
       - name: category
+        description: editorial category of the artilce
       - name: author_id
         description: Foreign key to dim_authors.
         data_tests:
           - not_null
       - name: user_id
+        description: ID of the user
       - name: viewed_at
         description: Timestamp of the page view event.
         data_tests:
           - not_null
       - name: referrer_source
+        description: referrer source the user came from. Can be search, social, direct or email
         data_tests:
           - accepted_values:
               arguments:

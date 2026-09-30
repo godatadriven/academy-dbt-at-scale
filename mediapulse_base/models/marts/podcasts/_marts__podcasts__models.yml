@@ -16,12 +16,15 @@ models:
         data_tests:
           - not_null
       - name: host_name
+        description: 
         data_tests:
           - not_null
       - name: category
+        description: Show's category
         data_tests:
           - not_null
       - name: launched_at
+        description: launch date of the show
         data_tests:
           - not_null
       - name: total_episodes
@@ -29,7 +32,9 @@ models:
         data_tests:
           - not_null
       - name: first_episode_at
+        description: date first episode published
       - name: most_recent_episode_at
+        description: date of most recent episode
 
   - name: fct_podcast_listens
     description: >

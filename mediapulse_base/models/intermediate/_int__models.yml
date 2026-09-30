@@ -120,6 +120,7 @@ models:
         data_tests:
           - not_null
       - name: user_id
+        description: ID of the user
       - name: listened_at
         description: Timestamp when the listen session started.
         data_tests:

@@ -49,5 +49,6 @@ models:
         data_tests:
           - not_null
       - name: clicks
+        description: number of clicks on the impression
       - name: click_through_rate
         description: clicks divided by impressions_count, rounded to 4 decimal places. Zero when impressions_count is zero.

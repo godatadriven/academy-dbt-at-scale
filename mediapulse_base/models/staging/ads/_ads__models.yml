@@ -26,12 +26,15 @@ models:
               arguments:
                 values: ["display", "video", "sponsored_content", "podcast_ad", "newsletter"]
       - name: start_date
+        description: start date of the campaign
         data_tests:
           - not_null
       - name: end_date
+        description: end date of the campaign
         data_tests:
           - not_null
       - name: budget_cents
+        description: budget of the campaign in cents
         data_tests:
           - not_null
           
