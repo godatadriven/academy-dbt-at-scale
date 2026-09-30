@@ -1,4 +1,4 @@
--- models/staging/stg_news__articles.sql
+-- stages the news articles. One row per article
 
 with source as (
 

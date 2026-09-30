@@ -101,7 +101,6 @@ models:
         description: Show genre/category, passed through unchanged from stg_podcasts__shows.
       - name: launched_at
         description: Show launch timestamp, passed through unchanged from stg_podcasts__shows.
-
   - name: int_podcasts_listens_completion_rates
     description: >
       One row per podcast listen session, enriched with the episode's show and
@@ -144,4 +143,46 @@ models:
                 values: ["ios", "android", "web", "alexa", "other"]
               config:
                 severity: warn
-
+  - name: int_news__articles_deduped
+    description: >
+      All news articles, keep only the most recent update and status of the article. One row per article.
+    columns:
+      - name: article_id
+        description: Primary key.
+        data_tests:
+          - not_null
+          - unique
+      - name: title
+        description: Article headline.
+      - name: author_id
+        description: Foreign key to authors.
+      - name: category
+        description: Editorial category of the artcile
+      - name: status
+        description: Current article lifecycle status.
+      - name: published_at
+        description: Timestamp when the article first went live. There are no unpublished articles.
+      - name: updated_at
+        description: Timestamp of the most recent edit or republication.
+      - name: word_count
+        description: Number of words in the article body.
+      - name: score_relevance
+        description: Relevance score of the article
+      - name: score_clarity
+        description: Clarity score of the article
+      - name: score_bias
+        description: Bias score of the article
+      - name: score_trust
+        description: Trust score of the article
+      - name: score_engagement
+        description: Engagement score of the article
+      - name: num_responses_relevance
+        description: number of responseses for the relevance score
+      - name: num_responses_clarity
+        description: number of responseses for the clarity score
+      - name: num_responses_bias
+        description: number of responseses for the bias score
+      - name: num_responses_trust
+        description: number of responseses for the trust score
+      - name: num_responses_engagement
+        description: number of responseses for the engagement score

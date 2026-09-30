@@ -3,9 +3,7 @@ version: 2
 models:
   - name: stg_ads__campaigns
     description: >
-      Staged campaign records from AdConnect. One row per campaign. Reads
-      directly from the ads.campaigns table rather than through a source()
-      definition.
+      Staged campaign records from AdConnect. One row per campaign.
     columns:
       - name: campaign_id
         description: Primary key.
@@ -40,8 +38,7 @@ models:
   - name: stg_ads__impressions
     description: >
       Staged impression records from AdConnect. One row per campaign/content
-      impression record. Reads directly from the ads.impressions table rather
-      than through a source() definition.
+      impression record.
     columns:
       - name: impression_id
         description: Primary key.
@@ -76,8 +73,7 @@ models:
   - name: stg_ads__spend
     description: >
       Staged spend records from AdConnect. One row per campaign/day spend
-      record. Reads directly from the ads.spend table rather than through a
-      source() definition.
+      record.
     columns:
       - name: spend_id
         description: Primary key.

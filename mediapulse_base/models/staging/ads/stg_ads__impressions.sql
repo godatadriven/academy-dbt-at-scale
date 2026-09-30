@@ -1,3 +1,5 @@
+-- stages the ad impressons, one row per impression, par campaign
+
 with 
 
 source as (

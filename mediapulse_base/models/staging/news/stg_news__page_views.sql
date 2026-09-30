@@ -1,3 +1,5 @@
+-- stages the pageviews of the articles, one row per pageview
+
 with source as (
 
     select * from {{ source('news', 'page_views') }}

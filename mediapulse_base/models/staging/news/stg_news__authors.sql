@@ -1,3 +1,5 @@
+-- stages the article authors. One row per author
+
 with source as (
 
     select * from {{ source('news', 'authors') }}
